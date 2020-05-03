@@ -2,8 +2,8 @@
   (:gen-class)
   (:require
    [ancient-clj.core :as ancient]
-   [antq.impl.clojure :as i.clj]
-   [antq.impl.leiningen :as i.lein]
+   [antq.dep.clojure :as dep.clj]
+   [antq.dep.leiningen :as dep.lein]
    [clojure.java.io :as io]
    [clojure.pprint :as pprint]
    [version-clj.core :as version]))
@@ -62,14 +62,14 @@
   (cond
     (.exists (io/file "deps.edn"))
     (-> (slurp "deps.edn")
-        i.clj/extract-deps
+        dep.clj/extract-deps
         outdated-deps
         print-deps
         exit)
 
     (.exists (io/file "project.clj"))
     (-> (slurp "project.clj")
-        i.lein/extract-deps
+        dep.lein/extract-deps
         outdated-deps
         print-deps
         exit)

@@ -1,4 +1,4 @@
-(ns antq.impl.clojure
+(ns antq.dep.clojure
   "Clojure CLI"
   (:require
    [antq.record :as r]

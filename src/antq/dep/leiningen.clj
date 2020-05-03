@@ -1,4 +1,4 @@
-(ns antq.impl.leiningen
+(ns antq.dep.leiningen
   (:require
    [antq.record :as r]
    [clojure.walk :as walk]))
