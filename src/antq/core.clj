@@ -43,7 +43,7 @@
   (->> deps
        (remove skip-artifacts?)
        (remove using-release-version?)
-       (map #(assoc % :latest-version (get-latest-version %)))
+       (pmap #(assoc % :latest-version (get-latest-version %)))
        (remove latest?)))
 
 (defn print-deps
