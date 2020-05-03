@@ -6,7 +6,6 @@
    [antq.dep.pom :as dep.pom]
    [antq.dep.shadow :as dep.shadow]
    [antq.dep.leiningen :as dep.lein]
-   [clojure.java.io :as io]
    [clojure.pprint :as pprint]
    [version-clj.core :as version]))
 
