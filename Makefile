@@ -15,7 +15,7 @@ pom.xml: deps.edn
 target/antq.jar: pom.xml
 	clojure -A:uberjar
 
-uberjar: target/antq.jar
+uberjar: clean target/antq.jar
 
 clean:
 	rm -rf target
