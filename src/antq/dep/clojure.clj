@@ -3,7 +3,10 @@
   (:require
    [antq.record :as r]
    [clojure.edn :as edn]
+   [clojure.java.io :as io]
    [clojure.walk :as walk]))
+
+(def ^:private project-file "deps.edn")
 
 (defn extract-deps
   [deps-edn-content-str]
@@ -15,6 +18,12 @@
                      form)
                    (edn/read-string deps-edn-content-str))
     (for [[dep-name {:mvn/keys [version]}] @deps]
-      (r/map->Dependency {:type :java :name  (str dep-name) :version version}))))
+      (r/map->Dependency {:type :java
+                          :project project-file
+                          :name  (str dep-name)
+                          :version version}))))
 
-
+(defn load-deps
+  []
+  (when (.exists (io/file project-file))
+    (extract-deps (slurp project-file))))

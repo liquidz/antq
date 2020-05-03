@@ -1,3 +1,3 @@
 (ns antq.record)
 
-(defrecord Dependency [type name version latest-version])
+(defrecord Dependency [type project name version latest-version])

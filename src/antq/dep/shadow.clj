@@ -1,20 +1,21 @@
-(ns antq.dep.leiningen
+(ns antq.dep.shadow
   (:require
    [antq.record :as r]
+   [clojure.edn :as edn]
    [clojure.java.io :as io]
    [clojure.walk :as walk]))
 
-(def ^:private project-file "project.clj")
+(def ^:private project-file "shadow-cljs.edn")
 
 (defn extract-deps
-  [project-clj-content-str]
+  [shadow-cljs-edn-content-str]
   (let [deps (atom [])]
     (walk/postwalk (fn [form]
                      (when (and (sequential? form)
                                 (= :dependencies (first form)))
                        (swap! deps concat (second form)))
                      form)
-                   (read-string (str "(list " project-clj-content-str " )")))
+                   (edn/read-string shadow-cljs-edn-content-str))
     (for [[dep-name version] @deps]
       (r/map->Dependency {:type :java
                           :project project-file

@@ -3,6 +3,7 @@
   (:require
    [ancient-clj.core :as ancient]
    [antq.dep.clojure :as dep.clj]
+   [antq.dep.shadow :as dep.shadow]
    [antq.dep.leiningen :as dep.lein]
    [clojure.java.io :as io]
    [clojure.pprint :as pprint]
@@ -47,9 +48,14 @@
 (defn print-deps
   [deps]
   (if (seq deps)
-    (->> deps
-         (map #(update % :latest-version (fnil identity "Failed to fetch")))
-         (pprint/print-table [:name :version :latest-version]))
+    (let [grp (group-by :project deps)
+          project-names (sort (keys grp))]
+      (doseq [project-name project-names]
+
+        (println "\n###" project-name)
+        (->> (get grp project-name)
+             (map #(update % :latest-version (fnil identity "Failed to fetch")))
+             (pprint/print-table [:name :version :latest-version]))))
     (println "All dependencies are up-to-date."))
   deps)
 
@@ -59,21 +65,13 @@
 
 (defn -main
   []
-  (cond
-    (.exists (io/file "deps.edn"))
-    (-> (slurp "deps.edn")
-        dep.clj/extract-deps
-        outdated-deps
-        print-deps
-        exit)
-
-    (.exists (io/file "project.clj"))
-    (-> (slurp "project.clj")
-        dep.lein/extract-deps
-        outdated-deps
-        print-deps
-        exit)
-
-    :else
-    (do (println "No project file")
-        (System/exit 1))))
+  (let [deps (concat (dep.clj/load-deps)
+                     (dep.lein/load-deps)
+                     (dep.shadow/load-deps))]
+    (if (seq deps)
+      (-> deps
+          outdated-deps
+          print-deps
+          exit)
+      (do (println "No project file")
+          (System/exit 1)))))
