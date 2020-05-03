@@ -3,6 +3,7 @@
   (:require
    [ancient-clj.core :as ancient]
    [antq.dep.clojure :as dep.clj]
+   [antq.dep.pom :as dep.pom]
    [antq.dep.shadow :as dep.shadow]
    [antq.dep.leiningen :as dep.lein]
    [clojure.java.io :as io]
@@ -65,9 +66,10 @@
 
 (defn -main
   []
-  (let [deps (concat (dep.clj/load-deps)
-                     (dep.lein/load-deps)
-                     (dep.shadow/load-deps))]
+  (let [deps (concat (dep.lein/load-deps)
+                     (dep.pom/load-deps)
+                     (dep.shadow/load-deps)
+                     (dep.clj/load-deps))]
     (if (seq deps)
       (-> deps
           outdated-deps
