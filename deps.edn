@@ -1,0 +1,24 @@
+{
+ :paths ["src"]
+ :deps
+ {org.clojure/clojure {:mvn/version "1.10.1"}
+  ancient-clj {:mvn/version "0.6.15"}
+  version-clj {:mvn/version "0.1.2"}}
+
+ :aliases
+ {:dev
+  {:extra-paths ["test"]
+   :extra-deps {lambdaisland/kaocha {:mvn/version "1.0.629"}}}
+
+  :test
+  {:main-opts ["-m" "kaocha.runner"]}
+
+  :antq
+  {:main-opts ["-m" "antiq.core"]}
+
+  :uberjar
+  {:extra-deps {seancorfield/depstar {:mvn/version "RELEASE"}}
+   :main-opts ["-m" "hf.depstar.uberjar" "target/antq.jar"
+               "-C" "-m" "antq.core"]}
+  }
+}
