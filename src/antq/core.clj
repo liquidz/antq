@@ -2,13 +2,11 @@
   (:gen-class)
   (:require
    [ancient-clj.core :as ancient]
-   [clojure.edn :as edn]
+   [antq.impl.clojure :as i.clj]
+   [antq.impl.leiningen :as i.lein]
    [clojure.java.io :as io]
    [clojure.pprint :as pprint]
-   [clojure.walk :as walk]
    [version-clj.core :as version]))
-
-(defrecord Dependency [type name version latest-version])
 
 (def default-skip-artifacts
   #{"org.clojure/clojure"})
@@ -17,33 +15,21 @@
   {"central" "https://repo1.maven.org/maven2/"
    "clojars" "https://repo.clojars.org/"})
 
-(defn extract-deps
-  [deps-edn-content]
-  (let [deps (atom {})]
-    (walk/postwalk (fn [form]
-                     (when (and (sequential? form)
-                                (#{:deps :extra-deps} (first form)))
-                       (swap! deps merge (second form)))
-                     form)
-                   deps-edn-content)
-    (for [[dep-name {:mvn/keys [version]}] @deps]
-      (map->Dependency {:type :java :name  (str dep-name) :version version}))))
-
-(defn skip-artifacts? [^Dependency dep]
+(defn skip-artifacts? [dep]
   (contains? default-skip-artifacts (:name dep)))
 
-(defn using-release-version? [^Dependency dep]
+(defn using-release-version? [dep]
   (contains? #{"RELEASE"} (:version dep)))
 
 (defn get-latest-version
-  [^Dependency dep]
+  [dep]
   (ancient/latest-version-string!
    (:name dep)
    {:repositories default-repos
     :snapshots? false}))
 
 (defn latest?
-  [^Dependency dep]
+  [dep]
   (and (:version dep)
        (:latest-version dep)
        (zero?  (version/version-compare
@@ -76,8 +62,14 @@
   (cond
     (.exists (io/file "deps.edn"))
     (-> (slurp "deps.edn")
-        edn/read-string
-        extract-deps
+        i.clj/extract-deps
+        outdated-deps
+        print-deps
+        exit)
+
+    (.exists (io/file "project.clj"))
+    (-> (slurp "project.clj")
+        i.lein/extract-deps
         outdated-deps
         print-deps
         exit)
