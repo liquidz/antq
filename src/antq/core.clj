@@ -3,9 +3,9 @@
   (:require
    [ancient-clj.core :as ancient]
    [antq.dep.clojure :as dep.clj]
+   [antq.dep.leiningen :as dep.lein]
    [antq.dep.pom :as dep.pom]
    [antq.dep.shadow :as dep.shadow]
-   [antq.dep.leiningen :as dep.lein]
    [clojure.pprint :as pprint]
    [version-clj.core :as version]))
 
@@ -16,10 +16,12 @@
   {"central" "https://repo1.maven.org/maven2/"
    "clojars" "https://repo.clojars.org/"})
 
-(defn skip-artifacts? [dep]
+(defn skip-artifacts?
+  [dep]
   (contains? default-skip-artifacts (:name dep)))
 
-(defn using-release-version? [dep]
+(defn using-release-version?
+  [dep]
   (contains? #{"RELEASE"} (:version dep)))
 
 (defn get-latest-version
