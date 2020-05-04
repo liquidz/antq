@@ -8,11 +8,17 @@
 
 (defn extract-deps
   [project-clj-content-str]
-  (let [deps (atom [])]
+  (let [dep-form? (atom false)
+        deps (atom [])]
     (walk/postwalk (fn [form]
-                     (when (and (sequential? form)
-                                (= :dependencies (first form)))
-                       (swap! deps concat (second form)))
+                     (cond
+                       (keyword? form)
+                       (reset! dep-form? (= :dependencies form))
+
+                       (and @dep-form?
+                            (sequential? form)
+                            (sequential?  (first form)))
+                       (swap! deps concat form))
                      form)
                    (read-string (str "(list " project-clj-content-str " )")))
     (for [[dep-name version] @deps]
