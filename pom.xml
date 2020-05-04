@@ -5,6 +5,14 @@
   <artifactId>antq</artifactId>
   <version>0.1.0-SNAPSHOT</version>
   <name>antq</name>
+  <description>Point out your outdated dependencies</description>
+  <url>https://github.com/liquidz/antq</url>
+  <licenses>
+    <license>
+      <name>Eclipse Public License 2.0</name>
+      <url>https://www.eclipse.org/legal/epl-2.0/</url>
+    </license>
+  </licenses>
   <dependencies>
     <dependency>
       <groupId>org.clojure</groupId>
@@ -31,4 +39,11 @@
       <url>https://repo.clojars.org/</url>
     </repository>
   </repositories>
+  <distributionManagement>
+    <repository>
+      <id>clojars</id>
+      <name>Clojars repository</name>
+      <url>https://clojars.org/repo</url>
+    </repository>
+  </distributionManagement>
 </project>

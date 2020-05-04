@@ -1,6 +1,6 @@
 = antq
 
-FIXME
+image:https://img.shields.io/clojars/v/antq.svg["Clojars Project", link="https://clojars.org/antq"]
 
 
 == License

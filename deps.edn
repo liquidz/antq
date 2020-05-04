@@ -13,12 +13,12 @@
   :test
   {:main-opts ["-m" "kaocha.runner"]}
 
-  :antq
-  {:main-opts ["-m" "antiq.core"]}
+  :depstar
+  {:extra-deps {seancorfield/depstar {:mvn/version "RELEASE"}}}
 
-  :uberjar
-  {:extra-deps {seancorfield/depstar {:mvn/version "RELEASE"}}
-   :main-opts ["-m" "hf.depstar.uberjar" "target/antq.jar"
-               "-C" "-m" "antq.core"]}
+  :deploy
+  {:extra-deps {deps-deploy {:mvn/version "RELEASE"}}
+   :main-opts ["-m" "deps-deploy.deps-deploy" "deploy"
+               "target/antq.jar"]}
   }
 }
