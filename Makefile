@@ -24,7 +24,7 @@ jar: clean target/antq.jar
 install: clean target/antq.jar
 	clj -R:deploy -m deps-deploy.deps-deploy install target/antq.jar
 
-deploy:
+deploy: clean target/antq.jar
 	clj -A:deploy
 
 clean:
