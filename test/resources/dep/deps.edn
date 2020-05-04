@@ -1,0 +1,7 @@
+{
+ :deps {foo/core {:mvn/version "1.0.0"}
+        bar {:mvn/version "2.0.0"}}
+
+ :aliases
+ {:foo {:extra-deps {baz {:mvn/version "3.0.0"}}}}
+}

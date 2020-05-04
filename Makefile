@@ -7,7 +7,7 @@ run:
 	clojure -m antq.core
 
 test:
-	clojure -R:dev -A:test
+	clojure -A:dev:test
 
 pom.xml: deps.edn
 	clojure -Spom
