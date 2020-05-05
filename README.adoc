@@ -1,7 +1,8 @@
 = antq
 
+image:https://github.com/liquidz/antq/workflows/test/badge.svg["GitHub Actions for test workflow", link="https://github.com/liquidz/antq/actions?query=workflow%3Atest"]
+image:https://github.com/liquidz/antq/workflows/lint/badge.svg["GitHub Actions for lint workflow", link="https://github.com/liquidz/antq/actions?query=workflow%3Alint"]
 image:https://img.shields.io/clojars/v/antq.svg["Clojars Project", link="https://clojars.org/antq"]
-
 
 == License
 
