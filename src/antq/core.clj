@@ -2,8 +2,8 @@
   (:gen-class)
   (:require
    [ancient-clj.core :as ancient]
-   [antq.dep.clojure :as dep.clj]
    [antq.dep.boot :as dep.boot]
+   [antq.dep.clojure :as dep.clj]
    [antq.dep.leiningen :as dep.lein]
    [antq.dep.pom :as dep.pom]
    [antq.dep.shadow :as dep.shadow]
