@@ -10,17 +10,17 @@
   [project-clj-content-str]
   (let [dep-form? (atom false)
         deps (atom [])]
-    (walk/postwalk (fn [form]
-                     (cond
-                       (keyword? form)
-                       (reset! dep-form? (= :dependencies form))
+    (walk/prewalk (fn [form]
+                    (cond
+                      (keyword? form)
+                      (reset! dep-form? (= :dependencies form))
 
-                       (and @dep-form?
-                            (sequential? form)
-                            (sequential?  (first form)))
-                       (swap! deps concat form))
-                     form)
-                   (read-string (str "(list " project-clj-content-str " )")))
+                      (and @dep-form?
+                           (vector? form)
+                           (vector? (first form)))
+                      (swap! deps concat form))
+                    form)
+                  (read-string (str "(list " project-clj-content-str " )")))
     (for [[dep-name version] @deps]
       (r/map->Dependency {:type :java
                           :project project-file
