@@ -4,11 +4,13 @@
    [antq.util.xml :as u.xml]
    [antq.ver :as ver]
    [clojure.data.xml :as xml]
+   [clojure.string :as str]
    [version-clj.core :as version]))
 
 (defn releases-atom
   [dep]
-  (format "https://github.com/%s/releases.atom" (:name dep)))
+  (format "https://github.com/%s/releases.atom"
+          (str/join "/" (take 2 (str/split (:name dep) #"/")))))
 
 (defn get-latest-version-by-url*
   [url]
