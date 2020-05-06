@@ -1,10 +1,12 @@
-= antq
+= Antq
 
 Point out your outdated dependencies.
 
 image:https://github.com/liquidz/antq/workflows/test/badge.svg["GitHub Actions for test workflow", link="https://github.com/liquidz/antq/actions?query=workflow%3Atest"]
 image:https://github.com/liquidz/antq/workflows/lint/badge.svg["GitHub Actions for lint workflow", link="https://github.com/liquidz/antq/actions?query=workflow%3Alint"]
+image:https://github.com/liquidz/antq/workflows/dependencies/badge.svg["GitHub Actions for dependencies workflow", link="https://github.com/liquidz/antq/actions?query=workflow%3Adependencies"]
 image:https://img.shields.io/clojars/v/antq.svg["Clojars Project", link="https://clojars.org/antq"]
+image:https://img.shields.io/badge/docker-automated-blue["Docker Hub", link="https://hub.docker.com/repository/docker/uochan/antq"]
 
 == Supported files
 
@@ -43,6 +45,13 @@ Add following dependency and alias to your `$HOME/.lein/profiles.clj`.
  }
 ----
 Then, run `lein outdated`.
+
+=== GitHub Actions
+
+Antq can work with https://github.com/features/actions[GitHub Actions].
+See antq's workflow for concrete example.
+
+* https://github.com/liquidz/antq/blob/master/.github/workflows/dependencies.yml[.github/workflows/dependencies.yml]
 
 == License
 
