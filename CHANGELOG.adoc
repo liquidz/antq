@@ -1,6 +1,8 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+
+== 0.2.2 (2020-05-07)
 // {{{
 === Fixed
 * Fixed to handle `master` version as a release version.
