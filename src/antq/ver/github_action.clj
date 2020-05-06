@@ -6,7 +6,8 @@
    [clojure.data.xml :as xml]
    [version-clj.core :as version]))
 
-(defn releases-atom [dep]
+(defn releases-atom
+  [dep]
   (format "https://github.com/%s/releases.atom" (:name dep)))
 
 (defn get-latest-version-by-url*
