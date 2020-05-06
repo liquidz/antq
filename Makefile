@@ -9,15 +9,14 @@ run:
 test:
 	clojure -A:dev:test
 
-pom.xml: deps.edn
+pom:
 	clojure -Spom
-pom: pom.xml
 
-target/antq-standalone.jar: pom.xml
+target/antq-standalone.jar: pom
 	clojure -A:depstar -m hf.depstar.uberjar $@ -C -m antq.core
 uberjar: clean target/antq-standalone.jar
 
-target/antq.jar: pom.xml
+target/antq.jar: pom
 	clojure -A:depstar -m hf.depstar.jar $@
 jar: clean target/antq.jar
 
