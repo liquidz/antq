@@ -2,6 +2,9 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 
+=== Added
+* Added support for GitHub Actions.
+
 == 0.1.0 (2020-05-06)
 // {{{
 * First release
