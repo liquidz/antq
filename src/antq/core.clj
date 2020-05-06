@@ -26,7 +26,7 @@
 
 (defn using-release-version?
   [dep]
-  (contains? #{"RELEASE"} (:version dep)))
+  (contains? #{"RELEASE" "master"} (:version dep)))
 
 (defn latest?
   [dep]
