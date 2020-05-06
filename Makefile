@@ -1,4 +1,4 @@
-.PHONY: repl run test
+.PHONY: repl run test pom jar uberjar install deploy docker clean
 
 repl:
 	iced repl -A:dev
@@ -26,6 +26,9 @@ install: clean target/antq.jar
 
 deploy: clean target/antq.jar
 	clj -A:deploy
+
+docker:
+	docker build -t uochan/antq .
 
 clean:
 	rm -rf target
