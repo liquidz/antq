@@ -1,8 +1,9 @@
 {
  :paths ["src"]
  :deps
- {org.clojure/clojure {:mvn/version "1.10.1"}
-  ancient-clj {:mvn/version "0.6.15"}
+ {ancient-clj {:mvn/version "0.6.15"}
+  clj-commons/clj-yaml {:mvn/version "0.7.1"}
+  org.clojure/clojure {:mvn/version "1.10.1"}
   version-clj {:mvn/version "0.1.2"}}
 
  :aliases

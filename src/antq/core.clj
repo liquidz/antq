@@ -1,13 +1,14 @@
 (ns antq.core
   (:gen-class)
   (:require
-   [ancient-clj.core :as ancient]
    [antq.dep.boot :as dep.boot]
    [antq.dep.clojure :as dep.clj]
+   [antq.dep.github-action :as dep.gh-action]
    [antq.dep.leiningen :as dep.lein]
    [antq.dep.pom :as dep.pom]
    [antq.dep.shadow :as dep.shadow]
    [antq.ver :as ver]
+   [antq.ver.github-action]
    [antq.ver.java]
    [clojure.pprint :as pprint]
    [version-clj.core :as version]))
@@ -80,6 +81,7 @@
   []
   (let [deps (concat (dep.boot/load-deps)
                      (dep.clj/load-deps)
+                     (dep.gh-action/load-deps)
                      (dep.pom/load-deps)
                      (dep.shadow/load-deps)
                      (dep.lein/load-deps))]
