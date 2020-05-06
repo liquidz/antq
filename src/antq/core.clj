@@ -7,6 +7,8 @@
    [antq.dep.leiningen :as dep.lein]
    [antq.dep.pom :as dep.pom]
    [antq.dep.shadow :as dep.shadow]
+   [antq.ver :as ver]
+   [antq.ver.java]
    [clojure.pprint :as pprint]
    [version-clj.core :as version]))
 
@@ -25,13 +27,6 @@
   [dep]
   (contains? #{"RELEASE"} (:version dep)))
 
-(defn get-latest-version
-  [dep]
-  (ancient/latest-version-string!
-   (:name dep)
-   {:repositories default-repos
-    :snapshots? false}))
-
 (defn latest?
   [dep]
   (and (:version dep)
@@ -45,7 +40,7 @@
   (->> deps
        (remove skip-artifacts?)
        (remove using-release-version?)
-       (pmap #(assoc % :latest-version (get-latest-version %)))
+       (pmap #(assoc % :latest-version (ver/get-latest-version %)))
        (remove latest?)))
 
 (defn- compare-deps
