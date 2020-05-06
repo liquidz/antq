@@ -1,8 +1,47 @@
 = antq
 
+Point out your outdated dependencies.
+
 image:https://github.com/liquidz/antq/workflows/test/badge.svg["GitHub Actions for test workflow", link="https://github.com/liquidz/antq/actions?query=workflow%3Atest"]
 image:https://github.com/liquidz/antq/workflows/lint/badge.svg["GitHub Actions for lint workflow", link="https://github.com/liquidz/antq/actions?query=workflow%3Alint"]
 image:https://img.shields.io/clojars/v/antq.svg["Clojars Project", link="https://clojars.org/antq"]
+
+== Supported files
+
+* deps.edn
+* shadow-cljs.edn
+* project.clj
+* build.boot
+* pom.xml
+
+== Usage
+
+=== Clojure CLI Tool
+
+Add following alias to your `$HOME/.clojure/deps.edn`.
+[source,clojure]
+----
+{
+ :aliases
+ {:outdated {:extra-deps {antq {:mvn/version "RELEASE"}}
+             :main-opts ["-m" "antq.core"]}}
+ }
+----
+Then, run `clojure -A:outdated`.
+
+=== Leiningen
+
+Add following dependency and alias to your `$HOME/.lein/profiles.clj`.
+[source,clojure]
+----
+{
+ :user
+ {:dependencies [[antq "RELEASE"]]
+  :aliases {"outdated" ["run" "-m" "antq.core"]}
+  }
+ }
+----
+Then, run `lein outdated`.
 
 == License
 
