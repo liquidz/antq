@@ -24,6 +24,8 @@ install: clean target/antq.jar
 	clj -R:deploy -m deps-deploy.deps-deploy install target/antq.jar
 
 deploy: clean target/antq.jar
+	echo "Testing if CLOJARS_USERNAME environmental variable exists."
+	test $(CLOJARS_USERNAME)
 	clj -A:deploy
 
 docker:
