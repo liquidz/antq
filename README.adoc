@@ -8,11 +8,12 @@ image:https://img.shields.io/clojars/v/antq.svg["Clojars Project", link="https:/
 
 == Supported files
 
-* deps.edn
-* shadow-cljs.edn
-* project.clj
-* build.boot
-* pom.xml
+* deps.edn (https://clojure.org/guides/deps_and_cli[Clojure CLI])
+* shadow-cljs.edn (http://shadow-cljs.org[Shadow-cljs])
+* project.clj (https://leiningen.org[Leiningen])
+* build.boot (https://boot-clj.com[Boot])
+* pom.xml (https://maven.apache.org[Maven])
+* .github/workflows/*.yml (https://github.com/features/actions[GitHub Actions])
 
 == Usage
 
