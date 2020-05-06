@@ -18,7 +18,7 @@
                    (edn/read-string shadow-cljs-edn-content-str))
     (for [[dep-name version] @deps]
       (r/map->Dependency {:type :java
-                          :project project-file
+                          :file project-file
                           :name  (str dep-name)
                           :version version}))))
 

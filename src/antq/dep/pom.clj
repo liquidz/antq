@@ -28,7 +28,7 @@
        (map #(get-values (:content %) [:groupId :artifactId :version]))
        (map (fn [[group-id artifact-id version]]
               (r/map->Dependency {:type :java
-                                  :project project-file
+                                  :file project-file
                                   :name (str group-id "/" artifact-id)
                                   :version version})))))
 

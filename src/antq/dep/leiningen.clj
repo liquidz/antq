@@ -23,7 +23,7 @@
                   (read-string (str "(list " project-clj-content-str " )")))
     (for [[dep-name version] @deps]
       (r/map->Dependency {:type :java
-                          :project project-file
+                          :file project-file
                           :name  (str dep-name)
                           :version version}))))
 

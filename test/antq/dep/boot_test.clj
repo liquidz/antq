@@ -7,7 +7,7 @@
 
 (defn- dependency
   [m]
-  (r/map->Dependency (merge {:type :java :project "build.boot"} m)))
+  (r/map->Dependency (merge {:type :java :file "build.boot"} m)))
 
 (t/deftest extract-deps-test
   (let [deps (sut/extract-deps

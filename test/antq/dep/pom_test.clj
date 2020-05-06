@@ -7,7 +7,7 @@
 
 (defn- dependency
   [m]
-  (r/map->Dependency (merge {:type :java :project "pom.xml"} m)))
+  (r/map->Dependency (merge {:type :java :file "pom.xml"} m)))
 
 (t/deftest extract-deps-test
   (let [deps (sut/extract-deps

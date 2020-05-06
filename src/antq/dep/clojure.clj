@@ -19,7 +19,7 @@
                    (edn/read-string deps-edn-content-str))
     (for [[dep-name {:mvn/keys [version]}] @deps]
       (r/map->Dependency {:type :java
-                          :project project-file
+                          :file project-file
                           :name  (str dep-name)
                           :version version}))))
 
