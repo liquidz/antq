@@ -48,17 +48,32 @@
        (pmap #(assoc % :latest-version (get-latest-version %)))
        (remove latest?)))
 
+(defn- compare-deps
+  [x y]
+  (let [prj (.compareTo (:file x) (:file y))]
+    (if (zero? prj)
+      (.compareTo (:name x) (:name y))
+      prj)))
+
+(defn skip-duplicated-file-name
+  [sorted-deps]
+  (loop [[dep & rest-deps] sorted-deps
+         last-file nil
+         result []]
+    (if-not dep
+      result
+      (if (= last-file (:file dep))
+        (recur rest-deps last-file (conj result (assoc dep :file "")))
+        (recur rest-deps (:file dep) (conj result dep))))))
+
 (defn print-deps
   [deps]
   (if (seq deps)
-    (let [grp (group-by :project deps)
-          project-names (sort (keys grp))]
-      (doseq [project-name project-names]
-
-        (println "\n###" project-name)
-        (->> (get grp project-name)
-             (map #(update % :latest-version (fnil identity "Failed to fetch")))
-             (pprint/print-table [:name :version :latest-version]))))
+    (->> deps
+         (sort compare-deps)
+         skip-duplicated-file-name
+         (map #(update % :latest-version (fnil identity "Failed to fetch")))
+         (pprint/print-table [:file :name :version :latest-version]))
     (println "All dependencies are up-to-date."))
   deps)
 

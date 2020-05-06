@@ -11,3 +11,14 @@
     false "foo/clojure"
     false "foo"
     false "foo/bar"))
+
+(t/deftest skip-duplicated-file-name-test
+  (t/is (= [{:file "foo"} {:file "bar"} {:file "baz"}]
+           (sut/skip-duplicated-file-name
+            [{:file "foo"} {:file "bar"} {:file "baz"}])))
+  (t/is (= [{:file "foo"} {:file ""} {:file "bar"}]
+           (sut/skip-duplicated-file-name
+            [{:file "foo"} {:file "foo"} {:file "bar"}])))
+  (t/is (= [{:file "bar"} {:file "baz"} {:file ""}]
+           (sut/skip-duplicated-file-name
+            [{:file "bar"} {:file "baz"} {:file "baz"}]))))
