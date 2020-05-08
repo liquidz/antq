@@ -31,5 +31,8 @@ deploy: clean target/antq.jar
 docker:
 	docker build -t uochan/antq .
 
+coverage:
+	bash script/coverage.sh
+
 clean:
 	rm -rf target

@@ -36,15 +36,33 @@
                 (:version dep)
                 (:latest-version dep)))))
 
+(defn- assoc-versions
+  [dep]
+  (assoc dep :_versions (ver/get-sorted-versions dep)))
+
+(defn- assoc-latest-version
+  [dep]
+  (let [vers (cond->> (:_versions dep)
+               (not (ver/under-devleopment? (:version dep)))
+               (drop-while ver/under-devleopment?))
+        latest-version (first vers)]
+    (assoc dep :latest-version latest-version)))
+
+(defn- dissoc-no-longer-used-keys
+  [dep]
+  (dissoc dep :_versions))
+
 (defn outdated-deps
   [deps]
   (->> deps
-       (remove skip-artifacts?)
-       (remove using-release-version?)
-       (pmap #(assoc % :latest-version (ver/get-latest-version %)))
+       (remove #(or (skip-artifacts? %)
+                    (using-release-version? %)))
+       (pmap assoc-versions)
+       (map (comp dissoc-no-longer-used-keys
+                  assoc-latest-version))
        (remove latest?)))
 
-(defn- compare-deps
+(defn compare-deps
   [x y]
   (let [prj (.compareTo (:file x) (:file y))]
     (if (zero? prj)
@@ -77,14 +95,18 @@
   [outdated-deps]
   (System/exit (if (seq outdated-deps) 1 0)))
 
+(defn fetch-deps
+  []
+  (concat (dep.boot/load-deps)
+          (dep.clj/load-deps)
+          (dep.gh-action/load-deps)
+          (dep.pom/load-deps)
+          (dep.shadow/load-deps)
+          (dep.lein/load-deps)))
+
 (defn -main
   []
-  (let [deps (concat (dep.boot/load-deps)
-                     (dep.clj/load-deps)
-                     (dep.gh-action/load-deps)
-                     (dep.pom/load-deps)
-                     (dep.shadow/load-deps)
-                     (dep.lein/load-deps))]
+  (let [deps (fetch-deps)]
     (if (seq deps)
       (-> deps
           outdated-deps

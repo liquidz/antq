@@ -28,6 +28,8 @@
                           :version version}))))
 
 (defn load-deps
-  []
-  (when (.exists (io/file project-file))
-    (extract-deps (slurp project-file))))
+  ([] (load-deps "."))
+  ([dir]
+   (let [file (io/file dir project-file)]
+     (when (.exists file)
+       (extract-deps (slurp file))))))

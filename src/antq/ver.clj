@@ -1,7 +1,23 @@
-(ns antq.ver)
+(ns antq.ver
+  (:require
+   [clojure.string :as str]))
 
-(defmulti get-latest-version :type)
+(def ^:private under-development-keywords
+  #{"alpha" "beta" "rc"})
 
-(defmethod get-latest-version :default
+(defn under-devleopment?
+  [s]
+  (if-let [l (and s (str/lower-case s))]
+    (some? (some #(str/includes? l %) under-development-keywords))
+    false))
+
+(defn snapshot?
+  [s]
+  (if s
+    (str/includes? (str/lower-case s) "snapshot")
+    false))
+
+(defmulti get-sorted-versions :type)
+(defmethod get-sorted-versions :default
   [dep]
   (throw (ex-info "Unknown dependency type" dep)))

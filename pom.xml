@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>antq</groupId>
   <artifactId>antq</artifactId>
-  <version>0.2.2</version>
+  <version>0.3.0</version>
   <name>antq</name>
   <description>Point out your outdated dependencies</description>
   <url>https://github.com/liquidz/antq</url>
@@ -28,6 +28,11 @@
       <groupId>clj-commons</groupId>
       <artifactId>clj-yaml</artifactId>
       <version>0.7.1</version>
+    </dependency>
+    <dependency>
+      <groupId>cheshire</groupId>
+      <artifactId>cheshire</artifactId>
+      <version>5.10.0</version>
     </dependency>
     <dependency>
       <groupId>version-clj</groupId>

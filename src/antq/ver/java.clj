@@ -7,16 +7,17 @@
   {"central" "https://repo1.maven.org/maven2/"
    "clojars" "https://repo.clojars.org/"})
 
-(defn get-latest-version-by-name*
-  [name]
-  (ancient/latest-version-string!
-   name
-   {:repositories default-repos
-    :snapshots? false}))
+(defn get-sorted-versions-by-name*
+  [name opts]
+  (map :version-string
+       (ancient/versions! name opts)))
 
-(def get-latest-version-by-name
-  (memoize get-latest-version-by-name*))
+(def get-sorted-versions-by-name
+  (memoize get-sorted-versions-by-name*))
 
-(defmethod ver/get-latest-version :java
+(defmethod ver/get-sorted-versions :java
   [dep]
-  (-> dep :name get-latest-version-by-name))
+  (get-sorted-versions-by-name
+   (:name dep)
+   {:repositories default-repos
+    :snapshots? (ver/snapshot? (:version dep))}))

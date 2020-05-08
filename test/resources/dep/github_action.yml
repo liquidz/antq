@@ -1,0 +1,9 @@
+name: dummy
+on: [push]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: foo/bar@v1.0.0
+      - name: Bar
+        uses: bar/baz@master

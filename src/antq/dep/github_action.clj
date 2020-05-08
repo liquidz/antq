@@ -29,9 +29,10 @@
         (dec (count (.getAbsolutePath (io/file "."))))))
 
 (defn load-deps
-  []
-  (let [dir (io/file ".github" "workflows")]
-    (when (.isDirectory dir)
-      (->> (file-seq dir)
-           (filter #(.isFile %))
-           (mapcat #(extract-deps (slurp %) (relative-path %)))))))
+  ([] (load-deps "."))
+  ([dir]
+   (let [dir (io/file dir ".github" "workflows")]
+     (when (.isDirectory dir)
+       (->> (file-seq dir)
+            (filter #(.isFile %))
+            (mapcat #(extract-deps (slurp %) (relative-path %))))))))
