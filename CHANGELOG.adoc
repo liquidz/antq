@@ -1,6 +1,19 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+// {{{
+=== Added
+* Skip under-development versions by default.
+** e.g. `alpha`, `beta`, and `RC`
+* Added more tests and codecov badge.
+
+=== Changed
+* Changed github action to fetch latest version from list-tags API.
+** https://developer.github.com/v3/repos/#list-tags
+
+=== Fixed
+* Fixed to detect Leiningen plugin dependencies too.
+// }}}
 
 == 0.2.2 (2020-05-07)
 // {{{
