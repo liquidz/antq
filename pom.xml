@@ -30,6 +30,11 @@
       <version>0.7.1</version>
     </dependency>
     <dependency>
+      <groupId>cheshire</groupId>
+      <artifactId>cheshire</artifactId>
+      <version>5.10.0</version>
+    </dependency>
+    <dependency>
       <groupId>version-clj</groupId>
       <artifactId>version-clj</artifactId>
       <version>0.1.2</version>

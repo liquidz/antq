@@ -3,7 +3,7 @@
    [antq.ver.github-action :as sut]
    [clojure.test :as t]))
 
-(t/deftest releases-atom-test
-  (t/are [expected in] (= expected (sut/releases-atom {:name in}))
-    "https://github.com/foo/bar/releases.atom" "foo/bar"
-    "https://github.com/foo/bar/releases.atom" "foo/bar/baz"))
+(t/deftest tag-api-url-test
+  (t/are [expected in] (= expected (sut/tag-api-url {:name in}))
+    "https://api.github.com/repos/foo/bar/tags" "foo/bar"
+    "https://api.github.com/repos/foo/bar/tags" "foo/bar/baz"))
