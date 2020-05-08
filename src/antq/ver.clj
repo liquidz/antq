@@ -10,6 +10,10 @@
   (let [l (str/lower-case s)]
     (some? (some #(str/includes? l %) under-development-keywords))))
 
+(defn snapshot?
+  [s]
+  (str/includes? (str/lower-case s) "snapshot"))
+
 (defmulti get-sorted-versions :type)
 (defmethod get-sorted-versions :default
   [dep]
