@@ -13,7 +13,7 @@
     (walk/prewalk (fn [form]
                     (cond
                       (keyword? form)
-                      (reset! dep-form? (= :dependencies form))
+                      (reset! dep-form? (#{:dependencies :plugins} form))
 
                       (and @dep-form?
                            (vector? form)
