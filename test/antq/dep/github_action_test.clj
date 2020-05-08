@@ -23,7 +23,8 @@
 (t/deftest load-deps-test
   (let [deps (sut/load-deps)]
     (t/is (every? #(= :github-action (:type %)) deps))
-    (t/is (= #{"./.github/workflows/dependencies.yml"
+    (t/is (= #{"./.github/workflows/coverage.yml"
+               "./.github/workflows/dependencies.yml"
                "./.github/workflows/lint.yml"
                "./.github/workflows/static.yml"
                "./.github/workflows/test.yml"}
