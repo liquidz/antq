@@ -12,21 +12,22 @@
   (format "https://github.com/%s/releases.atom"
           (str/join "/" (take 2 (str/split (:name dep) #"/")))))
 
-(defn get-latest-version-by-url*
+(defn get-sorted-versions-by-url*
   [url]
   (->> url
        slurp
        xml/parse-str
        xml-seq
        (filter (comp #{:entry} :tag))
-       (map #(u.ver/normalize-version (u.xml/get-value (:content %) :title)))
+       (map #(u.xml/get-attribute (:content %) :link :href))
+       (map #(u.ver/normalize-version (last (str/split % #"/"))))
        (filter u.ver/sem-ver?)
        (sort version/version-compare)
-       last))
+       reverse))
 
-(def get-latest-version-by-url
-  (memoize get-latest-version-by-url*))
+(def get-sorted-versions-by-url
+  (memoize get-sorted-versions-by-url*))
 
-(defmethod ver/get-latest-version :github-action
+(defmethod ver/get-sorted-versions :github-action
   [dep]
-  (-> dep releases-atom get-latest-version-by-url))
+  (-> dep releases-atom get-sorted-versions-by-url))
