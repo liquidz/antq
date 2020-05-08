@@ -44,21 +44,25 @@
   [dep]
   (let [vers (cond->> (:_versions dep)
                (not (ver/under-devleopment? (:version dep)))
-               (drop-while ver/under-devleopment?))]
-    (->> vers
-         first
-         (assoc dep :latest-version))))
+               (drop-while ver/under-devleopment?))
+        latest-version (first vers)]
+    (assoc dep :latest-version latest-version)))
+
+(defn- dissoc-no-longer-used-keys
+  [dep]
+  (dissoc dep :_versions))
 
 (defn outdated-deps
   [deps]
   (->> deps
-       (remove skip-artifacts?)
-       (remove using-release-version?)
+       (remove #(or (skip-artifacts? %)
+                    (using-release-version? %)))
        (pmap assoc-versions)
-       (map assoc-latest-version)
+       (map (comp dissoc-no-longer-used-keys
+                  assoc-latest-version))
        (remove latest?)))
 
-(defn- compare-deps
+(defn compare-deps
   [x y]
   (let [prj (.compareTo (:file x) (:file y))]
     (if (zero? prj)
