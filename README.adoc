@@ -5,6 +5,8 @@ Point out your outdated dependencies.
 image:https://github.com/liquidz/antq/workflows/test/badge.svg["GitHub Actions for test workflow", link="https://github.com/liquidz/antq/actions?query=workflow%3Atest"]
 image:https://github.com/liquidz/antq/workflows/lint/badge.svg["GitHub Actions for lint workflow", link="https://github.com/liquidz/antq/actions?query=workflow%3Alint"]
 image:https://github.com/liquidz/antq/workflows/dependencies/badge.svg["GitHub Actions for dependencies workflow", link="https://github.com/liquidz/antq/actions?query=workflow%3Adependencies"]
+image:https://codecov.io/gh/liquidz/antq/branch/master/graph/badge.svg["codecov", link="https://codecov.io/gh/liquidz/antq"]
+
 image:https://img.shields.io/clojars/v/antq.svg["Clojars Project", link="https://clojars.org/antq"]
 image:https://img.shields.io/badge/docker-automated-blue["Docker Hub", link="https://hub.docker.com/repository/docker/uochan/antq"]
 
