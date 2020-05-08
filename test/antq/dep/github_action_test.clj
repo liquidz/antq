@@ -19,3 +19,12 @@
     (t/is (= #{(dependency {:name "foo/bar" :version "1.0.0"})
                (dependency {:name "bar/baz" :version "master"})}
              (set deps)))))
+
+(t/deftest load-deps-test
+  (let [deps (sut/load-deps)]
+    (t/is (every? #(= :github-action (:type %)) deps))
+    (t/is (= #{"./.github/workflows/dependencies.yml"
+               "./.github/workflows/lint.yml"
+               "./.github/workflows/static.yml"
+               "./.github/workflows/test.yml"}
+             (set (map :file deps))))))
