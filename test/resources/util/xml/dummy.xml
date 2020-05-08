@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xml:lang="en-US">
+  <title>foo</title>
+  <entry>
+    <id>tag:github.com,2008:Repository/928777/1.0.0</id>
+    <link rel="alternate" type="text/html" href="https://github.com/foo/bar/releases/tag/1.0.0"/>
+    <title>Foo 1.0.0</title>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Repository/928777/0.9.0</id>
+    <link rel="alternate" type="text/html" href="https://github.com/foo/bar/releases/tag/0.9.0"/>
+    <title>Foo 0.9.0</title>
+  </entry>
+</feed>
