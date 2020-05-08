@@ -7,12 +7,15 @@
 
 (defn under-devleopment?
   [s]
-  (let [l (str/lower-case s)]
-    (some? (some #(str/includes? l %) under-development-keywords))))
+  (if-let [l (and s (str/lower-case s))]
+    (some? (some #(str/includes? l %) under-development-keywords))
+    false))
 
 (defn snapshot?
   [s]
-  (str/includes? (str/lower-case s) "snapshot"))
+  (if s
+    (str/includes? (str/lower-case s) "snapshot")
+    false))
 
 (defmulti get-sorted-versions :type)
 (defmethod get-sorted-versions :default
