@@ -1,8 +1,8 @@
 (ns antq.util.xml-test
   (:require
    [antq.util.xml :as sut]
-   [clojure.java.io :as io]
    [clojure.data.xml :as xml]
+   [clojure.java.io :as io]
    [clojure.test :as t]))
 
 (def ^:private test-xml
