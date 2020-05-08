@@ -8,14 +8,16 @@
    "clojars" "https://repo.clojars.org/"})
 
 (defn get-sorted-versions-by-name*
-  [name]
+  [name opts]
   (map :version-string
-       (ancient/versions! name {:repositories default-repos
-                                :snapshots? false})))
+       (ancient/versions! name opts)))
+
 (def get-sorted-versions-by-name
   (memoize get-sorted-versions-by-name*))
 
 (defmethod ver/get-sorted-versions :java
   [dep]
-  (-> dep :name get-sorted-versions-by-name))
-
+  (get-sorted-versions-by-name
+   (:name dep)
+   {:repositories default-repos
+    :snapshots? (ver/snapshot? (:version dep))}))
