@@ -31,5 +31,8 @@ deploy: clean target/antq.jar
 docker:
 	docker build -t uochan/antq .
 
+coverage:
+	clojure -A:dev:coverage --src-ns-path=src --test-ns-path=test --codecov
+
 clean:
 	rm -rf target
