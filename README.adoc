@@ -8,7 +8,7 @@ image:https://github.com/liquidz/antq/workflows/dependencies/badge.svg["GitHub A
 image:https://codecov.io/gh/liquidz/antq/branch/master/graph/badge.svg["codecov", link="https://codecov.io/gh/liquidz/antq"]
 
 image:https://img.shields.io/clojars/v/antq.svg["Clojars Project", link="https://clojars.org/antq"]
-image:https://img.shields.io/badge/docker-automated-blue["Docker Hub", link="https://hub.docker.com/repository/docker/uochan/antq"]
+image:https://img.shields.io/badge/docker-automated-blue["Docker Hub", link="https://hub.docker.com/r/uochan/antq"]
 
 == Supported files
 
