@@ -1,5 +1,8 @@
 name: dependencies
-on: [push]
+on:
+  push:
+  schedule:
+    - cron: '0 21 * * *'
 jobs:
   antq:
     runs-on: ubuntu-latest
