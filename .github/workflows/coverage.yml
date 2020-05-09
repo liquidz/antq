@@ -6,14 +6,14 @@ jobs:
     # container:
     #   image: clojure:openjdk-14-tools-deps
     steps:
-      - uses: actions/checkout@v2.1.0
+      - uses: actions/checkout@v2
       - name: Install clojure
         run: |
           curl -O https://download.clojure.org/install/linux-install-1.10.1.536.sh
           chmod +x linux-install-1.10.1.536.sh
           sudo ./linux-install-1.10.1.536.sh
       - name: Cache m2
-        uses: actions/cache@v1.1.2
+        uses: actions/cache@v1
         with:
           path: /root/.m2
           key: root-m2-${{ hashFiles('deps.edn') }}
