@@ -10,8 +10,7 @@
    [antq.ver :as ver]
    [antq.ver.github-action]
    [antq.ver.java]
-   [clojure.pprint :as pprint]
-   [version-clj.core :as version]))
+   [clojure.pprint :as pprint]))
 
 (def default-skip-artifacts
   #{"org.clojure/clojure"})
