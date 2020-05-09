@@ -25,17 +25,6 @@
     false "1.0.0"
     false ""))
 
-(t/deftest latest?-test
-  (t/are [expected version latest-version]
-         (= expected (sut/latest?
-                      (r/map->Dependency {:version version :latest-version latest-version})))
-    true "1.0.0" "1.0.0"
-    false "1.0.0" "2.0.0"
-    false "2.0.0" "1.0.0"
-    nil "1.0.0" nil
-    nil nil "2.0.0"
-    nil nil nil))
-
 (defn- test-dep
   [m]
   (r/map->Dependency (merge {:type :test} m)))

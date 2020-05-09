@@ -28,14 +28,6 @@
   [dep]
   (contains? #{"RELEASE" "master"} (:version dep)))
 
-(defn latest?
-  [dep]
-  (and (:version dep)
-       (:latest-version dep)
-       (zero?  (version/version-compare
-                (:version dep)
-                (:latest-version dep)))))
-
 (defn- assoc-versions
   [dep]
   (assoc dep :_versions (ver/get-sorted-versions dep)))
@@ -60,7 +52,7 @@
        (pmap assoc-versions)
        (map (comp dissoc-no-longer-used-keys
                   assoc-latest-version))
-       (remove latest?)))
+       (remove ver/latest?)))
 
 (defn compare-deps
   [x y]
