@@ -1,6 +1,7 @@
 (ns antq.ver
   (:require
-   [clojure.string :as str]))
+   [clojure.string :as str]
+   [version-clj.core :as version]))
 
 (def ^:private under-development-keywords
   #{"alpha" "beta" "rc"})
@@ -21,3 +22,12 @@
 (defmethod get-sorted-versions :default
   [dep]
   (throw (ex-info "Unknown dependency type" dep)))
+
+(defmulti latest? :type)
+(defmethod latest? :default
+  [dep]
+  (and (:version dep)
+       (:latest-version dep)
+       (<= 0  (version/version-compare
+               (:version dep)
+               (:latest-version dep)))))

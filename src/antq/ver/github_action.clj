@@ -27,3 +27,19 @@
 (defmethod ver/get-sorted-versions :github-action
   [dep]
   (-> dep tag-api-url get-sorted-versions-by-url))
+
+(defn- nth-newer?
+  [current-ver-seq latest-ver-seq index]
+  (>= (nth (first current-ver-seq) index)
+      (nth (first latest-ver-seq) index)))
+
+(defmethod ver/latest? :github-action
+  [dep]
+  (let [current (some-> dep :version version/version->seq)
+        latest (some-> dep :latest-version version/version->seq)]
+    (when (and current latest)
+      (case (count (first current))
+        1 (nth-newer? current latest 0)
+        2 (and (nth-newer? current latest 0)
+               (nth-newer? current latest 1))
+        (<= 0 (version/version-seq-compare current latest))))))

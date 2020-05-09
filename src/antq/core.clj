@@ -10,8 +10,7 @@
    [antq.ver :as ver]
    [antq.ver.github-action]
    [antq.ver.java]
-   [clojure.pprint :as pprint]
-   [version-clj.core :as version]))
+   [clojure.pprint :as pprint]))
 
 (def default-skip-artifacts
   #{"org.clojure/clojure"})
@@ -27,14 +26,6 @@
 (defn using-release-version?
   [dep]
   (contains? #{"RELEASE" "master"} (:version dep)))
-
-(defn latest?
-  [dep]
-  (and (:version dep)
-       (:latest-version dep)
-       (zero?  (version/version-compare
-                (:version dep)
-                (:latest-version dep)))))
 
 (defn- assoc-versions
   [dep]
@@ -60,7 +51,7 @@
        (pmap assoc-versions)
        (map (comp dissoc-no-longer-used-keys
                   assoc-latest-version))
-       (remove latest?)))
+       (remove ver/latest?)))
 
 (defn compare-deps
   [x y]

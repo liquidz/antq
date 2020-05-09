@@ -2,6 +2,14 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 
+== 0.3.1 (2020-05-10)
+// {{{
+=== Fixed
+* Fixed to handle that a major version is the latest of that major version for GitHub Actions.
+** c.f. https://github.com/actions/toolkit/blob/master/docs/action-versioning.md#compatibility
+** e.g. `"v1"` means the latest version which matches `"1.*"`.
+// }}}
+
 == 0.3.0 (2020-05-09)
 // {{{
 === Added
