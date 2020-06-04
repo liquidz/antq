@@ -10,7 +10,11 @@
    [antq.ver :as ver]
    [antq.ver.github-action]
    [antq.ver.java]
-   [clojure.pprint :as pprint]))
+   [clojure.pprint :as pprint]
+   [clojure.tools.cli :as cli]))
+
+(def cli-options
+  [[nil "--exclude=EXCLUDE" :default [] :assoc-fn #(update %1 %2 conj %3)]])
 
 (def default-skip-artifacts
   #{"org.clojure/clojure"})
@@ -20,8 +24,9 @@
    "clojars" "https://repo.clojars.org/"})
 
 (defn skip-artifacts?
-  [dep]
-  (contains? default-skip-artifacts (:name dep)))
+  [dep options]
+  (let [skip-artifacts (apply conj default-skip-artifacts (:exclude options []))]
+    (contains? skip-artifacts (:name dep))))
 
 (defn using-release-version?
   [dep]
@@ -44,9 +49,9 @@
   (dissoc dep :_versions))
 
 (defn outdated-deps
-  [deps]
+  [deps options]
   (->> deps
-       (remove #(or (skip-artifacts? %)
+       (remove #(or (skip-artifacts? % options)
                     (using-release-version? %)))
        (pmap assoc-versions)
        (map (comp dissoc-no-longer-used-keys
@@ -96,11 +101,12 @@
           (dep.lein/load-deps)))
 
 (defn -main
-  []
-  (let [deps (fetch-deps)]
+  [& args]
+  (let [{:keys [options]} (cli/parse-opts args cli-options)
+        deps (fetch-deps)]
     (if (seq deps)
       (-> deps
-          outdated-deps
+          (outdated-deps options)
           print-deps
           exit)
       (do (println "No project file")
