@@ -14,7 +14,8 @@
    [clojure.tools.cli :as cli]))
 
 (def cli-options
-  [[nil "--exclude=EXCLUDE" :default [] :assoc-fn #(update %1 %2 conj %3)]])
+  [[nil "--exclude=EXCLUDE" :default [] :assoc-fn #(update %1 %2 conj %3)]
+   [nil "--error-format=ERROR_FORMAT" :default nil]])
 
 (def default-skip-artifacts
   #{"org.clojure/clojure"})

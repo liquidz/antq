@@ -2,6 +2,7 @@
   (:require
    [antq.format :as sut]
    [antq.record :as r]
+   [clojure.string :as str]
    [clojure.test :as t]))
 
 (defn- test-dep
@@ -48,4 +49,16 @@
 (t/deftest print-deps-test
   (let [dummy-deps [(test-dep {:file "a" :name "foo" :version "1" :latest-version "2"})
                     (test-dep {:file "b" :name "bar" :version "1" :latest-version nil})]]
-    (t/is (seq (with-out-str (sut/print-deps dummy-deps {}))))))
+    (t/is (seq (with-out-str (sut/print-deps
+                              dummy-deps {}))))
+
+    (t/is (seq (with-out-str (sut/print-deps
+                              dummy-deps
+                              {:error-format "::error file={{file}}::{{message}}"}))))
+
+    (t/is (= ["::error file=a::foo,1,2" "::error file=b::bar,1,"]
+             (str/split-lines
+              (with-out-str
+                (sut/print-deps
+                 dummy-deps
+                 {:error-format "::error file={{file}}::{{name}},{{version}},{{latest-version}}"})))))))

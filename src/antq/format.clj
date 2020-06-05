@@ -1,6 +1,13 @@
 (ns antq.format
   (:require
-   [clojure.pprint :as pprint]))
+   [clojure.pprint :as pprint]
+   [clojure.string :as str]))
+
+(def ^:private default-outdated-message-format
+  "{{name}} {{version}} is outdated. Latest version is {{latest-version}}.")
+
+(def ^:private default-failed-message-format
+  "Failed to fetch the latest version of {{name}} {{version}}.")
 
 (defn compare-deps
   [x y]
@@ -30,6 +37,27 @@
          (pprint/print-table [:file :name :version :latest-version]))
     (println "All dependencies are up-to-date.")))
 
+(defn apply-format-string
+  [dep format-string]
+  (reduce-kv (fn [s k v]
+               (str/replace s (str "{{" (name k)"}}") (or v "")))
+             format-string
+             (select-keys dep [:file :name :version :latest-version :message])))
+
+(defn print-by-error-format
+  [deps format-string]
+  (when (seq deps)
+    (doseq [s (->> deps
+                   (sort compare-deps)
+                   (map #(assoc % :message
+                                (if (:latest-version %)
+                                  (apply-format-string % default-outdated-message-format)
+                                  (apply-format-string % default-failed-message-format))))
+                   (map #(apply-format-string % format-string)))]
+      (println s))))
+
 (defn print-deps
   [deps options]
-  (print-default-table deps))
+  (if-let [fmt (:error-format options)]
+    (print-by-error-format deps fmt)
+    (print-default-table deps)))
