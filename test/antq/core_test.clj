@@ -10,12 +10,23 @@
   ["3.0.0" "2.0.0" "1.0.0"])
 
 (t/deftest skip-artifacts?-test
-  (t/are [expected in] (= expected (sut/skip-artifacts? (r/map->Dependency {:name in})))
-    true "org.clojure/clojure"
-    false "org.clojure/foo"
-    false "foo/clojure"
-    false "foo"
-    false "foo/bar"))
+  (t/testing "default"
+    (t/are [expected in] (= expected (sut/skip-artifacts? (r/map->Dependency {:name in})
+                                                          {}))
+      true "org.clojure/clojure"
+      false "org.clojure/foo"
+      false "foo/clojure"
+      false "foo"
+      false "foo/bar"))
+
+  (t/testing "custom"
+    (t/are [expected in] (= expected (sut/skip-artifacts? (r/map->Dependency {:name in})
+                                                          {:exclude ["org.clojure/foo" "foo"]}))
+      true "org.clojure/clojure"
+      true "org.clojure/foo"
+      false "foo/clojure"
+      true "foo"
+      false "foo/bar")))
 
 (t/deftest using-release-version?-test
   (t/are [expected in] (= expected (sut/using-release-version?
@@ -35,7 +46,8 @@
            (sut/outdated-deps [(test-dep {:name "alice" :version "1.0.0"})
                                (test-dep {:name "bob" :version "2.0.0"})
                                (test-dep {:name "charlie" :version "3.0.0"})
-                               (test-dep {:name (first sut/default-skip-artifacts) :version "1.0.0"})]))))
+                               (test-dep {:name (first sut/default-skip-artifacts) :version "1.0.0"})]
+                              {}))))
 
 (t/deftest skip-duplicated-file-name-test
   (t/is (= [{:file "foo"} {:file "bar"} {:file "baz"}]
