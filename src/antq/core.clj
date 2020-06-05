@@ -59,8 +59,6 @@
                   assoc-latest-version))
        (remove ver/latest?)))
 
-
-
 (defn exit
   [outdated-deps]
   (System/exit (if (seq outdated-deps) 1 0)))

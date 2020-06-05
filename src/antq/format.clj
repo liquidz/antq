@@ -40,7 +40,7 @@
 (defn apply-format-string
   [dep format-string]
   (reduce-kv (fn [s k v]
-               (str/replace s (str "{{" (name k)"}}") (or v "")))
+               (str/replace s (str "{{" (name k) "}}") (or v "")))
              format-string
              (select-keys dep [:file :name :version :latest-version :message])))
 
