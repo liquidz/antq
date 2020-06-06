@@ -49,15 +49,37 @@
   [dep]
   (dissoc dep :_versions))
 
+(defn distinct-deps
+  [deps]
+  (->> deps
+       (map #(select-keys % [:type :name :version]))
+       (map #(if (ver/snapshot? (:version %))
+               %
+               (dissoc % :version)))
+       distinct))
+
+(defn complete-versions-by
+  [dep deps-with-vers]
+  (if-let [dep-with-vers (some #(and (= (:type dep) (:type %))
+                                     (= (:name dep) (:name %))
+                                     %)
+                               deps-with-vers)]
+    (assoc dep :_versions (:_versions dep-with-vers))
+    dep))
+
 (defn outdated-deps
   [deps options]
-  (->> deps
-       (remove #(or (skip-artifacts? % options)
-                    (using-release-version? %)))
-       (pmap assoc-versions)
-       (map (comp dissoc-no-longer-used-keys
-                  assoc-latest-version))
-       (remove ver/latest?)))
+  (let [org-deps (remove #(or (skip-artifacts? % options)
+                              (using-release-version? %))
+                         deps)
+        uniq-deps-with-vers (->> org-deps
+                                 distinct-deps
+                                 (pmap assoc-versions))]
+    (->> org-deps
+         (pmap #(complete-versions-by % uniq-deps-with-vers))
+         (map (comp dissoc-no-longer-used-keys
+                    assoc-latest-version))
+         (remove ver/latest?))))
 
 (defn exit
   [outdated-deps]
