@@ -7,3 +7,4 @@ jobs:
       - uses: foo/bar@v1.0.0
       - name: Bar
         uses: bar/baz@master
+      - uses: ./

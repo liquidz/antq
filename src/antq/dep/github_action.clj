@@ -17,7 +17,8 @@
                     form)
                   (yaml/parse-string workflow-content-str))
     (for [d @deps
-          :let [[name version] (str/split d #"@" 2)]]
+          :let [[name version] (str/split d #"@" 2)]
+          :when (seq version)]
       (r/map->Dependency {:type :github-action
                           :file filename
                           :name name
