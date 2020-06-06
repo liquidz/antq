@@ -13,13 +13,17 @@
 
 (defn get-sorted-versions-by-url*
   [url]
-  (-> url
-      slurp
-      (json/parse-string true)
-      (->> (map (comp u.ver/normalize-version :name))
-           (filter u.ver/sem-ver?)
-           (sort version/version-compare)
-           reverse)))
+  (try
+    (-> url
+        slurp
+        (json/parse-string true)
+        (->> (map (comp u.ver/normalize-version :name))
+             (filter u.ver/sem-ver?)
+             (sort version/version-compare)
+             reverse))
+    (catch Exception ex
+      (.println *err* (str "Failed to fetch versions from GitHub: " (.getMessage ex)))
+      [])))
 
 (def get-sorted-versions-by-url
   (memoize get-sorted-versions-by-url*))
@@ -30,8 +34,10 @@
 
 (defn- nth-newer?
   [current-ver-seq latest-ver-seq index]
-  (>= (nth (first current-ver-seq) index)
-      (nth (first latest-ver-seq) index)))
+  (let [current (nth (first current-ver-seq) index nil)
+        latest (nth (first latest-ver-seq) index nil)]
+    (and current latest
+         (>= current latest))))
 
 (defmethod ver/latest? :github-action
   [dep]

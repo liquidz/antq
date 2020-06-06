@@ -1,9 +1,18 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+
+== 0.4.0 (2020-06-07)
 // {{{
+=== Added
+* https://github.com/liquidz/antq/issues/6[#6]: Added `--error-format` option for customizing error output.
+* https://github.com/liquidz/antq/issues/7[#7]: Added `--exclude` option.
+
 === Changed
 * Bump kaocha
+
+=== Fixed
+* https://github.com/liquidz/antq/issues/8[#8]: Fixed not to check duplicated dependencies.
 // }}}
 
 == 0.3.1 (2020-05-10)

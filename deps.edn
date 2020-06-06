@@ -2,6 +2,7 @@
  :paths ["src"]
  :deps
  {org.clojure/clojure {:mvn/version "1.10.1"}
+  org.clojure/tools.cli {:mvn/version "1.0.194"}
   ancient-clj {:mvn/version "0.6.15"}
   cheshire {:mvn/version "5.10.0"}
   clj-commons/clj-yaml {:mvn/version "0.7.1"}

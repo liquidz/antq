@@ -54,6 +54,7 @@ Antq can work with https://github.com/features/actions[GitHub Actions].
 See antq's workflow for concrete example.
 
 * https://github.com/liquidz/antq/blob/master/.github/workflows/dependencies.yml[.github/workflows/dependencies.yml]
+* To show errors as annotations, please set this option: `--error-format="::error file={{file}}::{{message}}"`
 
 == License
 

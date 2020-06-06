@@ -7,10 +7,15 @@
    [antq.dep.leiningen :as dep.lein]
    [antq.dep.pom :as dep.pom]
    [antq.dep.shadow :as dep.shadow]
+   [antq.format :as fmt]
    [antq.ver :as ver]
    [antq.ver.github-action]
    [antq.ver.java]
-   [clojure.pprint :as pprint]))
+   [clojure.tools.cli :as cli]))
+
+(def cli-options
+  [[nil "--exclude=EXCLUDE" :default [] :assoc-fn #(update %1 %2 conj %3)]
+   [nil "--error-format=ERROR_FORMAT" :default nil]])
 
 (def default-skip-artifacts
   #{"org.clojure/clojure"})
@@ -20,8 +25,9 @@
    "clojars" "https://repo.clojars.org/"})
 
 (defn skip-artifacts?
-  [dep]
-  (contains? default-skip-artifacts (:name dep)))
+  [dep options]
+  (let [skip-artifacts (apply conj default-skip-artifacts (:exclude options []))]
+    (contains? skip-artifacts (:name dep))))
 
 (defn using-release-version?
   [dep]
@@ -43,44 +49,37 @@
   [dep]
   (dissoc dep :_versions))
 
-(defn outdated-deps
+(defn distinct-deps
   [deps]
   (->> deps
-       (remove #(or (skip-artifacts? %)
-                    (using-release-version? %)))
-       (pmap assoc-versions)
-       (map (comp dissoc-no-longer-used-keys
-                  assoc-latest-version))
-       (remove ver/latest?)))
+       (map #(select-keys % [:type :name :version]))
+       (map #(if (ver/snapshot? (:version %))
+               %
+               (dissoc % :version)))
+       distinct))
 
-(defn compare-deps
-  [x y]
-  (let [prj (.compareTo (:file x) (:file y))]
-    (if (zero? prj)
-      (.compareTo (:name x) (:name y))
-      prj)))
+(defn complete-versions-by
+  [dep deps-with-vers]
+  (if-let [dep-with-vers (some #(and (= (:type dep) (:type %))
+                                     (= (:name dep) (:name %))
+                                     %)
+                               deps-with-vers)]
+    (assoc dep :_versions (:_versions dep-with-vers))
+    dep))
 
-(defn skip-duplicated-file-name
-  [sorted-deps]
-  (loop [[dep & rest-deps] sorted-deps
-         last-file nil
-         result []]
-    (if-not dep
-      result
-      (if (= last-file (:file dep))
-        (recur rest-deps last-file (conj result (assoc dep :file "")))
-        (recur rest-deps (:file dep) (conj result dep))))))
-
-(defn print-deps
-  [deps]
-  (if (seq deps)
-    (->> deps
-         (sort compare-deps)
-         skip-duplicated-file-name
-         (map #(update % :latest-version (fnil identity "Failed to fetch")))
-         (pprint/print-table [:file :name :version :latest-version]))
-    (println "All dependencies are up-to-date."))
-  deps)
+(defn outdated-deps
+  [deps options]
+  (let [org-deps (remove #(or (skip-artifacts? % options)
+                              (using-release-version? %))
+                         deps)
+        uniq-deps-with-vers (->> org-deps
+                                 distinct-deps
+                                 (pmap assoc-versions))]
+    (->> org-deps
+         (pmap #(complete-versions-by % uniq-deps-with-vers))
+         (map (comp dissoc-no-longer-used-keys
+                    assoc-latest-version))
+         (remove ver/latest?))))
 
 (defn exit
   [outdated-deps]
@@ -96,12 +95,13 @@
           (dep.lein/load-deps)))
 
 (defn -main
-  []
-  (let [deps (fetch-deps)]
+  [& args]
+  (let [{:keys [options]} (cli/parse-opts args cli-options)
+        deps (fetch-deps)]
     (if (seq deps)
       (-> deps
-          outdated-deps
-          print-deps
+          (outdated-deps options)
+          (fmt/print-deps options)
           exit)
       (do (println "No project file")
           (System/exit 1)))))
