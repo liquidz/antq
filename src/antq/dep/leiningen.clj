@@ -24,7 +24,9 @@
     (for [[dep-name version] @deps]
       (r/map->Dependency {:type :java
                           :file project-file
-                          :name  (str dep-name)
+                          :name  (if (qualified-symbol? dep-name)
+                                   (str dep-name)
+                                   (str dep-name "/" dep-name))
                           :version version}))))
 
 (defn load-deps
