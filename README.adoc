@@ -56,6 +56,39 @@ See antq's workflow for concrete example.
 * https://github.com/liquidz/antq/blob/master/.github/workflows/dependencies.yml[.github/workflows/dependencies.yml]
 * To show errors as annotations, please set this option: `--error-format="::error file={{file}}::{{message}}"`
 
+== Options
+=== --exclude=ARTIFACT_NAME
+Skip version cheking for specified artifacts.
+E.g. `--exclude=antq/antq`
+
+NOTE: You must specify `groupId/artifactId` for Java dependencies.
+
+=== --error-format=ERROR_FORMAT
+Customize outputs for outdated dependencies.
+E.g.  `--error-format="::error file={{file}}::{{message}}"`
+
+You can use following variables:
+
+|===
+| Variable Name | Description
+
+| `{{file}}`
+| A filename containing outdated dependencies.
+
+| `{{name}}`
+| The artifact name.
+
+| `{{version}}`
+| The current version.
+
+| `{{latest-version}}`
+| The latest version.
+
+| `{{message}}`
+| Default error message.
+
+|===
+
 == License
 
 Copyright © 2020 https://twitter.com/uochan[Masashi Iizuka]
