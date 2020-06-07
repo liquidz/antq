@@ -60,4 +60,5 @@
   [deps options]
   (if-let [fmt (:error-format options)]
     (print-by-error-format deps fmt)
-    (print-default-table deps)))
+    (print-default-table deps))
+  deps)
