@@ -4,7 +4,9 @@
    [antq.ver :as ver]
    [cheshire.core :as json]
    [clojure.string :as str]
-   [version-clj.core :as version]))
+   [version-clj.core :as version])
+  (:import
+   java.io.PrintWriter))
 
 (defn tag-api-url
   [dep]
@@ -22,7 +24,7 @@
              (sort version/version-compare)
              reverse))
     (catch Exception ex
-      (.println *err* (str "Failed to fetch versions from GitHub: " (.getMessage ex)))
+      (.println ^PrintWriter *err* (str "Failed to fetch versions from GitHub: " (.getMessage ex)))
       [])))
 
 (def get-sorted-versions-by-url

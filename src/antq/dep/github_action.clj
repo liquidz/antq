@@ -5,7 +5,9 @@
    [clj-yaml.core :as yaml]
    [clojure.java.io :as io]
    [clojure.string :as str]
-   [clojure.walk :as walk]))
+   [clojure.walk :as walk])
+  (:import
+   java.io.File))
 
 (defn extract-deps
   [workflow-content-str filename]
@@ -25,7 +27,7 @@
                           :version (u.ver/normalize-version version)}))))
 
 (defn relative-path
-  [file]
+  [^File file]
   (subs (.getAbsolutePath file)
         (dec (count (.getAbsolutePath (io/file "."))))))
 
@@ -35,5 +37,5 @@
    (let [dir (io/file dir ".github" "workflows")]
      (when (.isDirectory dir)
        (->> (file-seq dir)
-            (filter #(.isFile %))
+            (filter #(.isFile ^File %))
             (mapcat #(extract-deps (slurp %) (relative-path %))))))))
