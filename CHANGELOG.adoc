@@ -1,6 +1,12 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+== 0.4.3 (2020-07-08)
+// {{{
+=== Fixed
+* Fixed reflection warnings.
+// }}}
+
 == 0.4.2 (2020-06-07)
 // {{{
 === Fixed
