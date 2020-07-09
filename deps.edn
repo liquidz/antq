@@ -12,7 +12,7 @@
  {:dev
   {:extra-paths ["test"
                  "test/resources"]
-   :extra-deps {lambdaisland/kaocha {:mvn/version "1.0.632"}}}
+   :extra-deps {lambdaisland/kaocha {:mvn/version "1.0.641"}}}
 
   :test
   {:main-opts ["-m" "kaocha.runner"]}
