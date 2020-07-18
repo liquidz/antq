@@ -13,8 +13,8 @@
   (->> pom-xml-content-str
        xml/parse-str
        xml-seq
-       (filter (comp #{:dependency} :tag))
-       (map #(u.xml/get-values (:content %) [:groupId :artifactId :version]))
+       (u.xml/get-tags :dependency)
+       (map #(u.xml/get-values [:groupId :artifactId :version] (:content %)))
        (map (fn [[group-id artifact-id version]]
               (r/map->Dependency {:type :java
                                   :file project-file
