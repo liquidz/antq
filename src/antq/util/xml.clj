@@ -1,13 +1,15 @@
 (ns antq.util.xml)
 
-(defn xml-ns [content]
+(defn xml-ns
+  [content]
   (-> (if (sequential? content)
         (first (filter map? content))
         content)
       :tag
       namespace))
 
-(defn get-tags [tag content]
+(defn get-tags
+  [tag content]
   (let [xns (xml-ns content)]
     (->> content
          (filter (comp #{(keyword xns (name tag))} :tag)))))
