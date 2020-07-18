@@ -22,4 +22,10 @@
       <version>3.0.0</version>
     </dependency>
   </dependencies>
+  <repositories>
+    <repository>
+      <id>antq-test</id>
+      <url>s3://antq-repo/</url>
+    </repository>
+  </repositories>
 </project>
