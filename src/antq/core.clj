@@ -52,7 +52,7 @@
 (defn distinct-deps
   [deps]
   (->> deps
-       (map #(select-keys % [:type :name :version]))
+       (map #(select-keys % [:type :name :version :repositories]))
        (map #(if (ver/snapshot? (:version %))
                %
                (dissoc % :version)))

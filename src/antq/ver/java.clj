@@ -46,5 +46,5 @@
   [dep]
   (get-sorted-versions-by-name
    (:name dep)
-   {:repositories default-repos
+   {:repositories (merge default-repos (:repositories dep))
     :snapshots? (ver/snapshot? (:version dep))}))
