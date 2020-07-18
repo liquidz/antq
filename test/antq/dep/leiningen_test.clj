@@ -7,7 +7,10 @@
 
 (defn- dependency
   [m]
-  (r/map->Dependency (merge {:type :java :file "project.clj"} m)))
+  (r/map->Dependency (merge {:type :java
+                             :file "project.clj"
+                             :repositories {"antq-test" {:url "s3://antq-repo/"}}}
+                            m)))
 
 (t/deftest extract-deps-test
   (let [deps (sut/extract-deps

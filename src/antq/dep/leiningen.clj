@@ -9,25 +9,35 @@
 (defn extract-deps
   [project-clj-content-str]
   (let [dep-form? (atom false)
-        deps (atom [])]
+        repos-form? (atom false)
+        deps (atom [])
+        repos (atom [])]
     (walk/prewalk (fn [form]
                     (cond
                       (keyword? form)
-                      (reset! dep-form? (#{:dependencies :plugins} form))
+                      (do (reset! dep-form? (#{:dependencies :plugins} form))
+                          (reset! repos-form? (= :repositories form)))
 
                       (and @dep-form?
                            (vector? form)
                            (vector? (first form)))
-                      (swap! deps concat form))
+                      (swap! deps concat form)
+
+                      (and @repos-form?
+                           (vector? form)
+                           (vector? (first form)))
+                      (swap! repos concat form))
                     form)
                   (read-string (str "(list " project-clj-content-str " )")))
-    (for [[dep-name version] @deps]
-      (r/map->Dependency {:type :java
-                          :file project-file
-                          :name  (if (qualified-symbol? dep-name)
-                                   (str dep-name)
-                                   (str dep-name "/" dep-name))
-                          :version version}))))
+    (let [repositories (into {} @repos)]
+      (for [[dep-name version] @deps]
+        (r/map->Dependency {:type :java
+                            :file project-file
+                            :name  (if (qualified-symbol? dep-name)
+                                     (str dep-name)
+                                     (str dep-name "/" dep-name))
+                            :version version
+                            :repositories repositories})))))
 
 (defn load-deps
   ([] (load-deps "."))
