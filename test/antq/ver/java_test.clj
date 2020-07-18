@@ -3,7 +3,18 @@
    [antq.record :as r]
    [antq.ver :as ver]
    [antq.ver.java :as sut]
+   [clojure.edn :as edn]
    [clojure.test :as t]))
+
+(def ^:private current-clojure-version
+  (get-in (edn/read-string (slurp "deps.edn"))
+          [:deps 'org.clojure/clojure :mvn/version]))
+
+(t/deftest get-versions-test
+  (let [vers (sut/get-versions 'org.clojure/clojure
+                               {:repositories sut/default-repos})]
+    (t/is (seq vers))
+    (t/is (contains? (set (map str vers)) current-clojure-version))))
 
 (defn- dummy-versions
   [_ opts]
