@@ -25,9 +25,9 @@
       <version>1.0.194</version>
     </dependency>
     <dependency>
-      <groupId>ancient-clj</groupId>
-      <artifactId>ancient-clj</artifactId>
-      <version>0.6.15</version>
+      <groupId>org.clojure</groupId>
+      <artifactId>tools.deps.alpha</artifactId>
+      <version>0.8.709</version>
     </dependency>
     <dependency>
       <groupId>clj-commons</groupId>
