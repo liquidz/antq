@@ -5,4 +5,7 @@
                   [bar "2.0.0"]
                   [baz "3.0.0" :scope "test"]])
 
+(set-env!
+  :repositories #(conj % '["antq-test" {:url "s3://antq-repo/"}]))
+
 (def bar ::bar)

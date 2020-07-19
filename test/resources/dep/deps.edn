@@ -4,4 +4,6 @@
 
  :aliases
  {:foo {:extra-deps {baz {:mvn/version "3.0.0"}}}}
+
+ :mvn/repos {"antq-test" {:url "s3://antq-repo/"}}
 }
