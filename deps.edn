@@ -6,6 +6,7 @@
   org.clojure/tools.deps.alpha {:mvn/version "0.8.709"}
   cheshire {:mvn/version "5.10.0"}
   clj-commons/clj-yaml {:mvn/version "0.7.1"}
+  spootnik/unilog {:mvn/version "0.7.25"}
   version-clj {:mvn/version "0.1.2"}}
 
  :aliases
