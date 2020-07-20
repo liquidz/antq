@@ -10,7 +10,10 @@
     RepositorySystem
     RepositorySystemSession)
    (org.eclipse.aether.resolution
-    VersionRangeRequest)))
+    VersionRangeRequest)
+   (org.eclipse.aether.transfer
+    TransferEvent
+    TransferListener)))
 
 (def default-repos
   {"central" {:url "https://repo1.maven.org/maven2/"}
@@ -30,12 +33,29 @@
                     v)))
    {} repos))
 
+(def ^TransferListener custom-transfer-listener
+  "Copy from clojure.tools.deps.alpha.util.maven/console-listener
+  But no outputs for `transferStarted`"
+  (reify TransferListener
+    (transferStarted [_ event])
+    (transferCorrupted [_ event]
+      (println "Download corrupted:" (.. ^TransferEvent event getException getMessage)))
+    (transferFailed [_ event]
+      ;; This happens when Maven can't find an artifact in a particular repo
+      ;; (but still may find it in a different repo), ie this is a common event
+      #_(println "Download failed:" (.. ^TransferEvent event getException getMessage)))
+    (transferInitiated [_ _event])
+    (transferProgressed [_ _event])
+    (transferSucceeded [_ _event])))
+
 (defn get-versions
   [name opts]
   (let [lib (cond-> name (string? name) symbol)
         local-repo deps.util.maven/default-local-repo
         system ^RepositorySystem (deps.util.session/retrieve :mvn/system #(deps.util.maven/make-system))
         session ^RepositorySystemSession (deps.util.session/retrieve :mvn/session #(deps.util.maven/make-session system local-repo))
+        ;; Overwrite TransferListener not to show "Downloading" messages
+        _ (.setTransferListener session custom-transfer-listener)
         ; c.f. https://stackoverflow.com/questions/35488167/how-can-you-find-the-latest-version-of-a-maven-artifact-from-java-using-aether
         artifact (deps.util.maven/coord->artifact lib {:mvn/version "[0,)"})
         remote-repos (deps.util.maven/remote-repos (:repositories opts))
