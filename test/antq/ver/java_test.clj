@@ -4,6 +4,7 @@
    [antq.ver :as ver]
    [antq.ver.java :as sut]
    [clojure.edn :as edn]
+   [clojure.set :as set]
    [clojure.test :as t]))
 
 (def ^:private current-clojure-version
@@ -47,4 +48,12 @@
     (t/is (= ["2" "1.6-SNAPSHOT" "1"]
              (get-sorted-versions {:version "1.0.0-SNAPSHOT"})))
     (t/is (= ["2" "1.6-SNAPSHOT" "1"]
-             (get-sorted-versions {:version "1.0.0-snapshot"})))))
+             (get-sorted-versions {:version "1.0.0-snapshot"}))))
+
+  (t/testing "normalizing repository URL"
+    (with-redefs [sut/get-sorted-versions-by-name (fn [_ opts] opts)]
+      (let [res (get-sorted-versions {:repositories {"foo" {:url "s3p://bar"}}})
+            diff (set/difference (set (:repositories res))
+                                 (set sut/default-repos))]
+        (t/is (= #{["foo" {:url "s3://bar"}]}
+                 diff))))))
