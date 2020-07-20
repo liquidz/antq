@@ -1,6 +1,8 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+
+== 0.5.1 (2020-07-21)
 // {{{
 === Fixed
 * https://github.com/liquidz/antq/issues/12[#12]: Fixed Maven S3 repository check to correctly work with URL like "s3p://...".
