@@ -10,6 +10,18 @@
   (get-in (edn/read-string (slurp "deps.edn"))
           [:deps 'org.clojure/clojure :mvn/version]))
 
+(t/deftest normalize-repos-test
+  (t/is (= sut/default-repos
+           (sut/normalize-repos sut/default-repos)))
+  (t/is (= {"foo" {:url "s3://bar"}}
+           (sut/normalize-repos {"foo" {:url "s3://bar"}})))
+
+  (t/testing "replace s3p:// to s3://"
+    (t/is (= {"foo" {:url "s3://bar"}}
+             (sut/normalize-repos {"foo" {:url "s3p://bar"}})))
+    (t/is (= {"foo" {:url "s3://bar" :no-auth true}}
+             (sut/normalize-repos {"foo" {:url "s3p://bar" :no-auth true}})))))
+
 (t/deftest get-versions-test
   (let [vers (sut/get-versions 'org.clojure/clojure
                                {:repositories sut/default-repos})]

@@ -1,6 +1,7 @@
 (ns antq.ver.java
   (:require
    [antq.ver :as ver]
+   [clojure.string :as str]
    [clojure.tools.deps.alpha.util.maven :as deps.util.maven]
    [clojure.tools.deps.alpha.util.session :as deps.util.session]
    [version-clj.core :as version])
@@ -14,6 +15,18 @@
 (def default-repos
   {"central" {:url "https://repo1.maven.org/maven2/"}
    "clojars" {:url "https://repo.clojars.org/"}})
+
+(defn- normalize-repo-url
+  [url]
+  (-> url
+      (str/replace #"^s3p://" "s3://")))
+
+(defn normalize-repos
+  [repos]
+  (reduce-kv
+   (fn [acc k v]
+     (assoc acc k (update v :url normalize-repo-url)))
+   {} repos))
 
 (defn get-versions
   [name opts]
