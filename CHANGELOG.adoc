@@ -2,6 +2,15 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 
+== 0.5.1 (2020-07-21)
+// {{{
+=== Fixed
+* https://github.com/liquidz/antq/issues/12[#12]: Fixed Maven S3 repository check to correctly work with URL like "s3p://...".
+* https://github.com/liquidz/antq/issues/13[#13]: Fixed not to show "Downloading" messages and other extra logs.
+* Fixed to handle repository setting in project.clj correctly.
+** The setting like `["repo" "URL"]` has been failed so far.
+// }}}
+
 == 0.5.0 (2020-07-20)
 // {{{
 === Added

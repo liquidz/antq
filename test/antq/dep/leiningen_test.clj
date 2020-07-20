@@ -9,7 +9,8 @@
   [m]
   (r/map->Dependency (merge {:type :java
                              :file "project.clj"
-                             :repositories {"antq-test" {:url "s3://antq-repo/"}}}
+                             :repositories {"antq-test" {:url "s3://antq-repo/"}
+                                            "str-test" {:url "https://example.com"}}}
                             m)))
 
 (t/deftest extract-deps-test

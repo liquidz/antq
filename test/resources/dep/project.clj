@@ -6,4 +6,5 @@
   {:foo
    {:dependencies [[baz "3.0.0"]]}}
 
-  :repositories [["antq-test" {:url "s3://antq-repo/"}]])
+  :repositories [["antq-test" {:url "s3://antq-repo/"}]
+                 ["str-test" "https://example.com"]])

@@ -29,7 +29,7 @@
                       (swap! repos concat form))
                     form)
                   (read-string (str "(list " project-clj-content-str " )")))
-    (let [repositories (into {} @repos)]
+    (let [repositories (reduce (fn [acc [k v]] (assoc acc k (if (map? v) v {:url v})))  {} @repos)]
       (for [[dep-name version] @deps]
         (r/map->Dependency {:type :java
                             :file project-file
