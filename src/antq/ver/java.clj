@@ -43,7 +43,7 @@
     (transferFailed [_ event]
       ;; This happens when Maven can't find an artifact in a particular repo
       ;; (but still may find it in a different repo), ie this is a common event
-      #_(println "Download failed:" (.. ^TransferEvent event getException getMessage)))
+      )
     (transferInitiated [_ _event])
     (transferProgressed [_ _event])
     (transferSucceeded [_ _event])))
