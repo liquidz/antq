@@ -26,7 +26,7 @@ image:https://img.shields.io/badge/docker-automated-blue["Docker Hub", link="htt
 Run the following command for trial.
 [source,clojure]
 ----
-clojure -Sdeps '{:deps {antq {:mvn/version "LATEST"}}}' -m antq.core
+clojure -Sdeps '{:deps {antq {:mvn/version "RELEASE"}}}' -m antq.core
 ----
 
 Or add following alias to your `$HOME/.clojure/deps.edn`.
