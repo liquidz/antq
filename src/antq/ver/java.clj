@@ -25,7 +25,9 @@
   [repos]
   (reduce-kv
    (fn [acc k v]
-     (assoc acc k (update v :url normalize-repo-url)))
+     (assoc acc k (if (contains? v :url)
+                    (update v :url normalize-repo-url)
+                    v)))
    {} repos))
 
 (defn get-versions

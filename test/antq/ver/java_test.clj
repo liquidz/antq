@@ -17,6 +17,9 @@
   (t/is (= {"foo" {:url "s3://bar"}}
            (sut/normalize-repos {"foo" {:url "s3://bar"}})))
 
+  (t/is (= {"foo" {:invalid "invalid"}}
+           (sut/normalize-repos {"foo" {:invalid "invalid"}})))
+
   (t/testing "replace s3p:// to s3://"
     (t/is (= {"foo" {:url "s3://bar"}}
              (sut/normalize-repos {"foo" {:url "s3p://bar"}})))
