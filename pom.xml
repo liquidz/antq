@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>antq</groupId>
   <artifactId>antq</artifactId>
-  <version>0.5.1</version>
+  <version>0.5.2</version>
   <name>antq</name>
   <description>Point out your outdated dependencies</description>
   <url>https://github.com/liquidz/antq</url>
@@ -13,6 +13,11 @@
       <url>https://www.eclipse.org/legal/epl-2.0/</url>
     </license>
   </licenses>
+  <scm>
+    <url>https://github.com/liquidz/antq</url>
+    <connection>scm:git:git://github.com/liquidz/antq.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/liquidz/antq.git</developerConnection>
+  </scm>
   <dependencies>
     <dependency>
       <groupId>org.clojure</groupId>
@@ -32,7 +37,7 @@
     <dependency>
       <groupId>org.clojure</groupId>
       <artifactId>tools.deps.alpha</artifactId>
-      <version>0.8.709</version>
+      <version>0.9.745</version>
     </dependency>
     <dependency>
       <groupId>clj-commons</groupId>
