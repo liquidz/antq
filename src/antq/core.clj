@@ -11,8 +11,7 @@
    [antq.ver :as ver]
    [antq.ver.github-action]
    [antq.ver.java]
-   [clojure.tools.cli :as cli]
-   [unilog.config :as unilog]))
+   [clojure.tools.cli :as cli]))
 
 (def cli-options
   [[nil "--exclude=EXCLUDE" :default [] :assoc-fn #(update %1 %2 conj %3)]
@@ -97,8 +96,6 @@
 
 (defn -main
   [& args]
-  (unilog/start-logging! {:level "warn"})
-
   (let [{:keys [options]} (cli/parse-opts args cli-options)
         deps (fetch-deps)]
     (if (seq deps)
