@@ -7,7 +7,9 @@
    [antq.dep.leiningen :as dep.lein]
    [antq.dep.pom :as dep.pom]
    [antq.dep.shadow :as dep.shadow]
-   [antq.format :as fmt]
+   [antq.report :as report]
+   [antq.report.format]
+   [antq.report.table]
    [antq.ver :as ver]
    [antq.ver.github-action]
    [antq.ver.java]
@@ -15,7 +17,8 @@
 
 (def cli-options
   [[nil "--exclude=EXCLUDE" :default [] :assoc-fn #(update %1 %2 conj %3)]
-   [nil "--error-format=ERROR_FORMAT" :default nil]])
+   [nil "--error-format=ERROR_FORMAT" :default nil]
+   [nil "--reporter=REPORTER" :default "table"]])
 
 (def default-skip-artifacts
   #{"org.clojure/clojure"})
@@ -97,11 +100,14 @@
 (defn -main
   [& args]
   (let [{:keys [options]} (cli/parse-opts args cli-options)
+        options (cond-> options
+                  ;; Force "format" reporter when :error-format is specified
+                  (some?  (:error-format options)) (assoc :reporter "format"))
         deps (fetch-deps)]
     (if (seq deps)
       (-> deps
           (outdated-deps options)
-          (fmt/print-deps options)
+          (report/reporter options)
           exit)
       (do (println "No project file")
           (System/exit 1)))))
