@@ -9,6 +9,10 @@ run:
 test:
 	clojure -A:dev:test
 
+lint:
+	cljstyle check
+	clj-kondo --lint src:test
+
 pom:
 	clojure -Spom
 

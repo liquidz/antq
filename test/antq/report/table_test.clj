@@ -1,8 +1,8 @@
 (ns antq.report.table-test
   (:require
-   [antq.test-helper :as h]
    [antq.report :as report]
    [antq.report.table :as sut]
+   [antq.test-helper :as h]
    [clojure.test :as t]))
 
 (t/deftest skip-duplicated-file-name-test
