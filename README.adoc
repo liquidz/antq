@@ -26,7 +26,7 @@ image:https://img.shields.io/badge/docker-automated-blue["Docker Hub", link="htt
 Run the following command for trial.
 [source,clojure]
 ----
-clojure -Sdeps '{:deps {antq {:mvn/version "RELEASE"}}}' -m antq.core
+clojure -Sdeps '{:deps {antq/antq {:mvn/version "RELEASE"}}}' -m antq.core
 ----
 
 Or add following alias to your `$HOME/.clojure/deps.edn`.
@@ -34,7 +34,7 @@ Or add following alias to your `$HOME/.clojure/deps.edn`.
 ----
 {
  :aliases
- {:outdated {:extra-deps {antq {:mvn/version "RELEASE"}}
+ {:outdated {:extra-deps {antq/antq {:mvn/version "RELEASE"}}
              :main-opts ["-m" "antq.core"]}}
  }
 ----
@@ -47,7 +47,7 @@ Add following dependency and alias to your `$HOME/.lein/profiles.clj`.
 ----
 {
  :user
- {:dependencies [[antq "RELEASE"]]
+ {:dependencies [[antq/antq "RELEASE"]]
   :aliases {"outdated" ["run" "-m" "antq.core"]}
   }
  }
