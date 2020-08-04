@@ -2,6 +2,14 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 
+// {{{
+=== Added
+* Added `--reporter` option.
+
+=== Changed
+* Bump tools.deps.alpha to `0.9.755`.
+// }}}
+
 == 0.5.3 (2020-07-28)
 // {{{
 === Fixed
