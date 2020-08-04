@@ -95,6 +95,26 @@ You can use following variables:
 
 |===
 
+=== --reporter=REPORTER
+
+|===
+| Reporter Name | Description
+
+| `table` (default)
+| Report results in a table.
+
+| `format`
+| Report results with a custom format.
+When you use `--error-format` option, this reporter will be used automatically.
+
+| `json`
+| Report resulta as a JSON format.
+
+| `edn`
+| Report resulta as a EDN format.
+
+|===
+
 == Tips
 
 === Maven S3 repos
