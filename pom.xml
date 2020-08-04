@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>antq</groupId>
   <artifactId>antq</artifactId>
-  <version>0.5.3</version>
+  <version>0.6.0</version>
   <name>antq</name>
   <description>Point out your outdated dependencies</description>
   <url>https://github.com/liquidz/antq</url>
