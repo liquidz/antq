@@ -107,9 +107,8 @@
                   (some?  (:error-format options)) (assoc :reporter "format"))
         deps (fetch-deps)]
     (if (seq deps)
-      (-> deps
-          (outdated-deps options)
-          (report/reporter options)
-          exit)
+      (let [outdated (outdated-deps deps options)]
+          (report/reporter outdated options)
+          (exit outdated))
       (do (println "No project file")
           (System/exit 1)))))
