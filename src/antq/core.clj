@@ -108,7 +108,7 @@
         deps (fetch-deps)]
     (if (seq deps)
       (let [outdated (outdated-deps deps options)]
-          (report/reporter outdated options)
-          (exit outdated))
+        (report/reporter outdated options)
+        (exit outdated))
       (do (println "No project file")
           (System/exit 1)))))
