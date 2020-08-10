@@ -1,6 +1,14 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+// {{{
+=== Changed
+* Bump tools.deps.alpha to `0.9.763`.
+
+=== Fixed
+* https://github.com/liquidz/antq/issues/21[#21]: Fixed to support `shadow/env` and `env` tag for shadow-cljs.edn.
+// }}}
+
 == 0.6.1 (2020-08-05)
 // {{{
 === Fixed
