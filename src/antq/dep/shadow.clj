@@ -7,6 +7,26 @@
 
 (def ^:private project-file "shadow-cljs.edn")
 
+(defn- getenv
+  [k]
+  (System/getenv k))
+
+(defn- read-env
+  [arg]
+  (let [[envname & opts] (cond-> arg
+                           (not (sequential? arg)) vector)
+        option (when (seq opts)
+                 (cond->> opts
+                   (not (keyword? (first opts))) (cons :default)
+                   true (apply hash-map)))]
+    (or (getenv envname)
+        (get option :default))))
+
+(def ^:private readers
+  {:readers
+   {'shadow/env read-env
+    'env read-env}})
+
 (defn extract-deps
   [shadow-cljs-edn-content-str]
   (let [deps (atom [])]
@@ -15,7 +35,7 @@
                                 (= :dependencies (first form)))
                        (swap! deps concat (second form)))
                      form)
-                   (edn/read-string shadow-cljs-edn-content-str))
+                   (edn/read-string readers shadow-cljs-edn-content-str))
     (for [[dep-name version] @deps]
       (r/map->Dependency {:type :java
                           :file project-file
