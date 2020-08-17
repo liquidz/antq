@@ -23,6 +23,7 @@
         (get option :default))))
 
 (def ^:private readers
+  "c.f. https://github.com/thheller/shadow-cljs/blob/2.10.21/src/main/shadow/cljs/devtools/config.clj#L102-L107"
   {:readers
    {'shadow/env read-env
     'env read-env}})
