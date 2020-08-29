@@ -5,9 +5,15 @@
    [clojure.java.io :as io]
    [clojure.test :as t]))
 
-(defn- dependency
+(defn- java-dependency
   [m]
   (r/map->Dependency (merge {:type :java
+                             :file "deps.edn"
+                             :repositories {"antq-test" {:url "s3://antq-repo/"}}}
+                            m)))
+(defn- git-dependency
+  [m]
+  (r/map->Dependency (merge {:type :git
                              :file "deps.edn"
                              :repositories {"antq-test" {:url "s3://antq-repo/"}}}
                             m)))
@@ -17,7 +23,9 @@
               (slurp (io/resource "dep/deps.edn")))]
     (t/is (sequential? deps))
     (t/is (every? #(instance? antq.record.Dependency %) deps))
-    (t/is (= #{(dependency {:name "foo/core" :version "1.0.0"})
-               (dependency {:name "bar/bar" :version "2.0.0"})
-               (dependency {:name "baz/baz" :version "3.0.0"})}
+    (t/is (= #{(java-dependency {:name "foo/core" :version "1.0.0"})
+               (java-dependency {:name "bar/bar" :version "2.0.0"})
+               (java-dependency {:name "baz/baz" :version "3.0.0"})
+               (git-dependency {:name "git/hello" :version "dummy-sha"
+                                :extra {:url "https://github.com/example/hello.git"}})}
              (set deps)))))

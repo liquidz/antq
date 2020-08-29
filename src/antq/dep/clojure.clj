@@ -8,6 +8,22 @@
 
 (def ^:private project-file "deps.edn")
 
+(defmulti extract-type-and-version
+  (fn [opt]
+    (or (and (:mvn/version opt) :java)
+        (and (:git/url opt) :git))))
+
+(defmethod extract-type-and-version :default
+  [{:mvn/keys [version]}]
+  {:type :java
+   :version version})
+
+(defmethod extract-type-and-version :git
+  [{:git/keys [url] :keys [sha]}]
+  {:type :git
+   :version sha
+   :extra {:url url}})
+
 (defn extract-deps
   [deps-edn-content-str]
   (let [deps (atom {})
@@ -18,14 +34,14 @@
                        (swap! deps merge (second form)))
                      form)
                    edn)
-    (for [[dep-name {:mvn/keys [version]}] @deps]
-      (r/map->Dependency {:type :java
-                          :file project-file
-                          :name  (if (qualified-symbol? dep-name)
-                                   (str dep-name)
-                                   (str dep-name "/" dep-name))
-                          :version version
-                          :repositories repos}))))
+    (for [[dep-name opt] @deps]
+      (-> {:file project-file
+           :name  (if (qualified-symbol? dep-name)
+                    (str dep-name)
+                    (str dep-name "/" dep-name))
+           :repositories repos}
+          (merge (extract-type-and-version opt))
+          (r/map->Dependency)))))
 
 (defn load-deps
   ([] (load-deps "."))

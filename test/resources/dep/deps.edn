@@ -1,9 +1,9 @@
-{
- :deps {foo/core {:mvn/version "1.0.0"}
-        bar {:mvn/version "2.0.0"}}
+{:deps {foo/core {:mvn/version "1.0.0"}
+        bar {:mvn/version "2.0.0"}
+        git/hello {:git/url "https://github.com/example/hello.git"
+                   :sha "dummy-sha"}}
 
  :aliases
  {:foo {:extra-deps {baz {:mvn/version "3.0.0"}}}}
 
- :mvn/repos {"antq-test" {:url "s3://antq-repo/"}}
-}
+ :mvn/repos {"antq-test" {:url "s3://antq-repo/"}}}
