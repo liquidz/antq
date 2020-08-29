@@ -4,19 +4,23 @@
    [clojure.java.shell :as sh]
    [clojure.string :as str]))
 
-(defn extract-head-sha
+(defn- extract-head-sha
   [ls-remote-resp]
-  (->> (:out ls-remote-resp)
-       (str/split-lines)
-       (some (fn [line]
-               (let [[sha ref-name] (str/split line #"\t" 2)]
-                 (and (= "HEAD" ref-name)
-                      sha))))))
+  (some->> (:out ls-remote-resp)
+           (str/split-lines)
+           (some (fn [line]
+                   (let [[sha ref-name] (str/split line #"\t" 2)]
+                     (and (= "HEAD" ref-name)
+                          sha))))))
+
+(defn- git-ls-remote
+  [url]
+  (sh/sh "git" "ls-remote" url))
 
 (defmethod ver/get-sorted-versions :git
   [dep]
   (let [resp (->> (get-in dep [:extra :url])
-                  (sh/sh "git" "ls-remote"))]
+                  (git-ls-remote))]
     (or (some-> (extract-head-sha resp) vector)
         [])))
 
