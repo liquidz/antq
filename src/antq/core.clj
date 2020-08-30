@@ -13,6 +13,7 @@
    [antq.report.json]
    [antq.report.table]
    [antq.ver :as ver]
+   [antq.ver.git]
    [antq.ver.github-action]
    [antq.ver.java]
    [clojure.tools.cli :as cli]))
@@ -57,7 +58,7 @@
 (defn distinct-deps
   [deps]
   (->> deps
-       (map #(select-keys % [:type :name :version :repositories]))
+       (map #(select-keys % [:type :name :version :repositories :extra]))
        (map #(if (ver/snapshot? (:version %))
                %
                (dissoc % :version)))
