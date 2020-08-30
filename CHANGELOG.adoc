@@ -2,8 +2,12 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 // {{{
+=== Added
+* https://github.com/liquidz/antq/issues/24[#24]: Added support to check git libraries for Clojure CLI.
+** c.f. https://clojure.org/guides/deps_and_cli#_using_git_libraries
+
 === Changed
-* Bump kaocha to `1.0.663`.
+* Bump kaocha to `1.0.672`.
 // }}}
 
 == 0.6.2 (2020-08-11)
