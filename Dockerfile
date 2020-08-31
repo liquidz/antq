@@ -1,6 +1,6 @@
 FROM clojure:openjdk-14-tools-deps
 
-RUN apt-get update && apt-get install -y git
+RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /tmp/antq
 COPY deps.edn /tmp/antq/deps.edn
