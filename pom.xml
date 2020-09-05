@@ -32,7 +32,7 @@
     <dependency>
       <groupId>org.clojure</groupId>
       <artifactId>tools.deps.alpha</artifactId>
-      <version>0.9.763</version>
+      <version>0.9.782</version>
     </dependency>
     <dependency>
       <groupId>clj-commons</groupId>
