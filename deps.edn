@@ -23,6 +23,9 @@
   :depstar
   {:extra-deps {seancorfield/depstar {:mvn/version "RELEASE"}}}
 
+  :uberjar
+  {:extra-deps {org.slf4j/slf4j-nop {:mvn/version "RELEASE"}}}
+
   :deploy
   {:extra-deps {deps-deploy/deps-deploy {:mvn/version "RELEASE"}}
    :main-opts ["-m" "deps-deploy.deps-deploy" "deploy"
