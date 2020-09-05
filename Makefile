@@ -17,7 +17,7 @@ pom:
 	clojure -Spom
 
 target/antq-standalone.jar: pom
-	clojure -A:depstar -m hf.depstar.uberjar $@ -C -m antq.core
+	clojure -A:depstar:uberjar -m hf.depstar.uberjar $@ -C -m antq.core
 uberjar: clean target/antq-standalone.jar
 
 target/antq.jar: pom

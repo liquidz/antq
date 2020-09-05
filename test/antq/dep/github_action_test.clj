@@ -25,6 +25,7 @@
     (t/is (every? #(= :github-action (:type %)) deps))
     (t/is (= #{"./.github/workflows/coverage.yml"
                "./.github/workflows/dependencies.yml"
+               "./.github/workflows/docker.yml"
                "./.github/workflows/lint.yml"
                "./.github/workflows/static.yml"
                "./.github/workflows/test.yml"}

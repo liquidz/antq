@@ -2,6 +2,16 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 
+== 0.7.2 (2020-09-06)
+// {{{
+=== Added
+* https://github.com/liquidz/antq/issues/29[#29]: Added a tips to avoid SLF4J warnings.
+
+=== Changed
+* Bump clj-yaml to `0.7.2`.
+* Bump tools.deps.alpha to `0.9.782`.
+// }}}
+
 == 0.7.1 (2020-09-01)
 // {{{
 === Fixed
