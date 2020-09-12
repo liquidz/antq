@@ -2,7 +2,7 @@
  :deps
  {org.clojure/clojure {:mvn/version "1.10.1"}
   org.clojure/tools.cli {:mvn/version "1.0.194"}
-  org.clojure/tools.deps.alpha {:mvn/version "0.9.782"}
+  org.clojure/tools.deps.alpha {:mvn/version "0.9.795"}
   cheshire/cheshire {:mvn/version "5.10.0"}
   clj-commons/clj-yaml {:mvn/version "0.7.2"}
   version-clj/version-clj {:mvn/version "0.1.2"}}
@@ -11,7 +11,7 @@
  {:dev
   {:extra-paths ["test"
                  "test/resources"]
-   :extra-deps {lambdaisland/kaocha {:mvn/version "1.0.672"}}}
+   :extra-deps {lambdaisland/kaocha {:mvn/version "1.0.681"}}}
 
   :test
   {:main-opts ["-m" "kaocha.runner"]}
