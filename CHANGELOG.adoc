@@ -1,6 +1,10 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+// {{{
+=== Changed
+* Bump tools.deps.alpha to `0.9.795`.
+// }}}
 
 == 0.7.2 (2020-09-06)
 // {{{
