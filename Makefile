@@ -4,7 +4,7 @@ repl:
 	iced repl -A:dev
 
 run:
-	clojure -m antq.core
+	clojure -M:run
 
 test:
 	clojure -A:dev:test

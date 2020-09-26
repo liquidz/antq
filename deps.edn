@@ -13,6 +13,9 @@
                  "test/resources"]
    :extra-deps {lambdaisland/kaocha {:mvn/version "1.0.681"}}}
 
+  :run
+  {:main-opts   ["-m" "antq.core"]}
+
   :test
   {:main-opts ["-m" "kaocha.runner"]}
 
