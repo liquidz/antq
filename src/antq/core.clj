@@ -7,6 +7,7 @@
    [antq.dep.leiningen :as dep.lein]
    [antq.dep.pom :as dep.pom]
    [antq.dep.shadow :as dep.shadow]
+   [antq.record :as r]
    [antq.report :as report]
    [antq.report.edn]
    [antq.report.format]
@@ -16,6 +17,7 @@
    [antq.ver.git]
    [antq.ver.github-action]
    [antq.ver.java]
+   [clojure.string :as str]
    [clojure.tools.cli :as cli]))
 
 (def cli-options
@@ -42,6 +44,19 @@
 (defn- assoc-versions
   [dep]
   (assoc dep :_versions (ver/get-sorted-versions dep)))
+
+(defn latest
+  [arg-map]
+  (let [dep-name (case (:type arg-map)
+                   :java (let [[group-id artifact-id] (str/split (str (:name arg-map "")) #"/" 2)]
+                           (str group-id "/" (or artifact-id group-id)))
+                   (str (:name arg-map)))]
+    (-> (r/map->Dependency
+         {:type (:type arg-map)
+          :name dep-name})
+        (ver/get-sorted-versions)
+        (first)
+        (println))))
 
 (defn- assoc-latest-version
   [dep]
