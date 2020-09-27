@@ -37,6 +37,4 @@
   ;; -X
   :latest
   {:extra-deps {org.slf4j/slf4j-nop {:mvn/version "RELEASE"}}
-   :exec-fn antq.core/latest
-   :exec-args {:type :java
-               :name ""}}}}
+   :exec-fn antq.core/latest}}}
