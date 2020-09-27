@@ -2,8 +2,12 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 // {{{
+=== Added
+* Add support `-X antq.core/latest` execution for Clojure CLI.
+** c.f. https://clojure.org/reference/deps_and_cli#_executing_a_function
+
 === Changed
-* Bump tools.deps.alpha to `0.9.795`.
+* Bump tools.deps.alpha to `0.9.810`.
 // }}}
 
 == 0.7.2 (2020-09-06)
