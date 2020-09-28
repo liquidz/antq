@@ -64,7 +64,7 @@ See antq's workflow for concrete example.
 
 == Options
 === --exclude=ARTIFACT_NAME
-Skip version cheking for specified artifacts.
+Skip version checking for specified artifacts.
 E.g. `--exclude=antq/antq`
 
 NOTE: You must specify `groupId/artifactId` for Java dependencies.
@@ -108,10 +108,10 @@ You can use following variables:
 When you use `--error-format` option, this reporter will be used automatically.
 
 | `json`
-| Report resulta as a JSON format.
+| Report results as a JSON format.
 
 | `edn`
-| Report resulta as a EDN format.
+| Report results as a EDN format.
 
 |===
 
@@ -120,7 +120,7 @@ When you use `--error-format` option, this reporter will be used automatically.
 === Maven S3 repos
 
 Antq supports Maven S3 repositories as same as https://clojure.org/reference/deps_and_cli[tools.deps].
-To use Maven S3 repositories, add repositories to your project configration.
+To use Maven S3 repositories, add repositories to your project configuration.
 
 Please see https://clojure.org/reference/deps_and_cli#_maven_s3_repos[tools.deps documents] documents for AWS S3 credentials.
 
