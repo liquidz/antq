@@ -3,6 +3,7 @@
    [antq.core :as sut]
    [antq.record :as r]
    [antq.ver :as ver]
+   [clojure.string :as str]
    [clojure.test :as t]))
 
 (defmethod ver/get-sorted-versions :test
@@ -51,3 +52,9 @@
 
 (t/deftest fetch-deps-test
   (t/is (seq (sut/fetch-deps))))
+
+(t/deftest latest-test
+  (t/is (= "3.0.0"
+           (str/trim
+            (with-out-str
+              (sut/latest {:type :test :name 'foo/bar}))))))
