@@ -17,5 +17,6 @@ jobs:
       - name: build for tag
         if: contains(github.ref, 'refs/tags/')
         run: |
-         docker build . -t ghcr.io/liquidz/antq:${{ github.ref }} --cache-from ghcr.io/liquidz/antq:latest
-         docker push ghcr.io/liquidz/antq:${{ github.ref }}
+         TAG_NAME=$(echo "${{ github.ref }}" | sed 's!refs/tags/!!')
+         docker build . -t ghcr.io/liquidz/antq:${TAG_NAME} --cache-from ghcr.io/liquidz/antq:latest
+         docker push ghcr.io/liquidz/antq:${TAG_NAME}

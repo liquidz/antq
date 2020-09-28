@@ -50,9 +50,10 @@
   (let [dep-name (case (:type arg-map)
                    :java (let [[group-id artifact-id] (str/split (str (:name arg-map "")) #"/" 2)]
                            (str group-id "/" (or artifact-id group-id)))
-                   (str (:name arg-map)))]
+                   (str (:name arg-map)))
+        dep-type (:type arg-map :java)]
     (-> (r/map->Dependency
-         {:type (:type arg-map)
+         {:type dep-type
           :name dep-name})
         (ver/get-sorted-versions)
         (first)

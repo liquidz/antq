@@ -164,6 +164,20 @@ To avoid this message, add the following to your dependency.
 org.slf4j/slf4j-nop {:mvn/version "RELEASE"}
 ----
 
+=== Latest version of a specific library
+
+If you are using Clojure CLI Tools https://clojure.org/releases/tools#v1.10.1.697[v1.10.1.697] or later,
+You can use `-X` option to find out the latest version of a specific library.
+
+[source,clojure]
+----
+;; Try to find Java library by default
+clojure -Sdeps '{:deps {antq/antq {:mvn/version "RELEASE"}}}' -X antq.core/latest :name antq
+
+;; You can specify library type
+clojure -Sdeps '{:deps {antq/antq {:mvn/version "RELEASE"}}}' -X antq.core/latest :name actions/checkout :type :github-action
+----
+
 == License
 
 Copyright © 2020 https://twitter.com/uochan[Masashi Iizuka]
