@@ -8,6 +8,9 @@
 
 (def ^:private project-file "deps.edn")
 
+(defn- ignore? [opt]
+  (contains? opt :local/root))
+
 (defmulti extract-type-and-version
   (fn [opt]
     (or (and (:mvn/version opt) :java)
@@ -34,7 +37,8 @@
                        (swap! deps merge (second form)))
                      form)
                    edn)
-    (for [[dep-name opt] @deps]
+    (for [[dep-name opt] @deps
+          :when (not (ignore? opt))]
       (-> {:file project-file
            :name  (if (qualified-symbol? dep-name)
                     (str dep-name)
