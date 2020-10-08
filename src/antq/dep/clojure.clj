@@ -8,7 +8,8 @@
 
 (def ^:private project-file "deps.edn")
 
-(defn- ignore? [opt]
+(defn- ignore?
+  [opt]
   (contains? opt :local/root))
 
 (defmulti extract-type-and-version
