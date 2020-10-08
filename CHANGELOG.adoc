@@ -2,6 +2,15 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 
+== 0.7.4 (2020-10-08)
+// {{{
+=== Changed
+* Bumped tools.deps.alpha to `0.9.816`.
+
+=== Fixed
+* https://github.com/liquidz/antq/issues/33[#33]: Fixed to ignore Clojure CLI deps which has `local/root`.
+// }}}
+
 == 0.7.3 (2020-09-29)
 // {{{
 === Added
