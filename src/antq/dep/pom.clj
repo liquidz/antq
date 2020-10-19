@@ -23,6 +23,7 @@
         repos (extract-repos xml)]
     (->> (u.xml/get-tags :dependency xml)
          (map #(u.xml/get-values [:groupId :artifactId :version] (:content %)))
+         (filter (fn [[_ _ version]] (seq version)))
          (map (fn [[group-id artifact-id version]]
                 (r/map->Dependency {:type :java
                                     :file project-file

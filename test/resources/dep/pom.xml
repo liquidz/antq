@@ -21,6 +21,15 @@
       <artifactId>baz</artifactId>
       <version>3.0.0</version>
     </dependency>
+    <dependency>
+      <groupId>version</groupId>
+      <artifactId>not-exist</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>version</groupId>
+      <artifactId>empty</artifactId>
+      <version></version>
+    </dependency>
   </dependencies>
   <repositories>
     <repository>

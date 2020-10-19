@@ -37,7 +37,8 @@
                        (swap! deps concat (second form)))
                      form)
                    (edn/read-string readers shadow-cljs-edn-content-str))
-    (for [[dep-name version] @deps]
+    (for [[dep-name version] @deps
+          :when (and (string? version) (seq version))]
       (r/map->Dependency {:type :java
                           :file project-file
                           :name  (str dep-name)
