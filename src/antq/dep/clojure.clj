@@ -39,13 +39,16 @@
                      form)
                    edn)
     (for [[dep-name opt] @deps
-          :when (not (ignore? opt))]
+          :let [type-and-version (extract-type-and-version opt)]
+          :when (and (not (ignore? opt))
+                     (string? (:version type-and-version))
+                     (seq (:version type-and-version)))]
       (-> {:file project-file
            :name  (if (qualified-symbol? dep-name)
                     (str dep-name)
                     (str dep-name "/" dep-name))
            :repositories repos}
-          (merge (extract-type-and-version opt))
+          (merge type-and-version)
           (r/map->Dependency)))))
 
 (defn load-deps

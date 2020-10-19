@@ -30,7 +30,8 @@
                     form)
                   (read-string (str "(list " build-boot-content-str " )")))
     (let [repositories (apply hash-map @repos)]
-      (for [[dep-name version] @deps]
+      (for [[dep-name version] @deps
+            :when (and (string? version) (seq version))]
         (r/map->Dependency {:type :java
                             :file project-file
                             :name  (if (qualified-symbol? dep-name)

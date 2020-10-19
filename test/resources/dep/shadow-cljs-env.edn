@@ -1,7 +1,6 @@
-{
- :dependencies [[foo1 #shadow/env "ENV1"]
+{:dependencies [[foo1 #shadow/env "ENV1"]
                 [foo2 #shadow/env ["ENV2"]]
                 [foo3 #shadow/env ["ENV3" "default3"]]
                 [foo4 #shadow/env ["ENV4" :default "default4"]]
-                [foo5 #env "ENV5"]]
-}
+                [foo5 #env "ENV5"]
+                [foo6 #env "UNDEFINED_ENV"]]}

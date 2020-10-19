@@ -3,7 +3,10 @@
         git/hello {:git/url "https://github.com/example/hello.git"
                    :sha "dummy-sha"}
         ;; local/root should be ignored
-        local-repo/local-repo {:local/root "/path/to/local/repo"}}
+        local-repo/local-repo {:local/root "/path/to/local/repo"}
+        ;; invalid versions should be ignored
+        ver-not-string {:mvn/version :version}
+        ver-empty {:mvn/version ""}}
 
  :aliases
  {:foo {:extra-deps {baz {:mvn/version "3.0.0"}}}}
