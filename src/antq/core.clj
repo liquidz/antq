@@ -25,7 +25,7 @@
   (update opt k concat (str/split v #":")))
 
 (def cli-options
-  [[nil "--exclude=EXCLUDE" :default [] :assoc-fn #(update %1 %2 conj %3)]
+  [[nil "--exclude=EXCLUDE" :default [] :assoc-fn concat-assoc-fn]
    [nil "--error-format=ERROR_FORMAT" :default nil]
    [nil "--reporter=REPORTER" :default "table"]
    ["-d" "--directory=DIRECTORY" :default ["."] :assoc-fn concat-assoc-fn]])

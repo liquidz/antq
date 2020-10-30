@@ -4,11 +4,27 @@
    [antq.record :as r]
    [antq.ver :as ver]
    [clojure.string :as str]
-   [clojure.test :as t]))
+   [clojure.test :as t]
+   [clojure.tools.cli :as cli]))
 
 (defmethod ver/get-sorted-versions :test
   [_]
   ["3.0.0" "2.0.0" "1.0.0"])
+
+(t/deftest cli-options-test
+  (let [args [;; --exclude
+              "--exclude=ex/ex1"
+              "--exclude=ex/ex2:ex/ex3"
+              ;; --directory
+              "-d" "dir1"
+              "--directory=dir2"
+              "--directory" "dir3:dir4"]
+        ret (cli/parse-opts args sut/cli-options)]
+    (t/is (= {:options {:exclude ["ex/ex1" "ex/ex2" "ex/ex3"]
+                        :directory ["." "dir1" "dir2" "dir3" "dir4"]
+                        :error-format nil
+                        :reporter "table"}}
+             (select-keys ret [:options])))))
 
 (t/deftest skip-artifacts?-test
   (t/testing "default"
@@ -51,7 +67,7 @@
                               {}))))
 
 (t/deftest fetch-deps-test
-  (t/is (seq (sut/fetch-deps))))
+  (t/is (seq (sut/fetch-deps {:directory ["."]}))))
 
 (t/deftest latest-test
   (t/is (= "3.0.0"
