@@ -5,15 +5,19 @@
    [clojure.java.io :as io]
    [clojure.test :as t]))
 
+(def ^:private file-path
+  "path/to/build.boot")
+
 (defn- dependency
   [m]
   (r/map->Dependency (merge {:type :java
-                             :file "build.boot"
+                             :file file-path
                              :repositories {"antq-test" {:url "s3://antq-repo/"}}}
                             m)))
 
 (t/deftest extract-deps-test
   (let [deps (sut/extract-deps
+              file-path
               (slurp (io/resource "dep/build.boot")))]
     (t/is (sequential? deps))
     (t/is (every? #(instance? antq.record.Dependency %) deps))

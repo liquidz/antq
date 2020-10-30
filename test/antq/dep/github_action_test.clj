@@ -12,8 +12,8 @@
 
 (t/deftest extract-deps-test
   (let [deps (sut/extract-deps
-              (slurp (io/resource "dep/github_action.yml"))
-              "dep/github_action.yml")]
+              "dep/github_action.yml"
+              (slurp (io/resource "dep/github_action.yml")))]
     (t/is (sequential? deps))
     (t/is (every? #(instance? antq.record.Dependency %) deps))
     (t/is (= #{(dependency {:name "foo/bar" :version "1.0.0"})
@@ -23,11 +23,11 @@
 (t/deftest load-deps-test
   (let [deps (sut/load-deps)]
     (t/is (every? #(= :github-action (:type %)) deps))
-    (t/is (= #{"./.github/workflows/coverage.yml"
-               "./.github/workflows/dependencies.yml"
-               "./.github/workflows/docker.yml"
-               "./.github/workflows/lint.yml"
-               "./.github/workflows/reviewdog.yml"
-               "./.github/workflows/static.yml"
-               "./.github/workflows/test.yml"}
+    (t/is (= #{".github/workflows/coverage.yml"
+               ".github/workflows/dependencies.yml"
+               ".github/workflows/docker.yml"
+               ".github/workflows/lint.yml"
+               ".github/workflows/reviewdog.yml"
+               ".github/workflows/static.yml"
+               ".github/workflows/test.yml"}
              (set (map :file deps))))))

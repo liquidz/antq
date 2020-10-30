@@ -5,21 +5,25 @@
    [clojure.java.io :as io]
    [clojure.test :as t]))
 
+(def ^:private file-path
+  "path/to/deps.edn")
+
 (defn- java-dependency
   [m]
   (r/map->Dependency (merge {:type :java
-                             :file "deps.edn"
+                             :file file-path
                              :repositories {"antq-test" {:url "s3://antq-repo/"}}}
                             m)))
 (defn- git-dependency
   [m]
   (r/map->Dependency (merge {:type :git
-                             :file "deps.edn"
+                             :file file-path
                              :repositories {"antq-test" {:url "s3://antq-repo/"}}}
                             m)))
 
 (t/deftest extract-deps-test
   (let [deps (sut/extract-deps
+              file-path
               (slurp (io/resource "dep/deps.edn")))]
     (t/is (sequential? deps))
     (t/is (every? #(instance? antq.record.Dependency %) deps))

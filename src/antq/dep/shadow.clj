@@ -1,6 +1,7 @@
 (ns antq.dep.shadow
   (:require
    [antq.record :as r]
+   [antq.util.dep :as u.dep]
    [clojure.edn :as edn]
    [clojure.java.io :as io]
    [clojure.walk :as walk]))
@@ -29,7 +30,7 @@
     'env read-env}})
 
 (defn extract-deps
-  [shadow-cljs-edn-content-str]
+  [file-path shadow-cljs-edn-content-str]
   (let [deps (atom [])]
     (walk/postwalk (fn [form]
                      (when (and (sequential? form)
@@ -40,7 +41,7 @@
     (for [[dep-name version] @deps
           :when (and (string? version) (seq version))]
       (r/map->Dependency {:type :java
-                          :file project-file
+                          :file file-path
                           :name  (str dep-name)
                           :version version}))))
 
@@ -49,4 +50,5 @@
   ([dir]
    (let [file (io/file dir project-file)]
      (when (.exists file)
-       (extract-deps (slurp file))))))
+       (extract-deps (u.dep/relative-path file)
+                     (slurp file))))))

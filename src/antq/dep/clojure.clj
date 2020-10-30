@@ -2,6 +2,7 @@
   "Clojure CLI"
   (:require
    [antq.record :as r]
+   [antq.util.dep :as u.dep]
    [clojure.edn :as edn]
    [clojure.java.io :as io]
    [clojure.walk :as walk]))
@@ -29,7 +30,7 @@
    :extra {:url url}})
 
 (defn extract-deps
-  [deps-edn-content-str]
+  [file-path deps-edn-content-str]
   (let [deps (atom {})
         {:mvn/keys [repos] :as edn} (edn/read-string deps-edn-content-str)]
     (walk/postwalk (fn [form]
@@ -43,7 +44,7 @@
           :when (and (not (ignore? opt))
                      (string? (:version type-and-version))
                      (seq (:version type-and-version)))]
-      (-> {:file project-file
+      (-> {:file file-path
            :name  (if (qualified-symbol? dep-name)
                     (str dep-name)
                     (str dep-name "/" dep-name))
@@ -56,4 +57,5 @@
   ([dir]
    (let [file (io/file dir project-file)]
      (when (.exists file)
-       (extract-deps (slurp file))))))
+       (extract-deps (u.dep/relative-path file)
+                     (slurp file))))))

@@ -1,13 +1,14 @@
 (ns antq.dep.leiningen
   (:require
    [antq.record :as r]
+   [antq.util.dep :as u.dep]
    [clojure.java.io :as io]
    [clojure.walk :as walk]))
 
 (def ^:private project-file "project.clj")
 
 (defn extract-deps
-  [project-clj-content-str]
+  [file-path project-clj-content-str]
   (let [dep-form? (atom false)
         repos-form? (atom false)
         deps (atom [])
@@ -33,7 +34,7 @@
       (for [[dep-name version] @deps
             :when (and (string? version) (seq version))]
         (r/map->Dependency {:type :java
-                            :file project-file
+                            :file file-path
                             :name  (if (qualified-symbol? dep-name)
                                      (str dep-name)
                                      (str dep-name "/" dep-name))
@@ -45,4 +46,5 @@
   ([dir]
    (let [file (io/file dir project-file)]
      (when (.exists file)
-       (extract-deps (slurp file))))))
+       (extract-deps (u.dep/relative-path file)
+                     (slurp file))))))

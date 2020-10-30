@@ -5,12 +5,18 @@
    [clojure.java.io :as io]
    [clojure.test :as t]))
 
+(def ^:private file-path
+  "path/to/shadow-cljs.edn")
+
 (defn- dependency
   [m]
-  (r/map->Dependency (merge {:type :java :file "shadow-cljs.edn"} m)))
+  (r/map->Dependency (merge {:type :java
+                             :file file-path}
+                            m)))
 
 (t/deftest extract-deps-test
   (let [deps (sut/extract-deps
+              file-path
               (slurp (io/resource "dep/shadow-cljs.edn")))]
     (t/is (sequential? deps))
     (t/is (every? #(instance? antq.record.Dependency %) deps))
@@ -25,6 +31,7 @@
                              "ENV5" "5.0.0"}]
 
     (let [deps (sut/extract-deps
+                file-path
                 (slurp (io/resource "dep/shadow-cljs-env.edn")))]
       (t/is (sequential? deps))
       (t/is (every? #(instance? antq.record.Dependency %) deps))

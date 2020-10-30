@@ -5,15 +5,19 @@
    [clojure.java.io :as io]
    [clojure.test :as t]))
 
+(def ^:private file-path
+  "path/to/pom.xml")
+
 (defn- dependency
   [m]
   (r/map->Dependency (merge {:type :java
-                             :file "pom.xml"
+                             :file file-path
                              :repositories {"antq-test" {:url "s3://antq-repo/"}}}
                             m)))
 
 (t/deftest extract-deps-test
   (let [deps (sut/extract-deps
+              file-path
               (slurp (io/resource "dep/pom.xml")))]
     (t/is (sequential? deps))
     (t/is (every? #(instance? antq.record.Dependency %) deps))
