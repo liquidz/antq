@@ -2,6 +2,7 @@
   (:require
    [antq.test-helper :as h]
    [antq.util.dep :as sut]
+   [clojure.java.io :as io]
    [clojure.test :as t]))
 
 (t/deftest compare-deps-test
@@ -29,3 +30,14 @@
       pos?  ddd bbb
       pos?  ddd ccc
       zero? ddd ddd)))
+
+(t/deftest relative-path-test
+  (t/is (= "foo" (sut/relative-path (io/file "foo"))))
+  (t/is (= "foo" (sut/relative-path (io/file "." "foo"))))
+  (t/is (= "foo" (sut/relative-path (io/file "./foo"))))
+
+  (t/is (= (.getPath (io/file "foo" "bar"))
+           (sut/relative-path (io/file "." "foo" "bar"))))
+
+  (t/is (= (.getPath (io/file "foo" "bar"))
+           (sut/relative-path (io/file "./foo" "bar")))))
