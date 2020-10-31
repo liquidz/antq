@@ -103,7 +103,39 @@
                               {}))))
 
 (t/deftest fetch-deps-test
-  (t/is (seq (sut/fetch-deps {:directory ["."]}))))
+  (t/is (seq (sut/fetch-deps {:directory ["."]})))
+
+  (t/testing "skip"
+    (t/testing "boot"
+      (t/is (nil? (some #(= "test/resources/dep/build.boot" (:file %))
+                        (sut/fetch-deps {:directory ["test/resources/dep"]
+                                         :skip ["boot"]})))))
+
+    (t/testing "clojure-cli"
+      (t/is (nil? (some #(= "test/resources/dep/deps.edn" (:file %))
+                        (sut/fetch-deps {:directory ["test/resources/dep"]
+                                         :skip ["clojure-cli"]})))))
+
+    (t/testing "github-action"
+      (t/is (nil? (some #(= "test/resources/dep/github_action.yml" (:file %))
+                        (sut/fetch-deps {:directory ["test/resources/dep"]
+                                         :skip ["github-action"]})))))
+
+    (t/testing "pom"
+      (t/is (nil? (some #(= "test/resources/dep/pom.xml" (:file %))
+                        (sut/fetch-deps {:directory ["test/resources/dep"]
+                                         :skip ["pom"]})))))
+
+    (t/testing "shadow-cljs"
+      (t/is (nil? (some #(#{"test/resources/dep/shadow-cljs.edn"
+                            "test/resources/dep/shadow-cljs-env.edn"} (:file %))
+                        (sut/fetch-deps {:directory ["test/resources/dep"]
+                                         :skip ["shadow-cljs"]})))))
+
+    (t/testing "leiningen"
+      (t/is (nil? (some #(= "test/resources/dep/project.clj" (:file %))
+                        (sut/fetch-deps {:directory ["test/resources/dep"]
+                                         :skip ["leiningen"]})))))))
 
 (t/deftest latest-test
   (t/is (= "3.0.0"
