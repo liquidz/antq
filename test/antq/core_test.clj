@@ -11,20 +11,56 @@
   [_]
   ["3.0.0" "2.0.0" "1.0.0"])
 
+(def ^:private test-parse-opts #(cli/parse-opts % sut/cli-options))
+
 (t/deftest cli-options-test
-  (let [args [;; --exclude
-              "--exclude=ex/ex1"
-              "--exclude=ex/ex2:ex/ex3"
-              ;; --directory
-              "-d" "dir1"
-              "--directory=dir2"
-              "--directory" "dir3:dir4"]
-        ret (cli/parse-opts args sut/cli-options)]
-    (t/is (= {:options {:exclude ["ex/ex1" "ex/ex2" "ex/ex3"]
-                        :directory ["." "dir1" "dir2" "dir3" "dir4"]
-                        :error-format nil
-                        :reporter "table"}}
-             (select-keys ret [:options])))))
+  (t/testing "default options"
+    (t/is (= {:exclude []
+              :directory ["."]
+              :skip []
+              :error-format nil
+              :reporter "table"}
+             (:options (test-parse-opts [])))))
+
+  (t/testing "--exclude"
+    (t/is (= ["ex/ex1" "ex/ex2" "ex/ex3"]
+             (get-in (test-parse-opts ["--exclude=ex/ex1"
+                                       "--exclude=ex/ex2:ex/ex3"])
+                     [:options :exclude]))))
+
+  (t/testing "--directory"
+    (t/is (= ["." "dir1" "dir2" "dir3" "dir4"]
+             (get-in (test-parse-opts ["-d" "dir1"
+                                       "--directory=dir2"
+                                       "--directory" "dir3:dir4"])
+                     [:options :directory]))))
+
+  (t/testing "--skip"
+    (let [res (test-parse-opts ["--skip" "boot"
+                                "--skip=clojure-cli"])]
+      (t/is (= ["boot" "clojure-cli"]
+               (get-in res [:options :skip])))
+      (t/is (nil? (:errors res))))
+
+    (t/testing "validation error"
+      (let [res (test-parse-opts ["--skip=foo"])]
+        (t/is (= [] (get-in res [:options :skip])))
+        (t/is (some? (:errors res))))))
+
+  (t/testing "--error-format"
+    (t/is (= "foo"
+             (get-in (test-parse-opts ["--error-format=foo"])
+                     [:options :error-format]))))
+
+  (t/testing "--reporter"
+    (let [res (test-parse-opts ["--reporter=edn"])]
+      (t/is (= "edn" (get-in res [:options :reporter])))
+      (t/is (nil? (:errors res))))
+
+    (t/testing "validation error"
+      (let [res (test-parse-opts ["--reporter=foo"])]
+        (t/is (= "table" (get-in res [:options :reporter])))
+        (t/is (some? (:errors res)))))))
 
 (t/deftest skip-artifacts?-test
   (t/testing "default"
