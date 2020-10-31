@@ -20,10 +20,32 @@
    [clojure.string :as str]
    [clojure.tools.cli :as cli]))
 
+(defn- concat-assoc-fn
+  [opt k v]
+  (update opt k concat (str/split v #":")))
+
+(def ^:private supported-reporter
+  (->> (methods report/reporter)
+       (keys)
+       (filter string?)
+       (set)))
+
+(def ^:private skippable
+  #{"boot"
+    "clojure-cli"
+    "github-action"
+    "pom"
+    "shadow-cljs"
+    "leiningen"})
+
 (def cli-options
-  [[nil "--exclude=EXCLUDE" :default [] :assoc-fn #(update %1 %2 conj %3)]
+  [[nil "--exclude=EXCLUDE" :default [] :assoc-fn concat-assoc-fn]
+   [nil "--skip=SKIP" :default [] :assoc-fn concat-assoc-fn
+    :validate [#(skippable %) (str "Must be one of [" (str/join ", " skippable) "]")]]
    [nil "--error-format=ERROR_FORMAT" :default nil]
-   [nil "--reporter=REPORTER" :default "table"]])
+   [nil "--reporter=REPORTER" :default "table"
+    :validate [#(supported-reporter %) (str "Must be one of [" (str/join ", " supported-reporter) "]")]]
+   ["-d" "--directory=DIRECTORY" :default ["."] :assoc-fn concat-assoc-fn]])
 
 (def default-skip-artifacts
   #{"org.clojure/clojure"})
@@ -108,13 +130,16 @@
   (System/exit (if (seq outdated-deps) 1 0)))
 
 (defn fetch-deps
-  []
-  (concat (dep.boot/load-deps)
-          (dep.clj/load-deps)
-          (dep.gh-action/load-deps)
-          (dep.pom/load-deps)
-          (dep.shadow/load-deps)
-          (dep.lein/load-deps)))
+  [options]
+  (let [skip (set (:skip options))]
+    (mapcat #(concat
+              (when-not (skip "boot") (dep.boot/load-deps %))
+              (when-not (skip "clojure-cli") (dep.clj/load-deps %))
+              (when-not (skip "github-action") (dep.gh-action/load-deps %))
+              (when-not (skip "pom") (dep.pom/load-deps %))
+              (when-not (skip "shadow-cljs") (dep.shadow/load-deps %))
+              (when-not (skip "leiningen") (dep.lein/load-deps %)))
+            (distinct (:directory options)))))
 
 (defn -main
   [& args]
@@ -122,7 +147,7 @@
         options (cond-> options
                   ;; Force "format" reporter when :error-format is specified
                   (some?  (:error-format options)) (assoc :reporter "format"))
-        deps (fetch-deps)]
+        deps (fetch-deps options)]
     (if (seq deps)
       (let [outdated (outdated-deps deps options)]
         (report/reporter outdated options)

@@ -2,6 +2,7 @@
   "Clojure CLI"
   (:require
    [antq.record :as r]
+   [antq.util.dep :as u.dep]
    [antq.util.xml :as u.xml]
    [clojure.data.xml :as xml]
    [clojure.java.io :as io]))
@@ -16,7 +17,7 @@
        (reduce #(assoc %1 (first %2) {:url (second %2)}) {})))
 
 (defn extract-deps
-  [pom-xml-content-str]
+  [file-path pom-xml-content-str]
   (let [xml (->> pom-xml-content-str
                  xml/parse-str
                  xml-seq)
@@ -26,7 +27,7 @@
          (filter (fn [[_ _ version]] (seq version)))
          (map (fn [[group-id artifact-id version]]
                 (r/map->Dependency {:type :java
-                                    :file project-file
+                                    :file file-path
                                     :name (str group-id "/" artifact-id)
                                     :version version
                                     :repositories repos}))))))
@@ -36,4 +37,5 @@
   ([dir]
    (let [file (io/file dir project-file)]
      (when (.exists file)
-       (extract-deps (slurp file))))))
+       (extract-deps (u.dep/relative-path file)
+                     (slurp file))))))
