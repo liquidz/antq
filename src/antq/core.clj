@@ -24,8 +24,18 @@
   [opt k v]
   (update opt k concat (str/split v #":")))
 
+(def ^:private skippable
+  #{"boot"
+    "clojure-cli"
+    "github-action"
+    "pom"
+    "shadow-cljs"
+    "leiningen"})
+
 (def cli-options
   [[nil "--exclude=EXCLUDE" :default [] :assoc-fn concat-assoc-fn]
+   [nil "--skip=SKIP" :default [] :assoc-fn concat-assoc-fn
+    :validate [#(skippable %) (str "Must be one of [" (str/join ", " skippable) "]")]]
    [nil "--error-format=ERROR_FORMAT" :default nil]
    [nil "--reporter=REPORTER" :default "table"]
    ["-d" "--directory=DIRECTORY" :default ["."] :assoc-fn concat-assoc-fn]])
@@ -114,13 +124,15 @@
 
 (defn fetch-deps
   [options]
-  (mapcat #(concat (dep.boot/load-deps %)
-                   (dep.clj/load-deps %)
-                   (dep.gh-action/load-deps %)
-                   (dep.pom/load-deps %)
-                   (dep.shadow/load-deps %)
-                   (dep.lein/load-deps %))
-          (distinct (:directory options))))
+  (let [skip (set (:skip options))]
+    (mapcat #(concat
+              (when-not (skip "boot") (dep.boot/load-deps %))
+              (when-not (skip "clojure-cli") (dep.clj/load-deps %))
+              (when-not (skip "github-action") (dep.gh-action/load-deps %))
+              (when-not (skip "pom") (dep.pom/load-deps %))
+              (when-not (skip "shadow-cljs") (dep.shadow/load-deps %))
+              (when-not (skip "leiningen") (dep.lein/load-deps %)))
+            (distinct (:directory options)))))
 
 (defn -main
   [& args]
