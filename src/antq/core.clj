@@ -24,6 +24,12 @@
   [opt k v]
   (update opt k concat (str/split v #":")))
 
+(def ^:private supported-reporter
+  (->> (methods report/reporter)
+       (keys)
+       (filter string?)
+       (set)))
+
 (def ^:private skippable
   #{"boot"
     "clojure-cli"
@@ -37,7 +43,8 @@
    [nil "--skip=SKIP" :default [] :assoc-fn concat-assoc-fn
     :validate [#(skippable %) (str "Must be one of [" (str/join ", " skippable) "]")]]
    [nil "--error-format=ERROR_FORMAT" :default nil]
-   [nil "--reporter=REPORTER" :default "table"]
+   [nil "--reporter=REPORTER" :default "table"
+    :validate [#(supported-reporter %) (str "Must be one of [" (str/join ", " supported-reporter) "]")]]
    ["-d" "--directory=DIRECTORY" :default ["."] :assoc-fn concat-assoc-fn]])
 
 (def default-skip-artifacts
