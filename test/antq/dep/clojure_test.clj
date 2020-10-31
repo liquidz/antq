@@ -33,3 +33,7 @@
                (git-dependency {:name "git/hello" :version "dummy-sha"
                                 :extra {:url "https://github.com/example/hello.git"}})}
              (set deps)))))
+
+(t/deftest load-deps-test
+  (let [deps (sut/load-deps "test/resources/dep")]
+    (t/is (every? #(#{:java :git} (:type %)) deps))))

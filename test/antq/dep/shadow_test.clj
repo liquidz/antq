@@ -41,3 +41,7 @@
                  (dependency {:name "foo4" :version "default4"})
                  (dependency {:name "foo5" :version "5.0.0"})}
                (set deps))))))
+
+(t/deftest load-deps-test
+  (let [deps (sut/load-deps "test/resources/dep")]
+    (t/is (every? #(= :java (:type %)) deps))))
