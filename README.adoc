@@ -65,12 +65,26 @@ See antq's workflow for concrete example.
 == Options
 === --exclude=ARTIFACT_NAME
 Skip version checking for specified artifacts.
+
 E.g. `--exclude=antq/antq`
 
 NOTE: You must specify `groupId/artifactId` for Java dependencies.
 
+=== --directory=DIRECTORY
+Add search path for projects.
+Current directory(`.`) is added by default.
+
+E.g. `-d foo --directory=bar:baz` will search "foo", "baz" and "bar" directories.
+
+=== --skip=PROJECT
+Skip to search specified project files.
+Must be one of `boot`, `clojure-cli`, `github-action`, `pom`, `shadow-cljs` and `leiningen`.
+
+E.g. `--skip=pom`
+
 === --error-format=ERROR_FORMAT
 Customize outputs for outdated dependencies.
+
 E.g.  `--error-format="::error file={{file}}::{{message}}"`
 
 You can use following variables:
