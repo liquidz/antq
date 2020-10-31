@@ -2,6 +2,12 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 // {{{
+=== Added
+
+* Added `--directory` option.
+** Maybe useful for multi-module project.
+* Added `--skip` option.
+
 === Changed
 * Bumped tools.deps.alpha to `0.9.833`.
 // }}}
