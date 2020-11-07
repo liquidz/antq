@@ -26,7 +26,8 @@
          (map #(u.xml/get-values [:groupId :artifactId :version] (:content %)))
          (filter (fn [[_ _ version]] (seq version)))
          (map (fn [[group-id artifact-id version]]
-                (r/map->Dependency {:type :java
+                (r/map->Dependency {:project :pom
+                                    :type :java
                                     :file file-path
                                     :name (str group-id "/" artifact-id)
                                     :version version

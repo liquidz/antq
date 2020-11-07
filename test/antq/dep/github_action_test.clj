@@ -7,7 +7,8 @@
 
 (defn- dependency
   [m]
-  (r/map->Dependency (merge {:type :github-action
+  (r/map->Dependency (merge {:project :github-action
+                             :type :github-action
                              :file "dep/github_action.yml"} m)))
 
 (t/deftest extract-deps-test

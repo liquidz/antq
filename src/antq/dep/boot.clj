@@ -33,7 +33,8 @@
     (let [repositories (apply hash-map @repos)]
       (for [[dep-name version] @deps
             :when (and (string? version) (seq version))]
-        (r/map->Dependency {:type :java
+        (r/map->Dependency {:project :boot
+                            :type :java
                             :file file-path
                             :name  (if (qualified-symbol? dep-name)
                                      (str dep-name)

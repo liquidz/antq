@@ -40,7 +40,8 @@
                    (edn/read-string readers shadow-cljs-edn-content-str))
     (for [[dep-name version] @deps
           :when (and (string? version) (seq version))]
-      (r/map->Dependency {:type :java
+      (r/map->Dependency {:project :shadow-cljs
+                          :type :java
                           :file file-path
                           :name  (str dep-name)
                           :version version}))))

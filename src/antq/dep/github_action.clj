@@ -22,7 +22,8 @@
     (for [d @deps
           :let [[name version] (str/split d #"@" 2)]
           :when (seq version)]
-      (r/map->Dependency {:type :github-action
+      (r/map->Dependency {:project :github-action
+                          :type :github-action
                           :file file-path
                           :name name
                           :version (u.ver/normalize-version version)}))))

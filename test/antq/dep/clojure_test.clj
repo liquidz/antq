@@ -10,13 +10,15 @@
 
 (defn- java-dependency
   [m]
-  (r/map->Dependency (merge {:type :java
+  (r/map->Dependency (merge {:project :clojure
+                             :type :java
                              :file file-path
                              :repositories {"antq-test" {:url "s3://antq-repo/"}}}
                             m)))
 (defn- git-dependency
   [m]
-  (r/map->Dependency (merge {:type :git
+  (r/map->Dependency (merge {:project :clojure
+                             :type :git
                              :file file-path
                              :repositories {"antq-test" {:url "s3://antq-repo/"}}}
                             m)))

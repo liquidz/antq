@@ -10,7 +10,8 @@
 
 (defn- dependency
   [m]
-  (r/map->Dependency (merge {:type :java
+  (r/map->Dependency (merge {:project :shadow-cljs
+                             :type :java
                              :file file-path}
                             m)))
 

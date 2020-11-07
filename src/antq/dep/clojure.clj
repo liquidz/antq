@@ -44,7 +44,8 @@
           :when (and (not (ignore? opt))
                      (string? (:version type-and-version))
                      (seq (:version type-and-version)))]
-      (-> {:file file-path
+      (-> {:project :clojure
+           :file file-path
            :name  (if (qualified-symbol? dep-name)
                     (str dep-name)
                     (str dep-name "/" dep-name))

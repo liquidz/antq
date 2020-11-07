@@ -2,4 +2,4 @@
 
 (defrecord Dependency
   [type file name version latest-version
-   repositories])
+   repositories project])
