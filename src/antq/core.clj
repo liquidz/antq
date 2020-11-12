@@ -13,6 +13,8 @@
    [antq.report.format]
    [antq.report.json]
    [antq.report.table]
+   [antq.upgrade :as upgrade]
+   [antq.upgrade.leiningen]
    [antq.ver :as ver]
    [antq.ver.git]
    [antq.ver.github-action]
@@ -45,7 +47,9 @@
    [nil "--error-format=ERROR_FORMAT" :default nil]
    [nil "--reporter=REPORTER" :default "table"
     :validate [#(supported-reporter %) (str "Must be one of [" (str/join ", " supported-reporter) "]")]]
-   ["-d" "--directory=DIRECTORY" :default ["."] :assoc-fn concat-assoc-fn]])
+   ["-d" "--directory=DIRECTORY" :default ["."] :assoc-fn concat-assoc-fn]
+   [nil "--upgrade"]
+   [nil "--interactive"]])
 
 (def default-skip-artifacts
   #{"org.clojure/clojure"})
@@ -151,6 +155,10 @@
     (if (seq deps)
       (let [outdated (outdated-deps deps options)]
         (report/reporter outdated options)
+
+        (when (:upgrade options)
+          (upgrade/upgrade! outdated (or (:interactive options) false)))
+
         (exit outdated))
       (do (println "No project file")
           (System/exit 1)))))

@@ -60,7 +60,10 @@
     (t/testing "validation error"
       (let [res (test-parse-opts ["--reporter=foo"])]
         (t/is (= "table" (get-in res [:options :reporter])))
-        (t/is (some? (:errors res)))))))
+        (t/is (some? (:errors res))))))
+
+  (t/testing "--upgrade"
+    (t/is (nil? (test-parse-opts ["--upgrade"])))))
 
 (t/deftest skip-artifacts?-test
   (t/testing "default"
