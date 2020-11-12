@@ -15,3 +15,11 @@
   [^File target-file]
   (-> (.getPath target-file)
       (str/replace-first #"^\./" "")))
+
+(defn name-candidates
+  [^String dep-name]
+  (let [[group-id artifact-id] (str/split dep-name #"/" 2)
+        candidates (cond-> #{}
+                     (seq dep-name) (conj (symbol dep-name)))]
+    (cond-> candidates
+      (= group-id artifact-id) (conj (symbol group-id)))))
