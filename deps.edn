@@ -6,8 +6,8 @@
   cheshire/cheshire {:mvn/version "5.10.0"}
   clj-commons/clj-yaml {:mvn/version "0.7.2"}
   version-clj/version-clj {:mvn/version "0.1.2"}
-  borkdude/rewrite-edn {:git/url "https://github.com/borkdude/rewrite-edn"
-                        :sha "a0f6b2aa9087b1dbed0ecc71ea48c0dbaa60d91b"}}
+  lread/rewrite-cljc {:git/url "https://github.com/lread/rewrite-cljc-playground"
+                      :sha "b9f032b9be26a22bc48f65fc00b78ffa1385084f"}}
 
  :aliases
  {:dev
