@@ -16,6 +16,7 @@
    [antq.upgrade :as upgrade]
    [antq.upgrade.clojure]
    [antq.upgrade.leiningen]
+   [antq.upgrade.shadow]
    [antq.ver :as ver]
    [antq.ver.git]
    [antq.ver.github-action]
