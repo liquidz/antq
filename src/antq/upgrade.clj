@@ -6,7 +6,9 @@
 
 (defmethod upgrader :default
   [dep]
-  (println "Unknown project:" (:project dep)))
+  (println
+   (format "%s: Not supported yet."
+           (name (:project dep)))))
 
 (defn- confirm
   [dep]

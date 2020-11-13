@@ -63,7 +63,8 @@
         (t/is (some? (:errors res))))))
 
   (t/testing "--upgrade"
-    (t/is (nil? (test-parse-opts ["--upgrade"])))))
+    (t/is (true? (get-in (test-parse-opts ["--upgrade"])
+                         [:options :upgrade])))))
 
 (t/deftest skip-artifacts?-test
   (t/testing "default"
