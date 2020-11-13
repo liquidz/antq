@@ -5,7 +5,8 @@
    [antq.util.zip :as u.zip]
    [rewrite-cljc.zip :as z]))
 
-(defn in-dependencies [loc]
+(defn- in-dependencies?
+  [loc]
   (-> loc z/up z/up z/left z/value
       (= :dependencies)))
 
@@ -14,7 +15,7 @@
   (let [name-set (u.dep/name-candidates (:name version-checked-dep))]
     (loop [loc loc]
       (if-let [loc (z/find-value loc z/next name-set)]
-        (recur (if (in-dependencies loc)
+        (recur (if (in-dependencies? loc)
                  (-> loc z/right (z/replace (:latest-version version-checked-dep)))
                  loc))
         (u.zip/move-to-root loc)))))

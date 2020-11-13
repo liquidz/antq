@@ -2,31 +2,27 @@
   (:require
    [antq.dep.leiningen :as dep.lein]
    [antq.record :as r]
+   [antq.test-helper :as h]
    [antq.upgrade :as upgrade]
    [antq.upgrade.leiningen]
-   [clojure.data :as data]
    [clojure.java.io :as io]
    [clojure.test :as t]))
 
-(defn- name-version-map
-  [deps]
-  (->> deps
-       (map (juxt :name :version))
-       (into {})))
-
-(defn- diff-deps
-  [from-str to-str]
-  (data/diff (name-version-map (dep.lein/extract-deps "" from-str))
-             (name-version-map (dep.lein/extract-deps "" to-str))))
-
-(def dummy-version-checked-dep
+(def ^:private dummy-java-dep
   (r/map->Dependency {:project :leiningen
+                      :type :java
                       :name "foo/core"
                       :latest-version "9.0.0"
                       :file (io/resource "dep/project.clj")}))
 
 (t/deftest upgrade-dep-test
-  (let [[from to] (diff-deps (-> dummy-version-checked-dep :file slurp)
-                             (upgrade/upgrader dummy-version-checked-dep))]
+  (let [from-deps (->> dummy-java-dep
+                       :file
+                       (slurp)
+                       (dep.lein/extract-deps ""))
+        to-deps (->> dummy-java-dep
+                     (upgrade/upgrader)
+                     (dep.lein/extract-deps ""))
+        [from to] (h/diff-deps from-deps to-deps)]
     (t/is (= {"foo/core" "1.0.0"} from))
     (t/is (= {"foo/core" "9.0.0"} to))))
