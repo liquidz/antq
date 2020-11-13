@@ -39,4 +39,4 @@ coverage:
 	bash script/coverage.sh
 
 clean:
-	rm -rf target
+	rm -rf .cpcache target
