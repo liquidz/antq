@@ -14,6 +14,7 @@
    [antq.report.json]
    [antq.report.table]
    [antq.upgrade :as upgrade]
+   [antq.upgrade.clojure]
    [antq.upgrade.leiningen]
    [antq.ver :as ver]
    [antq.ver.git]
