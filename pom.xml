@@ -31,8 +31,18 @@
     </dependency>
     <dependency>
       <groupId>org.clojure</groupId>
+      <artifactId>data.zip</artifactId>
+      <version>1.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.clojure</groupId>
       <artifactId>tools.deps.alpha</artifactId>
       <version>0.9.833</version>
+    </dependency>
+    <dependency>
+      <groupId>org.clojure</groupId>
+      <artifactId>data.xml</artifactId>
+      <version>0.2.0-alpha6</version>
     </dependency>
     <dependency>
       <groupId>clj-commons</groupId>
