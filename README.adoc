@@ -10,6 +10,8 @@ image:https://codecov.io/gh/liquidz/antq/branch/master/graph/badge.svg["codecov"
 image:https://img.shields.io/clojars/v/antq.svg["Clojars Project", link="https://clojars.org/antq"]
 image:https://img.shields.io/badge/docker-automated-blue["Docker Hub", link="https://hub.docker.com/r/uochan/antq"]
 
+NOTE: Antq requires Clojure 1.8.0 or later.  If you'd like to use with 1.7.0 or earlier, please see link:./doc/clojure-1.7.adoc[here].
+
 == Supported files
 
 * deps.edn (https://clojure.org/guides/deps_and_cli[Clojure CLI])
@@ -29,7 +31,7 @@ Run the following command for trial.
 clojure -Sdeps '{:deps {antq/antq {:mvn/version "RELEASE"}}}' -m antq.core
 ----
 
-Or add following alias to your `$HOME/.clojure/deps.edn`.
+Or add the following alias to your `$HOME/.clojure/deps.edn`.
 [source,clojure]
 ----
 {
@@ -38,11 +40,12 @@ Or add following alias to your `$HOME/.clojure/deps.edn`.
              :main-opts ["-m" "antq.core"]}}
  }
 ----
-Then, run `clojure -A:outdated`.
+Then, run `clojure -M:outdated`.
+(run `clojure -A:outdated` for Clojure CLI Tool 1.10.1.645 or earlier).
 
 === Leiningen
 
-Add following dependency and alias to your `$HOME/.lein/profiles.clj`.
+Add the following dependency and alias to your `$HOME/.lein/profiles.clj`.
 [source,clojure]
 ----
 {
