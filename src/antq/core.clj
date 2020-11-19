@@ -1,3 +1,10 @@
+;; Warn on Clojure 1.7.0 or earlier
+(let [{:keys [major minor]} *clojure-version*]
+  (when-not (or (and (= major 1) (>= minor 8))
+                (> major 1))
+    (.println *err* "antq requires Clojure 1.8.0 or later.")
+    (System/exit 1)))
+
 (ns antq.core
   (:gen-class)
   (:require
