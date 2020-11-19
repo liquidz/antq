@@ -36,7 +36,7 @@
         (r/map->Dependency {:project :leiningen
                             :type :java
                             :file file-path
-                            :name  (if (qualified-symbol? dep-name)
+                            :name  (if (u.dep/qualified-symbol?' dep-name)
                                      (str dep-name)
                                      (str dep-name "/" dep-name))
                             :version version
