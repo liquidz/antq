@@ -6,7 +6,7 @@ WORKDIR /tmp/antq
 COPY deps.edn /tmp/antq/deps.edn
 COPY src/ /tmp/antq/src/
 RUN clojure -Spom && \
-        clojure -A:depstar:uberjar -m hf.depstar.uberjar antq.jar -C -m antq.core
+        clojure -A:nop -X:depstar uberjar :jar antq.jar :aot true :main-class antq.core
 
 WORKDIR /tmp
 ENTRYPOINT ["java", "-jar", "/tmp/antq/antq.jar"]
