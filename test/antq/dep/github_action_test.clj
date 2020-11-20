@@ -5,20 +5,28 @@
    [clojure.java.io :as io]
    [clojure.test :as t]))
 
-(defn- dependency
+(defn- git-tag-dependency
   [m]
   (r/map->Dependency (merge {:project :github-action
                              :type :github-action
                              :file "dep/github_action.yml"} m)))
 
+(defn- git-sha-dependency
+  [m]
+  (r/map->Dependency (merge {:project :github-action
+                             :type :git
+                             :file "dep/github_action.yml"} m)))
+
 (t/deftest extract-deps-test
   (let [deps (sut/extract-deps
-              "dep/github_action.yml"
-              (slurp (io/resource "dep/github_action.yml")))]
+               "dep/github_action.yml"
+               (slurp (io/resource "dep/github_action.yml")))]
     (t/is (sequential? deps))
     (t/is (every? #(instance? antq.record.Dependency %) deps))
-    (t/is (= #{(dependency {:name "foo/bar" :version "1.0.0"})
-               (dependency {:name "bar/baz" :version "master"})}
+    (t/is (= #{(git-tag-dependency {:name "foo/bar" :version "1.0.0"})
+               (git-tag-dependency {:name "bar/baz" :version "master"})
+               (git-sha-dependency {:name "git/sha" :version "8be09192b01d78912b03852f5d6141e8c48f4179"
+                                    :extra {:url "https://github.com/git/sha.git"}})}
              (set deps)))))
 
 (t/deftest load-deps-test

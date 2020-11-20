@@ -8,3 +8,4 @@ jobs:
       - name: Bar
         uses: bar/baz@master
       - uses: ./
+      - uses: git/sha@8be09192b01d78912b03852f5d6141e8c48f4179
