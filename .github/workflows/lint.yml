@@ -14,6 +14,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: |
-          curl -sfLo cljstyle.tar.gz https://github.com/greglook/cljstyle/releases/download/0.12.0/cljstyle_0.12.0_linux.tar.gz
+          curl -sfLo cljstyle.tar.gz https://github.com/greglook/cljstyle/releases/download/0.14.0/cljstyle_0.14.0_linux.tar.gz
           tar xvf cljstyle.tar.gz
           ./cljstyle check
