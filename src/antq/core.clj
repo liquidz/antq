@@ -59,7 +59,7 @@
     :validate [#(supported-reporter %) (str "Must be one of [" (str/join ", " supported-reporter) "]")]]
    ["-d" "--directory=DIRECTORY" :default ["."] :assoc-fn concat-assoc-fn]
    [nil "--upgrade"]
-   [nil "--interactive"]])
+   [nil "--force"]])
 
 (def default-skip-artifacts
   #{"org.clojure/clojure"})
@@ -167,7 +167,7 @@
         (report/reporter outdated options)
 
         (when (:upgrade options)
-          (upgrade/upgrade! outdated (or (:interactive options) false)))
+          (upgrade/upgrade! outdated (or (:force options) false)))
 
         (exit outdated))
       (do (println "No project file")

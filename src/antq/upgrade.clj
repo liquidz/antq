@@ -21,11 +21,11 @@
   (contains? #{'y 'Y 'yes 'Yes 'YES} (read)))
 
 (defn upgrade!
-  [version-checked-deps interactive?]
+  [version-checked-deps force?]
   (doseq [dep version-checked-deps
-          :when (if interactive?
-                  (confirm dep)
-                  true)]
+          :when (if force?
+                  true
+                  (confirm dep))]
     (when-let [upgraded-content (upgrader dep)]
       (println (format "Upgraded %s '%s' to '%s' in %s."
                        (:name dep)
