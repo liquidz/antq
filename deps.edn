@@ -12,7 +12,10 @@
                       :sha "b9f032b9be26a22bc48f65fc00b78ffa1385084f"}}
 
  :aliases
- {:dev
+ {:1.9
+  {:override-deps {org.clojure/clojure {:mvn/version "1.9.0"}}}
+
+  :dev
   {:extra-paths ["test"
                  "test/resources"]
    :extra-deps {lambdaisland/kaocha {:mvn/version "1.0.700"}

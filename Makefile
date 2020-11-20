@@ -7,6 +7,7 @@ outdated:
 	clojure -M:outdated:nop
 
 test:
+	clojure -M:dev:1.9:test
 	clojure -M:dev:test
 
 lint:
