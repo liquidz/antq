@@ -9,7 +9,7 @@
   clj-commons/clj-yaml {:mvn/version "0.7.2"}
   version-clj/version-clj {:mvn/version "0.1.2"}
   lread/rewrite-cljc {:git/url "https://github.com/lread/rewrite-cljc-playground"
-                      :sha "b9f032b9be26a22bc48f65fc00b78ffa1385084f"}}
+                      :sha "cc8ded71f1ca056d4851f4664754e0e004e985ad"}}
 
  :aliases
  {:1.9
