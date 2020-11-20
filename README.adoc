@@ -66,6 +66,20 @@ See antq's workflow for concrete example.
 * To show errors as annotations, please set this option: `--error-format="::error file={{file}}::{{message}}"`
 
 == Options
+=== --upgrade
+Upgrade outdated versions interactively.
+You can use `--force` option for upgrading without confirmation.
+
+[WARNING]
+====
+For now, `--upgrade` option only supports following files.
+
+* deps.edn
+* shadow-cljs.edn
+* project.clj
+* pom.xml
+====
+
 === --exclude=ARTIFACT_NAME
 Skip version checking for specified artifacts.
 
@@ -134,66 +148,10 @@ When you use `--error-format` option, this reporter will be used automatically.
 
 == Tips
 
-=== Maven S3 repos
-
-Antq supports Maven S3 repositories as same as https://clojure.org/reference/deps_and_cli[tools.deps].
-To use Maven S3 repositories, add repositories to your project configuration.
-
-Please see https://clojure.org/reference/deps_and_cli#_maven_s3_repos[tools.deps documents] documents for AWS S3 credentials.
-
-.Clojure CLI Tool (deps.edn)
-[source,clojure]
-----
-{:deps {...}
- :mvn/repos {"my-private-repo" {:url "s3://my-bucket/maven/releases"}}
-----
-
-.Leiningen (project.clj)
-[source,clojure]
-----
-(defproject foo "0.1.0-SNAPSHOT"
-  :dependencies [...]
-  :repositories [["my-private-repo" {:url "s3://my-bucket/maven/releases"}]])
-----
-
-.Boot (build.boot)
-[source,clojure]
-----
-(set-env!
-  :repositories #(conj % '["my-private-repo" {:url "s3://my-bucket/maven/releases"}]))
-----
-
-=== Avoid SLF4J warnings
-
-antq does not load `org.slf4j.impl.StaticLoggerBinder` by default, so you may get following messages depending on the project.
-
-[source,text]
-----
-SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
-SLF4J: Defaulting to no-operation (NOP) logger implementation
-SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
-----
-
-To avoid this message, add the following to your dependency.
-
-[source,clojure]
-----
-org.slf4j/slf4j-nop {:mvn/version "RELEASE"}
-----
-
-=== Latest version of a specific library
-
-If you are using Clojure CLI Tools https://clojure.org/releases/tools#v1.10.1.697[v1.10.1.697] or later,
-You can use `-X` option to find out the latest version of a specific library.
-
-[source,clojure]
-----
-;; Try to find Java library by default
-clojure -Sdeps '{:deps {antq/antq {:mvn/version "RELEASE"}}}' -X antq.core/latest :name antq
-
-;; You can specify library type
-clojure -Sdeps '{:deps {antq/antq {:mvn/version "RELEASE"}}}' -X antq.core/latest :name actions/checkout :type :github-action
-----
+* link:./doc/maven-s3-repos.adoc[Maven S3 reposhere].
+* link:./doc/avoid-slf4j-warnings.adoc[Avoid SLF4J warnings]
+* link:./doc/latest-version-of-a-specific-library.adoc[Latest version of a specific library]
+* link:./doc/clojure-1.7.adoc[Antq with Clojure 1.7.0 or earlier]
 
 == License
 
