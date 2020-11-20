@@ -2,6 +2,7 @@
   (:require
    [antq.report :as report]
    [antq.util.dep :as u.dep]
+   [antq.util.ver :as u.ver]
    [clojure.string :as str]))
 
 (def ^:private default-outdated-message-format
@@ -12,10 +13,13 @@
 
 (defn apply-format-string
   [dep format-string]
-  (reduce-kv (fn [s k v]
-               (str/replace s (str "{{" (name k) "}}") (or v "")))
-             format-string
-             (select-keys dep [:file :name :version :latest-version :message])))
+  (let [dep (-> dep
+                (assoc :latest-version (u.ver/normalize-latest-version dep))
+                (select-keys [:file :name :version :latest-version :message]))]
+    (reduce-kv (fn [s k v]
+                 (str/replace s (str "{{" (name k) "}}") (or v "")))
+               format-string
+               dep)))
 
 (defmethod report/reporter "format"
   [deps options]

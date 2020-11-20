@@ -2,6 +2,7 @@
   (:require
    [antq.report :as report]
    [antq.util.dep :as u.dep]
+   [antq.util.ver :as u.ver]
    [clojure.pprint :as pprint]))
 
 (defn compare-deps
@@ -28,6 +29,6 @@
     (->> deps
          (sort u.dep/compare-deps)
          skip-duplicated-file-name
-         (map #(update % :latest-version (fnil identity "Failed to fetch")))
+         (map #(assoc % :latest-version (u.ver/normalize-latest-version %)))
          (pprint/print-table [:file :name :version :latest-version]))
     (println "All dependencies are up-to-date.")))

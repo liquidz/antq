@@ -19,7 +19,8 @@
                               dummy-deps
                               "::error file={{file}}::{{message}}"))))
 
-    (t/is (= ["::error file=a::foo,1,2" "::error file=b::bar,1,"]
+    (t/is (= ["::error file=a::foo,1,2"
+              "::error file=b::bar,1,Failed to fetch"]
              (str/split-lines
               (with-out-str
                 (reporter
