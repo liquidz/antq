@@ -12,7 +12,8 @@
 
 (defn- sha-1?
   [s]
-  (some? (re-seq #"^[a-fA-F0-9]{40}$" s)))
+  (some? (and (re-seq #"^[a-fA-F0-9]+$" s)
+              (#{40 7} (count s)))))
 
 (defn- name->url [^String name]
   (if (= 0 (.indexOf name "https://"))
