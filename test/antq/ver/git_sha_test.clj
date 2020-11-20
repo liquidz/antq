@@ -16,4 +16,10 @@
 
 (t/deftest latest?-test
   (t/is (true? (ver/latest? {:type :git-sha :version "foo" :latest-version "foo"})))
-  (t/is (false? (ver/latest? {:type :git-sha :version "foo" :latest-version "bar"}))))
+  (t/is (false? (ver/latest? {:type :git-sha :version "foo" :latest-version "bar"})))
+
+  (t/testing "comparing short SHA and long SHA"
+    (t/is (true? (ver/latest? {:type :git-sha
+                               :version "8be0919"
+                               :latest-version "8be09192b01d78912b03852f5d6141e8c48f4179"})))))
+
