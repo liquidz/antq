@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: DeLaGuardo/setup-clojure@e73bf2b6435244b2c9c5c226ae5022d91d0ce702
+      - uses: DeLaGuardo/setup-clojure@e73bf2b
         with:
           tools-deps: '1.10.1.727'
       - uses: actions/cache@v2
