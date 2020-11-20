@@ -22,7 +22,7 @@
 (defn- extract-type-and-version
   [name version]
   (if (sha-1? version)
-    {:type :git
+    {:type :git-sha
      :version version
      :extra {:url (name->url name)}}
     {:type :github-action

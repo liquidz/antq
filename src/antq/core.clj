@@ -26,7 +26,7 @@
    [antq.upgrade.pom]
    [antq.upgrade.shadow]
    [antq.ver :as ver]
-   [antq.ver.git]
+   [antq.ver.git-sha]
    [antq.ver.github-action]
    [antq.ver.java]
    [clojure.string :as str]
