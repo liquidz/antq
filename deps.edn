@@ -18,7 +18,7 @@
   :dev
   {:extra-paths ["test"
                  "test/resources"]
-   :extra-deps {lambdaisland/kaocha {:mvn/version "1.0.700"}
+   :extra-deps {lambdaisland/kaocha {:mvn/version "1.0.726"}
                 org.clojure/test.check {:mvn/version "1.1.0"}}}
 
   :nop
