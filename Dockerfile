@@ -1,4 +1,4 @@
-FROM clojure:openjdk-14-tools-deps
+FROM clojure:openjdk-15-tools-deps-1.10.1.739
 
 RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
 
