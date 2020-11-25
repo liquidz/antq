@@ -4,7 +4,7 @@
   org.clojure/data.xml {:mvn/version "0.2.0-alpha6"}
   org.clojure/data.zip {:mvn/version "1.0.0"}
   org.clojure/tools.cli {:mvn/version "1.0.194"}
-  org.clojure/tools.deps.alpha {:mvn/version "0.9.833"}
+  org.clojure/tools.deps.alpha {:mvn/version "0.9.840"}
   cheshire/cheshire {:mvn/version "5.10.0"}
   clj-commons/clj-yaml {:mvn/version "0.7.2"}
   version-clj/version-clj {:mvn/version "0.1.2"}
