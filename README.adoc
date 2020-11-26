@@ -77,6 +77,7 @@ For now, `--upgrade` option only supports following files.
 * deps.edn
 * shadow-cljs.edn
 * project.clj
+* build.boot
 * pom.xml
 ====
 

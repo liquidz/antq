@@ -21,6 +21,7 @@
    [antq.report.json]
    [antq.report.table]
    [antq.upgrade :as upgrade]
+   [antq.upgrade.boot]
    [antq.upgrade.clojure]
    [antq.upgrade.leiningen]
    [antq.upgrade.pom]
