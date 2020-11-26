@@ -17,7 +17,7 @@
       (if-let [loc (z/find-value loc z/next name-set)]
         (recur (if (in-dependencies? loc)
                  (-> loc z/right (z/replace (:latest-version version-checked-dep)))
-                 loc))
+                 (z/next loc)))
         (u.zip/move-to-root loc)))))
 
 (defmethod upgrade/upgrader :leiningen
