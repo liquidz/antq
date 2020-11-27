@@ -2,6 +2,28 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 
+== 0.9.0 (2020-11-28)
+// {{{
+=== Added
+
+* https://github.com/liquidz/antq/issues/36[#36]: Added `--upgrade` option.
+** Allows to upgrade versions in files by antq interactively.
+** Files to support upgrading currently
+*** deps.edn, shadow-cljs.edn, project.clj, build.boot, pom.xml
+** Added `--force` option.
+*** Allows to force upgrading.
+* https://github.com/liquidz/antq/issues/39[#39]: Added support for Clojure 1.8.0.
+
+=== Changed
+
+* Bumped tools.deps.alpha to `0.9.840`.
+
+=== Fixed
+
+* https://github.com/liquidz/antq/issues/39[#39]: Changed to warn on Clojure 1.7.0 or earlier.
+* Fixed to be able to handle GitHub Actions specified by SHA.
+// }}}
+
 == 0.8.0 (2020-11-01)
 // {{{
 === Added

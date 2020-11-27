@@ -10,6 +10,26 @@
   (:import
    java.io.File))
 
+(defn- sha-1?
+  [s]
+  (some? (and (re-seq #"^[a-fA-F0-9]+$" s)
+              (#{40 7} (count s)))))
+
+(defn- name->url
+  [^String name]
+  (if (= 0 (.indexOf name "https://"))
+    name
+    (str "https://github.com/" name ".git")))
+
+(defn- extract-type-and-version
+  [name version]
+  (if (sha-1? version)
+    {:type :git-sha
+     :version version
+     :extra {:url (name->url name)}}
+    {:type :github-action
+     :version (u.ver/normalize-version version)}))
+
 (defn extract-deps
   [file-path workflow-content-str]
   (let [deps (atom [])]
@@ -22,10 +42,11 @@
     (for [d @deps
           :let [[name version] (str/split d #"@" 2)]
           :when (seq version)]
-      (r/map->Dependency {:type :github-action
-                          :file file-path
-                          :name name
-                          :version (u.ver/normalize-version version)}))))
+      (-> {:project :github-action
+           :file file-path
+           :name name}
+          (merge (extract-type-and-version name version))
+          (r/map->Dependency)))))
 
 (defn load-deps
   ([] (load-deps "."))

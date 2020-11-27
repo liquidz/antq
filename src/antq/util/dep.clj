@@ -4,6 +4,11 @@
   (:import
    java.io.File))
 
+(defn qualified-symbol?'
+  "To support Clojure 1.8.0"
+  [x]
+  (boolean (and (symbol? x) (namespace x) true)))
+
 (defn compare-deps
   [x y]
   (let [prj (.compareTo ^String (:file x) ^String (:file y))]
@@ -15,3 +20,11 @@
   [^File target-file]
   (-> (.getPath target-file)
       (str/replace-first #"^\./" "")))
+
+(defn name-candidates
+  [^String dep-name]
+  (let [[group-id artifact-id] (str/split dep-name #"/" 2)
+        candidates (cond-> #{}
+                     (seq dep-name) (conj (symbol dep-name)))]
+    (cond-> candidates
+      (= group-id artifact-id) (conj (symbol group-id)))))

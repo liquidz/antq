@@ -33,9 +33,10 @@
     (let [repositories (reduce (fn [acc [k v]] (assoc acc k (if (map? v) v {:url v})))  {} @repos)]
       (for [[dep-name version] @deps
             :when (and (string? version) (seq version))]
-        (r/map->Dependency {:type :java
+        (r/map->Dependency {:project :leiningen
+                            :type :java
                             :file file-path
-                            :name  (if (qualified-symbol? dep-name)
+                            :name  (if (u.dep/qualified-symbol?' dep-name)
                                      (str dep-name)
                                      (str dep-name "/" dep-name))
                             :version version

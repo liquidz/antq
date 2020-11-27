@@ -41,3 +41,11 @@
 
   (t/is (= (.getPath (io/file "foo" "bar"))
            (sut/relative-path (io/file "./foo" "bar")))))
+
+(t/deftest name-candidates-test
+  (t/is (= #{'foo/core}
+           (sut/name-candidates "foo/core")))
+  (t/is (= #{'foo/foo 'foo}
+           (sut/name-candidates "foo/foo")))
+  (t/is (= #{}
+           (sut/name-candidates ""))))

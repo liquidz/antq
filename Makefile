@@ -1,13 +1,14 @@
-.PHONY: repl run test pom jar uberjar install deploy docker clean
+.PHONY: repl outdated test pom jar uberjar install deploy docker coverage clean
 
 repl:
 	iced repl -A:dev
 
-run:
-	clojure -M:run
+outdated:
+	clojure -M:outdated:nop
 
 test:
-	clojure -A:dev:test
+	clojure -M:dev:1.9:test
+	clojure -M:dev:test
 
 lint:
 	cljstyle check
@@ -17,26 +18,29 @@ pom:
 	clojure -Spom
 
 target/antq-standalone.jar: pom
-	clojure -A:depstar:uberjar -m hf.depstar.uberjar $@ -C -m antq.core
+	clojure -A:nop -X:depstar uberjar :jar $@ :aot true :main-class antq.core
+
 uberjar: clean target/antq-standalone.jar
 
 target/antq.jar: pom
-	clojure -A:depstar -m hf.depstar.jar $@
+	clojure -X:depstar jar :jar $@
 jar: clean target/antq.jar
 
 install: clean target/antq.jar
-	clj -R:deploy -m deps-deploy.deps-deploy install target/antq.jar
+	clj -M:deploy install target/antq.jar
 
 deploy: clean target/antq.jar
 	echo "Testing if CLOJARS_USERNAME environmental variable exists."
 	test $(CLOJARS_USERNAME)
-	clj -A:deploy
+	clj -M:deploy deploy target/antq.jar
 
 docker:
 	docker build -t uochan/antq .
+docker-test:
+	docker run --rm -v $(shell pwd):/src -w /src uochan/antq:latest
 
 coverage:
-	bash script/coverage.sh
+	clojure -M:coverage:dev:nop --src-ns-path=src --test-ns-path=test --codecov
 
 clean:
-	rm -rf target
+	rm -rf .cpcache target

@@ -1,6 +1,7 @@
 (ns antq.util.xml)
 
 (defn xml-ns
+  "expects the result of `xml-seq` as content"
   [content]
   (-> (if (sequential? content)
         (first (filter map? content))

@@ -10,13 +10,15 @@
 
 (defn- java-dependency
   [m]
-  (r/map->Dependency (merge {:type :java
+  (r/map->Dependency (merge {:project :clojure
+                             :type :java
                              :file file-path
                              :repositories {"antq-test" {:url "s3://antq-repo/"}}}
                             m)))
 (defn- git-dependency
   [m]
-  (r/map->Dependency (merge {:type :git
+  (r/map->Dependency (merge {:project :clojure
+                             :type :git-sha
                              :file file-path
                              :repositories {"antq-test" {:url "s3://antq-repo/"}}}
                             m)))
@@ -36,4 +38,4 @@
 
 (t/deftest load-deps-test
   (let [deps (sut/load-deps "test/resources/dep")]
-    (t/is (every? #(#{:java :git} (:type %)) deps))))
+    (t/is (every? #(contains? #{:java :git-sha} (:type %)) deps))))

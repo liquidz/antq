@@ -1,3 +1,10 @@
+;; Warn on Clojure 1.7.0 or earlier
+(let [{:keys [major minor]} *clojure-version*]
+  (when-not (or (and (= major 1) (>= minor 8))
+                (> major 1))
+    (.println *err* "antq requires Clojure 1.8.0 or later.")
+    (System/exit 1)))
+
 (ns antq.core
   (:gen-class)
   (:require
@@ -13,8 +20,14 @@
    [antq.report.format]
    [antq.report.json]
    [antq.report.table]
+   [antq.upgrade :as upgrade]
+   [antq.upgrade.boot]
+   [antq.upgrade.clojure]
+   [antq.upgrade.leiningen]
+   [antq.upgrade.pom]
+   [antq.upgrade.shadow]
    [antq.ver :as ver]
-   [antq.ver.git]
+   [antq.ver.git-sha]
    [antq.ver.github-action]
    [antq.ver.java]
    [clojure.string :as str]
@@ -45,7 +58,9 @@
    [nil "--error-format=ERROR_FORMAT" :default nil]
    [nil "--reporter=REPORTER" :default "table"
     :validate [#(supported-reporter %) (str "Must be one of [" (str/join ", " supported-reporter) "]")]]
-   ["-d" "--directory=DIRECTORY" :default ["."] :assoc-fn concat-assoc-fn]])
+   ["-d" "--directory=DIRECTORY" :default ["."] :assoc-fn concat-assoc-fn]
+   [nil "--upgrade"]
+   [nil "--force"]])
 
 (def default-skip-artifacts
   #{"org.clojure/clojure"})
@@ -61,7 +76,7 @@
 
 (defn using-release-version?
   [dep]
-  (contains? #{"RELEASE" "master"} (:version dep)))
+  (contains? #{"RELEASE" "master" "main"} (:version dep)))
 
 (defn- assoc-versions
   [dep]
@@ -151,6 +166,10 @@
     (if (seq deps)
       (let [outdated (outdated-deps deps options)]
         (report/reporter outdated options)
+
+        (when (:upgrade options)
+          (upgrade/upgrade! outdated (or (:force options) false)))
+
         (exit outdated))
       (do (println "No project file")
           (System/exit 1)))))

@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>antq</groupId>
   <artifactId>antq</artifactId>
-  <version>0.8.0</version>
+  <version>0.9.0</version>
   <name>antq</name>
   <description>Point out your outdated dependencies</description>
   <url>https://github.com/liquidz/antq</url>
@@ -31,8 +31,18 @@
     </dependency>
     <dependency>
       <groupId>org.clojure</groupId>
+      <artifactId>data.zip</artifactId>
+      <version>1.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.clojure</groupId>
       <artifactId>tools.deps.alpha</artifactId>
-      <version>0.9.833</version>
+      <version>0.9.840</version>
+    </dependency>
+    <dependency>
+      <groupId>org.clojure</groupId>
+      <artifactId>data.xml</artifactId>
+      <version>0.2.0-alpha6</version>
     </dependency>
     <dependency>
       <groupId>clj-commons</groupId>

@@ -19,20 +19,20 @@
         (and (:git/url opt) :git))))
 
 (defmethod extract-type-and-version :default
-  [{:mvn/keys [version]}]
+  [opt]
   {:type :java
-   :version version})
+   :version (:mvn/version opt)})
 
 (defmethod extract-type-and-version :git
-  [{:git/keys [url] :keys [sha]}]
-  {:type :git
-   :version sha
-   :extra {:url url}})
+  [opt]
+  {:type :git-sha
+   :version (:sha opt)
+   :extra {:url (:git/url opt)}})
 
 (defn extract-deps
   [file-path deps-edn-content-str]
   (let [deps (atom {})
-        {:mvn/keys [repos] :as edn} (edn/read-string deps-edn-content-str)]
+        edn (edn/read-string deps-edn-content-str)]
     (walk/postwalk (fn [form]
                      (when (and (sequential? form)
                                 (#{:deps :extra-deps} (first form)))
@@ -44,11 +44,12 @@
           :when (and (not (ignore? opt))
                      (string? (:version type-and-version))
                      (seq (:version type-and-version)))]
-      (-> {:file file-path
-           :name  (if (qualified-symbol? dep-name)
+      (-> {:project :clojure
+           :file file-path
+           :name  (if (u.dep/qualified-symbol?' dep-name)
                     (str dep-name)
                     (str dep-name "/" dep-name))
-           :repositories repos}
+           :repositories (:mvn/repos edn)}
           (merge type-and-version)
           (r/map->Dependency)))))
 

@@ -1,0 +1,28 @@
+= Maven S3 repos
+
+Antq supports Maven S3 repositories as same as https://clojure.org/reference/deps_and_cli[tools.deps].
+To use Maven S3 repositories, add repositories to your project configuration.
+
+Please see https://clojure.org/reference/deps_and_cli#_maven_s3_repos[tools.deps documents] documents for AWS S3 credentials.
+
+.Clojure CLI Tool (deps.edn)
+[source,clojure]
+----
+{:deps {...}
+ :mvn/repos {"my-private-repo" {:url "s3://my-bucket/maven/releases"}}
+----
+
+.Leiningen (project.clj)
+[source,clojure]
+----
+(defproject foo "0.1.0-SNAPSHOT"
+  :dependencies [...]
+  :repositories [["my-private-repo" {:url "s3://my-bucket/maven/releases"}]])
+----
+
+.Boot (build.boot)
+[source,clojure]
+----
+(set-env!
+  :repositories #(conj % '["my-private-repo" {:url "s3://my-bucket/maven/releases"}]))
+----

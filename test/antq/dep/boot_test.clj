@@ -10,7 +10,8 @@
 
 (defn- dependency
   [m]
-  (r/map->Dependency (merge {:type :java
+  (r/map->Dependency (merge {:project :boot
+                             :type :java
                              :file file-path
                              :repositories {"antq-test" {:url "s3://antq-repo/"}}}
                             m)))
