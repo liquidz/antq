@@ -17,7 +17,7 @@
 
 (def ^:private dummy-git-dep
   (r/map->Dependency {:project :clojure
-                      :type :git
+                      :type :git-sha
                       :name "git/hello"
                       :latest-version "new-sha"
                       :file (io/resource "dep/deps.edn")}))

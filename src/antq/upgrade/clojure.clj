@@ -13,7 +13,7 @@
 (defn upgrade-dep
   [loc version-checked-dep]
   (let [name-set (u.dep/name-candidates (:name version-checked-dep))
-        version-key (if (= :git (:type version-checked-dep))
+        version-key (if (= :git-sha (:type version-checked-dep))
                       :sha
                       :mvn/version)]
     (loop [loc loc]
