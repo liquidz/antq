@@ -16,14 +16,14 @@
 (defmulti extract-type-and-version
   (fn [opt]
     (or (and (:mvn/version opt) :java)
-        (and (:git/url opt) :git))))
+        (and (:git/url opt) :git-sha))))
 
 (defmethod extract-type-and-version :default
   [opt]
   {:type :java
    :version (:mvn/version opt)})
 
-(defmethod extract-type-and-version :git
+(defmethod extract-type-and-version :git-sha
   [opt]
   {:type :git-sha
    :version (:sha opt)
