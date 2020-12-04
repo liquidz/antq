@@ -2,6 +2,18 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 
+== 0.9.2 (2020-12-05)
+// {{{
+=== Changed
+
+* Bumped tools.deps.alpha to `0.9.847`.
+
+=== Fixed
+
+* https://github.com/liquidz/antq/issues/42[#42]: Fixed upgrader to skip artifacts which cannot fetch the version.
+* Fixed `antq.ver.github-action` to fallback to use `git ls-remote` when failed to fetch tags from GitHub API.
+// }}}
+
 == 0.9.1 (2020-11-30)
 // {{{
 === Fixed

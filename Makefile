@@ -4,7 +4,7 @@ repl:
 	iced repl -A:dev
 
 outdated:
-	clojure -M:outdated:nop
+	clojure -M:outdated:nop --upgrade
 
 test:
 	clojure -M:dev:1.9:test
