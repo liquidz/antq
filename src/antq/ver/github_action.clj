@@ -2,8 +2,8 @@
   (:require
    [antq.util.ver :as u.ver]
    [antq.ver :as ver]
-   [clojure.java.shell :as sh]
    [cheshire.core :as json]
+   [clojure.java.shell :as sh]
    [clojure.string :as str]
    [version-clj.core :as version])
   (:import

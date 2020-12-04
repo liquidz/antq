@@ -6,7 +6,7 @@
    [clojure.test :as t]))
 
 (def temp-files
-  (repeatedly 2 #(io/file (str "." (gensym))) ))
+  (repeatedly 2 #(io/file (str "." (gensym)))))
 
 (defn- create-temp-file
   []
@@ -19,7 +19,8 @@
     (when (.exists f)
       (.delete f))))
 
-(defn temp-file-fixture [f]
+(defn temp-file-fixture
+  [f]
   (create-temp-file)
   (f)
   (delete-temp-file))
