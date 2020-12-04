@@ -7,7 +7,7 @@
 (t/deftest get-sorted-versions-test
   (with-redefs [sut/git-ls-remote (fn [url]
                                     (when (= url "https://example.com")
-                                      {:out  "foo-sha\tFOO\nhead-sha\tHEAD\nbar-sha\tBAR"}))]
+                                      {:out "foo-sha\tFOO\nhead-sha\tHEAD\nbar-sha\tBAR"}))]
     (t/is (= ["head-sha"]
              (ver/get-sorted-versions {:type :git-sha :extra {:url "https://example.com"}})))
 
