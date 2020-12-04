@@ -28,7 +28,7 @@
   (->> (:out ls-remote-resp)
        (str/split-lines)
        (keep #(second (str/split % #"\t" 2)))
-       (filter #(= 0 (.indexOf % "refs/tags")))
+       (filter #(= 0 (.indexOf ^String % "refs/tags")))
        (map #(u.ver/normalize-version (str/replace % #"^refs/tags/" "")))
        (filter u.ver/sem-ver?)
        (sort version/version-compare)

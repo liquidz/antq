@@ -2,7 +2,7 @@
 (let [{:keys [major minor]} *clojure-version*]
   (when-not (or (and (= major 1) (>= minor 8))
                 (> major 1))
-    (.println *err* "antq requires Clojure 1.8.0 or later.")
+    (.println ^java.io.PrintWriter *err* "antq requires Clojure 1.8.0 or later.")
     (System/exit 1)))
 
 (ns antq.core
