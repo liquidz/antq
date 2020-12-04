@@ -23,9 +23,10 @@
 (defn upgrade!
   [version-checked-deps force?]
   (doseq [dep version-checked-deps
-          :when (if force?
-                  true
-                  (confirm dep))]
+          :when (and (:latest-version dep)
+                     (if force?
+                       true
+                       (confirm dep)))]
     (when-let [upgraded-content (upgrader dep)]
       (println (format "Upgraded %s '%s' to '%s' in %s."
                        (:name dep)
