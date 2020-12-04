@@ -4,6 +4,7 @@
    [antq.ver :as ver]
    [antq.ver.github-action :as sut]
    [cheshire.core :as json]
+   [clojure.string :as str]
    [clojure.test :as t]))
 
 (defn- dep
@@ -25,10 +26,46 @@
     {:name "v2.0.0"}
     {:name "v3.0.0"}]))
 
-(t/deftest get-sorted-version-test
+(defn- reset-fixture
+  [f]
+  (reset! (deref #'sut/failed-to-fetch-from-api) false)
+  (f))
+
+(t/use-fixtures :each reset-fixture)
+
+(t/deftest get-sorted-versions-test
   (with-redefs [slurp (constantly dummy-json)]
     (t/is (= ["3.0.0" "2.0.0" "1.0.0"]
+             (get-sorted-versions {:name "foo/bar"}))))
+
+  (t/testing "response should be cached"
+    (t/is (= ["3.0.0" "2.0.0" "1.0.0"]
              (get-sorted-versions {:name "foo/bar"})))))
+
+(t/deftest get-sorted-versions-fallback-test
+  (let [api-errored (atom false)
+        dummy-out (->> [["foo-sha" "FOO"]
+                        ["one-sha" "refs/tags/1.0"]
+                        ["two-sha" "refs/tags/2.0"]
+                        ["bar-sha" "BAR"]]
+                       (map #(str/join "\t" %))
+                       (str/join "\n"))]
+    (with-redefs [slurp (fn [& _]
+                          (reset! api-errored true)
+                          (throw (Exception. "test exception")))
+                  sut/github-ls-remote (fn [dep]
+                                         (when (= "bar/baz" (:name dep))
+                                           {:out dummy-out}))]
+      (t/testing "pre"
+        (t/is (false? @api-errored))
+        (t/is (false? @(deref #'sut/failed-to-fetch-from-api))))
+
+      (t/is (= ["2.0" "1.0"]
+               (get-sorted-versions {:name "bar/baz"})))
+
+      (t/testing "post"
+        (t/is (true? @api-errored))
+        (t/is (true? @(deref #'sut/failed-to-fetch-from-api)))))))
 
 (defn- latest?
   [m]
