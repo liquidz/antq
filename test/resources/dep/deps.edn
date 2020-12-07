@@ -9,6 +9,7 @@
         ver-empty {:mvn/version ""}}
 
  :aliases
- {:foo {:extra-deps {baz {:mvn/version "3.0.0"}}}}
+ {:foo {:extra-deps {baz {:mvn/version "3.0.0"}}
+        :replace-deps {rep {:mvn/version "4.0.0"}}}}
 
  :mvn/repos {"antq-test" {:url "s3://antq-repo/"}}}
