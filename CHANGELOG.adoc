@@ -2,6 +2,8 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 
+* https://github.com/liquidz/antq/issues/44[#44]: Add `:replace-deps` check for Clojure CLI tools.
+
 == 0.9.2 (2020-12-05)
 // {{{
 === Changed
