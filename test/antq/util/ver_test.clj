@@ -1,5 +1,6 @@
 (ns antq.util.ver-test
   (:require
+   [antq.record :as r]
    [antq.util.ver :as sut]
    [clojure.test :as t]))
 
@@ -16,3 +17,21 @@
     false "foo"
     false "0.0-1"
     false ""))
+
+(t/deftest normalize-latest-version-test
+  (t/is (= "foo"
+           (sut/normalize-latest-version (r/map->Dependency {:type :java :latest-version "foo"}))))
+
+  (t/is (= (deref #'sut/no-latest-version-error)
+           (sut/normalize-latest-version (r/map->Dependency {:type :java :latest-version nil}))))
+
+
+  (t/testing "git-sha"
+    (t/is (= "4c484d08630a5711f5a04c4f7e23c5fb1dad6cf9"
+             (sut/normalize-latest-version (r/map->Dependency {:type :git-sha
+                                                               :version "faf211bae9ad9dd399af6efbeaa8b01930c0482f"
+                                                               :latest-version "4c484d08630a5711f5a04c4f7e23c5fb1dad6cf9"}))))
+    (t/is (= "4c484d0"
+             (sut/normalize-latest-version (r/map->Dependency {:type :git-sha
+                                                               :version "faf211b"
+                                                               :latest-version "4c484d08630a5711f5a04c4f7e23c5fb1dad6cf9"}))))))
