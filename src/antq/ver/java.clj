@@ -7,8 +7,8 @@
    [version-clj.core :as version])
   (:import
    (org.eclipse.aether
-    RepositorySystem
-    RepositorySystemSession)
+    DefaultRepositorySystemSession
+    RepositorySystem)
    (org.eclipse.aether.resolution
     VersionRangeRequest)
    (org.eclipse.aether.transfer
@@ -53,7 +53,7 @@
   (let [lib (cond-> name (string? name) symbol)
         local-repo deps.util.maven/default-local-repo
         system ^RepositorySystem (deps.util.session/retrieve :mvn/system #(deps.util.maven/make-system))
-        session ^RepositorySystemSession (deps.util.session/retrieve :mvn/session #(deps.util.maven/make-session system local-repo))
+        session ^DefaultRepositorySystemSession (deps.util.maven/make-session system local-repo)
         ;; Overwrite TransferListener not to show "Downloading" messages
         _ (.setTransferListener session custom-transfer-listener)
         ; c.f. https://stackoverflow.com/questions/35488167/how-can-you-find-the-latest-version-of-a-maven-artifact-from-java-using-aether
