@@ -1,6 +1,6 @@
 (defproject foo "0.1.0-SNAPSHOT"
   :dependencies [[foo/core "1.0.0"]
-                 [bar "2.0.0" :exclusions [org.clojure/clojure]]
+                 ^:inline-dep [bar "2.0.0" :exclusions [org.clojure/clojure]]
                  [ver-not-string :version]
                  [ver-empty ""]]
 
