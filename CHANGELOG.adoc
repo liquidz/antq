@@ -1,6 +1,15 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+// {{{
+=== Changed
+
+* Bumped tools.deps.alpha to `0.9.857`.
+
+=== Fixed
+
+* Fixed leiningen upgrader to work with metadata.
+// }}}
 
 == 0.9.3 (2020-12-07)
 // {{{
