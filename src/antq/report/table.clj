@@ -5,13 +5,6 @@
    [antq.util.ver :as u.ver]
    [clojure.pprint :as pprint]))
 
-(defn compare-deps
-  [x y]
-  (let [prj (.compareTo ^String (:file x) ^String (:file y))]
-    (if (zero? prj)
-      (.compareTo ^String (:name x) ^String (:name y))
-      prj)))
-
 (defn skip-duplicated-file-name
   [sorted-deps]
   (loop [[dep & rest-deps] sorted-deps

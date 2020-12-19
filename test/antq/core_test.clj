@@ -16,6 +16,7 @@
 (t/deftest cli-options-test
   (t/testing "default options"
     (t/is (= {:exclude []
+              :focus []
               :directory ["."]
               :skip []
               :error-format nil
@@ -27,6 +28,12 @@
              (get-in (test-parse-opts ["--exclude=ex/ex1"
                                        "--exclude=ex/ex2:ex/ex3"])
                      [:options :exclude]))))
+
+  (t/testing "--focus"
+    (t/is (= ["fo/cus1" "fo/cus2" "fo/cus3"]
+             (get-in (test-parse-opts ["--focus=fo/cus1"
+                                       "--focus=fo/cus2:fo/cus3"])
+                     [:options :focus]))))
 
   (t/testing "--directory"
     (t/is (= ["." "dir1" "dir2" "dir3" "dir4"]
@@ -76,14 +83,28 @@
       false "foo"
       false "foo/bar"))
 
-  (t/testing "custom"
+  (t/testing "custom: exclude"
     (t/are [expected in] (= expected (sut/skip-artifacts? (r/map->Dependency {:name in})
                                                           {:exclude ["org.clojure/foo" "foo"]}))
       true "org.clojure/clojure"
       true "org.clojure/foo"
       false "foo/clojure"
       true "foo"
-      false "foo/bar")))
+      false "foo/bar"))
+
+  (t/testing "custom: focus"
+    (t/are [expected in] (= expected (sut/skip-artifacts? (r/map->Dependency {:name in})
+                                                          {:focus ["org.clojure/clojure" "foo"]}))
+      false "org.clojure/clojure"
+      true "org.clojure/foo"
+      true "foo/clojure"
+      false "foo"
+      true "foo/bar"))
+
+  (t/testing "`focus` shoud be prefer than `exclude`"
+    (t/is (false? (sut/skip-artifacts? (r/map->Dependency {:name "org.clojure/clojure"})
+                                       {:exclude ["org.clojure/clojure"]
+                                        :focus ["org.clojure/clojure"]})))))
 
 (t/deftest using-release-version?-test
   (t/are [expected in] (= expected (sut/using-release-version?

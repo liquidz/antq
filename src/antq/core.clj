@@ -53,6 +53,7 @@
 
 (def cli-options
   [[nil "--exclude=EXCLUDE" :default [] :assoc-fn concat-assoc-fn]
+   [nil "--focus=FOCUS" :default [] :assoc-fn concat-assoc-fn]
    [nil "--skip=SKIP" :default [] :assoc-fn concat-assoc-fn
     :validate [#(skippable %) (str "Must be one of [" (str/join ", " skippable) "]")]]
    [nil "--error-format=ERROR_FORMAT" :default nil]
@@ -71,8 +72,15 @@
 
 (defn skip-artifacts?
   [dep options]
-  (let [skip-artifacts (apply conj default-skip-artifacts (:exclude options []))]
-    (contains? skip-artifacts (:name dep))))
+  (let [exclude-artifacts (apply conj default-skip-artifacts (:exclude options []))
+        focus-artifacts (set (:focus options []))]
+    (cond
+      ;; `focus` is prefer than `exclude`
+      (seq focus-artifacts)
+      (not (contains? focus-artifacts (:name dep)))
+
+      :else
+      (contains? exclude-artifacts (:name dep)))))
 
 (defn using-release-version?
   [dep]
