@@ -18,7 +18,8 @@
   :dev
   {:extra-paths ["test"
                  "test/resources"]
-   :extra-deps {lambdaisland/kaocha {:mvn/version "1.0.732"}}}
+   :extra-deps {lambdaisland/kaocha {:mvn/version "1.0.732"}
+                lambdaisland/deep-diff2 {:mvn/version "2.0.108"}}}
 
   :nop
   {:extra-deps {org.slf4j/slf4j-nop {:mvn/version "RELEASE"}}}
