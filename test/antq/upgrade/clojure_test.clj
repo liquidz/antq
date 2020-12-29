@@ -30,10 +30,10 @@
                          (dep.clj/extract-deps ""))
           to-deps (->> dummy-java-dep
                        (upgrade/upgrader)
-                       (dep.clj/extract-deps ""))
-          [from to] (h/diff-deps from-deps to-deps)]
-      (t/is (= {"foo/core" "1.0.0"} from))
-      (t/is (= {"foo/core" "9.0.0"} to))))
+                       (dep.clj/extract-deps ""))]
+      (t/is (= #{{:name "foo/core" :version {:- "1.0.0" :+ "9.0.0"}}
+                 {:name "foo/core" :version {:- "1.1.0" :+ "9.0.0"}}}
+               (h/diff-deps from-deps to-deps)))))
 
   (t/testing "git"
     (let [from-deps (->> dummy-git-dep
@@ -42,10 +42,9 @@
                          (dep.clj/extract-deps ""))
           to-deps (->> dummy-git-dep
                        (upgrade/upgrader)
-                       (dep.clj/extract-deps ""))
-          [from to] (h/diff-deps from-deps to-deps)]
-      (t/is (= {"git/hello" "dummy-sha"} from))
-      (t/is (= {"git/hello" "new-sha"} to)))))
+                       (dep.clj/extract-deps ""))]
+      (t/is (= #{{:name "git/hello" :version {:- "dummy-sha" :+ "new-sha"}}}
+               (h/diff-deps from-deps to-deps))))))
 
 (t/deftest upgrade-dep-replce-deps-test
   (let [dummy-dep (assoc dummy-java-dep :name "rep")
@@ -55,7 +54,6 @@
                        (dep.clj/extract-deps ""))
         to-deps (->> dummy-dep
                      (upgrade/upgrader)
-                     (dep.clj/extract-deps ""))
-        [from to] (h/diff-deps from-deps to-deps)]
-    (t/is (= {"rep/rep" "4.0.0"} from))
-    (t/is (= {"rep/rep" "9.0.0"} to))))
+                     (dep.clj/extract-deps ""))]
+    (t/is (= #{{:name "rep/rep" :version {:- "4.0.0" :+ "9.0.0"}}}
+             (h/diff-deps from-deps to-deps)))))

@@ -22,7 +22,6 @@
                        (dep.boot/extract-deps ""))
         to-deps (->> dummy-java-dep
                      (upgrade/upgrader)
-                     (dep.boot/extract-deps ""))
-        [from to] (h/diff-deps from-deps to-deps)]
-    (t/is (= {"bar/bar" "2.0.0"} from))
-    (t/is (= {"bar/bar" "9.0.0"} to))))
+                     (dep.boot/extract-deps ""))]
+    (t/is (= #{{:name "bar/bar" :version {:- "2.0.0" :+ "9.0.0"}}}
+             (h/diff-deps from-deps to-deps)))))

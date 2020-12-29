@@ -22,7 +22,6 @@
                        (dep.shadow/extract-deps ""))
         to-deps (->> dummy-java-dep
                      (upgrade/upgrader)
-                     (dep.shadow/extract-deps ""))
-        [from to] (h/diff-deps from-deps to-deps)]
-    (t/is (= {"foo/core" "1.0.0"} from))
-    (t/is (= {"foo/core" "9.0.0"} to))))
+                     (dep.shadow/extract-deps ""))]
+    (t/is (= #{{:name "foo/core" :version {:- "1.0.0" :+ "9.0.0"}}}
+             (h/diff-deps from-deps to-deps)))))

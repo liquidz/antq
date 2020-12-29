@@ -20,10 +20,9 @@
                        (dep.lein/extract-deps ""))
         to-deps (->> java-dep
                      (upgrade/upgrader)
-                     (dep.lein/extract-deps ""))
-        [from to] (h/diff-deps from-deps to-deps)]
-    (t/is (= {"foo/core" "1.0.0"} from))
-    (t/is (= {"foo/core" "9.0.0"} to))))
+                     (dep.lein/extract-deps ""))]
+    (t/is (= #{{:name "foo/core" :version {:- "1.0.0" :+ "9.0.0"}}}
+             (h/diff-deps from-deps to-deps)))))
 
 (t/deftest upgrade-meta-dep-test
   (let [meta-dep (r/map->Dependency {:project :leiningen
@@ -37,7 +36,6 @@
                        (dep.lein/extract-deps ""))
         to-deps (->> meta-dep
                      (upgrade/upgrader)
-                     (dep.lein/extract-deps ""))
-        [from to] (h/diff-deps from-deps to-deps)]
-    (t/is (= {"bar/bar" "2.0.0"} from))
-    (t/is (= {"bar/bar" "8.0.0"} to))))
+                     (dep.lein/extract-deps ""))]
+    (t/is (= #{{:name "bar/bar" :version {:- "2.0.0" :+ "8.0.0"}}}
+             (h/diff-deps from-deps to-deps)))))
