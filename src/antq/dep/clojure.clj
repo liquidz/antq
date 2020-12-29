@@ -31,12 +31,15 @@
 
 (defn extract-deps
   [file-path deps-edn-content-str]
-  (let [deps (atom {})
+  (let [deps (atom [])
         edn (edn/read-string deps-edn-content-str)]
     (walk/postwalk (fn [form]
                      (when (and (sequential? form)
                                 (#{:deps :extra-deps :replace-deps} (first form)))
-                       (swap! deps merge (second form)))
+                       (->> form
+                            (second)
+                            (seq)
+                            (swap! deps concat)))
                      form)
                    edn)
     (for [[dep-name opt] @deps
