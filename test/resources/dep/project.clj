@@ -6,7 +6,11 @@
 
   :profiles
   {:foo
-   {:dependencies [[baz "3.0.0"]]}}
+   {:dependencies [[baz "3.0.0"]]}
+
+   :bar
+   [;; same artifact name, but different version number
+    :dependencies [[foo/core "1.1.0"]]]}
 
   :repositories [["antq-test" {:url "s3://antq-repo/"}]
                  ["str-test" "https://example.com"]])

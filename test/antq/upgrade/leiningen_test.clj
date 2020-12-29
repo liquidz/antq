@@ -21,7 +21,8 @@
         to-deps (->> java-dep
                      (upgrade/upgrader)
                      (dep.lein/extract-deps ""))]
-    (t/is (= #{{:name "foo/core" :version {:- "1.0.0" :+ "9.0.0"}}}
+    (t/is (= #{{:name "foo/core" :version {:- "1.0.0" :+ "9.0.0"}}
+               {:name "foo/core" :version {:- "1.1.0" :+ "9.0.0"}}}
              (h/diff-deps from-deps to-deps)))))
 
 (t/deftest upgrade-meta-dep-test
