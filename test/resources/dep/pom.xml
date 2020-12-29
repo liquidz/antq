@@ -30,6 +30,12 @@
       <artifactId>empty</artifactId>
       <version></version>
     </dependency>
+    <!-- same artifact name, but different version number -->
+    <dependency>
+      <groupId>foo</groupId>
+      <artifactId>core</artifactId>
+      <version>1.1.0</version>
+    </dependency>
   </dependencies>
   <repositories>
     <repository>
