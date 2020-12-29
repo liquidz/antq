@@ -46,3 +46,16 @@
           [from to] (h/diff-deps from-deps to-deps)]
       (t/is (= {"git/hello" "dummy-sha"} from))
       (t/is (= {"git/hello" "new-sha"} to)))))
+
+(t/deftest upgrade-dep-replce-deps-test
+  (let [dummy-dep (assoc dummy-java-dep :name "rep")
+        from-deps (->> dummy-dep
+                       :file
+                       (slurp)
+                       (dep.clj/extract-deps ""))
+        to-deps (->> dummy-dep
+                     (upgrade/upgrader)
+                     (dep.clj/extract-deps ""))
+        [from to] (h/diff-deps from-deps to-deps)]
+    (t/is (= {"rep/rep" "4.0.0"} from))
+    (t/is (= {"rep/rep" "9.0.0"} to))))
