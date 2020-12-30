@@ -8,7 +8,7 @@
 (defn- in-deps?
   [loc]
   (->> loc z/up z/left z/value
-       (contains? #{:deps :extra-deps})))
+       (contains? #{:deps :extra-deps :replace-deps})))
 
 (defn upgrade-dep
   [loc version-checked-dep]

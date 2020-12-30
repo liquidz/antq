@@ -2,6 +2,15 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 
+== 0.10.1 (2020-12-30)
+// {{{
+=== Fixed
+
+* https://github.com/liquidz/antq/issues/50[#50]: Fixed to detect older versions correctly if deps has the same name but different versions and one of them is the latest version.
+* https://github.com/liquidz/antq/issues/51[#51]: Fixed `deps.edn` upgrader to handle `:replace-deps` key.
+
+// }}}
+
 == 0.10.0 (2020-12-19)
 // {{{
 === Added

@@ -30,6 +30,7 @@
     (t/is (sequential? deps))
     (t/is (every? #(instance? antq.record.Dependency %) deps))
     (t/is (= #{(java-dependency {:name "foo/core" :version "1.0.0"})
+               (java-dependency {:name "foo/core" :version "1.1.0"})
                (java-dependency {:name "bar/bar" :version "2.0.0"})
                (java-dependency {:name "baz/baz" :version "3.0.0"})
                (java-dependency {:name "rep/rep" :version "4.0.0"})
