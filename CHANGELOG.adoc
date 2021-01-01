@@ -2,6 +2,14 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 
+== 0.10.2 (2021-01-02)
+
+// {{{
+=== Fixed
+
+* Fixed leiningen upgrader to be able to upgrade `:plugins`.
+// }}}
+
 == 0.10.1 (2020-12-30)
 // {{{
 === Fixed

@@ -4,6 +4,8 @@
                  [ver-not-string :version]
                  [ver-empty ""]]
 
+  :plugins [[plug "4.0.0"]]
+
   :profiles
   {:foo
    {:dependencies [[baz "3.0.0"]]}
