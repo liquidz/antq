@@ -9,7 +9,7 @@
   [loc]
   (loop [loc (-> loc z/up z/up)]
     (if (= :vector (z/tag loc))
-      (= :dependencies (-> loc z/left z/value))
+      (contains? #{:dependencies :plugins} (-> loc z/left z/value))
       ;; skip elements like metadata
       (recur (z/up loc)))))
 
