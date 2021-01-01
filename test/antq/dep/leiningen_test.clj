@@ -26,7 +26,8 @@
     (t/is (= #{(dependency {:name "foo/core" :version "1.0.0"})
                (dependency {:name "foo/core" :version "1.1.0"})
                (dependency {:name "bar/bar" :version "2.0.0"})
-               (dependency {:name "baz/baz" :version "3.0.0"})}
+               (dependency {:name "baz/baz" :version "3.0.0"})
+               (dependency {:name "plug/plug" :version "4.0.0"})}
              (set deps)))))
 
 (t/deftest load-deps-test
