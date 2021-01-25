@@ -175,9 +175,11 @@
       (let [outdated (outdated-deps deps options)]
         (report/reporter outdated options)
 
-        (when (:upgrade options)
-          (upgrade/upgrade! outdated (or (:force options) false)))
+        (cond-> outdated
+          (:upgrade options)
+          (upgrade/upgrade! (or (:force options) false))
 
-        (exit outdated))
+          true
+          (exit)))
       (do (println "No project file")
           (System/exit 1)))))

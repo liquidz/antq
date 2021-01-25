@@ -11,26 +11,39 @@
            (name (:project dep)))))
 
 (defn- confirm
-  [dep]
-  (print (format "Do you upgrade %s '%s' to '%s' in %s (y/n): "
-                 (:name dep)
-                 (:version dep)
-                 (:latest-version dep)
-                 (:file dep)))
-  (flush)
-  (contains? #{'y 'Y 'yes 'Yes 'YES} (read)))
+  [dep force?]
+  (cond
+    (and (:latest-version dep)
+         force?)
+    true
 
-(defn upgrade!
-  [version-checked-deps force?]
-  (doseq [dep version-checked-deps
-          :when (and (:latest-version dep)
-                     (if force?
-                       true
-                       (confirm dep)))]
-    (when-let [upgraded-content (upgrader dep)]
-      (println (format "Upgraded %s '%s' to '%s' in %s."
+    (:latest-version dep)
+    (do (print (format "Do you upgrade %s '%s' to '%s' in %s (y/n): "
                        (:name dep)
                        (:version dep)
                        (:latest-version dep)
                        (:file dep)))
-      (spit (:file dep) upgraded-content))))
+        (flush)
+        (contains? #{'y 'Y 'yes 'Yes 'YES} (read)))
+
+    :else
+    false))
+
+(defn upgrade!
+  "Return only non-upgraded deps"
+  [version-checked-deps force?]
+  (doall
+   (remove
+    (fn [dep]
+      (if (confirm dep force?)
+        (if-let [upgraded-content (upgrader dep)]
+          (do (println (format "Upgraded %s '%s' to '%s' in %s."
+                               (:name dep)
+                               (:version dep)
+                               (:latest-version dep)
+                               (:file dep)))
+              (spit (:file dep) upgraded-content)
+              true)
+          false)
+        false))
+    version-checked-deps)))
