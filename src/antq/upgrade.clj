@@ -17,6 +17,10 @@
          force?)
     true
 
+    ;; TODO: Remove this condition when upgrading YAML is supported
+    (= :github-action (:project dep))
+    false
+
     (:latest-version dep)
     (do (print (format "Do you upgrade %s '%s' to '%s' in %s (y/n): "
                        (:name dep)
