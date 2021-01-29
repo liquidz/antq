@@ -31,7 +31,8 @@
    [antq.ver.github-tag]
    [antq.ver.java]
    [clojure.string :as str]
-   [clojure.tools.cli :as cli]))
+   [clojure.tools.cli :as cli]
+   [version-clj.core :as version]))
 
 (defn- concat-assoc-fn
   [opt k v]
@@ -161,13 +162,27 @@
               (when-not (skip "leiningen") (dep.lein/load-deps %)))
             (distinct (:directory options)))))
 
+(defn unify-org-clojure-deps
+  "Keep only the newest version of `org.clojure/clojure` in the same file."
+  [deps]
+  (let [other-deps (remove #(= "org.clojure/clojure" (:name %)) deps)]
+    (->> deps
+         (filter #(= "org.clojure/clojure" (:name %)))
+         (group-by :file)
+         (map (fn [[_ deps]]
+                (->> deps
+                     (sort (fn [a b] (version/version-compare (:version b) (:version a))))
+                     first)))
+         (concat other-deps))))
+
 (defn -main
   [& args]
   (let [{:keys [options]} (cli/parse-opts args cli-options)
         options (cond-> options
                   ;; Force "format" reporter when :error-format is specified
                   (some?  (:error-format options)) (assoc :reporter "format"))
-        deps (fetch-deps options)]
+        deps (fetch-deps options)
+        deps (unify-org-clojure-deps deps)]
     (if (seq deps)
       (let [outdated (outdated-deps deps options)]
         (report/reporter outdated options)

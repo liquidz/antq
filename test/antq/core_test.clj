@@ -161,6 +161,19 @@
                         (sut/fetch-deps {:directory ["test/resources/dep"]
                                          :skip ["leiningen"]})))))))
 
+(t/deftest unify-org-clojure-deps-test
+  (let [deps [(r/map->Dependency {:name "org.clojure/clojure" :version "1.8.0" :file "deps.edn"})
+              (r/map->Dependency {:name "org.clojure/clojure" :version "1.9.0"  :file "deps.edn"})
+              (r/map->Dependency {:name "org.clojure/clojure" :version "1.10.2" :file "deps.edn"})
+
+              (r/map->Dependency {:name "org.clojure/clojure" :version "1.8.0" :file "project.clj"})
+              (r/map->Dependency {:name "org.clojure/clojure" :version "1.9.0"  :file "project.clj"})]
+        res (sut/unify-org-clojure-deps deps)]
+    (t/is (= 2 (count res)))
+    (t/is (= #{(r/map->Dependency {:name "org.clojure/clojure" :version "1.10.2" :file "deps.edn"})
+               (r/map->Dependency {:name "org.clojure/clojure" :version "1.9.0"  :file "project.clj"})}
+             (set res)))))
+
 (t/deftest latest-test
   (t/is (= "3.0.0"
            (str/trim
