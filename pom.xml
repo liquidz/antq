@@ -47,7 +47,7 @@
     <dependency>
       <groupId>clj-commons</groupId>
       <artifactId>clj-yaml</artifactId>
-      <version>0.7.2</version>
+      <version>0.7.106</version>
     </dependency>
     <dependency>
       <groupId>cheshire</groupId>
