@@ -63,16 +63,13 @@
    [nil "--upgrade"]
    [nil "--force"]])
 
-(def default-skip-artifacts
-  #{"org.clojure/clojure"})
-
 (def default-repos
   {"central" "https://repo1.maven.org/maven2/"
    "clojars" "https://repo.clojars.org/"})
 
 (defn skip-artifacts?
   [dep options]
-  (let [exclude-artifacts (apply conj default-skip-artifacts (:exclude options []))
+  (let [exclude-artifacts (set (:exclude options []))
         focus-artifacts (set (:focus options []))]
     (cond
       ;; `focus` is prefer than `exclude`

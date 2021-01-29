@@ -77,7 +77,7 @@
   (t/testing "default"
     (t/are [expected in] (= expected (sut/skip-artifacts? (r/map->Dependency {:name in})
                                                           {}))
-      true "org.clojure/clojure"
+      false "org.clojure/clojure"
       false "org.clojure/foo"
       false "foo/clojure"
       false "foo"
@@ -85,7 +85,7 @@
 
   (t/testing "custom: exclude"
     (t/are [expected in] (= expected (sut/skip-artifacts? (r/map->Dependency {:name in})
-                                                          {:exclude ["org.clojure/foo" "foo"]}))
+                                                          {:exclude ["org.clojure/clojure" "org.clojure/foo" "foo"]}))
       true "org.clojure/clojure"
       true "org.clojure/foo"
       false "foo/clojure"
@@ -123,8 +123,7 @@
             (test-dep {:name "bob" :version "2.0.0" :latest-version "3.0.0"})]
            (sut/outdated-deps [(test-dep {:name "alice" :version "1.0.0"})
                                (test-dep {:name "bob" :version "2.0.0"})
-                               (test-dep {:name "charlie" :version "3.0.0"})
-                               (test-dep {:name (first sut/default-skip-artifacts) :version "1.0.0"})]
+                               (test-dep {:name "charlie" :version "3.0.0"})]
                               {}))))
 
 (t/deftest fetch-deps-test
