@@ -12,7 +12,9 @@
                       :sha "24a27fbf387e7df4e65c83b469f7bab05ee06673"}}
 
  :aliases
- {:1.9
+ {:1.8
+  {:override-deps {org.clojure/clojure {:mvn/version "1.8.0"}}}
+  :1.9
   {:override-deps {org.clojure/clojure {:mvn/version "1.9.0"}}}
 
   :dev
