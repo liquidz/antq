@@ -11,7 +11,7 @@
 (defn- in-deps?
   [loc]
   (->> loc z/up z/left z/value
-       (contains? #{:deps :extra-deps :replace-deps})))
+       (contains? #{:deps :extra-deps :replace-deps :override-deps})))
 
 (defn upgrade-dep
   [loc version-checked-dep]
