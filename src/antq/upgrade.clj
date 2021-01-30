@@ -1,4 +1,6 @@
-(ns antq.upgrade)
+(ns antq.upgrade
+  (:require
+   [antq.util.zip :as u.zip]))
 
 (defmulti upgrader
   (fn [version-checked-dep]
@@ -13,6 +15,10 @@
 (defn- confirm
   [dep force?]
   (cond
+    (not u.zip/rewrite-cljc-supported?)
+    (do (println "Upgrading is only supported Clojure 1.9 or later.")
+        false)
+
     (and (:latest-version dep)
          force?)
     true
