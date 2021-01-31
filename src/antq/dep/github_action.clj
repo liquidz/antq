@@ -27,7 +27,7 @@
     {:type :git-sha
      :version version
      :extra {:url (name->url name)}}
-    {:type :github-action
+    {:type :github-tag
      :version (u.ver/normalize-version version)}))
 
 (defn extract-deps

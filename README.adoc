@@ -10,7 +10,11 @@ image:https://codecov.io/gh/liquidz/antq/branch/master/graph/badge.svg["codecov"
 image:https://img.shields.io/clojars/v/antq.svg["Clojars Project", link="https://clojars.org/antq"]
 image:https://img.shields.io/badge/docker-automated-blue["Docker Hub", link="https://hub.docker.com/r/uochan/antq"]
 
-NOTE: Antq requires Clojure 1.8.0 or later.  If you'd like to use with 1.7.0 or earlier, please see link:./doc/clojure-1.7.adoc[here].
+[NOTE]
+====
+Antq requires Clojure 1.8.0 or later. (However `--upgrade` option requires Clojure 1.9.0 or later) +
+If you'd like to use with 1.7.0 or earlier, please see link:./doc/clojure-1.7.adoc[here].
+====
 
 == Supported files
 

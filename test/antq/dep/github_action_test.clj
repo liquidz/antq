@@ -8,7 +8,7 @@
 (defn- git-tag-dependency
   [m]
   (r/map->Dependency (merge {:project :github-action
-                             :type :github-action
+                             :type :github-tag
                              :file "dep/github_action.yml"} m)))
 
 (defn- git-sha-dependency
@@ -33,7 +33,7 @@
 
 (t/deftest load-deps-test
   (let [deps (sut/load-deps)]
-    (t/is (every? #(contains? #{:github-action :git-sha} (:type %)) deps))
+    (t/is (every? #(contains? #{:github-tag :git-sha} (:type %)) deps))
     (t/is (= #{".github/workflows/coverage.yml"
                ".github/workflows/dependencies.yml"
                ".github/workflows/docker.yml"

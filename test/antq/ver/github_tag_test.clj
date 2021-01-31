@@ -1,15 +1,15 @@
-(ns antq.ver.github-action-test
+(ns antq.ver.github-tag-test
   (:require
    [antq.record :as r]
    [antq.ver :as ver]
-   [antq.ver.github-action :as sut]
+   [antq.ver.github-tag :as sut]
    [cheshire.core :as json]
    [clojure.string :as str]
    [clojure.test :as t]))
 
 (defn- dep
   [m]
-  (r/map->Dependency (merge {:type :github-action} m)))
+  (r/map->Dependency (merge {:type :github-tag} m)))
 
 (t/deftest tag-api-url-test
   (t/are [expected in] (= expected (sut/tag-api-url {:name in}))

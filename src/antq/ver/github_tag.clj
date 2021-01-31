@@ -1,4 +1,4 @@
-(ns antq.ver.github-action
+(ns antq.ver.github-tag
   (:require
    [antq.util.ver :as u.ver]
    [antq.ver :as ver]
@@ -64,7 +64,7 @@
       (.println ^PrintWriter *err* (str "Failed to fetch versions from GitHub: "
                                         (.getMessage ex))))))
 
-(defmethod ver/get-sorted-versions :github-action
+(defmethod ver/get-sorted-versions :github-tag
   [dep]
   (if @failed-to-fetch-from-api
     (fallback-to-ls-remote dep)
@@ -84,7 +84,7 @@
     (and current latest
          (>= current latest))))
 
-(defmethod ver/latest? :github-action
+(defmethod ver/latest? :github-tag
   [dep]
   (let [current (some-> dep :version version/version->seq)
         latest (some-> dep :latest-version version/version->seq)]

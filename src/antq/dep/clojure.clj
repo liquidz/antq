@@ -35,7 +35,7 @@
         edn (edn/read-string deps-edn-content-str)]
     (walk/postwalk (fn [form]
                      (when (and (sequential? form)
-                                (#{:deps :extra-deps :replace-deps} (first form)))
+                                (#{:deps :extra-deps :replace-deps :override-deps} (first form)))
                        (->> form
                             (second)
                             (seq)

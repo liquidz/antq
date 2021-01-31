@@ -2,6 +2,28 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 
+== 0.10.3 (2021-02-01)
+// {{{
+=== Changed
+
+* Bumped org.clojure/clojure to 1.10.2.
+* Bumped tools.deps.alpha to 0.9.863.
+* Bumped clj-commons/clj-yaml to 0.7.106.
+* Updateed lread/rewrite-cljc to be latest.
+
+=== Fixed
+
+* Fixed to return success status when all outdated deps are upgraded.
+* Fixed not to confirm for upgrading GitHub Actions YAML.
+** Upgrading YAML is not supported yet.
+* https://github.com/liquidz/antq/issues/55[#55]: Fixed to check `org.clojure/clojure`.
+** If there are some `org.clojure/clojure` versions in the same file, only the newest version will be checked.
+* Fixed `deps.edn` extractor to handle `:override-deps` key.
+* Fixed `deps.edn` upgrader to handle `:override-deps` key.
+* Fixed to work with Clojure 1.8 again.
+** `--upgrade` option requires Clojure 1.9 or later instead.
+// }}}
+
 == 0.10.2 (2021-01-02)
 
 // {{{

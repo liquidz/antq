@@ -7,6 +7,8 @@ outdated:
 	clojure -M:outdated:nop --upgrade
 
 test:
+	# NOTE: kaocha does not support Clojure 1.8
+	clojure -M:outdated:nop:1.8
 	clojure -M:dev:1.9:test
 	clojure -M:dev:test
 

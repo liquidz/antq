@@ -1,1 +1,2 @@
-{:output {:exclude-files ["test/resources/dep"]}}
+{:linters {:unresolved-namespace {:exclude [z]}}
+ :output {:exclude-files ["test/resources/dep"]}}
