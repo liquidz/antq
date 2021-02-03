@@ -29,7 +29,7 @@
                                      (when (= "https://example.com/foo/bar/1.0/bar-1.0.pom" url)
                                        (gen-dummy-model "https://github.com/bar/baz")))
                     u.git/tags-by-ls-remote (fn [url]
-                                              (when (= "https://github.com/bar/baz" url)
+                                              (when (= "https://github.com/bar/baz/" url)
                                                 ["v0.0" "v1.0" "v2.0" "v3.0"]))]
         (t/is (= "https://github.com/bar/baz/compare/v1.0...v2.0"
                  (diff/get-diff-url dep)))))
@@ -40,7 +40,6 @@
                                      (when (= "https://example.com/git/at/1.0/at-1.0.pom" url)
                                        (gen-dummy-model "git@github.com:git/at")))
                     u.git/tags-by-ls-remote (fn [url]
-                                              (println url)
                                               (when (= "https://github.com/git/at/" url)
                                                 ["v0.0" "v1.0" "v2.0" "v3.0"]))]
         (t/is (= "https://github.com/git/at/compare/v1.0...v2.0"
