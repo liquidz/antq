@@ -42,6 +42,10 @@
 (defn upgrade!
   "Return only non-upgraded deps"
   [version-checked-deps force?]
+  (when (and (seq version-checked-deps)
+             (not force?))
+    (println ""))
+
   (doall
    (remove
     (fn [dep]
