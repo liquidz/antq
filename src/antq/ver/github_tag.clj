@@ -1,9 +1,9 @@
 (ns antq.ver.github-tag
   (:require
+   [antq.util.git :as u.git]
    [antq.util.ver :as u.ver]
    [antq.ver :as ver]
    [cheshire.core :as json]
-   [clojure.java.shell :as sh]
    [clojure.string :as str]
    [version-clj.core :as version])
   (:import
@@ -17,28 +17,16 @@
   (format "https://api.github.com/repos/%s/tags"
           (str/join "/" (take 2 (str/split (:name dep) #"/")))))
 
-(defn- github-ls-remote
+(defn get-sorted-versions-by-ls-remote*
   [dep]
   (let [url (format "https://github.com/%s"
                     (str/join "/" (take 2 (str/split (:name dep) #"/"))))]
-    (sh/sh "git" "ls-remote" url)))
-
-(defn- extract-tags
-  [ls-remote-resp]
-  (->> (:out ls-remote-resp)
-       (str/split-lines)
-       (keep #(second (str/split % #"\t" 2)))
-       (filter #(= 0 (.indexOf ^String % "refs/tags")))
-       (map #(u.ver/normalize-version (str/replace % #"^refs/tags/" "")))
-       (filter u.ver/sem-ver?)
-       (sort version/version-compare)
-       (reverse)))
-
-(defn get-sorted-versions-by-ls-remote*
-  [dep]
-  (-> dep
-      (github-ls-remote)
-      (extract-tags)))
+    (->> (u.git/tags-by-ls-remote url)
+         (filter (comp u.ver/sem-ver? u.ver/normalize-version))
+         (sort (fn [& args]
+                 (apply version/version-compare
+                        (map u.ver/normalize-version args))))
+         (reverse))))
 
 (def get-sorted-versions-by-ls-remote
   (memoize get-sorted-versions-by-ls-remote*))
@@ -48,9 +36,11 @@
   (-> url
       (slurp)
       (json/parse-string true)
-      (->> (map (comp u.ver/normalize-version :name))
-           (filter u.ver/sem-ver?)
-           (sort version/version-compare)
+      (->> (map :name)
+           (filter (comp u.ver/sem-ver? u.ver/normalize-version))
+           (sort (fn [& args]
+                   (apply version/version-compare
+                          (map u.ver/normalize-version args))))
            (reverse))))
 
 (def get-sorted-versions-by-url
@@ -86,8 +76,8 @@
 
 (defmethod ver/latest? :github-tag
   [dep]
-  (let [current (some-> dep :version version/version->seq)
-        latest (some-> dep :latest-version version/version->seq)]
+  (let [current (some-> dep :version u.ver/normalize-version version/version->seq)
+        latest (some-> dep :latest-version u.ver/normalize-version version/version->seq)]
     (when (and current latest)
       (case (count (first current))
         1 (nth-newer? current latest 0)

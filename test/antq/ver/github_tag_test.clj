@@ -4,6 +4,7 @@
    [antq.ver :as ver]
    [antq.ver.github-tag :as sut]
    [cheshire.core :as json]
+   [clojure.java.shell :as sh]
    [clojure.string :as str]
    [clojure.test :as t]))
 
@@ -35,11 +36,11 @@
 
 (t/deftest get-sorted-versions-test
   (with-redefs [slurp (constantly dummy-json)]
-    (t/is (= ["3.0.0" "2.0.0" "1.0.0"]
+    (t/is (= ["v3.0.0" "v2.0.0" "v1.0.0"]
              (get-sorted-versions {:name "foo/bar"}))))
 
   (t/testing "response should be cached"
-    (t/is (= ["3.0.0" "2.0.0" "1.0.0"]
+    (t/is (= ["v3.0.0" "v2.0.0" "v1.0.0"]
              (get-sorted-versions {:name "foo/bar"})))))
 
 (t/deftest get-sorted-versions-fallback-test
@@ -53,9 +54,9 @@
     (with-redefs [slurp (fn [& _]
                           (reset! api-errored true)
                           (throw (Exception. "test exception")))
-                  sut/github-ls-remote (fn [dep]
-                                         (when (= "bar/baz" (:name dep))
-                                           {:out dummy-out}))]
+                  sh/sh (fn [& args]
+                          (when (= ["git" "ls-remote" "https://github.com/bar/baz"] args)
+                            {:out dummy-out}))]
       (t/testing "pre"
         (t/is (false? @api-errored))
         (t/is (false? @(deref #'sut/failed-to-fetch-from-api))))
