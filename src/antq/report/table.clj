@@ -3,7 +3,8 @@
    [antq.report :as report]
    [antq.util.dep :as u.dep]
    [antq.util.ver :as u.ver]
-   [clojure.pprint :as pprint]))
+   [clojure.pprint :as pprint]
+   [clojure.set :as set]))
 
 (defn skip-duplicated-file-name
   [sorted-deps]
@@ -18,10 +19,20 @@
 
 (defmethod report/reporter "table"
   [deps _options]
+  ;; Show table
   (if (seq deps)
     (->> deps
          (sort u.dep/compare-deps)
          skip-duplicated-file-name
          (map #(assoc % :latest-version (u.ver/normalize-latest-version %)))
-         (pprint/print-table [:file :name :version :latest-version]))
-    (println "All dependencies are up-to-date.")))
+         (map #(set/rename-keys % {:version :current
+                                   :latest-version :latest}))
+         (pprint/print-table [:file :name :current :latest]))
+    (println "All dependencies are up-to-date."))
+
+  ;; Show diff URLs
+  (let [urls (keep :diff-url deps)]
+    (when (seq urls)
+      (println "\nAvailable diffs:")
+      (doseq [u urls]
+        (println "-" u)))))
