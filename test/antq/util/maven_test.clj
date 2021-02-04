@@ -42,6 +42,11 @@
            (sut/dep->opts (r/map->Dependency {:repositories {"foo" {:url "s3p://foo"}}
                                               :version "1.0.0-SNAPSHOT"})))))
 
+(t/deftest get-url-test
+  (let [model (sut/read-pom "pom.xml")]
+    (t/is (= "https://github.com/liquidz/antq"
+             (sut/get-url model)))))
+
 (t/deftest get-scm-url-test
   (let [model (sut/read-pom "pom.xml")
         scm (sut/get-scm model)]

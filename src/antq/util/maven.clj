@@ -83,6 +83,10 @@
   (with-open [reader (io/reader url)]
     (.read (MavenXpp3Reader.) reader)))
 
+(defn ^String get-url
+  [^Model model]
+  (.getUrl model))
+
 (defn ^Scm get-scm
   [^Model model]
   (.getScm model))
