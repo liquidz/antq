@@ -56,6 +56,7 @@
             (u.mvn/read-pom)
             (u.mvn/get-scm)
             (u.mvn/get-scm-url)
+            (u.url/ensure-https)
             (u.url/ensure-git-https-url))
     ;; Skip showing diff URL when POM file is not found
     (catch java.io.FileNotFoundException _ nil)))
