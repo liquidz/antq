@@ -14,3 +14,13 @@
            (sut/ensure-git-https-url "https://github.com/foo/bar.git")))
   (t/is (= "https://github.com/foo/bar/"
            (sut/ensure-git-https-url "git@github.com:foo/bar"))))
+
+(t/deftest ensure-https
+  (t/is (= "https://github.com"
+           (sut/ensure-https "https://github.com")))
+  (t/is (= "https://github.com"
+           (sut/ensure-https "http://github.com")))
+  (t/is (= "git@github.com"
+           (sut/ensure-https "git@github.com")))
+  (t/is (= ""
+           (sut/ensure-https ""))))

@@ -18,3 +18,8 @@
           path (str/replace s #"\.git$" "")]
       (-> (format "https://%s/%s" domain path)
           (ensure-tail-slash)))))
+
+(defn ensure-https
+  [url]
+  (cond-> url
+    (str/starts-with? url "http://") (str/replace #"^http://" "https://")))
