@@ -74,12 +74,17 @@
       (str/starts-with? url "https://github.com/")
       (let [tags (u.git/tags-by-ls-remote url)
             current (first (filter #(str/includes? % (:version dep)) tags))
-            latest (first (filter #(str/includes? % (:latest-version dep)) tags))]
-        (when (and current latest)
+            latest (or (first (filter #(str/includes? % (:latest-version dep)) tags))
+                       ;; If there isn't a tag for latest version
+                       "head")]
+        (if current
           (format "%scompare/%s...%s"
                   (u.url/ensure-tail-slash url)
                   current
-                  latest)))
+                  latest)
+          ;; not diff, but URL is useful for finding the differences.
+          url))
 
       :else
-      (println "Diff is not supported for" url))))
+      ;; not diff, but URL is useful for finding the differences.
+      url)))
