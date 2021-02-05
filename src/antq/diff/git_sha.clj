@@ -1,6 +1,7 @@
 (ns antq.diff.git-sha
   (:require
    [antq.diff :as diff]
+   [antq.log :as log]
    [antq.util.url :as u.url]
    [clojure.string :as str]))
 
@@ -15,4 +16,4 @@
               (:latest-version dep))
 
       :else
-      (println "Diff is not supported for" url))))
+      (log/error (str "Diff is not supported for " url)))))

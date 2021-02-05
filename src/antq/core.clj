@@ -18,6 +18,7 @@
    [antq.diff.git-sha]
    [antq.diff.github-tag]
    [antq.diff.java]
+   [antq.log :as log]
    [antq.record :as r]
    [antq.report :as report]
    [antq.report.edn]
@@ -104,7 +105,7 @@
           :name dep-name})
         (ver/get-sorted-versions)
         (first)
-        (println))))
+        (log/info))))
 
 (defn- assoc-latest-version
   [dep]
@@ -204,5 +205,5 @@
 
           true
           (exit)))
-      (do (println "No project file")
+      (do (log/info "No project file")
           (System/exit 1)))))

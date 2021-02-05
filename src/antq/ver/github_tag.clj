@@ -1,13 +1,12 @@
 (ns antq.ver.github-tag
   (:require
+   [antq.log :as log]
    [antq.util.git :as u.git]
    [antq.util.ver :as u.ver]
    [antq.ver :as ver]
    [cheshire.core :as json]
    [clojure.string :as str]
-   [version-clj.core :as version])
-  (:import
-   java.io.PrintWriter))
+   [version-clj.core :as version]))
 
 (defonce ^:private failed-to-fetch-from-api
   (atom false))
@@ -51,8 +50,8 @@
   (try
     (get-sorted-versions-by-ls-remote dep)
     (catch Exception ex
-      (.println ^PrintWriter *err* (str "Failed to fetch versions from GitHub: "
-                                        (.getMessage ex))))))
+      (log/error (str "Failed to fetch versions from GitHub: "
+                      (.getMessage ex))))))
 
 (defmethod ver/get-sorted-versions :github-tag
   [dep]
@@ -64,7 +63,8 @@
           (get-sorted-versions-by-url))
       (catch Exception ex
         (reset! failed-to-fetch-from-api true)
-        (.println ^PrintWriter *err* (str "Failed to fetch versions from GitHub, so fallback to `git ls-remote`: " (.getMessage ex)))
+        (log/error (str "Failed to fetch versions from GitHub, so fallback to `git ls-remote`: "
+                        (.getMessage ex)))
         (fallback-to-ls-remote dep)))))
 
 (defn- nth-newer?

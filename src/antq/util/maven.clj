@@ -1,5 +1,6 @@
 (ns antq.util.maven
   (:require
+   [antq.log :as log]
    [clojure.java.io :as io]
    [clojure.string :as str]
    [clojure.tools.deps.alpha.util.maven :as deps.util.maven]
@@ -53,7 +54,7 @@
   (reify TransferListener
     (transferStarted [_ event])
     (transferCorrupted [_ event]
-      (println "Download corrupted:" (.. ^TransferEvent event getException getMessage)))
+      (log/info "Download corrupted:" (.. ^TransferEvent event getException getMessage)))
     (transferFailed [_ event]
       ;; This happens when Maven can't find an artifact in a particular repo
       ;; (but still may find it in a different repo), ie this is a common event

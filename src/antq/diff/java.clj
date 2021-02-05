@@ -1,6 +1,7 @@
 (ns antq.diff.java
   (:require
    [antq.diff :as diff]
+   [antq.log :as log]
    [antq.util.git :as u.git]
    [antq.util.maven :as u.mvn]
    [antq.util.url :as u.url]
@@ -82,9 +83,11 @@
                   (u.url/ensure-tail-slash url)
                   current
                   latest)
-          ;; not diff, but URL is useful for finding the differences.
-          url))
+          (do (log/error (str "The tag for current version is not found: " url))
+              ;; not diff, but URL is useful for finding the differences.
+              nil)))
 
       :else
-      ;; not diff, but URL is useful for finding the differences.
-      url)))
+      (do (log/error (str "Diff is not supported for " url))
+          ;; not diff, but URL is useful for finding the differences.
+          nil))))

@@ -60,4 +60,4 @@
                     u.mvn/read-pom (fn [url]
                                      (when (= "https://example.com/not/supported/1.0/supported-1.0.pom" url)
                                        (gen-dummy-model "https://not-supported.com")))]
-        (t/is (nil?  (diff/get-diff-url (assoc dep :name "not/supported"))))))))
+        (t/is (nil? (diff/get-diff-url (assoc dep :name "not/supported"))))))))
