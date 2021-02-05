@@ -14,6 +14,11 @@
    [antq.dep.leiningen :as dep.lein]
    [antq.dep.pom :as dep.pom]
    [antq.dep.shadow :as dep.shadow]
+   [antq.diff :as diff]
+   [antq.diff.git-sha]
+   [antq.diff.github-tag]
+   [antq.diff.java]
+   [antq.log :as log]
    [antq.record :as r]
    [antq.report :as report]
    [antq.report.edn]
@@ -100,7 +105,7 @@
           :name dep-name})
         (ver/get-sorted-versions)
         (first)
-        (println))))
+        (log/info))))
 
 (defn- assoc-latest-version
   [dep]
@@ -146,6 +151,12 @@
                     assoc-latest-version))
          (remove ver/latest?))))
 
+(defn assoc-diff-url
+  [version-checked-dep]
+  (if-let [url (diff/get-diff-url version-checked-dep)]
+    (assoc version-checked-dep :diff-url url)
+    version-checked-dep))
+
 (defn exit
   [outdated-deps]
   (System/exit (if (seq outdated-deps) 1 0)))
@@ -184,7 +195,8 @@
         deps (fetch-deps options)
         deps (unify-org-clojure-deps deps)]
     (if (seq deps)
-      (let [outdated (outdated-deps deps options)]
+      (let [outdated (outdated-deps deps options)
+            outdated (map assoc-diff-url outdated)]
         (report/reporter outdated options)
 
         (cond-> outdated
@@ -193,5 +205,5 @@
 
           true
           (exit)))
-      (do (println "No project file")
+      (do (log/info "No project file")
           (System/exit 1)))))

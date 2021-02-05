@@ -1,5 +1,6 @@
 (ns antq.upgrade
   (:require
+   [antq.log :as log]
    [antq.util.zip :as u.zip]))
 
 (defmulti upgrader
@@ -8,7 +9,7 @@
 
 (defmethod upgrader :default
   [dep]
-  (println
+  (log/error
    (format "%s: Not supported yet."
            (name (:project dep)))))
 
@@ -16,7 +17,7 @@
   [dep force?]
   (cond
     (not u.zip/rewrite-cljc-supported?)
-    (do (println "Upgrading is only supported Clojure 1.9 or later.")
+    (do (log/error "Upgrading is only supported Clojure 1.9 or later.")
         false)
 
     (and (:latest-version dep)
@@ -42,16 +43,20 @@
 (defn upgrade!
   "Return only non-upgraded deps"
   [version-checked-deps force?]
+  (when (and (seq version-checked-deps)
+             (not force?))
+    (log/info ""))
+
   (doall
    (remove
     (fn [dep]
       (if (confirm dep force?)
         (if-let [upgraded-content (upgrader dep)]
-          (do (println (format "Upgraded %s '%s' to '%s' in %s."
-                               (:name dep)
-                               (:version dep)
-                               (:latest-version dep)
-                               (:file dep)))
+          (do (log/info (format "Upgraded %s '%s' to '%s' in %s."
+                                (:name dep)
+                                (:version dep)
+                                (:latest-version dep)
+                                (:file dep)))
               (spit (:file dep) upgraded-content)
               true)
           false)

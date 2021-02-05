@@ -55,8 +55,11 @@
                                 :file temp1})]
     (t/is (= "before0" (slurp temp1)))
 
-    (let [out-str (with-out-str (sut/upgrade! [dep] true))]
-      (t/is (not= -1 (.indexOf out-str "Not supported"))))
+    (let [sw (java.io.StringWriter.)
+          err-str (binding [*err* sw]
+                    (sut/upgrade! [dep] true)
+                    (str sw))]
+      (t/is (not= -1 (.indexOf err-str "Not supported"))))
 
     (t/is (= "before0" (slurp temp1)))))
 

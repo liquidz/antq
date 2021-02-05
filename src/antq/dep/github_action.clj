@@ -2,7 +2,6 @@
   (:require
    [antq.record :as r]
    [antq.util.dep :as u.dep]
-   [antq.util.ver :as u.ver]
    [clj-yaml.core :as yaml]
    [clojure.java.io :as io]
    [clojure.string :as str]
@@ -28,7 +27,7 @@
      :version version
      :extra {:url (name->url name)}}
     {:type :github-tag
-     :version (u.ver/normalize-version version)}))
+     :version version}))
 
 (defn extract-deps
   [file-path workflow-content-str]

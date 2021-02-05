@@ -1,4 +1,6 @@
-(ns antq.report)
+(ns antq.report
+  (:require
+   [antq.log :as log]))
 
 (defmulti reporter
   (fn [_deps options]
@@ -6,4 +8,4 @@
 
 (defmethod reporter :default
   [_ options]
-  (println "Unknown reporter:" (:reporter options)))
+  (log/error (str "Unknown reporter: " (:reporter options))))

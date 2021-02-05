@@ -6,7 +6,7 @@
    [clojure.string :as str]))
 
 (def ^:private default-outdated-message-format
-  "{{name}} {{version}} is outdated. Latest version is {{latest-version}}.")
+  "{{name}} {{version}} is outdated. Latest version is {{latest-version}}. {{diff-url}}")
 
 (def ^:private default-failed-message-format
   "Failed to fetch the latest version of {{name}} {{version}}.")
@@ -15,7 +15,7 @@
   [dep format-string]
   (let [dep (-> dep
                 (assoc :latest-version (u.ver/normalize-latest-version dep))
-                (select-keys [:file :name :version :latest-version :message]))]
+                (select-keys [:file :name :version :latest-version :message :diff-url]))]
     (reduce-kv (fn [s k v]
                  (str/replace s (str "{{" (name k) "}}") (or v "")))
                format-string

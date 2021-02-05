@@ -140,6 +140,9 @@ You can use following variables:
 | `{{latest-version}}`
 | The latest version.
 
+| `{{diff-url}}`
+| The diff URL for Version Control System. (Nullable)
+
 | `{{message}}`
 | Default error message.
 
