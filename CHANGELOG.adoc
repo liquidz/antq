@@ -2,6 +2,20 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 
+// {{{
+=== Added
+
+* Added support to display diff URLs for outdated dependencies.
+
+=== Changed
+
+* Changed default error message for `format` reporter to add diff URLs.
+
+=== Fixed
+
+* Fixed to return actual tag name for outdated GitHub Actions.
+// }}}
+
 == 0.10.3 (2021-02-01)
 // {{{
 === Changed
