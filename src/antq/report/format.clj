@@ -6,7 +6,7 @@
    [clojure.string :as str]))
 
 (def ^:private default-outdated-message-format
-  "{{name}} {{version}} is outdated. Latest version is {{latest-version}}.")
+  "{{name}} {{version}} is outdated. Latest version is {{latest-version}}. {{diff-url}}")
 
 (def ^:private default-failed-message-format
   "Failed to fetch the latest version of {{name}} {{version}}.")
