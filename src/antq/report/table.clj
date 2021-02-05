@@ -33,7 +33,8 @@
   ;; Show diff URLs
   (let [urls (->> deps
                   (sort u.dep/compare-deps)
-                  (keep :diff-url))]
+                  (keep :diff-url)
+                  (distinct))]
     (when (seq urls)
       (println "\nAvailable diffs:")
       (doseq [u urls]
