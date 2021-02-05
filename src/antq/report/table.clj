@@ -31,7 +31,9 @@
     (println "All dependencies are up-to-date."))
 
   ;; Show diff URLs
-  (let [urls (keep :diff-url deps)]
+  (let [urls (->> deps
+                  (sort u.dep/compare-deps)
+                  (keep :diff-url))]
     (when (seq urls)
       (println "\nAvailable diffs:")
       (doseq [u urls]
