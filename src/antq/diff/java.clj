@@ -55,15 +55,13 @@
     (when-let [model (some-> dep
                              (dep->pom-url)
                              (u.mvn/read-pom))]
-      (-> model
-          (u.mvn/get-scm)
-          (u.mvn/get-scm-url)
-          ;; fallback
-          (or (u.mvn/get-url model))
-          ;; normalize
-          (u.url/ensure-https)
-          (u.url/ensure-git-https-url)))
-
+      (let [scm-url (some-> model
+                            (u.mvn/get-scm)
+                            (u.mvn/get-scm-url))
+            project-url (u.mvn/get-url model)]
+        (some-> (or scm-url project-url)
+                (u.url/ensure-https)
+                (u.url/ensure-git-https-url))))
     ;; Skip showing diff URL when POM file is not found
     (catch java.io.FileNotFoundException _ nil)))
 (def get-scm-url (memoize-by get-scm-url* :name))

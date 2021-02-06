@@ -54,6 +54,18 @@
                     u.mvn/read-pom (fn [_] (throw (java.io.FileNotFoundException. "test exception")))]
         (t/is (nil? (diff/get-diff-url (assoc dep :name "pom/not-found"))))))
 
+    (t/testing "POM does not have SCM"
+      (with-redefs [sut/get-repository-url (constantly "https://example.com")
+                    u.mvn/read-pom (fn [url]
+                                     (println "FIXME url" url)
+                                     (when (= "https://example.com/pom/noscm/1.0/noscm-1.0.pom" url)
+                                       (doto (Model.)
+                                         (.setUrl "https://github.com/pom/no-scm"))))
+                    u.git/tags-by-ls-remote (fn [url]
+                                              (when (= "https://github.com/pom/no-scm/" url)
+                                                ["v0.0" "v1.0" "v2.0" "v3.0"]))]
+        (t/is (= "https://github.com/pom/no-scm/compare/v1.0...v2.0"
+                 (diff/get-diff-url (assoc dep :name "pom/noscm"))))))
 
     (t/testing "not supported URL"
       (with-redefs [sut/get-repository-url (constantly "https://example.com")
