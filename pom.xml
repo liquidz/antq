@@ -57,7 +57,7 @@
     <dependency>
       <groupId>version-clj</groupId>
       <artifactId>version-clj</artifactId>
-      <version>0.1.2</version>
+      <version>1.0.0</version>
     </dependency>
   </dependencies>
   <build>
