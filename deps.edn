@@ -27,7 +27,7 @@
   {:extra-deps {org.slf4j/slf4j-nop {:mvn/version "RELEASE"}}}
 
   :outdated
-  {:main-opts ["-m" "antq.core"]}
+  {:main-opts ["-m" "antq.core" "--exclude" "version-clj/version-clj"]}
 
   :test
   {:main-opts ["-m" "kaocha.runner"]}
