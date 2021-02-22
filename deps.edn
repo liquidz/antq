@@ -42,8 +42,11 @@
    :exec-args {}}
 
   :deploy
-  {:extra-deps {deps-deploy/deps-deploy {:mvn/version "RELEASE"}}
-   :main-opts ["-m" "deps-deploy.deps-deploy"]}
+  {:extra-deps {slipset/deps-deploy {;:mvn/version "RELEASE"
+                                     :git/url "https://github.com/slipset/deps-deploy"
+                                     :sha "49f1da003208d615d52c06164401e6fb3d9ba853"}}
+   :exec-fn deps-deploy.deps-deploy/deploy
+   :exec-args {}}
 
   ;; -X
   :latest

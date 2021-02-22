@@ -1,5 +1,7 @@
 .PHONY: repl outdated test pom jar uberjar install deploy docker coverage clean
 
+ARTIFACT=target/antq.jar
+
 repl:
 	iced repl -A:dev
 
@@ -24,17 +26,17 @@ target/antq-standalone.jar: pom
 
 uberjar: clean target/antq-standalone.jar
 
-target/antq.jar: pom
+$(ARTIFACT): pom
 	clojure -X:depstar jar :jar $@
-jar: clean target/antq.jar
+jar: clean $(ARTIFACT)
 
-install: clean target/antq.jar
-	clj -M:deploy install target/antq.jar
+install: clean $(ARTIFACT)
+	clojure -X:deploy :installer :local :artifact $(ARTIFACT)
 
-deploy: clean target/antq.jar
+deploy: clean $(ARTIFACT)
 	echo "Testing if CLOJARS_USERNAME environmental variable exists."
 	test $(CLOJARS_USERNAME)
-	clj -M:deploy deploy target/antq.jar
+	clojure -X:deploy :installer :remote :artifact $(ARTIFACT)
 
 docker:
 	docker build -t uochan/antq .
