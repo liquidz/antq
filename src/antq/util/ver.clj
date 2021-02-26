@@ -7,11 +7,11 @@
 
 (defn normalize-version
   [s]
-  (str/replace s #"^v" ""))
+  (str/replace s #"^[^\d]+" ""))
 
 (defn sem-ver?
   [s]
-  (some? (re-find #"^\d+(\.\d+){0,2}$" s)))
+  (some? (re-find #"^\d+(\.\d+)*$" s)))
 
 (defmulti normalize-latest-version
   (fn [dep] (:type dep)))
