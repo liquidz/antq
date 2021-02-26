@@ -16,7 +16,7 @@ jobs:
       - run: java -version
       - uses: DeLaGuardo/setup-clojure@91054c3b9dc15fdc6a2f45be47405d891e672ef0
         with:
-          tools-deps: '1.10.1.727'
+          tools-deps: '1.10.2.796'
       - uses: actions/cache@v2
         with:
           path: ~/.m2
