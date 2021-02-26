@@ -10,4 +10,4 @@ jobs:
       - uses: actions/checkout@v2
       - uses: liquidz/antq-action@v1
         with:
-          excludes: 'lread/rewrite-cljc'
+          excludes: 'lread/rewrite-cljc clojure/brew-install'
