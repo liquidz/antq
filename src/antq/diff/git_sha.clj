@@ -11,7 +11,9 @@
     (cond
       (str/starts-with? url "https://github.com/")
       (format "%scompare/%s...%s"
-              (u.url/ensure-tail-slash url)
+              (-> url
+                  (u.url/ensure-git-https-url)
+                  (u.url/ensure-tail-slash))
               (:version dep)
               (:latest-version dep))
 
