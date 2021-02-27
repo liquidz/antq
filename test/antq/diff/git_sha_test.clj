@@ -16,5 +16,9 @@
     (t/testing "missing extra"
       (t/is (nil? (diff/get-diff-url (dissoc dep :extra)))))
 
+    (t/testing "URL ending with .git"
+      (t/is (= "https://github.com/bar/baz/compare/1.0...2.0"
+               (diff/get-diff-url (assoc-in dep [:extra :url] "https://github.com/bar/baz.git")))))
+
     (t/testing "not supported extra URL"
       (t/is (nil? (diff/get-diff-url (assoc-in dep [:extra :url] "INVALID")))))))
