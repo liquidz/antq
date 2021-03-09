@@ -126,6 +126,21 @@
                                (test-dep {:name "charlie" :version "3.0.0"})]
                               {}))))
 
+(t/deftest unverified-deps-test
+  (let [dummy-deps [{:type :java :name "antq/antq"}
+                    {:type :java :name "seancorfield/next.jdbc"}
+                    {:type :java :name "dummy/dummy"}
+                    {:type :UNKNOWN :name "antq/antq"}]]
+    (t/is (= [{:type :java
+               :name "antq/antq"
+               :version "antq/antq"
+               :latest-version "com.github.liquidz/antq"}
+              {:type :java
+               :name "seancorfield/next.jdbc"
+               :version "seancorfield/next.jdbc"
+               :latest-version "com.github.seancorfield/next.jdbc"}]
+             (sut/unverified-deps dummy-deps)))))
+
 (t/deftest fetch-deps-test
   (t/is (seq (sut/fetch-deps {:directory ["."]})))
 
