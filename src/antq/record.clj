@@ -19,3 +19,10 @@
    ;; Project type keyword
    ;; e.g. :clojure, :leiningen, :shadow-cljs and so on.
    project
+   ;; Key to indicate which parameter is outdated
+   ;; e.g. :version or :name
+   outdated-target])
+
+(defn version-outdated?
+  [dep]
+  (= :version (:outdated-target dep)))

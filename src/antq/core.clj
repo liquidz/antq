@@ -58,7 +58,7 @@
 
 (def ^:private disallowed-unverified-deps-map
   {"antq/antq" "com.github.liquidz/antq"
-   "seancorfield/next.jdbc"  "com.github.seancorfield/next.jdbc"})
+   "seancorfield/next.jdbc" "com.github.seancorfield/next.jdbc"})
 
 (def cli-options
   [[nil "--exclude=EXCLUDE" :default [] :assoc-fn concat-assoc-fn]
@@ -152,7 +152,8 @@
          (pmap #(complete-versions-by % uniq-deps-with-vers))
          (map (comp dissoc-no-longer-used-keys
                     assoc-latest-version))
-         (remove ver/latest?))))
+         (remove ver/latest?)
+         (map #(assoc % :outdated-target :version)))))
 
 (defn unverified-deps
   [deps]
@@ -160,7 +161,8 @@
                                        (get disallowed-unverified-deps-map (:name %)))]
            (assoc %
                   :version (:name %)
-                  :latest-version verified-name))
+                  :latest-version verified-name
+                  :outdated-target :name))
         deps))
 
 (defn exit
@@ -201,8 +203,8 @@
         deps (fetch-deps options)
         deps (unify-org-clojure-deps deps)]
     (if (seq deps)
-      (let [outdated (outdated-deps deps options)
-            outdated (concat outdated (unverified-deps deps))]
+      (let [outdated (concat (outdated-deps deps options)
+                             (unverified-deps deps))]
         (report/reporter outdated options)
 
         (cond-> outdated
