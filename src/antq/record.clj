@@ -19,5 +19,3 @@
    ;; Project type keyword
    ;; e.g. :clojure, :leiningen, :shadow-cljs and so on.
    project
-   ;; Diff URL for Version Control System (Nullable)
-   diff-url])

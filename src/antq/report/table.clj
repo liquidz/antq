@@ -1,5 +1,6 @@
 (ns antq.report.table
   (:require
+   [antq.diff :as diff]
    [antq.report :as report]
    [antq.util.dep :as u.dep]
    [antq.util.ver :as u.ver]
@@ -33,7 +34,7 @@
   ;; Show diff URLs
   (let [urls (->> deps
                   (sort u.dep/compare-deps)
-                  (keep :diff-url)
+                  (keep diff/get-diff-url)
                   (distinct))]
     (when (seq urls)
       (println "\nAvailable diffs:")
