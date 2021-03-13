@@ -140,6 +140,10 @@ You can use following variables:
 | `{{latest-version}}`
 | The latest version.
 
+| `{{latest-name}}`
+| The latest artifact name.
+See details: https://github.com/clojars/clojars-web/wiki/Verified-Group-Names[Clojars Verified Group Names policy].
+
 | `{{diff-url}}`
 | The diff URL for Version Control System. (Nullable)
 
