@@ -1,7 +1,6 @@
 (ns antq.upgrade
   (:require
    [antq.log :as log]
-   [antq.record :as r]
    [antq.util.zip :as u.zip]))
 
 (defmulti upgrader
@@ -44,7 +43,7 @@
 (defn upgrade!
   "Return only non-upgraded deps"
   [deps force?]
-  (let [version-checked-deps (filter r/version-outdated? deps)]
+  (let [version-checked-deps (filter :latest-version deps)]
     (when (and (seq version-checked-deps)
                (not force?))
       (log/info ""))
