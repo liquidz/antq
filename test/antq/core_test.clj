@@ -134,11 +134,13 @@
     (t/is (= [{:type :java
                :name "antq/antq"
                :version "antq/antq"
-               :latest-version "com.github.liquidz/antq"}
+               :latest-version nil
+               :latest-name "com.github.liquidz/antq"}
               {:type :java
                :name "seancorfield/next.jdbc"
                :version "seancorfield/next.jdbc"
-               :latest-version "com.github.seancorfield/next.jdbc"}]
+               :latest-version nil
+               :latest-name "com.github.seancorfield/next.jdbc"}]
              (sut/unverified-deps dummy-deps)))))
 
 (t/deftest fetch-deps-test
