@@ -34,9 +34,9 @@
 
   ;; Show diff URLs
   (let [urls (->> deps
-                  (filter r/version-outdated?)
+                  (filter :latest-version)
                   (sort u.dep/compare-deps)
-                  (keep diff/get-diff-url)
+                  (keep :diff-url)
                   (distinct))]
     (when (seq urls)
       (println "\nAvailable diffs:")

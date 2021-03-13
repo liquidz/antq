@@ -14,6 +14,7 @@
    [antq.dep.leiningen :as dep.lein]
    [antq.dep.pom :as dep.pom]
    [antq.dep.shadow :as dep.shadow]
+   [antq.diff :as diff]
    [antq.diff.git-sha]
    [antq.diff.github-tag]
    [antq.diff.java]
@@ -155,6 +156,12 @@
          (remove ver/latest?)
          (map #(assoc % :outdated-target :version)))))
 
+(defn assoc-diff-url
+  [version-checked-dep]
+  (if-let [url (diff/get-diff-url version-checked-dep)]
+    (assoc version-checked-dep :diff-url url)
+    version-checked-dep))
+
 (defn unverified-deps
   [deps]
   (keep #(when-let [verified-name (and (= :java (:type %))
@@ -203,8 +210,9 @@
         deps (fetch-deps options)
         deps (unify-org-clojure-deps deps)]
     (if (seq deps)
-      (let [outdated (concat (outdated-deps deps options)
-                             (unverified-deps deps))]
+      (let [outdated (->> (outdated-deps deps options)
+                          (map assoc-diff-url)
+                          (concat (unverified-deps deps)))]
         (report/reporter outdated options)
 
         (cond-> outdated
