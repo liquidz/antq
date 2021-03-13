@@ -20,6 +20,10 @@ All notable changes to this project will be documented in this file. This change
 * Changed group name on clojars.org from `antq` to `com.github.liquidz/antq`.
 ** `antq/antq` will be deployed for a while.
 ** c.f.  https://github.com/clojars/clojars-web/wiki/Verified-Group-Names[Clojars Verified Group Names policy]
+* https://github.com/liquidz/antq/issues/64[#64]: Changed https://github.com/lread/rewrite-cljc-playground[lread/rewrite-cljc-playground] to https://github.com/clj-commons/rewrite-clj[clj-commons/rewrite-clj].
+* Bumped tools.deps.alpha to 0.11.905.
+* Bumped kaocha to 1.0.829.
+* Bumped tools.cli to 1.0.206.
 // }}}
 
 == 0.11.2 (2021-02-28)
