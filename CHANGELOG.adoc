@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file. This change
 * https://github.com/liquidz/antq/issues/63[#63]: Added support for detecting dependencies which has unverified group name.
 ** Supports following group names for now.
 *** `antq/antq` -> `com.github.liquidz/antq`
+*** `seancorfield/depstar` -> `com.github.seancorfield/depstar`
 *** `seancorfield/next.jdbc` -> `com.github.seancorfield/next.jdbc`
 
 === Changed

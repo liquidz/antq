@@ -59,6 +59,7 @@
 
 (def ^:private disallowed-unverified-deps-map
   {"antq/antq" "com.github.liquidz/antq"
+   "seancorfield/depstar" "com.github.seancorfield/depstar"
    "seancorfield/next.jdbc" "com.github.seancorfield/next.jdbc"})
 
 (def cli-options
