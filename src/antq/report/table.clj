@@ -1,7 +1,5 @@
 (ns antq.report.table
   (:require
-   [antq.diff :as diff]
-   [antq.record :as r]
    [antq.report :as report]
    [antq.util.dep :as u.dep]
    [antq.util.ver :as u.ver]
@@ -27,8 +25,11 @@
          (sort u.dep/compare-deps)
          skip-duplicated-file-name
          (map #(assoc % :latest-version (u.ver/normalize-latest-version %)))
-         (map #(set/rename-keys % {:version :current
-                                   :latest-version :latest}))
+         (map #(let [latest-key (if (seq (:latest-name %))
+                                  :latest-name
+                                  :latest-version)]
+                 (set/rename-keys % {:version :current
+                                     latest-key :latest})))
          (pprint/print-table [:file :name :current :latest]))
     (println "All dependencies are up-to-date."))
 
