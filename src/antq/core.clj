@@ -153,8 +153,7 @@
          (pmap #(complete-versions-by % uniq-deps-with-vers))
          (map (comp dissoc-no-longer-used-keys
                     assoc-latest-version))
-         (remove ver/latest?)
-         (map #(assoc % :outdated-target :version)))))
+         (remove ver/latest?))))
 
 (defn assoc-diff-url
   [version-checked-dep]
@@ -168,8 +167,8 @@
                                        (get disallowed-unverified-deps-map (:name %)))]
            (assoc %
                   :version (:name %)
-                  :latest-version verified-name
-                  :outdated-target :name))
+                  :latest-version nil
+                  :latest-name verified-name))
         deps))
 
 (defn exit
