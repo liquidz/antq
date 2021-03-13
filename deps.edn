@@ -36,7 +36,7 @@
    :main-opts ["-m" "cloverage.coverage"]}
 
   :depstar
-  {:extra-deps {seancorfield/depstar {:mvn/version "RELEASE"}}
+  {:extra-deps {com.github.seancorfield/depstar {:mvn/version "RELEASE"}}
    :ns-default hf.depstar
    :exec-args {}}
 
