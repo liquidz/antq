@@ -140,6 +140,10 @@ You can use following variables:
 | `{{latest-version}}`
 | The latest version.
 
+| `{{latest-name}}`
+| The latest artifact name.
+See details: https://github.com/clojars/clojars-web/wiki/Verified-Group-Names[Clojars Verified Group Names policy].
+
 | `{{diff-url}}`
 | The diff URL for Version Control System. (Nullable)
 
@@ -167,6 +171,10 @@ When you use `--error-format` option, this reporter will be used automatically.
 | Report results as a EDN format.
 
 |===
+
+== Projects using antq
+
+* https://github.com/nnichols/clojure-dependency-update-action[clojure-dependency-update-action]: A simple GitHub Actions to create Pull Requests for outdated tools.deps dependencies
 
 == Tips
 

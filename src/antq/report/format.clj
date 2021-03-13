@@ -8,6 +8,9 @@
 (def ^:private default-outdated-message-format
   "{{name}} {{version}} is outdated. Latest version is {{latest-version}}. {{diff-url}}")
 
+(def ^:private default-unverified-group-name-message-format
+  "{{name}} will be unverified. Please consider using {{latest-name}}.")
+
 (def ^:private default-failed-message-format
   "Failed to fetch the latest version of {{name}} {{version}}.")
 
@@ -15,7 +18,7 @@
   [dep format-string]
   (let [dep (-> dep
                 (assoc :latest-version (u.ver/normalize-latest-version dep))
-                (select-keys [:file :name :version :latest-version :message :diff-url]))]
+                (select-keys [:file :name :version :latest-version :message :diff-url :latest-name]))]
     (reduce-kv (fn [s k v]
                  (str/replace s (str "{{" (name k) "}}") (or v "")))
                format-string
@@ -27,9 +30,16 @@
     (when (seq deps)
       (doseq [s (->> deps
                      (sort u.dep/compare-deps)
+                     ;; default message
                      (map #(assoc % :message
-                                  (if (:latest-version %)
+                                  (cond
+                                    (:latest-version %)
                                     (apply-format-string % default-outdated-message-format)
+
+                                    (:latest-name %)
+                                    (apply-format-string % default-unverified-group-name-message-format)
+
+                                    :else
                                     (apply-format-string % default-failed-message-format))))
                      (map #(apply-format-string % format-string)))]
         (println s)))))

@@ -1,51 +1,39 @@
 (ns antq.dep.github-action
   (:require
-   [antq.record :as r]
+   [antq.dep.github-action.third-party :as d.gha.third-party]
+   [antq.dep.github-action.uses :as d.gha.uses]
    [antq.util.dep :as u.dep]
    [clj-yaml.core :as yaml]
    [clojure.java.io :as io]
-   [clojure.string :as str]
    [clojure.walk :as walk])
   (:import
    java.io.File))
 
-(defn- sha-1?
-  [s]
-  (some? (and (re-seq #"^[a-fA-F0-9]+$" s)
-              (#{40 7} (count s)))))
+(def ^:private detect-functions
+  [d.gha.uses/detect
+   d.gha.third-party/detect])
 
-(defn- name->url
-  [^String name]
-  (if (= 0 (.indexOf name "https://"))
-    name
-    (str "https://github.com/" name ".git")))
-
-(defn- extract-type-and-version
-  [name version]
-  (if (sha-1? version)
-    {:type :git-sha
-     :version version
-     :extra {:url (name->url name)}}
-    {:type :github-tag
-     :version version}))
+(defn- detect-deps
+  [form]
+  (reduce
+   (fn [accm f]
+     (concat accm (f form)))
+   []
+   detect-functions))
 
 (defn extract-deps
   [file-path workflow-content-str]
-  (let [deps (atom [])]
+  (let [deps (atom [])
+        parsed (yaml/parse-string workflow-content-str)]
     (walk/prewalk (fn [form]
-                    (when (and (vector? form)
-                               (= :uses (first form)))
-                      (swap! deps conj (second form)))
+                    (when-let [deps* (detect-deps form)]
+                      (swap! deps concat deps*))
                     form)
-                  (yaml/parse-string workflow-content-str))
-    (for [d @deps
-          :let [[name version] (str/split d #"@" 2)]
-          :when (seq version)]
-      (-> {:project :github-action
-           :file file-path
-           :name name}
-          (merge (extract-type-and-version name version))
-          (r/map->Dependency)))))
+                  parsed)
+    (map #(assoc %
+                 :project :github-action
+                 :file file-path)
+         @deps)))
 
 (defn load-deps
   ([] (load-deps "."))

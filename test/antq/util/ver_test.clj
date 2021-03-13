@@ -7,6 +7,7 @@
 (t/deftest normalize-version-test
   (t/are [expected in] (= expected (sut/normalize-version in))
     "1.0.0" "v1.0.0"
+    "1.0.0" "vm-1.0.0"
     "1.0.0" "1.0.0"))
 
 (t/deftest sem-ver?-test
@@ -14,6 +15,7 @@
     true "1.0.0"
     true "1.0"
     true "1"
+    true "1.0.0.0.0.0"
     false "foo"
     false "0.0-1"
     false ""))

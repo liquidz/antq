@@ -1,7 +1,9 @@
 (ns antq.core-test
   (:require
    [antq.core :as sut]
+   [antq.diff.java :as d.java]
    [antq.record :as r]
+   [antq.util.git :as u.git]
    [antq.ver :as ver]
    [clojure.string :as str]
    [clojure.test :as t]
@@ -125,6 +127,33 @@
                                (test-dep {:name "bob" :version "2.0.0"})
                                (test-dep {:name "charlie" :version "3.0.0"})]
                               {}))))
+
+(t/deftest assoc-diff-url-test
+  (let [dummy-dep {:type :java :name "foo/bar" :version "1" :latest-version "2"}]
+    (with-redefs [d.java/get-scm-url (constantly "https://github.com/foo/bar")
+                  u.git/tags-by-ls-remote (constantly ["1" "2"])]
+      (t/is (= (assoc dummy-dep :diff-url "https://github.com/foo/bar/compare/1...2")
+               (sut/assoc-diff-url dummy-dep)))
+
+      (t/is (= (assoc dummy-dep :type :test)
+               (sut/assoc-diff-url (assoc dummy-dep :type :test)))))))
+
+(t/deftest unverified-deps-test
+  (let [dummy-deps [{:type :java :name "antq/antq"}
+                    {:type :java :name "seancorfield/next.jdbc"}
+                    {:type :java :name "dummy/dummy"}
+                    {:type :UNKNOWN :name "antq/antq"}]]
+    (t/is (= [{:type :java
+               :name "antq/antq"
+               :version "antq/antq"
+               :latest-version nil
+               :latest-name "com.github.liquidz/antq"}
+              {:type :java
+               :name "seancorfield/next.jdbc"
+               :version "seancorfield/next.jdbc"
+               :latest-version nil
+               :latest-name "com.github.seancorfield/next.jdbc"}]
+             (sut/unverified-deps dummy-deps)))))
 
 (t/deftest fetch-deps-test
   (t/is (seq (sut/fetch-deps {:directory ["."]})))

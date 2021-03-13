@@ -15,17 +15,20 @@
   (let [dummy-deps [(h/test-dep {:file "a" :name "foo" :version "1" :latest-version "2"})
                     (h/test-dep {:file "b" :name "bar" :version "1" :latest-version nil})
                     (h/test-dep {:file "c" :name "baz" :version "1" :latest-version "3"
-                                 :diff-url "https://example.com"})]]
+                                 :diff-url "https://example.com"})
+                    (h/test-dep {:file "d" :name "old" :version "1" :latest-version nil
+                                 :latest-name "new"})]]
 
     (t/is (seq (with-out-str (reporter
                               dummy-deps
                               "::error file={{file}}::{{message}}"))))
 
-    (t/is (= ["::error file=a::foo,1,2. "
-              "::error file=b::bar,1,Failed to fetch. "
-              "::error file=c::baz,1,3. https://example.com"]
+    (t/is (= ["::error file=a::foo,1,2,. "
+              "::error file=b::bar,1,Failed to fetch,. "
+              "::error file=c::baz,1,3,. https://example.com"
+              "::error file=d::old,1,Failed to fetch,new. "]
              (str/split-lines
               (with-out-str
                 (reporter
                  dummy-deps
-                 "::error file={{file}}::{{name}},{{version}},{{latest-version}}. {{diff-url}}")))))))
+                 "::error file={{file}}::{{name}},{{version}},{{latest-version}},{{latest-name}}. {{diff-url}}")))))))

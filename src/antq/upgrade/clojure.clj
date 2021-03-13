@@ -4,13 +4,13 @@
    [antq.util.dep :as u.dep]
    [antq.util.zip :as u.zip]))
 
-(require (if u.zip/rewrite-cljc-supported?
-           '[rewrite-cljc.zip :as z]
-           '[antq.stub.rewrite-cljc.zip :as z]))
+(require (if u.zip/rewrite-clj-supported?
+           '[rewrite-clj.zip :as z]
+           '[antq.stub.rewrite-clj.zip :as z]))
 
 (defn- in-deps?
   [loc]
-  (->> loc z/up z/left z/value
+  (->> loc z/up z/left z/sexpr
        (contains? #{:deps :extra-deps :replace-deps :override-deps})))
 
 (defn upgrade-dep

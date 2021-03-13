@@ -33,7 +33,6 @@
 
 (t/deftest load-deps-test
   (let [deps (sut/load-deps)]
-    (t/is (every? #(contains? #{:github-tag :git-sha} (:type %)) deps))
     (t/is (= #{".github/workflows/coverage.yml"
                ".github/workflows/dependencies.yml"
                ".github/workflows/docker.yml"

@@ -2,6 +2,33 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 
+== 0.12.0 (2021-03-14)
+// {{{
+=== Added
+
+* https://github.com/liquidz/antq/issues/60[#60]: Added support for detecting version on 3rd-party GitHub Actions.
+** Supports following 3rd-party actions for now.
+*** https://github.com/DeLaGuardo/setup-clojure[DeLaGuardo/setup-clojure]
+*** https://github.com/DeLaGuardo/setup-graalvm[DeLaGuardo/setup-graalvm]
+*** https://github.com/DeLaGuardo/setup-clj-kondo[DeLaGuardo/setup-clj-kondo]
+*** https://github.com/0918nobita/setup-cljstyle[0918nobita/setup-cljstyle]
+* https://github.com/liquidz/antq/issues/63[#63]: Added support for detecting dependencies which has unverified group name.
+** Supports following group names for now.
+*** `antq/antq` -> `com.github.liquidz/antq`
+*** `seancorfield/depstar` -> `com.github.seancorfield/depstar`
+*** `seancorfield/next.jdbc` -> `com.github.seancorfield/next.jdbc`
+
+=== Changed
+
+* Changed group name on clojars.org from `antq` to `com.github.liquidz/antq`.
+** `antq/antq` will be deployed for a while.
+** c.f.  https://github.com/clojars/clojars-web/wiki/Verified-Group-Names[Clojars Verified Group Names policy]
+* https://github.com/liquidz/antq/issues/64[#64]: Changed https://github.com/lread/rewrite-cljc-playground[lread/rewrite-cljc-playground] to https://github.com/clj-commons/rewrite-clj[clj-commons/rewrite-clj].
+* Bumped tools.deps.alpha to 0.11.905.
+* Bumped kaocha to 1.0.829.
+* Bumped tools.cli to 1.0.206.
+// }}}
+
 == 0.11.2 (2021-02-28)
 
 // {{{

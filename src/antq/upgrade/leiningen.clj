@@ -4,15 +4,15 @@
    [antq.util.dep :as u.dep]
    [antq.util.zip :as u.zip]))
 
-(require (if u.zip/rewrite-cljc-supported?
-           '[rewrite-cljc.zip :as z]
-           '[antq.stub.rewrite-cljc.zip :as z]))
+(require (if u.zip/rewrite-clj-supported?
+           '[rewrite-clj.zip :as z]
+           '[antq.stub.rewrite-clj.zip :as z]))
 
 (defn- in-dependencies?
   [loc]
   (loop [loc (-> loc z/up z/up)]
     (if (= :vector (z/tag loc))
-      (contains? #{:dependencies :plugins} (-> loc z/left z/value))
+      (contains? #{:dependencies :plugins} (-> loc z/left z/sexpr))
       ;; skip elements like metadata
       (recur (z/up loc)))))
 

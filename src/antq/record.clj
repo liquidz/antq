@@ -20,4 +20,7 @@
    ;; e.g. :clojure, :leiningen, :shadow-cljs and so on.
    project
    ;; Diff URL for Version Control System (Nullable)
-   diff-url])
+   diff-url
+   ;; Latest dependency name (Nullable)
+   ;; c.f. https://github.com/clojars/clojars-web/wiki/Verified-Group-Names
+   latest-name])

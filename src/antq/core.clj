@@ -57,6 +57,11 @@
     "shadow-cljs"
     "leiningen"})
 
+(def ^:private disallowed-unverified-deps-map
+  {"antq/antq" "com.github.liquidz/antq"
+   "seancorfield/depstar" "com.github.seancorfield/depstar"
+   "seancorfield/next.jdbc" "com.github.seancorfield/next.jdbc"})
+
 (def cli-options
   [[nil "--exclude=EXCLUDE" :default [] :assoc-fn concat-assoc-fn]
    [nil "--focus=FOCUS" :default [] :assoc-fn concat-assoc-fn]
@@ -157,6 +162,16 @@
     (assoc version-checked-dep :diff-url url)
     version-checked-dep))
 
+(defn unverified-deps
+  [deps]
+  (keep #(when-let [verified-name (and (= :java (:type %))
+                                       (get disallowed-unverified-deps-map (:name %)))]
+           (assoc %
+                  :version (:name %)
+                  :latest-version nil
+                  :latest-name verified-name))
+        deps))
+
 (defn exit
   [outdated-deps]
   (System/exit (if (seq outdated-deps) 1 0)))
@@ -195,8 +210,9 @@
         deps (fetch-deps options)
         deps (unify-org-clojure-deps deps)]
     (if (seq deps)
-      (let [outdated (outdated-deps deps options)
-            outdated (map assoc-diff-url outdated)]
+      (let [outdated (->> (outdated-deps deps options)
+                          (map assoc-diff-url)
+                          (concat (unverified-deps deps)))]
         (report/reporter outdated options)
 
         (cond-> outdated

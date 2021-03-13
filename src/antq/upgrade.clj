@@ -16,7 +16,7 @@
 (defn- confirm
   [dep force?]
   (cond
-    (not u.zip/rewrite-cljc-supported?)
+    (not u.zip/rewrite-clj-supported?)
     (do (log/error "Upgrading is only supported Clojure 1.9 or later.")
         false)
 
@@ -42,23 +42,24 @@
 
 (defn upgrade!
   "Return only non-upgraded deps"
-  [version-checked-deps force?]
-  (when (and (seq version-checked-deps)
-             (not force?))
-    (log/info ""))
+  [deps force?]
+  (let [version-checked-deps (filter :latest-version deps)]
+    (when (and (seq version-checked-deps)
+               (not force?))
+      (log/info ""))
 
-  (doall
-   (remove
-    (fn [dep]
-      (if (confirm dep force?)
-        (if-let [upgraded-content (upgrader dep)]
-          (do (log/info (format "Upgraded %s '%s' to '%s' in %s."
-                                (:name dep)
-                                (:version dep)
-                                (:latest-version dep)
-                                (:file dep)))
-              (spit (:file dep) upgraded-content)
-              true)
-          false)
-        false))
-    version-checked-deps)))
+    (doall
+     (remove
+      (fn [dep]
+        (if (confirm dep force?)
+          (if-let [upgraded-content (upgrader dep)]
+            (do (log/info (format "Upgraded %s '%s' to '%s' in %s."
+                                  (:name dep)
+                                  (:version dep)
+                                  (:latest-version dep)
+                                  (:file dep)))
+                (spit (:file dep) upgraded-content)
+                true)
+            false)
+          false))
+      version-checked-deps))))
