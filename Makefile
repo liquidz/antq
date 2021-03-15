@@ -22,7 +22,7 @@ pom:
 	clojure -Spom
 
 target/antq-standalone.jar: pom
-	clojure -A:nop -X:depstar uberjar :jar $@ :aot true :main-class antq.core
+	clojure -X:depstar uberjar :jar $@ :aot true :main-class antq.core :aliases '[:nop]'
 
 uberjar: clean target/antq-standalone.jar
 
