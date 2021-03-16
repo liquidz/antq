@@ -113,6 +113,8 @@
                                     (r/map->Dependency {:version in})))
     true "RELEASE"
     true "master"
+    true "main"
+    true "latest"
     false "1.0.0"
     false ""))
 
