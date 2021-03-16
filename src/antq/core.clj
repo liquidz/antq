@@ -92,7 +92,7 @@
 
 (defn using-release-version?
   [dep]
-  (contains? #{"RELEASE" "master" "main"} (:version dep)))
+  (contains? #{"RELEASE" "master" "main" "latest"} (:version dep)))
 
 (defn- assoc-versions
   [dep]

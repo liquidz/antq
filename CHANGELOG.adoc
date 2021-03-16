@@ -2,6 +2,13 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 
+== 0.12.1 (2021-03-17)
+// {{{
+=== Fixed
+
+* https://github.com/liquidz/antq/issues/67[#67]: Fixed to skip `'latest'` versions as a latest version.
+// }}}
+
 == 0.12.0 (2021-03-14)
 // {{{
 === Added
