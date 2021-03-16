@@ -2,6 +2,7 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 
+== 0.12.1 (2021-03-17)
 // {{{
 === Fixed
 
