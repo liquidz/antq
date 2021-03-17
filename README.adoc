@@ -32,7 +32,7 @@ If you'd like to use with 1.7.0 or earlier, please see link:./doc/clojure-1.7.ad
 Run the following command for trial.
 [source,clojure]
 ----
-clojure -Sdeps '{:deps {antq/antq {:mvn/version "RELEASE"}}}' -m antq.core
+clojure -Sdeps '{:deps {com.github.liquidz/antq {:mvn/version "RELEASE"}}}' -m antq.core
 ----
 
 Or add the following alias to your `$HOME/.clojure/deps.edn`.
@@ -40,7 +40,7 @@ Or add the following alias to your `$HOME/.clojure/deps.edn`.
 ----
 {
  :aliases
- {:outdated {:extra-deps {antq/antq {:mvn/version "RELEASE"}}
+ {:outdated {:extra-deps {com.github.liquidz/antq {:mvn/version "RELEASE"}}
              :main-opts ["-m" "antq.core"]}}
  }
 ----
@@ -54,7 +54,7 @@ Add the following dependency and alias to your `$HOME/.lein/profiles.clj`.
 ----
 {
  :user
- {:dependencies [[antq/antq "RELEASE"]]
+ {:dependencies [[com.github.liquidz/antq "RELEASE"]]
   :aliases {"outdated" ["run" "-m" "antq.core"]}
   }
  }
@@ -92,7 +92,7 @@ For now, `--upgrade` option only supports following files.
 === --exclude=ARTIFACT_NAME
 Skip version checking for specified artifacts.
 
-E.g. `--exclude=antq/antq`
+E.g. `--exclude=com.github.liquidz/antq`
 
 NOTE: You must specify `groupId/artifactId` for Java dependencies.
 
@@ -106,7 +106,7 @@ E.g. `-d foo --directory=bar:baz` will search "foo", "baz" and "bar" directories
 
 Focus version checking for specified artifacts.
 
-E.g. `--focus=antq/antq`
+E.g. `--focus=com.github.liquidz/antq`
 
 NOTE: You must specify `groupId/artifactId` for Java dependencies.
 
