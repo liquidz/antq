@@ -1,6 +1,13 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+// {{{
+=== Changed
+* Bumped rewrite-clj to 1.0.591-alpha.
+
+=== Fixed
+* Fixed some reflection warnings.
+// }}}
 
 == 0.12.1 (2021-03-17)
 // {{{
