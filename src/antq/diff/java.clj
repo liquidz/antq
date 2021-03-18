@@ -7,6 +7,13 @@
    [antq.util.url :as u.url]
    [clojure.string :as str])
   (:import
+   (org.eclipse.aether
+    DefaultRepositorySystemSession
+    RepositorySystem)
+   (org.eclipse.aether.artifact
+    Artifact)
+   (org.eclipse.aether.repository
+    RemoteRepository)
    (org.eclipse.aether.resolution
     ArtifactRequest)))
 
@@ -24,12 +31,15 @@
   [{:keys [name version] :as dep}]
   (try
     (let [opts (u.mvn/dep->opts dep)
-          {:keys [system session artifact remote-repos]} (u.mvn/repository-system name version opts)
+          {:keys [^RepositorySystem system
+                  ^DefaultRepositorySystemSession  session
+                  ^Artifact artifact
+                  remote-repos]} (u.mvn/repository-system name version opts)
           req (doto (ArtifactRequest.)
                 (.setArtifact artifact)
                 (.setRepositories remote-repos))]
       (some-> (.resolveArtifact system session req)
-              (.getRepository)
+              ^RemoteRepository (.getRepository)
               (.getUrl)))
     ;; Skip showing diff URL when fetching repository URL is failed
     (catch Exception _ nil)))

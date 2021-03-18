@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.github.liquidz</groupId>
   <artifactId>antq</artifactId>
-  <version>0.12.1</version>
+  <version>0.12.2</version>
   <name>antq</name>
   <description>Point out your outdated dependencies</description>
   <url>https://github.com/liquidz/antq</url>
@@ -37,7 +37,7 @@
     <dependency>
       <groupId>rewrite-clj</groupId>
       <artifactId>rewrite-clj</artifactId>
-      <version>1.0.579-alpha</version>
+      <version>1.0.591-alpha</version>
     </dependency>
     <dependency>
       <groupId>org.clojure</groupId>
