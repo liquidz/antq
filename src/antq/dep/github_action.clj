@@ -1,5 +1,6 @@
 (ns antq.dep.github-action
   (:require
+   [antq.dep.github-action.matrix :as d.gha.matrix]
    [antq.dep.github-action.third-party :as d.gha.third-party]
    [antq.dep.github-action.uses :as d.gha.uses]
    [antq.util.dep :as u.dep]
@@ -25,11 +26,14 @@
   [file-path workflow-content-str]
   (let [deps (atom [])
         parsed (yaml/parse-string workflow-content-str)]
-    (walk/prewalk (fn [form]
-                    (when-let [deps* (detect-deps form)]
-                      (swap! deps concat deps*))
-                    form)
-                  parsed)
+    (doseq [[job-name job-body] (:jobs parsed)]
+      (walk/prewalk (fn [form]
+                      (when-let [deps* (seq (detect-deps form))]
+                        (->> deps*
+                             (d.gha.matrix/expand-matrix-value parsed job-name)
+                             (swap! deps concat)))
+                      form)
+                    job-body))
     (map #(assoc %
                  :project :github-action
                  :file file-path)

@@ -31,6 +31,18 @@
                                     :extra {:url "https://github.com/git/sha-short.git"}})}
              (set deps)))))
 
+(t/deftest extract-deps-matrix-test
+  (let [deps (sut/extract-deps
+              "dep/github_action_matrix.yml"
+              (slurp (io/resource "dep/github_action_matrix.yml")))
+        git-tag-dependency #(git-tag-dependency (merge {:file "dep/github_action_matrix.yml"} %))]
+    (t/is (sequential? deps))
+    (t/is (every? #(instance? antq.record.Dependency %) deps))
+    (t/is (= #{(git-tag-dependency {:name "DeLaGuardo/setup-graalvm" :version "master" :only-newest-version? nil})
+               (git-tag-dependency {:name "graalvm/graalvm-ce-builds" :version "v2.0.0" :only-newest-version? true})
+               (git-tag-dependency {:name "graalvm/graalvm-ce-builds" :version "v3.0.0" :only-newest-version? true})}
+             (set deps)))))
+
 (t/deftest load-deps-test
   (let [deps (sut/load-deps)]
     (t/is (= #{".github/workflows/coverage.yml"
