@@ -23,4 +23,6 @@
    diff-url
    ;; Latest dependency name (Nullable)
    ;; c.f. https://github.com/clojars/clojars-web/wiki/Verified-Group-Names
-   latest-name])
+   latest-name
+   ;; Keep only the newest version in the same file.
+   only-newest-version?])
