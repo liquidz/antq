@@ -1,6 +1,7 @@
 (ns antq.dep.github-action.third-party
   (:require
    [antq.record :as r]
+   [antq.util.dep :as u.dep]
    [clojure.string :as str]))
 
 (defn- map->Dependency
@@ -39,13 +40,18 @@
        :version v
        :type :java})]))
 
+(defmethod u.dep/normalize-by-name "graalvm/graalvm-ce-builds"
+  [dep]
+  (update dep :version #(str/replace % #"\.java\d+$" "")))
+
 (defmethod detect "DeLaGuardo/setup-graalvm"
   [form]
   (when-let [v (get-in form [:with :graalvm-version])]
-    [(r/map->Dependency
-      {:name "graalvm/graalvm-ce-builds"
-       :version (str/replace v #"\.java\d+$" "")
-       :type :github-tag})]))
+    [(u.dep/normalize-by-name
+      (r/map->Dependency
+       {:name "graalvm/graalvm-ce-builds"
+        :version v
+        :type :github-tag}))]))
 
 (defmethod detect "0918nobita/setup-cljstyle"
   [form]

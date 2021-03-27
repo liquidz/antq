@@ -28,3 +28,10 @@
                      (seq dep-name) (conj (symbol dep-name)))]
     (cond-> candidates
       (= group-id artifact-id) (conj (symbol group-id)))))
+
+(defmulti normalize-by-name
+  (fn [dep] (:name dep)))
+
+(defmethod normalize-by-name :default
+  [dep]
+  dep)
