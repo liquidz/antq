@@ -1,4 +1,6 @@
-(ns antq.dep.github-action.matrix)
+(ns antq.dep.github-action.matrix
+  (:require
+   [antq.util.dep :as u.dep]))
 
 (defn- matrix-variable-name
   [version]
@@ -13,9 +15,10 @@
                             (matrix-variable-name))]
        (let [values (-> (:jobs parsed-yaml)
                         (get-in  [job-name :strategy :matrix (keyword vname)]))]
-         (map #(assoc dep
-                      :version %
-                      :only-newest-version? true)
+         (map #(u.dep/normalize-by-name
+                (assoc dep
+                       :version %
+                       :only-newest-version? true))
               values))
        [dep]))
    deps))
