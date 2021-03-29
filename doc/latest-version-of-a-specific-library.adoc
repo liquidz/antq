@@ -6,9 +6,9 @@ You can use `-X` option to find out the latest version of a specific library.
 [source,clojure]
 ----
 ;; Try to find Java library by default
-clojure -Sdeps '{:deps {antq/antq {:mvn/version "RELEASE"}}}' -X antq.core/latest :name antq
+clojure -Sdeps '{:deps {com.github.liquidz/antq {:mvn/version "RELEASE"}}}' -X antq.core/latest :name antq
 
 ;; You can specify library type
-clojure -Sdeps '{:deps {antq/antq {:mvn/version "RELEASE"}}}' -X antq.core/latest :name actions/checkout :type :github-tag
+clojure -Sdeps '{:deps {com.github.liquidz/antq {:mvn/version "RELEASE"}}}' -X antq.core/latest :name actions/checkout :type :github-tag
 ----
 
