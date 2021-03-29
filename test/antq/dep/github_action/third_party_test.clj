@@ -55,10 +55,16 @@
                         :with {:version "1.0.0"}}))))
 
 (t/deftest detect-setup-graalvm-test
-  (t/is (= [(git-tag-dependency {:name "graalvm/graalvm-ce-builds"
-                                 :version "19.3.0"})]
-           (sut/detect {:uses "DeLaGuardo/setup-graalvm@main"
-                        :with {:graalvm-version "19.3.0.java8"}}))))
+  (t/testing "before v4.0"
+    (t/is (= [(git-tag-dependency {:name "graalvm/graalvm-ce-builds"
+                                   :version "19.3.0"})]
+             (sut/detect {:uses "DeLaGuardo/setup-graalvm@main"
+                          :with {:graalvm-version "19.3.0.java8"}}))))
+  (t/testing "v4.0 or later"
+    (t/is (= [(git-tag-dependency {:name "graalvm/graalvm-ce-builds"
+                                   :version "19.3.0"})]
+             (sut/detect {:uses "DeLaGuardo/setup-graalvm@main"
+                          :with {:graalvm "19.3.0.java8"}})))))
 
 (t/deftest detect-setup-cljstyle-test
   (t/is (= [(git-tag-dependency {:name "greglook/cljstyle"

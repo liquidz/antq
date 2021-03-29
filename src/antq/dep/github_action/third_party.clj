@@ -46,7 +46,11 @@
 
 (defmethod detect "DeLaGuardo/setup-graalvm"
   [form]
-  (when-let [v (get-in form [:with :graalvm-version])]
+  (when-let [v (or
+                ;; before v4.0
+                (get-in form [:with :graalvm-version])
+                ;; v4.0 or later
+                (get-in form [:with :graalvm]))]
     [(u.dep/normalize-by-name
       (r/map->Dependency
        {:name "graalvm/graalvm-ce-builds"
