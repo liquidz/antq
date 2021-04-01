@@ -62,6 +62,9 @@
    "seancorfield/depstar" "com.github.seancorfield/depstar"
    "seancorfield/next.jdbc" "com.github.seancorfield/next.jdbc"})
 
+(def ^:private only-newest-version-dep-names
+  #{"org.clojure/clojure"})
+
 (def cli-options
   [[nil "--exclude=EXCLUDE" :default [] :assoc-fn concat-assoc-fn]
    [nil "--focus=FOCUS" :default [] :assoc-fn concat-assoc-fn]
@@ -188,12 +191,19 @@
               (when-not (skip "leiningen") (dep.lein/load-deps %)))
             (distinct (:directory options)))))
 
-(defn unify-org-clojure-deps
-  "Keep only the newest version of `org.clojure/clojure` in the same file."
+(defn mark-only-newest-version-flag
   [deps]
-  (let [other-deps (remove #(= "org.clojure/clojure" (:name %)) deps)]
+  (map #(cond-> %
+          (contains? only-newest-version-dep-names (:name %))
+          (assoc :only-newest-version? true))
+       deps))
+
+(defn unify-deps-having-only-newest-version-flag
+  "Keep only the newest version in the same file if `:only-newest-version?` flag is marked."
+  [deps]
+  (let [other-deps (remove :only-newest-version? deps)]
     (->> deps
-         (filter #(= "org.clojure/clojure" (:name %)))
+         (filter :only-newest-version?)
          (group-by :file)
          (map (fn [[_ deps]]
                 (->> deps
@@ -207,8 +217,9 @@
         options (cond-> options
                   ;; Force "format" reporter when :error-format is specified
                   (some?  (:error-format options)) (assoc :reporter "format"))
-        deps (fetch-deps options)
-        deps (unify-org-clojure-deps deps)]
+        deps (->> (fetch-deps options)
+                  (mark-only-newest-version-flag)
+                  (unify-deps-having-only-newest-version-flag))]
     (if (seq deps)
       (let [outdated (->> (outdated-deps deps options)
                           (map assoc-diff-url)

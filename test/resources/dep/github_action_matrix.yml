@@ -1,0 +1,15 @@
+name: dummy
+on: [push]
+jobs:
+  test:
+    strategy:
+      matrix:
+        graal: [ v2.0.0, v3.0.0 ]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: DeLaGuardo/setup-graalvm@master
+        with:
+          graalvm-version: ${{ matrix.graal }}
+  jobjob:
+    steps:
+      - run: echo 'foo'

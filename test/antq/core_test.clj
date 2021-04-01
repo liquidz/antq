@@ -192,17 +192,33 @@
                         (sut/fetch-deps {:directory ["test/resources/dep"]
                                          :skip ["leiningen"]})))))))
 
-(t/deftest unify-org-clojure-deps-test
-  (let [deps [(r/map->Dependency {:name "org.clojure/clojure" :version "1.8.0" :file "deps.edn"})
-              (r/map->Dependency {:name "org.clojure/clojure" :version "1.9.0"  :file "deps.edn"})
-              (r/map->Dependency {:name "org.clojure/clojure" :version "1.10.2" :file "deps.edn"})
+(t/deftest mark-only-newest-version-flag-test
+  (let [deps [(r/map->Dependency {:name "org.clojure/clojure" :version "1"})
+              (r/map->Dependency {:name "org.clojure/clojure" :version "2"})
+              (r/map->Dependency {:name "dummy" :version "3"})]
+        res (sut/mark-only-newest-version-flag deps)]
+    (t/is (= 3 (count res)))
+    (t/is (= #{(r/map->Dependency {:name "org.clojure/clojure" :version "1" :only-newest-version? true})
+               (r/map->Dependency {:name "org.clojure/clojure" :version "2" :only-newest-version? true})
+               (r/map->Dependency {:name "dummy" :version "3" :only-newest-version? nil})}
+             (set res)))))
 
-              (r/map->Dependency {:name "org.clojure/clojure" :version "1.8.0" :file "project.clj"})
-              (r/map->Dependency {:name "org.clojure/clojure" :version "1.9.0"  :file "project.clj"})]
-        res (sut/unify-org-clojure-deps deps)]
-    (t/is (= 2 (count res)))
-    (t/is (= #{(r/map->Dependency {:name "org.clojure/clojure" :version "1.10.2" :file "deps.edn"})
-               (r/map->Dependency {:name "org.clojure/clojure" :version "1.9.0"  :file "project.clj"})}
+(t/deftest unify-deps-having-only-newest-version-flag-test
+  (let [deps [(r/map->Dependency {:name "foo" :version "1.8.0" :file "deps.edn" :only-newest-version? true})
+              (r/map->Dependency {:name "foo" :version "1.9.0" :file "deps.edn" :only-newest-version? true})
+              (r/map->Dependency {:name "foo" :version "1.10.2" :file "deps.edn" :only-newest-version? true})
+
+              (r/map->Dependency {:name "foo" :version "1.8.0" :file "project.clj" :only-newest-version? true})
+              (r/map->Dependency {:name "foo" :version "1.9.0" :file "project.clj" :only-newest-version? true})
+
+              (r/map->Dependency {:name "bar" :version "1.8.0" :file "project.clj" :only-newest-version? false})
+              (r/map->Dependency {:name "bar" :version "1.9.0" :file "project.clj" :only-newest-version? false})]
+        res (sut/unify-deps-having-only-newest-version-flag deps)]
+    (t/is (= 4 (count res)))
+    (t/is (= #{(r/map->Dependency {:name "foo" :version "1.10.2" :file "deps.edn" :only-newest-version? true})
+               (r/map->Dependency {:name "foo" :version "1.9.0" :file "project.clj" :only-newest-version? true})
+               (r/map->Dependency {:name "bar" :version "1.8.0" :file "project.clj" :only-newest-version? false})
+               (r/map->Dependency {:name "bar" :version "1.9.0" :file "project.clj" :only-newest-version? false})}
              (set res)))))
 
 (t/deftest latest-test

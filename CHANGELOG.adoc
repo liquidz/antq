@@ -2,6 +2,16 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 
+== 0.12.3 (2021-04-02)
+// {{{
+=== Changed
+*  Bumped rewrite-clj to 1.0.594-alpha.
+
+=== Fixed
+* https://github.com/liquidz/antq/issues/70[#70]: Fixed GitHub Actions detector to support matrix variables.
+* https://github.com/liquidz/antq/issues/70[#70]: Fix https://github.com/DeLaGuardo/setup-graalvm[DeLaGuardo/setup-graalvm] detector to support v4.0.
+// }}}
+
 == 0.12.2 (2021-03-19)
 // {{{
 === Changed

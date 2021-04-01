@@ -71,7 +71,7 @@
         session ^DefaultRepositorySystemSession (deps.util.maven/make-session system local-repo)
         ;; Overwrite TransferListener not to show "Downloading" messages
         _ (.setTransferListener session custom-transfer-listener)
-        ; c.f. https://stackoverflow.com/questions/35488167/how-can-you-find-the-latest-version-of-a-maven-artifact-from-java-using-aether
+        ;; c.f. https://stackoverflow.com/questions/35488167/how-can-you-find-the-latest-version-of-a-maven-artifact-from-java-using-aether
         artifact (deps.util.maven/coord->artifact lib {:mvn/version version})
         remote-repos (deps.util.maven/remote-repos (:repositories opts))]
     {:system system

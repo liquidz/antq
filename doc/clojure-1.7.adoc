@@ -11,7 +11,7 @@ Add the following alias to your project's `deps.edn` instead of `$HOME/.clojure/
 {
   :outdated
   {:extra-deps {org.clojure/clojure {:mvn/version "1.10.1"} ;; use 1.8.0 or later only for antq
-                antq/antq {:mvn/version "RELEASE"}}
+                com.github.liquidz/antq {:mvn/version "RELEASE"}}
    :main-opts ["-m" "antq.core"]}
 }
 ----
@@ -29,7 +29,7 @@ Add a profile and alias to your project's `project.clj` instead of `$HOME/.lein/
 
   :profiles
   {:outdated {:dependencies [[org.clojure/clojure "1.10.1"] ;; use 1.8.0 or later only for antq
-                             [antq "RELEASE"]]}}
+                             [com.github.liquidz/antq "RELEASE"]]}}
   :aliases
   {"outdated" ["with-profile" "outdated" "run" "-m" "antq.core"]})
 ----
