@@ -198,19 +198,6 @@
           (assoc :only-newest-version? true))
        deps))
 
-(defn unify-org-clojure-deps
-  "Keep only the newest version of `org.clojure/clojure` in the same file."
-  [deps]
-  (let [other-deps (remove #(= "org.clojure/clojure" (:name %)) deps)]
-    (->> deps
-         (filter #(= "org.clojure/clojure" (:name %)))
-         (group-by :file)
-         (map (fn [[_ deps]]
-                (->> deps
-                     (sort (fn [a b] (version/version-compare (:version b) (:version a))))
-                     first)))
-         (concat other-deps))))
-
 (defn unify-deps-having-only-newest-version-flag
   "Keep only the newest version in the same file if `:only-newest-version?` flag is marked."
   [deps]
