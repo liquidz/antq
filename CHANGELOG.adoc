@@ -2,6 +2,11 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 
+== 0.12.4 (2021-04-02)
+// {{{
+* Re-release 0.12.3 because it was deployed to clojars with wrong content.
+// }}}
+
 == 0.12.3 (2021-04-02)
 // {{{
 === Changed
