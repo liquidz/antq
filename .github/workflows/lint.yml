@@ -16,5 +16,5 @@ jobs:
       - uses: actions/checkout@v2
       - uses: 0918nobita/setup-cljstyle@v0.2.0
         with:
-          cljstyle-version: 0.14.0
+          cljstyle-version: 0.15.0
       - run: cljstyle check

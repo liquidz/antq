@@ -23,11 +23,11 @@
       (if-let [loc (z/find-value loc z/next name-set)]
         (recur (if (in-deps? loc)
                  (-> loc
-                     ; move to map
+                     ;; move to map
                      (z/right) (z/down)
-                     ; find target key
+                     ;; find target key
                      (z/find-value z/right version-key)
-                     ; replace
+                     ;; replace
                      (z/right)
                      (z/replace (:latest-version version-checked-dep)))
                  (z/next loc)))
