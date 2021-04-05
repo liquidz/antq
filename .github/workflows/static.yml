@@ -1,9 +1,0 @@
-name: static
-on: [pull_request]
-jobs:
-  check:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: version check
-        run: bash script/version_check.sh
