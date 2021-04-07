@@ -1,5 +1,5 @@
 /.cpcache/
 .nrepl-port
 /target
-.clj-kondo/.cache
+**/.clj-kondo/.cache
 **/.lsp
