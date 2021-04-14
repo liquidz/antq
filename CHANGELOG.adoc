@@ -2,6 +2,7 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 
+== 0.13.0 (2021-04-15)
 // {{{
 === Added
 * https://github.com/liquidz/antq/issues/71[#71]: Added support for https://book.babashka.org/index.html#_bb_edn[bb.edn].
