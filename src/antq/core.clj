@@ -8,6 +8,7 @@
 (ns antq.core
   (:gen-class)
   (:require
+   [antq.dep.babashka :as dep.bb]
    [antq.dep.boot :as dep.boot]
    [antq.dep.clojure :as dep.clj]
    [antq.dep.github-action :as dep.gh-action]
@@ -188,7 +189,8 @@
               (when-not (skip "github-action") (dep.gh-action/load-deps %))
               (when-not (skip "pom") (dep.pom/load-deps %))
               (when-not (skip "shadow-cljs") (dep.shadow/load-deps %))
-              (when-not (skip "leiningen") (dep.lein/load-deps %)))
+              (when-not (skip "leiningen") (dep.lein/load-deps %))
+              (when-not (skip "babashka") (dep.bb/load-deps %)))
             (distinct (:directory options)))))
 
 (defn mark-only-newest-version-flag

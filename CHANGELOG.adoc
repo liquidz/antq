@@ -2,6 +2,17 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 
+== 0.13.0 (2021-04-15)
+// {{{
+=== Added
+* https://github.com/liquidz/antq/issues/71[#71]: Added support for https://book.babashka.org/index.html#_bb_edn[bb.edn].
+
+=== Changed
+* Bumped tools.deps.alpha to 0.11.910.
+* Bumped rewrite-clj to 1.0.605-alpha.
+* Bumped deps-deploy to the latest commit.
+// }}}
+
 == 0.12.4 (2021-04-02)
 // {{{
 * Re-release 0.12.3 because it was deployed to clojars with wrong content.
