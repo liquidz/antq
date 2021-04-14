@@ -24,6 +24,7 @@ If you'd like to use with 1.7.0 or earlier, please see link:./doc/clojure-1.7.ad
 * build.boot (https://boot-clj.com[Boot])
 * pom.xml (https://maven.apache.org[Maven])
 * .github/workflows/*.yml (https://github.com/features/actions[GitHub Actions])
+* bb.edn (https://book.babashka.org/index.html#_bb_edn[Babashka])
 
 == Usage
 
