@@ -123,12 +123,18 @@
   (r/map->Dependency (merge {:type :test} m)))
 
 (t/deftest outdated-deps-test
-  (t/is (= [(test-dep {:name "alice" :version "1.0.0" :latest-version "3.0.0"})
-            (test-dep {:name "bob" :version "2.0.0" :latest-version "3.0.0"})]
-           (sut/outdated-deps [(test-dep {:name "alice" :version "1.0.0"})
-                               (test-dep {:name "bob" :version "2.0.0"})
-                               (test-dep {:name "charlie" :version "3.0.0"})]
-                              {}))))
+  (let [deps [(test-dep {:name "alice" :version "1.0.0"})
+              (test-dep {:name "bob" :version "2.0.0"})
+              (test-dep {:name "charlie" :version "3.0.0"})]]
+
+    (t/is (= [(test-dep {:name "alice" :version "1.0.0" :latest-version "3.0.0"})
+              (test-dep {:name "bob" :version "2.0.0" :latest-version "3.0.0"})]
+             (sut/outdated-deps deps {})))
+
+    (t/testing "alice@3.0.0 should be excluded"
+      (t/is (= [(test-dep {:name "alice" :version "1.0.0" :latest-version "2.0.0"})
+                (test-dep {:name "bob" :version "2.0.0" :latest-version "3.0.0"})]
+               (sut/outdated-deps deps {:exclude ["alice@3.0.0"]}))))))
 
 (t/deftest assoc-diff-url-test
   (let [dummy-dep {:type :java :name "foo/bar" :version "1" :latest-version "2"}]
