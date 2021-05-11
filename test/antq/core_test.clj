@@ -26,9 +26,12 @@
              (:options (test-parse-opts [])))))
 
   (t/testing "--exclude"
-    (t/is (= ["ex/ex1" "ex/ex2" "ex/ex3"]
+    (t/is (= ["ex/ex1" "ex/ex2" "ex/ex3"
+              "ex/ex4@1.0.0" "ex/ex5@2.0.0" "ex/ex6@3.0.0"]
              (get-in (test-parse-opts ["--exclude=ex/ex1"
-                                       "--exclude=ex/ex2:ex/ex3"])
+                                       "--exclude=ex/ex2:ex/ex3"
+                                       "--exclude=ex/ex4@1.0.0"
+                                       "--exclude=ex/ex5@2.0.0:ex/ex6@3.0.0"])
                      [:options :exclude]))))
 
   (t/testing "--focus"
@@ -108,6 +111,32 @@
                                        {:exclude ["org.clojure/clojure"]
                                         :focus ["org.clojure/clojure"]})))))
 
+(t/deftest remove-skipping-versions-test
+  (t/testing "there are no target to remove"
+    (t/is (= ["1" "2" "3"]
+             (sut/remove-skipping-versions ["1" "2" "3"] "foo" {})))
+    (t/is (= ["1" "2" "3"]
+             (sut/remove-skipping-versions ["1" "2" "3"] "foo" {:exclude ["foo@4"]}))))
+
+  (t/testing "only dep's name is matched"
+    (t/is (= ["1" "2" "3"]
+             (sut/remove-skipping-versions ["1" "2" "3"] "foo" {:exclude ["foo"]}))))
+
+  (t/testing "only version number is matched"
+    (t/is (= ["1" "2" "3"]
+             (sut/remove-skipping-versions ["1" "2" "3"] "foo" {:exclude ["bar@2"]}))))
+
+  (t/testing "dep's name and version number are matched"
+    (t/is (= ["1" "3"]
+             (sut/remove-skipping-versions ["1" "2" "3"] "foo" {:exclude ["foo@2"]})))
+    (t/is (= ["1"]
+             (sut/remove-skipping-versions ["1" "2" "3"] "foo" {:exclude ["foo@2"
+                                                                          "foo@3"]})))
+    (t/is (= []
+             (sut/remove-skipping-versions ["1" "2" "3"] "foo" {:exclude ["foo@1"
+                                                                          "foo@2"
+                                                                          "foo@3"]})))))
+
 (t/deftest using-release-version?-test
   (t/are [expected in] (= expected (sut/using-release-version?
                                     (r/map->Dependency {:version in})))
@@ -123,12 +152,18 @@
   (r/map->Dependency (merge {:type :test} m)))
 
 (t/deftest outdated-deps-test
-  (t/is (= [(test-dep {:name "alice" :version "1.0.0" :latest-version "3.0.0"})
-            (test-dep {:name "bob" :version "2.0.0" :latest-version "3.0.0"})]
-           (sut/outdated-deps [(test-dep {:name "alice" :version "1.0.0"})
-                               (test-dep {:name "bob" :version "2.0.0"})
-                               (test-dep {:name "charlie" :version "3.0.0"})]
-                              {}))))
+  (let [deps [(test-dep {:name "alice" :version "1.0.0"})
+              (test-dep {:name "bob" :version "2.0.0"})
+              (test-dep {:name "charlie" :version "3.0.0"})]]
+
+    (t/is (= [(test-dep {:name "alice" :version "1.0.0" :latest-version "3.0.0"})
+              (test-dep {:name "bob" :version "2.0.0" :latest-version "3.0.0"})]
+             (sut/outdated-deps deps {})))
+
+    (t/testing "alice@3.0.0 should be excluded"
+      (t/is (= [(test-dep {:name "alice" :version "1.0.0" :latest-version "2.0.0"})
+                (test-dep {:name "bob" :version "2.0.0" :latest-version "3.0.0"})]
+               (sut/outdated-deps deps {:exclude ["alice@3.0.0"]}))))))
 
 (t/deftest assoc-diff-url-test
   (let [dummy-dep {:type :java :name "foo/bar" :version "1" :latest-version "2"}]

@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.github.liquidz</groupId>
   <artifactId>antq</artifactId>
-  <version>0.13.0</version>
+  <version>0.14.0</version>
   <name>antq</name>
   <description>Point out your outdated dependencies</description>
   <url>https://github.com/liquidz/antq</url>
@@ -42,7 +42,7 @@
     <dependency>
       <groupId>org.clojure</groupId>
       <artifactId>tools.deps.alpha</artifactId>
-      <version>0.11.910</version>
+      <version>0.11.918</version>
     </dependency>
     <dependency>
       <groupId>org.clojure</groupId>

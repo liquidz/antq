@@ -90,10 +90,19 @@ For now, `--upgrade` option only supports following files.
 * pom.xml
 ====
 
-=== --exclude=ARTIFACT_NAME
-Skip version checking for specified artifacts.
+=== --exclude=ARTIFACT_NAME[@VERSION]
+Skip version checking for specified artifacts or versions.
 
-E.g. `--exclude=com.github.liquidz/antq`
+E.g.
+[source,sh]
+----
+# Exclude all versions of specified artifact
+--exclude=com.github.liquidz/antq
+# Exclude specific version of specified artifact
+--exclude=com.github.liquidz/antq@0.13.0
+----
+
+When you specified a version number, antq will report the latest version excluding only the specified version.
 
 NOTE: You must specify `groupId/artifactId` for Java dependencies.
 

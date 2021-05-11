@@ -94,6 +94,15 @@
       :else
       (contains? exclude-artifacts (:name dep)))))
 
+(defn remove-skipping-versions
+  [versions dep-name options]
+  (let [skip-vers (->> (:exclude options)
+                       (map #(str/split % #"@" 2))
+                       (filter #(= dep-name (first %)))
+                       (keep second)
+                       (set))]
+    (remove skip-vers versions)))
+
 (defn using-release-version?
   [dep]
   (contains? #{"RELEASE" "master" "main" "latest"} (:version dep)))
@@ -117,10 +126,11 @@
         (log/info))))
 
 (defn- assoc-latest-version
-  [dep]
+  [dep options]
   (let [vers (cond->> (:_versions dep)
                (not (ver/under-devleopment? (:version dep)))
                (drop-while ver/under-devleopment?))
+        vers (remove-skipping-versions vers (:name dep) options)
         latest-version (first vers)]
     (assoc dep :latest-version latest-version)))
 
@@ -153,11 +163,12 @@
                          deps)
         uniq-deps-with-vers (->> org-deps
                                  distinct-deps
-                                 (pmap assoc-versions))]
+                                 (pmap assoc-versions))
+        assoc-latest-version* #(assoc-latest-version % options)]
     (->> org-deps
          (pmap #(complete-versions-by % uniq-deps-with-vers))
          (map (comp dissoc-no-longer-used-keys
-                    assoc-latest-version))
+                    assoc-latest-version*))
          (remove ver/latest?))))
 
 (defn assoc-diff-url

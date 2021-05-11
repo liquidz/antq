@@ -1,7 +1,6 @@
 (ns antq.test-helper
   (:require
    [antq.record :as r]
-   [antq.test-helper :as h]
    [antq.upgrade.clojure]
    [lambdaisland.deep-diff2 :as ddiff])
   (:import
