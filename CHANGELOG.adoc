@@ -5,6 +5,9 @@ All notable changes to this project will be documented in this file. This change
 === Added
 * https://github.com/liquidz/antq/issues/75[#75]: Extended `--exclude` option to be able to exclude specific versions.
 ** Now you can exclude specific versions as follows: `--exclude=foo/bar@1.0.0`
+
+=== Changed
+* Bumped tools.deps.alpha 0.11.918.
 // }}}
 
 == 0.13.0 (2021-04-15)
