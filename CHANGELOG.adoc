@@ -2,6 +2,7 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 
+== 0.14.1 (2021-05-21)
 // {{{
 === Changed
 * Bumped tools.deps.alpha to 0.11.922.
