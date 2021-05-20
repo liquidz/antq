@@ -57,7 +57,6 @@
     (t/testing "POM does not have SCM"
       (with-redefs [sut/get-repository-url (constantly "https://example.com")
                     u.mvn/read-pom (fn [url]
-                                     (println "FIXME url" url)
                                      (when (= "https://example.com/pom/noscm/1.0/noscm-1.0.pom" url)
                                        (doto (Model.)
                                          (.setUrl "https://github.com/pom/no-scm"))))
