@@ -8,7 +8,7 @@
   cheshire/cheshire {:mvn/version "5.10.0"}
   clj-commons/clj-yaml {:mvn/version "0.7.106"}
   version-clj/version-clj {:mvn/version "2.0.1"}
-  rewrite-clj/rewrite-clj {:mvn/version "1.0.605-alpha"}}
+  rewrite-clj/rewrite-clj {:mvn/version "1.0.644-alpha"}}
 
  :aliases
  {:1.8
@@ -19,7 +19,7 @@
   :dev
   {:extra-paths ["test"
                  "test/resources"]
-   :extra-deps {lambdaisland/kaocha {:mvn/version "1.0.829"}
+   :extra-deps {lambdaisland/kaocha {:mvn/version "1.0.861"}
                 lambdaisland/deep-diff2 {:mvn/version "2.0.108"}}}
 
   :nop
@@ -33,7 +33,7 @@
 
   :coverage
   {:extra-deps {cloverage/cloverage {:mvn/version "RELEASE"}}
-   :main-opts ["-m" "cloverage.coverage"]}
+   :main-opts ["-m" "cloverage.coverage" "--ns-exclude-regex" "leiningen.antq"]}
 
   :depstar
   {:extra-deps {com.github.seancorfield/depstar {:mvn/version "RELEASE"}}

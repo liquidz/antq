@@ -224,21 +224,26 @@
                      first)))
          (concat other-deps))))
 
+(defn antq
+  [options deps]
+  (let [deps (->> deps
+                  (mark-only-newest-version-flag)
+                  (unify-deps-having-only-newest-version-flag))
+        outdated (->> (outdated-deps deps options)
+                      (map assoc-diff-url)
+                      (concat (unverified-deps deps)))]
+    (report/reporter outdated options)
+    outdated))
+
 (defn -main
   [& args]
   (let [{:keys [options]} (cli/parse-opts args cli-options)
         options (cond-> options
                   ;; Force "format" reporter when :error-format is specified
                   (some?  (:error-format options)) (assoc :reporter "format"))
-        deps (->> (fetch-deps options)
-                  (mark-only-newest-version-flag)
-                  (unify-deps-having-only-newest-version-flag))]
+        deps (fetch-deps options)]
     (if (seq deps)
-      (let [outdated (->> (outdated-deps deps options)
-                          (map assoc-diff-url)
-                          (concat (unverified-deps deps)))]
-        (report/reporter outdated options)
-
+      (let [outdated (antq options deps)]
         (cond-> outdated
           (:upgrade options)
           (upgrade/upgrade! (or (:force options) false))
