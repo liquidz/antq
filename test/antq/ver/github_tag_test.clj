@@ -56,7 +56,8 @@
                           (throw (Exception. "test exception")))
                   sh/sh (fn [& args]
                           (when (= ["git" "ls-remote" "https://github.com/bar/baz"] args)
-                            {:out dummy-out}))]
+                            {:out dummy-out
+                             :exit 0}))]
       (t/testing "pre"
         (t/is (false? @api-errored))
         (t/is (false? @(deref #'sut/failed-to-fetch-from-api))))

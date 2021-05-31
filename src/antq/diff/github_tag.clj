@@ -10,12 +10,13 @@
       (first (filter #(str/includes? % target) coll))))
 
 (defmethod diff/get-diff-url :github-tag
-  [dep]
-  (let [url (format "https://github.com/%s"
-                    (str/join "/" (take 2 (str/split (:name dep) #"/"))))
-        tags (u.git/tags-by-ls-remote url)
-        current (or (exact-or-included tags (:version dep))
-                    (:version dep))
-        latest (or (exact-or-included tags (:latest-version dep))
-                   (:latest-version dep))]
-    (format "%s/compare/%s...%s" url current latest)))
+  [{:as dep :keys [version latest-version]}]
+  (when (and version latest-version)
+    (let [url (format "https://github.com/%s"
+                      (str/join "/" (take 2 (str/split (:name dep) #"/"))))
+          tags (u.git/tags-by-ls-remote url)
+          current (or (exact-or-included tags version)
+                      version)
+          latest (or (exact-or-included tags latest-version)
+                     latest-version)]
+      (format "%s/compare/%s...%s" url current latest))))
