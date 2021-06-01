@@ -47,11 +47,11 @@
     (let [repositories (normalize-repositories @repos)]
       (for [[dep-name version] @deps
             :when (acceptable-version? version)]
-        (r/map->Dependency {:project      :leiningen
-                            :type         :java
-                            :file         file-path
-                            :name         (normalize-name dep-name)
-                            :version      version
+        (r/map->Dependency {:project :leiningen
+                            :type :java
+                            :file file-path
+                            :name (normalize-name dep-name)
+                            :version version
                             :repositories repositories})))))
 
 (defn load-deps

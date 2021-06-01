@@ -26,11 +26,11 @@
                       (distinct)
                       (keep (fn [[dep-name version]]
                               (when (dep.lein/acceptable-version? version)
-                                (r/map->Dependency {:project      :leiningen
-                                                    :type         :java
-                                                    :file         "project.clj"
-                                                    :name         (dep.lein/normalize-name dep-name)
-                                                    :version      version
+                                (r/map->Dependency {:project :leiningen
+                                                    :type :java
+                                                    :file "project.clj"
+                                                    :name (dep.lein/normalize-name dep-name)
+                                                    :version version
                                                     :repositories repos}))))
                       (antq.core/antq options)
                       (seq))]
