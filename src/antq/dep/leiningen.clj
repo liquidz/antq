@@ -7,6 +7,20 @@
 
 (def ^:private project-file "project.clj")
 
+(defn normalize-repositories
+  [repos]
+  (reduce (fn [acc [k v]] (assoc acc k (if (map? v) v {:url v}))) {} repos))
+
+(defn normalize-name
+  [dep-name]
+  (if (u.dep/qualified-symbol?' dep-name)
+    (str dep-name)
+    (str dep-name "/" dep-name)))
+
+(defn acceptable-version?
+  [version]
+  (and (string? version) (seq version)))
+
 (defn extract-deps
   [file-path project-clj-content-str]
   (let [dep-form? (atom false)
@@ -30,15 +44,13 @@
                       (swap! repos concat form))
                     form)
                   (read-string (str "(list " project-clj-content-str " )")))
-    (let [repositories (reduce (fn [acc [k v]] (assoc acc k (if (map? v) v {:url v})))  {} @repos)]
+    (let [repositories (normalize-repositories @repos)]
       (for [[dep-name version] @deps
-            :when (and (string? version) (seq version))]
+            :when (acceptable-version? version)]
         (r/map->Dependency {:project :leiningen
                             :type :java
                             :file file-path
-                            :name  (if (u.dep/qualified-symbol?' dep-name)
-                                     (str dep-name)
-                                     (str dep-name "/" dep-name))
+                            :name (normalize-name dep-name)
                             :version version
                             :repositories repositories})))))
 
