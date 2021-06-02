@@ -78,10 +78,6 @@
    [nil "--upgrade"]
    [nil "--force"]])
 
-(def default-repos
-  {"central" "https://repo1.maven.org/maven2/"
-   "clojars" "https://repo.clojars.org/"})
-
 (defn skip-artifacts?
   [dep options]
   (let [exclude-artifacts (set (:exclude options []))

@@ -2,13 +2,20 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 
-== 0.14.1 (2021-05-21)
+== 0.15.0 (2021-06-03)
 // {{{
 === Added
 * https://github.com/liquidz/antq/issues/79[#79]: Offer a Leiningen plugin.
 ** It tends to be more accurate (since it won't parse your project.clj, having it evaluated by Leiningen instead).
-** However the `:upgrade` option will not be supported (since the plugin cannot always know if a given dependency came from a specific profile, middleware, etc). 
+** However the `:upgrade` option will not be supported (since the plugin cannot always know if a given dependency came from a specific profile, middleware, etc).
 
+=== Changed
+* Bumped rewrite-clj to 1.0.644-alpha.
+* Bumped lambdaisland/kaocha to 1.0.861.
+// }}}
+
+== 0.14.1 (2021-05-21)
+// {{{
 === Changed
 * Bumped tools.deps.alpha to 0.11.922.
 ** c.f. https://maven.apache.org/docs/3.8.1/release-notes.html

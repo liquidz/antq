@@ -4,14 +4,6 @@
    [antq.util.dep :as u.dep]
    [clojure.string :as str]))
 
-(defn- map->Dependency
-  [m]
-  (-> m
-      (assoc :type :github-tag
-             :project :github-action)
-      (r/map->Dependency)))
-
-
 (defmulti detect
   (fn [form]
     (when (and (map? form)
