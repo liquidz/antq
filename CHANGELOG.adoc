@@ -1,6 +1,8 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+
+== 0.15.0 (2021-06-03)
 // {{{
 === Added
 * https://github.com/liquidz/antq/issues/79[#79]: Offer a Leiningen plugin.
