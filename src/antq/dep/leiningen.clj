@@ -30,7 +30,7 @@
     (walk/prewalk (fn [form]
                     (cond
                       (keyword? form)
-                      (do (reset! dep-form? (#{:dependencies :plugins} form))
+                      (do (reset! dep-form? (#{:dependencies :managed-dependencies :plugins} form))
                           (reset! repos-form? (= :repositories form)))
 
                       (and @dep-form?

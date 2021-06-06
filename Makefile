@@ -14,6 +14,7 @@ test:
 	clojure -M:outdated:nop:1.8 --exclude=clojure/brew-install
 	clojure -M:dev:1.9:test
 	clojure -M:dev:test
+	integration-testing/test.sh
 
 .PHONY: lint
 lint:

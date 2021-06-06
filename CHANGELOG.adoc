@@ -1,6 +1,11 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+// {{{
+=== Fixed
+* Also check `:managed-dependencies` when checking Leingen projects (under its `main` variant).
+* Also check `:plugins` when checking Leingen projects (under its plugin variant).
+// }}}
 
 == 0.15.0 (2021-06-03)
 // {{{

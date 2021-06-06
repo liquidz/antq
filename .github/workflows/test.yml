@@ -5,7 +5,7 @@ jobs:
   test:
     strategy:
       matrix:
-        java: ['8', '11', '14', '15']
+        java: ['8', '11', '14', '15', '16']
 
     runs-on: ubuntu-latest
     steps:
@@ -18,9 +18,12 @@ jobs:
       - uses: DeLaGuardo/setup-clojure@master
         with:
           tools-deps: latest
+          lein: latest
       - uses: actions/cache@v2
         with:
           path: ~/.m2
           key: test-m2-${{ hashFiles('deps.edn') }}-v1
+      - name: lint integration-test.sh
+        run: shellcheck integration-testing/test.sh
       - name: run test
         run: make test
