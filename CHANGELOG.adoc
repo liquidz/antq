@@ -1,7 +1,12 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+
+== 0.15.1 (2021-06-08)
 // {{{
+=== Changed
+* Bumped tools.deps.alpha to 0.11.926.
+
 === Fixed
 * Also check `:managed-dependencies` when checking Leingen projects (under its `main` variant).
 * Also check `:plugins` when checking Leingen projects (under its plugin variant).
