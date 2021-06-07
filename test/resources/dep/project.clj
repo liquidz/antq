@@ -15,4 +15,6 @@
     :dependencies [[foo/core "1.1.0"]]]}
 
   :repositories [["antq-test" {:url "s3://antq-repo/"}]
-                 ["str-test" "https://example.com"]])
+                 ["str-test" "https://example.com"]]
+
+  :managed-dependencies [[managed/dependency "5.0.0"]])

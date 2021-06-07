@@ -13,7 +13,7 @@
   For the time being it merely checks for outdated dependencies;
   it doesn't support the `:upgrade` option because it cannot always know what to fix
   (in face of eval, profiles, plugins/middleware)."
-  [{:keys [dependencies managed-dependencies repositories]
+  [{:keys [dependencies managed-dependencies plugins repositories]
     {:keys [error-format reporter upgrade] :as antq-options} :antq}]
   (let [repos (dep.lein/normalize-repositories repositories)
         options (cond-> antq-options
@@ -23,6 +23,7 @@
             (assert false ":upgrade option not supported under the Lein plugin."))
         outdated (->> dependencies
                       (into managed-dependencies)
+                      (into plugins)
                       (distinct)
                       (keep (fn [[dep-name version]]
                               (when (dep.lein/acceptable-version? version)

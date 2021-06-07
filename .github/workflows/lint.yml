@@ -18,3 +18,8 @@ jobs:
         with:
           cljstyle-version: 0.15.0
       - run: cljstyle check
+  shellcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: shellcheck script/*.sh
