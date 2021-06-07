@@ -2,6 +2,9 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 // {{{
+=== Changed
+* Bumped tools.deps.alpha to 0.11.926.
+
 === Fixed
 * Also check `:managed-dependencies` when checking Leingen projects (under its `main` variant).
 * Also check `:plugins` when checking Leingen projects (under its plugin variant).
