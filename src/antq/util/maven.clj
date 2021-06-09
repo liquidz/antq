@@ -79,10 +79,22 @@
      :artifact artifact
      :remote-repos remote-repos}))
 
-(defn ^Model read-pom
+(defn- ^Model read-pom*
   [^String url]
   (with-open [reader (io/reader url)]
     (.read (MavenXpp3Reader.) reader)))
+
+(defn ^Model read-pom
+  [^String url]
+  (loop [i 0]
+    (when (< i 5)
+      (or (try
+            (read-pom* url)
+            (catch java.net.ConnectException e
+              (if (= "Operation timed out" (.getMessage e))
+                (log/error (str "Fetching pom from " url " failed because it timed out, retrying"))
+                (throw e))))
+          (recur (inc i))))))
 
 (defn ^String get-url
   [^Model model]
