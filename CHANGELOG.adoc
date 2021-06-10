@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file. This change
 // {{{
 === Changed
 * https://github.com/liquidz/antq/issues/81[#81]: Updated maven and git connection to retry on timeouts.
+* Bumped tools.deps.alpha to 0.11.931.
 // }}}
 
 == 0.15.1 (2021-06-08)
