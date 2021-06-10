@@ -1,5 +1,6 @@
 (ns antq.util.git
   (:require
+   [antq.constant :as const]
    [antq.log :as log]
    [clojure.java.shell :as sh]
    [clojure.string :as str]))
@@ -15,7 +16,7 @@
 (defn- sh-git-ls-remote
   [url]
   (loop [i 0]
-    (when (< i 5)
+    (when (< i const/retry-limit)
       (let [{:keys [exit err] :as res} (sh/sh "git" "ls-remote" url)]
         (cond
           (= 0 exit)
@@ -25,9 +26,8 @@
           (log/error (str "git ls-remote failed on: " url))
 
           :else
-          (do
-            (log/error "git ls-remote timed out, retrying")
-            (recur (inc i))))))))
+          (do (log/error "git ls-remote timed out, retrying")
+              (recur (inc i))))))))
 
 (defn tags-by-ls-remote*
   [url]

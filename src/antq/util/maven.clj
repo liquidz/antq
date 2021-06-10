@@ -1,5 +1,6 @@
 (ns antq.util.maven
   (:require
+   [antq.constant :as const]
    [antq.log :as log]
    [clojure.java.io :as io]
    [clojure.string :as str]
@@ -55,10 +56,9 @@
     (transferStarted [_ event])
     (transferCorrupted [_ event]
       (log/info "Download corrupted:" (.. ^TransferEvent event getException getMessage)))
-    (transferFailed [_ event]
-      ;; This happens when Maven can't find an artifact in a particular repo
-      ;; (but still may find it in a different repo), ie this is a common event
-      )
+    ;; This happens when Maven can't find an artifact in a particular repo
+    ;; (but still may find it in a different repo), ie this is a common event
+    (transferFailed [_ event])
     (transferInitiated [_ _event])
     (transferProgressed [_ _event])
     (transferSucceeded [_ _event])))
@@ -87,7 +87,7 @@
 (defn ^Model read-pom
   [^String url]
   (loop [i 0]
-    (when (< i 5)
+    (when (< i const/retry-limit)
       (or (try
             (read-pom* url)
             (catch java.net.ConnectException e
