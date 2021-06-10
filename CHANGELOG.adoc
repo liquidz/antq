@@ -1,6 +1,8 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+
+== 0.15.2 (2021-06-11)
 // {{{
 === Changed
 * https://github.com/liquidz/antq/issues/81[#81]: Updated maven and git connection to retry on timeouts.
