@@ -56,7 +56,8 @@
     "github-action"
     "pom"
     "shadow-cljs"
-    "leiningen"})
+    "leiningen"
+    "babashka"})
 
 (def ^:private disallowed-unverified-deps-map
   {"antq/antq" "com.github.liquidz/antq"
