@@ -11,14 +11,21 @@
 
 (defn- ignore?
   [opt]
-  (contains? opt :local/root))
+  (and (map? opt)
+       (contains? opt :local/root)))
 
 (defmulti extract-type-and-version
   (fn [opt]
-    (or (and (:mvn/version opt) :java)
-        (and (:git/url opt) :git-sha))))
+    (if (map? opt)
+      (or (and (:mvn/version opt) :java)
+          (and (:git/url opt) :git-sha))
+      ::unknown)))
 
 (defmethod extract-type-and-version :default
+  [_]
+  {})
+
+(defmethod extract-type-and-version :java
   [opt]
   {:type :java
    :version (:mvn/version opt)})
@@ -35,7 +42,8 @@
         edn (edn/read-string deps-edn-content-str)]
     (walk/postwalk (fn [form]
                      (when (and (sequential? form)
-                                (#{:deps :extra-deps :replace-deps :override-deps} (first form)))
+                                (#{:deps :extra-deps :replace-deps :override-deps} (first form))
+                                (map? (second form)))
                        (->> form
                             (second)
                             (seq)

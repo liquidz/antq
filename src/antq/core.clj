@@ -56,7 +56,8 @@
     "github-action"
     "pom"
     "shadow-cljs"
-    "leiningen"})
+    "leiningen"
+    "babashka"})
 
 (def ^:private disallowed-unverified-deps-map
   {"antq/antq" "com.github.liquidz/antq"
@@ -233,12 +234,19 @@
 
 (defn -main
   [& args]
-  (let [{:keys [options]} (cli/parse-opts args cli-options)
+  (let [{:keys [options errors]} (cli/parse-opts args cli-options)
         options (cond-> options
                   ;; Force "format" reporter when :error-format is specified
                   (some?  (:error-format options)) (assoc :reporter "format"))
-        deps (fetch-deps options)]
-    (if (seq deps)
+        deps (and (not errors)
+                  (fetch-deps options))]
+    (cond
+      errors
+      (do (doseq [e errors]
+            (log/error e))
+          (System/exit 1))
+
+      (seq deps)
       (let [outdated (antq options deps)]
         (cond-> outdated
           (:upgrade options)
@@ -246,5 +254,7 @@
 
           true
           (exit)))
+
+      :else
       (do (log/info "No project file")
           (System/exit 1)))))
