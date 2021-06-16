@@ -2,6 +2,13 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 
+// {{{
+=== Fixed
+* https://github.com/liquidz/antq/issues/89[#89]: Fixed to be able to skip `bb.edn` with --skip option.
+* https://github.com/liquidz/antq/issues/89[#89]: Fixed the process of Clojure CLI and Babashka not to throw Exception when some forms has unexpected structure.
+* Fixed to show errors when the validation for CLI option is failed.
+// }}}
+
 == 0.15.2 (2021-06-11)
 // {{{
 === Changed
