@@ -2,6 +2,7 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 
+== 0.15.3 (2021-06-17)
 // {{{
 === Fixed
 * https://github.com/liquidz/antq/issues/89[#89]: Fixed to be able to skip `bb.edn` with --skip option.
