@@ -39,6 +39,11 @@
                                 :extra {:url "https://github.com/example/hello.git"}})}
              (set deps)))))
 
+(t/deftest extract-deps-unexpected-test
+  (t/is (empty? (sut/extract-deps file-path "[:deps \"foo\"]")))
+  (t/is (empty? (sut/extract-deps file-path "{:deps \"foo\"}")))
+  (t/is (empty? (sut/extract-deps file-path "{:deps {foo/core \"bar\"}}"))))
+
 (t/deftest load-deps-test
   (let [deps (sut/load-deps "test/resources/dep")]
     (t/is (every? #(contains? #{:java :git-sha} (:type %)) deps))))
