@@ -18,12 +18,15 @@
 (t/deftest extract-deps-test
   (let [deps (sut/extract-deps
               file-path
-              (.getPath (io/resource "dep/build.gradle")))]
-    (t/is (= #{(java-dependency {:name "nrepl/nrepl" :version "0.6.0"})
-               (java-dependency {:name "org.ajoberstar/jovial" :version "0.3.0"})
-               (java-dependency {:name "org.clojure/tools.namespace" :version "1.0.0"})
-               (java-dependency {:name "org.clojure/clojure" :version "1.10.0"})}
-             (set deps)))))
+              (.getPath (io/resource "dep/build.gradle")))
+        defined-deps #{(java-dependency {:name "org.ajoberstar/jovial" :version "0.3.0"})
+                       (java-dependency {:name "org.clojure/tools.namespace" :version "1.0.0"})
+                       (java-dependency {:name "org.clojure/clojure" :version "1.10.0"})}
+        actual-deps (set deps)]
+    ;; NOTE: Gradle on local additionally detects `nrepl/nrepl`
+    ;;       And also, gradle on GitHub Actions additionally detects `org.clojure/java.classpath`
+    ;;       So we check only dependencies which is explicitly defined in buld.gradle.
+    (t/is (every? #(contains? actual-deps %) defined-deps))))
 
 (t/deftest extract-deps-command-error-test
   (with-redefs [sut/gradle-command "__non-existing-command__"]
