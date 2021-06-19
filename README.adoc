@@ -18,13 +18,42 @@ If you'd like to use with 1.7.0 or earlier, please see link:./doc/clojure-1.7.ad
 
 == Supported files
 
-* deps.edn (https://clojure.org/guides/deps_and_cli[Clojure CLI])
-* shadow-cljs.edn (http://shadow-cljs.org[Shadow-cljs])
-* project.clj (https://leiningen.org[Leiningen])
-* build.boot (https://boot-clj.com[Boot])
-* pom.xml (https://maven.apache.org[Maven])
-* .github/workflows/*.yml (https://github.com/features/actions[GitHub Actions])
-* bb.edn (https://book.babashka.org/index.html#_bb_edn[Babashka])
+|===
+| File | Tool/Service | Note
+
+| deps.edn
+| https://clojure.org/guides/deps_and_cli[Clojure CLI]
+|
+
+| shadow-cljs.edn
+| http://shadow-cljs.org[Shadow-cljs]
+|
+
+| project.clj
+| https://leiningen.org[Leiningen]
+| Provides 2 ways of program and plug-in.
+
+| build.boot
+| https://boot-clj.com[Boot]
+|
+
+| pom.xml
+| https://maven.apache.org[Maven]
+|
+
+| .github/workflows/*.yml
+| https://github.com/features/actions[GitHub Actions]
+|
+
+| bb.edn
+| https://book.babashka.org/index.html#_bb_edn[Babashka]
+|
+
+| build.gradle
+| https://gradle.org[Gradle]
+| Experimental. `gradle` command must be installed.
+
+|===
 
 == Usage
 
