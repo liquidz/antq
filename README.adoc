@@ -8,7 +8,7 @@ image:https://github.com/liquidz/antq/workflows/dependencies/badge.svg["GitHub A
 image:https://codecov.io/gh/liquidz/antq/branch/master/graph/badge.svg["codecov", link="https://codecov.io/gh/liquidz/antq"]
 
 image:https://img.shields.io/clojars/v/com.github.liquidz/antq["Clojars Project", link="https://clojars.org/com.github.liquidz/antq"]
-image:https://img.shields.io/badge/docker-automated-blue["Docker Hub", link="https://hub.docker.com/r/uochan/antq"]
+image:https://img.shields.io/badge/docker-automated-blue["GitHub Container Registry", link="https://github.com/users/liquidz/packages/container/package/antq"]
 
 [NOTE]
 ====
@@ -65,7 +65,7 @@ Then, run `lein outdated`.
 === Leiningen (as a plugin)
 
 The Leiningen plugin is a newer offering. It tends to be more accurate (since it won't parse your project.clj, having it evaluated by Leiningen instead).
-However the `:upgrade` option will not be supported (since the plugin cannot always know if a given dependency came from a specific profile, middleware, etc). 
+However the `:upgrade` option will not be supported (since the plugin cannot always know if a given dependency came from a specific profile, middleware, etc).
 
 In order to use it, add the following plugin to your `project.clj` (or `$HOME/.lein/profiles.clj`):
 [source,clojure]
