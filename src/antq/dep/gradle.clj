@@ -11,7 +11,8 @@
 (def ^:private project-file "build.gradle")
 (def ^:private dep-regexp #"^[^-]\-+\s")
 
-(defn- get-repositories [file-path]
+(defn- get-repositories
+  [file-path]
   (let [{:keys [exit out]} (sh/sh gradle-command "--build-file" file-path
                                   "antq_list_repositories")]
     (when (= 0 exit)
