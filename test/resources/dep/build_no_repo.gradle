@@ -21,9 +21,3 @@ dependencies {
 
   devImplementation 'org.clojure:tools.namespace:1.0.0'
 }
-
-task antq_list_repositories {
-  doLast {
-    project.repositories.each { println "ANTQ;" + it.name + ";" + it.url }
-  }
-}

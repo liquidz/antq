@@ -11,6 +11,16 @@
 (def ^:private project-file "build.gradle")
 (def ^:private dep-regexp #"^[^-]\-+\s")
 
+(defn- get-repositories [file-path]
+  (let [{:keys [exit out]} (sh/sh gradle-command "--build-file" file-path
+                                  "antq_list_repositories")]
+    (when (= 0 exit)
+      (->> (str/split-lines out)
+           (filter #(str/starts-with? % "ANTQ;"))
+           (map #(str/split % #";" 3))
+           (reduce (fn [accm [_ repo-name url]]
+                     (assoc accm repo-name {:url url})) {})))))
+
 (defn- filter-deps-from-gradle-dependencies
   [file-path]
   (let [{:keys [exit out]} (sh/sh gradle-command
@@ -27,8 +37,7 @@
       (throw (ex-info "Failed to run gradle" {:exit exit})))))
 
 (defn- convert-grandle-dependency
-  "e.g. dep-str: 'org.clojure:clojure:1.10.0'
-  NOTE: Extracting repositories is not supported currently"
+  "e.g. dep-str: 'org.clojure:clojure:1.10.0'"
   [file-path dep-str]
   (let [[group-id artifact-id version] (str/split dep-str #":" 3)]
     (r/map->Dependency {:project :gradle
@@ -40,8 +49,10 @@
 (defn extract-deps
   [relative-file-path absolute-file-path]
   (try
-    (let [deps (filter-deps-from-gradle-dependencies absolute-file-path)
-          deps (map #(convert-grandle-dependency relative-file-path %) deps)]
+    (let [repos (get-repositories absolute-file-path)
+          deps (filter-deps-from-gradle-dependencies absolute-file-path)
+          deps (map #(convert-grandle-dependency relative-file-path %) deps)
+          deps (map #(assoc % :repositories repos) deps)]
       deps)
     (catch Exception ex
       (log/error (.getMessage ex))
@@ -52,6 +63,5 @@
   ([dir]
    (let [file (io/file dir project-file)]
      (when (.exists file)
-       (log/error "WARN: Custom repositories for Gradle are not supported currently.")
        (extract-deps (u.dep/relative-path file)
                      (.getAbsolutePath file))))))
