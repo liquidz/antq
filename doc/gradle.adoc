@@ -1,0 +1,48 @@
+= Work with Gradle
+
+WARNING: Gradle support is experimental
+
+== Requirements
+
+* `gradle` command must be installed.
+** antq alone does not work.
+
+== build.gradle
+
+To work with gradle, you should update your `build.gradle` as following.
+
+[source,build.gradle]
+----
+plugins {
+  id 'java-library'
+}
+
+repositories {
+  mavenCentral()
+  maven {
+    name = 'clojars'
+    url = 'https://repo.clojars.org'
+  }
+}
+
+dependencies {
+  runtimeOnly 'org.clojure:clojure:1.10.3'
+  runtimeOnly 'com.github.liquidz:antq:latest.release'
+}
+
+// OPTIONAL: Used to support detecting repositories
+task antq_list_repositories {
+  doLast {
+    project.repositories.each { println "ANTQ;" + it.name + ";" + it.url }
+  }
+}
+
+// Main task to run antq
+task outdated(type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = "clojure.main"
+    args = ['-m', 'antq.core']
+}
+----
+
+Then, run `gradle outdated`.
