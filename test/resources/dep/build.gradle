@@ -1,10 +1,6 @@
 plugins {
-  id 'dev.clojurephant.clojure' version '0.6.0'
-  id 'maven-publish'
+  id 'java-library'
 }
-
-group = 'net.clojars.myname'
-version = '0.1.0-SNAPSHOT'
 
 repositories {
   mavenCentral()
@@ -19,7 +15,7 @@ dependencies {
 
   testRuntimeOnly 'org.ajoberstar:jovial:0.3.0'
 
-  devImplementation 'org.clojure:tools.namespace:1.0.0'
+  testImplementation 'org.clojure:tools.namespace:1.0.0'
 }
 
 task antq_list_repositories {
