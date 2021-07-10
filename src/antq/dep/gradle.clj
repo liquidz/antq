@@ -41,18 +41,19 @@
   "e.g. dep-str: 'org.clojure:clojure:1.10.0'"
   [file-path dep-str]
   (let [[group-id artifact-id version] (str/split dep-str #":" 3)]
-    (r/map->Dependency {:project :gradle
-                        :type :java
-                        :file file-path
-                        :name (str group-id "/" artifact-id)
-                        :version version})))
+    (when (and group-id artifact-id version)
+      (r/map->Dependency {:project :gradle
+                          :type :java
+                          :file file-path
+                          :name (str group-id "/" artifact-id)
+                          :version version}))))
 
 (defn extract-deps
   [relative-file-path absolute-file-path]
   (try
     (let [repos (get-repositories absolute-file-path)
           deps (filter-deps-from-gradle-dependencies absolute-file-path)
-          deps (map #(convert-grandle-dependency relative-file-path %) deps)
+          deps (keep #(convert-grandle-dependency relative-file-path %) deps)
           deps (map #(assoc % :repositories repos) deps)]
       deps)
     (catch Exception ex
