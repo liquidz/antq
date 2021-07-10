@@ -36,12 +36,12 @@
    :main-opts ["-m" "cloverage.coverage" "--ns-exclude-regex" "leiningen.antq"]}
 
   :depstar
-  {:extra-deps {com.github.seancorfield/depstar {:mvn/version "RELEASE"}}
+  {:extra-deps {com.github.seancorfield/depstar {:mvn/version "2.1.245"}}
    :ns-default hf.depstar
    :exec-args {}}
 
   :deploy
-  {:extra-deps {slipset/deps-deploy {;:mvn/version "RELEASE"
+  {:extra-deps {slipset/deps-deploy {;; :mvn/version "RELEASE"
                                      :git/url "https://github.com/slipset/deps-deploy"
                                      :sha "b4359c5d67ca002d9ed0c4b41b710d7e5a82e3bf"}}
    :exec-fn deps-deploy.deps-deploy/deploy
