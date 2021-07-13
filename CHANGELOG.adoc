@@ -2,8 +2,13 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 // {{{
+=== Added
+* https://github.com/liquidz/antq/issues/83[#83]: Added support for https://gradle.org[Gradle] experimentally.
+** See details: link:./doc/gradle.adoc[Work with Gradle]
+
 === Changed
-* Bumped tools.deps.alpha to 0.11.935.
+* Bumped tools.deps.alpha to 0.12.985.
+* Bumped cheshire to 5.10.1.
 // }}}
 
 == 0.15.3 (2021-06-17)
