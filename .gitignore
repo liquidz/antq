@@ -3,3 +3,4 @@
 /target
 **/.clj-kondo/.cache
 **/.lsp
+**/.gradle
