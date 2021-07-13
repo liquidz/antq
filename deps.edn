@@ -4,8 +4,8 @@
   org.clojure/data.xml {:mvn/version "0.2.0-alpha6"}
   org.clojure/data.zip {:mvn/version "1.0.0"}
   org.clojure/tools.cli {:mvn/version "1.0.206"}
-  org.clojure/tools.deps.alpha {:mvn/version "0.11.935"}
-  cheshire/cheshire {:mvn/version "5.10.0"}
+  org.clojure/tools.deps.alpha {:mvn/version "0.12.985"}
+  cheshire/cheshire {:mvn/version "5.10.1"}
   clj-commons/clj-yaml {:mvn/version "0.7.106"}
   version-clj/version-clj {:mvn/version "2.0.1"}
   rewrite-clj/rewrite-clj {:mvn/version "1.0.644-alpha"}}
@@ -41,7 +41,7 @@
    :exec-args {}}
 
   :deploy
-  {:extra-deps {slipset/deps-deploy {;:mvn/version "RELEASE"
+  {:extra-deps {slipset/deps-deploy {;; :mvn/version "RELEASE"
                                      :git/url "https://github.com/slipset/deps-deploy"
                                      :sha "b4359c5d67ca002d9ed0c4b41b710d7e5a82e3bf"}}
    :exec-fn deps-deploy.deps-deploy/deploy

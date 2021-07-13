@@ -12,6 +12,7 @@
    [antq.dep.boot :as dep.boot]
    [antq.dep.clojure :as dep.clj]
    [antq.dep.github-action :as dep.gh-action]
+   [antq.dep.gradle :as dep.gradle]
    [antq.dep.leiningen :as dep.lein]
    [antq.dep.pom :as dep.pom]
    [antq.dep.shadow :as dep.shadow]
@@ -54,6 +55,7 @@
   #{"boot"
     "clojure-cli"
     "github-action"
+    "gradle"
     "pom"
     "shadow-cljs"
     "leiningen"
@@ -198,7 +200,8 @@
               (when-not (skip "pom") (dep.pom/load-deps %))
               (when-not (skip "shadow-cljs") (dep.shadow/load-deps %))
               (when-not (skip "leiningen") (dep.lein/load-deps %))
-              (when-not (skip "babashka") (dep.bb/load-deps %)))
+              (when-not (skip "babashka") (dep.bb/load-deps %))
+              (when-not (skip "gradle") (dep.gradle/load-deps %)))
             (distinct (:directory options)))))
 
 (defn mark-only-newest-version-flag

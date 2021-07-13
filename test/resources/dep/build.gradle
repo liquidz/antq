@@ -1,0 +1,25 @@
+plugins {
+  id 'java-library'
+}
+
+repositories {
+  mavenCentral()
+  maven {
+    name = 'clojars'
+    url = 'https://repo.clojars.org'
+  }
+}
+
+dependencies {
+  implementation 'org.clojure:clojure:1.10.0'
+
+  testRuntimeOnly 'org.ajoberstar:jovial:0.3.0'
+
+  testImplementation 'org.clojure:tools.namespace:1.0.0'
+}
+
+task antq_list_repositories {
+  doLast {
+    project.repositories.each { println "ANTQ;" + it.name + ";" + it.url }
+  }
+}
