@@ -11,7 +11,7 @@ outdated:
 .PHONY: test
 test: install
 	# NOTE: kaocha does not support Clojure 1.8
-	clojure -M:outdated:nop:1.8 --exclude=clojure/brew-install --exclude=org.clojure/tools.deps.alpha --exclude=com.github.seancorfield/depstar --exclude=lambdaisland/kaocha
+	clojure -M:outdated:nop:1.8 --exclude=clojure/brew-install --exclude=org.clojure/tools.deps.alpha --exclude=lambdaisland/kaocha
 	clojure -M:dev:1.9:test
 	clojure -M:dev:test
 	script/integration_test.sh

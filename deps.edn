@@ -36,7 +36,7 @@
    :main-opts ["-m" "cloverage.coverage" "--ns-exclude-regex" "leiningen.antq"]}
 
   :depstar
-  {:extra-deps {com.github.seancorfield/depstar {:mvn/version "2.1.245"}}
+  {:extra-deps {com.github.seancorfield/depstar {:mvn/version "RELEASE"}}
    :ns-default hf.depstar
    :exec-args {}}
 
