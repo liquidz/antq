@@ -10,6 +10,9 @@
   version-clj/version-clj {:mvn/version "2.0.1"}
   rewrite-clj/rewrite-clj {:mvn/version "1.0.644-alpha"}}
 
+ :tools/usage
+ {:ns-default antq.tool}
+
  :aliases
  {:1.8
   {:override-deps {org.clojure/clojure {:mvn/version "1.8.0"}}}
