@@ -57,12 +57,12 @@ If you'd like to use with 1.7.0 or earlier, please see link:./doc/clojure-1.7.ad
 
 == Usage
 
-=== Clojure CLI Tool
+=== Clojure CLI (deps.edn)
 
 Run the following command for trial.
-[source,clojure]
+[source,sh]
 ----
-clojure -Sdeps '{:deps {com.github.liquidz/antq {:mvn/version "RELEASE"}}}' -m antq.core
+clojure -Sdeps '{:deps {com.github.liquidz/antq {:mvn/version "RELEASE"}}}' -M -m antq.core
 ----
 
 Or add the following alias to your `$HOME/.clojure/deps.edn`.
@@ -76,6 +76,22 @@ Or add the following alias to your `$HOME/.clojure/deps.edn`.
 ----
 Then, run `clojure -M:outdated`.
 (run `clojure -A:outdated` for Clojure CLI Tool 1.10.1.645 or earlier).
+
+=== Clojure CLI Tools (`1.10.3.933` or later)
+
+From Clojure CLI ver `1.10.3.933`, https://clojure.org/reference/deps_and_cli#tool_install[tool] installation is supported.
+
+[source,sh]
+----
+# install
+clojure -Ttools install com.github.liquidz/antq '{:git/tag "0.16.1"}' :as antq
+# uninstall
+clojure -Ttools remove :tool antq
+# execute
+clojure -Tantq oudated
+# help
+clojure -A:deps -Tantq help/doc
+----
 
 === Leiningen (as a `main` program)
 
