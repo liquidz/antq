@@ -4,11 +4,14 @@
   org.clojure/data.xml {:mvn/version "0.2.0-alpha6"}
   org.clojure/data.zip {:mvn/version "1.0.0"}
   org.clojure/tools.cli {:mvn/version "1.0.206"}
-  org.clojure/tools.deps.alpha {:mvn/version "0.12.985"}
+  org.clojure/tools.deps.alpha {:mvn/version "0.12.1003"}
   cheshire/cheshire {:mvn/version "5.10.1"}
-  clj-commons/clj-yaml {:mvn/version "0.7.106"}
+  clj-commons/clj-yaml {:mvn/version "0.7.107"}
   version-clj/version-clj {:mvn/version "2.0.1"}
   rewrite-clj/rewrite-clj {:mvn/version "1.0.644-alpha"}}
+
+ :tools/usage
+ {:ns-default antq.tool}
 
  :aliases
  {:1.8

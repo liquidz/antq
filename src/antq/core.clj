@@ -235,10 +235,9 @@
     (report/reporter outdated options)
     outdated))
 
-(defn -main
-  [& args]
-  (let [{:keys [options errors]} (cli/parse-opts args cli-options)
-        options (cond-> options
+(defn main*
+  [options errors]
+  (let [options (cond-> options
                   ;; Force "format" reporter when :error-format is specified
                   (some?  (:error-format options)) (assoc :reporter "format"))
         deps (and (not errors)
@@ -261,3 +260,8 @@
       :else
       (do (log/info "No project file")
           (System/exit 1)))))
+
+(defn -main
+  [& args]
+  (let [{:keys [options errors]} (cli/parse-opts args cli-options)]
+    (main* options errors)))

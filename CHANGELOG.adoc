@@ -2,6 +2,16 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 
+== 0.16.1 (2021-07-31)
+// {{{
+=== Changed
+* Updated to support https://clojure.org/reference/deps_and_cli#tool_install[tool installation].
+** To install `clojure -Ttools install com.github.liquidz/antq '{:git/tag "0.16.1"}' :as antq`
+** To execute `clojure -Tantq oudated`
+* Bumped tools.deps.alpha to 0.12.1003.
+* Bumped clj-yaml to 0.7.107.
+// }}}
+
 == 0.16.0 (2021-07-14)
 // {{{
 === Added
