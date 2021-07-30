@@ -2,6 +2,7 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 
+== 0.16.1 (2021-07-31)
 // {{{
 === Changed
 * Updated to support https://clojure.org/reference/deps_and_cli#tool_install[tool installation].
