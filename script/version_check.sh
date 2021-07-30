@@ -8,3 +8,8 @@ if ! grep "== ${VERSION}" "${SCRIPT_DIR}"/../CHANGELOG.adoc; then
     echo 'version_check: There is no corresponding section in CHANGELOG'
     exit 1
 fi
+
+if ! grep "clojure -Ttools install com.github.liquidz/antq '{:git/tag \"${VERSION}\"}'" "${SCRIPT_DIR}"/../README.adoc; then
+    echo 'version_check: There is no correspondng section in README'
+    exit 1
+fi
