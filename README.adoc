@@ -88,7 +88,7 @@ clojure -Ttools install com.github.liquidz/antq '{:git/tag "0.16.1"}' :as antq
 # uninstall
 clojure -Ttools remove :tool antq
 # execute
-clojure -Tantq oudated
+clojure -Tantq outdated
 # help
 clojure -A:deps -Tantq help/doc
 ----
