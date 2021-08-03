@@ -90,4 +90,8 @@
     false "2.2.4" "2.3.4"
     false "2.2" "2.3.4"
 
-    false "2.3.3" "2.3.4"))
+    false "2.3.3" "2.3.4"
+
+    ;; if version tag is unparseable, just log an error and return true.
+    true "v2.1.0" "v.2.x"
+    true "v.2.x" "v2.1.0"))
