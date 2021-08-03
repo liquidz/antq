@@ -78,9 +78,17 @@
   [dep]
   (let [current (some-> dep :version u.ver/normalize-version version/version->seq)
         latest (some-> dep :latest-version u.ver/normalize-version version/version->seq)]
-    (when (and current latest)
-      (case (count (first current))
-        1 (nth-newer? current latest 0)
-        2 (and (nth-newer? current latest 0)
-               (nth-newer? current latest 1))
-        (<= 0 (version/version-seq-compare current latest))))))
+    (try
+      (when (and current latest)
+        (case (count (first current))
+          1 (nth-newer? current latest 0)
+          2 (and (nth-newer? current latest 0)
+                 (nth-newer? current latest 1))
+          (<= 0 (version/version-seq-compare current latest))))
+      (catch Throwable e
+        (log/error (format "Error determining latest version for GitHub dep %s (current: %s, latest: %s): %s"
+                           (pr-str (:name dep))
+                           (pr-str (:version dep))
+                           (pr-str (:latest-version dep))
+                           (ex-message e)))
+        true))))
