@@ -90,5 +90,5 @@
                            (pr-str (:name dep))
                            (pr-str (:version dep))
                            (pr-str (:latest-version dep))
-                           (ex-message e)))
+                           (.getMessage e)))
         true))))
