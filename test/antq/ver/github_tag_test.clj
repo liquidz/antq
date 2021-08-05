@@ -3,7 +3,7 @@
    [antq.record :as r]
    [antq.ver :as ver]
    [antq.ver.github-tag :as sut]
-   [cheshire.core :as json]
+   [clojure.data.json :as json]
    [clojure.java.shell :as sh]
    [clojure.string :as str]
    [clojure.test :as t]))
@@ -22,7 +22,7 @@
   (ver/get-sorted-versions (dep (merge {:version "1.0.0"} m))))
 
 (def ^:private dummy-json
-  (json/generate-string
+  (json/write-str
    [{:name "v1.0.0"}
     {:name "v2.0.0"}
     {:name "v3.0.0"}]))
