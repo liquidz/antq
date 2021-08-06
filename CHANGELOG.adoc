@@ -2,6 +2,7 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 
+== 0.16.2 (2021-08-07)
 // {{{
 === Changed
 * https://github.com/liquidz/antq/pull/100[#100]: Bumped version-clj to 2.0.2.
