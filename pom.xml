@@ -21,6 +21,11 @@
   <dependencies>
     <dependency>
       <groupId>org.clojure</groupId>
+      <artifactId>data.json</artifactId>
+      <version>2.4.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.clojure</groupId>
       <artifactId>clojure</artifactId>
       <version>1.10.3</version>
     </dependency>
@@ -53,11 +58,6 @@
       <groupId>clj-commons</groupId>
       <artifactId>clj-yaml</artifactId>
       <version>0.7.107</version>
-    </dependency>
-    <dependency>
-      <groupId>cheshire</groupId>
-      <artifactId>cheshire</artifactId>
-      <version>5.10.1</version>
     </dependency>
     <dependency>
       <groupId>version-clj</groupId>

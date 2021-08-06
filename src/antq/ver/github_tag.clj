@@ -4,7 +4,7 @@
    [antq.util.git :as u.git]
    [antq.util.ver :as u.ver]
    [antq.ver :as ver]
-   [cheshire.core :as json]
+   [clojure.data.json :as json]
    [clojure.string :as str]
    [version-clj.core :as version]))
 
@@ -34,7 +34,7 @@
   [url]
   (-> url
       (slurp)
-      (json/parse-string true)
+      (json/read-str :key-fn keyword)
       (->> (map :name)
            (filter (comp u.ver/sem-ver? u.ver/normalize-version))
            (sort (fn [& args]
