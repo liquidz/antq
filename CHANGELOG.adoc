@@ -2,6 +2,14 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 
+// {{{
+=== Changed
+* Bumped tools.deps.alpha to 0.12.1019.
+
+=== Fixed
+* https://github.com/liquidz/antq/issues/104[#104]: Fixed Clojure CLI tool mode to handle `upgrade` and `force` options correctly.
+// }}}
+
 == 0.16.2 (2021-08-07)
 // {{{
 === Changed
