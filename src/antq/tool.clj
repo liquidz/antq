@@ -1,27 +1,32 @@
 (ns antq.tool
   (:require
    [antq.core :as core]
+   [clojure.set :as set]
    [clojure.tools.cli :as cli]))
 
-(defn- prepare-options
+(defn prepare-options
   [options]
   (let [default-options (:options (cli/parse-opts [] core/cli-options))
-        options (or options {})]
-    (reduce-kv
-     (fn [accm k v]
-       (let [opt-value (get options k)]
-         (cond
-           (and (sequential? v)
-                (sequential? opt-value))
-           (assoc accm k (map str (concat v opt-value)))
+        options (or options {})
+        additional-keys (set/difference (set (keys options))
+                                        (set (keys default-options)))]
+    (->> default-options
+         (reduce-kv
+          (fn [accm k v]
+            (let [opt-value (get options k)]
+              (cond
+                (and (sequential? v)
+                     (sequential? opt-value))
+                (assoc accm k (map str (concat v opt-value)))
 
-           (seq opt-value)
-           (assoc accm k (str opt-value))
+                (seq opt-value)
+                (assoc accm k (str opt-value))
 
-           :else
-           (assoc accm k v))))
+                :else
+                (assoc accm k v))))
 
-     {} default-options)))
+          {})
+         (merge (select-keys options additional-keys)))))
 
 (defn outdated
   "Point out outdated dependencies.
