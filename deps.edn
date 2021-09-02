@@ -14,9 +14,7 @@
  {:ns-default antq.tool}
 
  :aliases
- {:1.8
-  {:override-deps {org.clojure/clojure {:mvn/version "1.8.0"}}}
-  :1.9
+ {:1.9
   {:override-deps {org.clojure/clojure {:mvn/version "1.9.0"}}}
 
   :dev

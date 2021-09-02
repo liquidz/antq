@@ -16,10 +16,6 @@
 (defn- confirm
   [dep force?]
   (cond
-    (not u.zip/rewrite-clj-supported?)
-    (do (log/error "Upgrading is only supported Clojure 1.9 or later.")
-        false)
-
     (and (:latest-version dep)
          force?)
     true

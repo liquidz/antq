@@ -2,11 +2,8 @@
   (:require
    [antq.upgrade :as upgrade]
    [antq.util.dep :as u.dep]
-   [antq.util.zip :as u.zip]))
-
-(require (if u.zip/rewrite-clj-supported?
-           '[rewrite-clj.zip :as z]
-           '[antq.stub.rewrite-clj.zip :as z]))
+   [antq.util.zip :as u.zip]
+   [rewrite-clj.zip :as z]))
 
 (defn- in-dependencies?
   [loc]
@@ -22,7 +19,6 @@
                  (-> loc z/right (z/replace (:latest-version version-checked-dep)))
                  (z/next loc)))
         (u.zip/move-to-root loc)))))
-
 
 (defmethod upgrade/upgrader :boot
   [version-checked-dep]

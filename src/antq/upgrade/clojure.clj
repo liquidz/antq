@@ -2,11 +2,8 @@
   (:require
    [antq.upgrade :as upgrade]
    [antq.util.dep :as u.dep]
+   [rewrite-clj.zip :as z]
    [antq.util.zip :as u.zip]))
-
-(require (if u.zip/rewrite-clj-supported?
-           '[rewrite-clj.zip :as z]
-           '[antq.stub.rewrite-clj.zip :as z]))
 
 (defn- in-deps?
   [loc]

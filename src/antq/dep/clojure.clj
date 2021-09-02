@@ -69,7 +69,7 @@
                      (seq (:version type-and-version)))]
       (-> {:project :clojure
            :file file-path
-           :name  (if (u.dep/qualified-symbol?' dep-name)
+           :name  (if (qualified-symbol? dep-name)
                     (str dep-name)
                     (str dep-name "/" dep-name))
            :repositories (:mvn/repos edn)}
