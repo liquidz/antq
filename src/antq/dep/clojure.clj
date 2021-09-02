@@ -5,6 +5,7 @@
    [antq.util.dep :as u.dep]
    [clojure.edn :as edn]
    [clojure.java.io :as io]
+   [clojure.string :as str]
    [clojure.walk :as walk]))
 
 (def ^:private project-file "deps.edn")
@@ -36,6 +37,16 @@
    :version (:sha opt)
    :extra {:url (:git/url opt)}})
 
+(defn- adjust-version-via-deduction
+  [dep-name opt]
+  (if (and (some #{:tag :sha :git/tag :git/sha} (keys opt))
+           (not (:git/url opt))
+           (re-find #"^(io|com)\.(github|gitlab)\." (str dep-name)))
+    (assoc opt :git/url (str/replace (str dep-name)
+                                     #"^(io|com)\.(github|gitlab)\."
+                                     "https://$2.com/"))
+    opt))
+
 (defn extract-deps
   [file-path deps-edn-content-str]
   (let [deps (atom [])
@@ -51,7 +62,8 @@
                      form)
                    edn)
     (for [[dep-name opt] @deps
-          :let [type-and-version (extract-type-and-version opt)]
+          :let [opt (adjust-version-via-deduction dep-name opt)
+                type-and-version (extract-type-and-version opt)]
           :when (and (not (ignore? opt))
                      (string? (:version type-and-version))
                      (seq (:version type-and-version)))]
