@@ -8,7 +8,7 @@
   org.clojure/data.json {:mvn/version "2.4.0"}
   clj-commons/clj-yaml {:mvn/version "0.7.107"}
   version-clj/version-clj {:mvn/version "2.0.2"}
-  rewrite-clj/rewrite-clj {:mvn/version "1.0.644-alpha"}}
+  rewrite-clj/rewrite-clj {:mvn/version "1.0.682-alpha"}}
 
  :tools/usage
  {:ns-default antq.tool}
