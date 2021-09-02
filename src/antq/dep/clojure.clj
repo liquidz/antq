@@ -39,7 +39,8 @@
 
 (defn- adjust-version-via-deduction
   [dep-name opt]
-  (if (and (some #{:tag :sha :git/tag :git/sha} (keys opt))
+  (if (and (map? opt)
+           (some #{:tag :sha :git/tag :git/sha} (keys opt))
            (not (:git/url opt)))
     (if-let [git-dep (git/auto-git-url dep-name)]
       (assoc opt :git/url git-dep)
