@@ -1,7 +1,6 @@
 (ns antq.upgrade
   (:require
-   [antq.log :as log]
-   [antq.util.zip :as u.zip]))
+   [antq.log :as log]))
 
 (defmulti upgrader
   (fn [version-checked-dep]
