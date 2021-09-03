@@ -2,6 +2,17 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 
+// {{{
+=== Changed
+* https://github.com/liquidz/antq/issues/94[#94]: Update to infer `:git/url` from library name in deps.edn.
+* Bumped tools.deps.alpha to 0.12.1019.
+* Bumped rewrite-clj to 1.0.644-alpha.
+
+=== Removed
+* *BREAKING*: Drop support for Clojure 1.8.
+** If you'd like to use with 1.8.0 or earlier, please see link:./doc/clojure-1.8.adoc[here].
+// }}}
+
 == 0.16.3 (2021-08-14)
 // {{{
 === Changed
