@@ -4,11 +4,6 @@
   (:import
    java.io.File))
 
-(defn qualified-symbol?'
-  "To support Clojure 1.8.0"
-  [x]
-  (boolean (and (symbol? x) (namespace x) true)))
-
 (defn compare-deps
   [x y]
   (let [prj (.compareTo ^String (:file x) ^String (:file y))]

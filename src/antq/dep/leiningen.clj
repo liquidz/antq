@@ -13,7 +13,7 @@
 
 (defn normalize-name
   [dep-name]
-  (if (u.dep/qualified-symbol?' dep-name)
+  (if (qualified-symbol? dep-name)
     (str dep-name)
     (str dep-name "/" dep-name)))
 

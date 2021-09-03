@@ -36,7 +36,10 @@
                (java-dependency {:name "rep/rep" :version "4.0.0"})
                (java-dependency {:name "ovr/ovr" :version "5.0.0"})
                (git-dependency {:name "git/hello" :version "dummy-sha"
-                                :extra {:url "https://github.com/example/hello.git"}})}
+                                :extra {:url "https://github.com/example/hello.git"}})
+               (git-dependency {:name "com.github.liquidz/dummy"
+                                :version "123abcd"
+                                :extra {:url "https://github.com/liquidz/dummy.git"}})}
              (set deps)))))
 
 (t/deftest extract-deps-unexpected-test

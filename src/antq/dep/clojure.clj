@@ -5,6 +5,7 @@
    [antq.util.dep :as u.dep]
    [clojure.edn :as edn]
    [clojure.java.io :as io]
+   [clojure.tools.deps.alpha.extensions.git :as git]
    [clojure.walk :as walk]))
 
 (def ^:private project-file "deps.edn")
@@ -36,6 +37,16 @@
    :version (:sha opt)
    :extra {:url (:git/url opt)}})
 
+(defn- adjust-version-via-deduction
+  [dep-name opt]
+  (if (and (map? opt)
+           (some #{:tag :sha :git/tag :git/sha} (keys opt))
+           (not (:git/url opt)))
+    (if-let [git-dep (git/auto-git-url dep-name)]
+      (assoc opt :git/url git-dep)
+      opt)
+    opt))
+
 (defn extract-deps
   [file-path deps-edn-content-str]
   (let [deps (atom [])
@@ -51,13 +62,14 @@
                      form)
                    edn)
     (for [[dep-name opt] @deps
-          :let [type-and-version (extract-type-and-version opt)]
+          :let [opt (adjust-version-via-deduction dep-name opt)
+                type-and-version (extract-type-and-version opt)]
           :when (and (not (ignore? opt))
                      (string? (:version type-and-version))
                      (seq (:version type-and-version)))]
       (-> {:project :clojure
            :file file-path
-           :name  (if (u.dep/qualified-symbol?' dep-name)
+           :name  (if (qualified-symbol? dep-name)
                     (str dep-name)
                     (str dep-name "/" dep-name))
            :repositories (:mvn/repos edn)}

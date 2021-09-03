@@ -4,25 +4,23 @@
   org.clojure/data.xml {:mvn/version "0.2.0-alpha6"}
   org.clojure/data.zip {:mvn/version "1.0.0"}
   org.clojure/tools.cli {:mvn/version "1.0.206"}
-  org.clojure/tools.deps.alpha {:mvn/version "0.12.1019"}
+  org.clojure/tools.deps.alpha {:mvn/version "0.12.1036"}
   org.clojure/data.json {:mvn/version "2.4.0"}
   clj-commons/clj-yaml {:mvn/version "0.7.107"}
   version-clj/version-clj {:mvn/version "2.0.2"}
-  rewrite-clj/rewrite-clj {:mvn/version "1.0.644-alpha"}}
+  rewrite-clj/rewrite-clj {:mvn/version "1.0.682-alpha"}}
 
  :tools/usage
  {:ns-default antq.tool}
 
  :aliases
- {:1.8
-  {:override-deps {org.clojure/clojure {:mvn/version "1.8.0"}}}
-  :1.9
+ {:1.9
   {:override-deps {org.clojure/clojure {:mvn/version "1.9.0"}}}
 
   :dev
   {:extra-paths ["test"
                  "test/resources"]
-   :extra-deps {lambdaisland/kaocha {:mvn/version "1.0.861"}
+   :extra-deps {lambdaisland/kaocha {:mvn/version "1.0.887"}
                 lambdaisland/deep-diff2 {:mvn/version "2.0.108"}}}
 
   :nop
@@ -46,7 +44,7 @@
   :deploy
   {:extra-deps {slipset/deps-deploy {;; :mvn/version "RELEASE"
                                      :git/url "https://github.com/slipset/deps-deploy"
-                                     :sha "b4359c5d67ca002d9ed0c4b41b710d7e5a82e3bf"}}
+                                     :sha "08d9657402ed48cf13cc5254b4d6b8d924b14304"}}
    :exec-fn deps-deploy.deps-deploy/deploy
    :exec-args {}}
 

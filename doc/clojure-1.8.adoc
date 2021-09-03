@@ -1,9 +1,17 @@
-= Antq with Clojure 1.7.0 or earlier
+= Antq with Clojure 1.8.0 or earlier
 
-As described, antq does not support Clojure 1.7.0 or earlier.
+As described, antq does not support Clojure 1.8.0 or earlier.
 If you'd like to use, please follow the steps below.
 
-== Clojure CLI Tool
+== Clojure 1.8.0
+
+antq 0.16.3 or earlier partially supports Clojure 1.8.0.
+
+So if you were using antq with Clojure 1.8.0, please consider to use antq 0.16.3 or follow steps below.
+
+== Clojure 1.7.0 or earlier
+
+=== Clojure CLI Tool
 
 Add the following alias to your project's `deps.edn` instead of `$HOME/.clojure/deps.edn`.
 [source,clojure]
@@ -16,19 +24,18 @@ Add the following alias to your project's `deps.edn` instead of `$HOME/.clojure/
 }
 ----
 Then, run `clojure -M:outdated`.
-// FIXME 1.10.1.727 以降なら -M
 
-== Leiningen
+=== Leiningen
 
 Add a profile and alias to your project's `project.clj` instead of `$HOME/.lein/profiles.clj`.
 
 [source,clojure]
 ----
 (defproject ...
-  :dependencies [[org.clojure/clojure "1.7.0"]]
+  :dependencies [[org.clojure/clojure "1.8.0"]]
 
   :profiles
-  {:outdated {:dependencies [[org.clojure/clojure "1.10.1"] ;; use 1.8.0 or later only for antq
+  {:outdated {:dependencies [[org.clojure/clojure "1.10.1"] ;; use 1.9.0 or later only for antq
                              [com.github.liquidz/antq "RELEASE"]]}}
   :aliases
   {"outdated" ["with-profile" "outdated" "run" "-m" "antq.core"]})

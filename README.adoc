@@ -12,8 +12,8 @@ image:https://img.shields.io/badge/docker-automated-blue["GitHub Container Regis
 
 [NOTE]
 ====
-Antq requires Clojure 1.8.0 or later. (However `--upgrade` option requires Clojure 1.9.0 or later) +
-If you'd like to use with 1.7.0 or earlier, please see link:./doc/clojure-1.7.adoc[here].
+Antq requires Clojure 1.9.0 or later. +
+If you'd like to use with 1.8.0 or earlier, please see link:./doc/clojure-1.8.adoc[here].
 ====
 
 == Supported files
@@ -84,7 +84,7 @@ From Clojure CLI ver `1.10.3.933`, https://clojure.org/reference/deps_and_cli#to
 [source,sh]
 ----
 # install
-clojure -Ttools install com.github.liquidz/antq '{:git/tag "0.16.3"}' :as antq
+clojure -Ttools install com.github.liquidz/antq '{:git/tag "1.0.0"}' :as antq
 # uninstall
 clojure -Ttools remove :tool antq
 # execute
@@ -256,7 +256,7 @@ When you use `--error-format` option, this reporter will be used automatically.
 * link:./doc/maven-s3-repos.adoc[Maven S3 reposhere].
 * link:./doc/avoid-slf4j-warnings.adoc[Avoid SLF4J warnings]
 * link:./doc/latest-version-of-a-specific-library.adoc[Latest version of a specific library]
-* link:./doc/clojure-1.7.adoc[Antq with Clojure 1.7.0 or earlier]
+* link:./doc/clojure-1.8.adoc[Antq with Clojure 1.8.0 or earlier]
 * link:./doc/gradle.adoc[Work with Gradle]
 
 == License
