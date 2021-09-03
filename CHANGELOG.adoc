@@ -2,6 +2,7 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 
+== 1.0.0 (2021-09-04)
 // {{{
 === Changed
 * https://github.com/liquidz/antq/issues/94[#94]: Update to infer `:git/url` from library name in deps.edn.
