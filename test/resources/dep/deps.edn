@@ -6,7 +6,9 @@
         local-repo/local-repo {:local/root "/path/to/local/repo"}
         ;; invalid versions should be ignored
         ver-not-string {:mvn/version :version}
-        ver-empty {:mvn/version ""}}
+        ver-empty {:mvn/version ""}
+        ;; inferring from lib
+        com.github.liquidz/dummy {:tag "v1.2.3" :sha "123abcd"}}
 
  :aliases
  {:foo {:extra-deps {baz {:mvn/version "3.0.0"}}
