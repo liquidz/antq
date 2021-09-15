@@ -2,6 +2,13 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 
+== 1.0.1 (2021-09-16)
+// {{{
+=== Changed
+* https://github.com/liquidz/antq/issues/93[#93]: Updated to support `:git/sha` for deps.edn.
+* Bumped deps-deploy to the latest commit.
+// }}}
+
 == 1.0.0 (2021-09-04)
 // {{{
 === Changed

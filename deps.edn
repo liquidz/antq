@@ -44,7 +44,7 @@
   :deploy
   {:extra-deps {slipset/deps-deploy {;; :mvn/version "RELEASE"
                                      :git/url "https://github.com/slipset/deps-deploy"
-                                     :sha "08d9657402ed48cf13cc5254b4d6b8d924b14304"}}
+                                     :sha "ea2aefc82a40e4d2cf4de24ec18a786108e1a430"}}
    :exec-fn deps-deploy.deps-deploy/deploy
    :exec-args {}}
 

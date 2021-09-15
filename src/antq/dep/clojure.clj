@@ -34,7 +34,7 @@
 (defmethod extract-type-and-version :git-sha
   [opt]
   {:type :git-sha
-   :version (:sha opt)
+   :version (:sha opt (:git/sha opt))
    :extra {:url (:git/url opt)}})
 
 (defn- adjust-version-via-deduction

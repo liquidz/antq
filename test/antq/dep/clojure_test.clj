@@ -39,7 +39,9 @@
                                 :extra {:url "https://github.com/example/hello.git"}})
                (git-dependency {:name "com.github.liquidz/dummy"
                                 :version "123abcd"
-                                :extra {:url "https://github.com/liquidz/dummy.git"}})}
+                                :extra {:url "https://github.com/liquidz/dummy.git"}})
+               (git-dependency {:name "git/world" :version "dummy-sha2"
+                                :extra {:url "https://github.com/example/world.git"}})}
              (set deps)))))
 
 (t/deftest extract-deps-unexpected-test
