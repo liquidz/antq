@@ -2,6 +2,8 @@
         bar {:mvn/version "2.0.0"}
         git/hello {:git/url "https://github.com/example/hello.git"
                    :sha "dummy-sha"}
+        git/world {:git/url "https://github.com/example/world.git"
+                   :git/sha "dummy-sha2"}
         ;; local/root should be ignored
         local-repo/local-repo {:local/root "/path/to/local/repo"}
         ;; invalid versions should be ignored
