@@ -1,6 +1,8 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+
+== 1.0.1 (2021-09-16)
 // {{{
 === Changed
 * https://github.com/liquidz/antq/issues/93[#93]: Updated to support `:git/sha` for deps.edn.
