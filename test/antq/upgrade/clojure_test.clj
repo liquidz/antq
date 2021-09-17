@@ -22,6 +22,20 @@
                       :latest-version "new-sha"
                       :file (io/resource "dep/deps.edn")}))
 
+(def ^:private dummy-git-git-sha-dep
+  (r/map->Dependency {:project :clojure
+                      :type :git-sha
+                      :name "git/world"
+                      :latest-version "new-sha"
+                      :file (io/resource "dep/deps.edn")}))
+
+(def ^:private dummy-no-version-dep
+  (r/map->Dependency {:project :clojure
+                      :type :java
+                      :name "no-version"
+                      :latest-version "9.9.9"
+                      :file (io/resource "dep/deps.edn")}))
+
 (t/deftest upgrade-dep-test
   (t/testing "java"
     (let [from-deps (->> dummy-java-dep
@@ -35,7 +49,7 @@
                  {:name "foo/core" :version {:- "1.1.0" :+ "9.0.0"}}}
                (h/diff-deps from-deps to-deps)))))
 
-  (t/testing "git"
+  (t/testing "git :sha"
     (let [from-deps (->> dummy-git-dep
                          :file
                          (slurp)
@@ -44,7 +58,28 @@
                        (upgrade/upgrader)
                        (dep.clj/extract-deps ""))]
       (t/is (= #{{:name "git/hello" :version {:- "dummy-sha" :+ "new-sha"}}}
-               (h/diff-deps from-deps to-deps))))))
+               (h/diff-deps from-deps to-deps)))))
+
+  (t/testing "git :git/sha"
+    (let [from-deps (->> dummy-git-git-sha-dep
+                         :file
+                         (slurp)
+                         (dep.clj/extract-deps ""))
+          to-deps (->> dummy-git-git-sha-dep
+                       (upgrade/upgrader)
+                       (dep.clj/extract-deps ""))]
+      (t/is (= #{{:name "git/world" :version {:- "dummy-sha2" :+ "new-sha"}}}
+               (h/diff-deps from-deps to-deps)))))
+
+  (t/testing "no corresponding value"
+    (let [from-deps (->> dummy-no-version-dep
+                         :file
+                         (slurp)
+                         (dep.clj/extract-deps ""))
+          to-deps (->> dummy-no-version-dep
+                       (upgrade/upgrader)
+                       (dep.clj/extract-deps ""))]
+      (t/is (empty? (h/diff-deps from-deps to-deps))))))
 
 (t/deftest upgrade-dep-replce-deps-test
   (let [dummy-dep (assoc dummy-java-dep :name "rep")

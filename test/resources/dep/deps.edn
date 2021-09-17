@@ -10,7 +10,9 @@
         ver-not-string {:mvn/version :version}
         ver-empty {:mvn/version ""}
         ;; inferring from lib
-        com.github.liquidz/dummy {:tag "v1.2.3" :sha "123abcd"}}
+        com.github.liquidz/dummy {:tag "v1.2.3" :sha "123abcd"}
+        ;; no version
+        no-version {}}
 
  :aliases
  {:foo {:extra-deps {baz {:mvn/version "3.0.0"}}
