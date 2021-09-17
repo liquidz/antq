@@ -1,6 +1,14 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+// {{{
+=== Changed
+* Bumped tools.deps.alpha to 0.12.1041.
+* Bumped deps-deploy to the latest commit.
+
+=== Fixed
+* https://github.com/liquidz/antq/issues/111[#111]: Fixed a bug that caused an error when updating `:git/sha`.
+// }}}
 
 == 1.0.1 (2021-09-16)
 // {{{
