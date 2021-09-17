@@ -13,7 +13,16 @@
            (filter #(= 0 (.indexOf ^String % "refs/tags")))
            (map #(str/replace % #"^refs/tags/" ""))))
 
-(defn- sh-git-ls-remote
+(defn- extract-head-sha
+  [ls-remote-resp]
+  (some->> (:out ls-remote-resp)
+           (str/split-lines)
+           (some (fn [line]
+                   (let [[sha ref-name] (str/split line #"\t" 2)]
+                     (and (= "HEAD" ref-name)
+                          sha))))))
+
+(defn- ls-remote*
   [url]
   (loop [i 0]
     (when (< i const/retry-limit)
@@ -29,9 +38,21 @@
           (do (log/error "git ls-remote timed out, retrying")
               (recur (inc i))))))))
 
+(def ^:private ls-remote
+  (memoize ls-remote*))
+
 (defn tags-by-ls-remote*
   [url]
-  (-> (sh-git-ls-remote url)
+  (-> (ls-remote url)
       (extract-tags)))
+
 (def tags-by-ls-remote
   (memoize tags-by-ls-remote*))
+
+(defn head-sha-by-ls-remote*
+  [url]
+  (-> (ls-remote url)
+      (extract-head-sha)))
+
+(def head-sha-by-ls-remote
+  (memoize head-sha-by-ls-remote*))
