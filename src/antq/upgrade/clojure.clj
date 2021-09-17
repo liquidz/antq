@@ -10,23 +10,27 @@
   (->> loc z/up z/left z/sexpr
        (contains? #{:deps :extra-deps :replace-deps :override-deps})))
 
+(defn- find-version-key
+  [loc version-checked-dep]
+  (if (= :git-sha (:type version-checked-dep))
+    (or (z/find-value loc z/right :sha)
+        (z/find-value loc z/right :git/sha))
+    (z/find-value loc z/right :mvn/version)))
+
 (defn upgrade-dep
   [loc version-checked-dep]
-  (let [name-set (u.dep/name-candidates (:name version-checked-dep))
-        version-key (if (= :git-sha (:type version-checked-dep))
-                      :sha
-                      :mvn/version)]
+  (let [name-set (u.dep/name-candidates (:name version-checked-dep))]
     (loop [loc loc]
       (if-let [loc (z/find-value loc z/next name-set)]
         (recur (if (in-deps? loc)
-                 (-> loc
-                     ;; move to map
-                     (z/right) (z/down)
-                     ;; find target key
-                     (z/find-value z/right version-key)
-                     ;; replace
-                     (z/right)
-                     (z/replace (:latest-version version-checked-dep)))
+                 (some-> loc
+                         ;; move to map
+                         (z/right) (z/down)
+                         ;; find version key
+                         (find-version-key version-checked-dep)
+                         ;; replace
+                         (z/right)
+                         (z/replace (:latest-version version-checked-dep)))
                  (z/next loc)))
         (u.zip/move-to-root loc)))))
 
