@@ -23,6 +23,14 @@
                              :repositories {"antq-test" {:url "s3://antq-repo/"}}}
                             m)))
 
+(defn- git-tag-dependency
+  [m]
+  (r/map->Dependency (merge {:project :clojure
+                             :type :git-tag-and-sha
+                             :file file-path
+                             :repositories {"antq-test" {:url "s3://antq-repo/"}}}
+                            m)))
+
 (t/deftest extract-deps-test
   (let [deps (sut/extract-deps
               file-path
@@ -41,7 +49,13 @@
                                     :extra {:url "https://github.com/example/git-sha.git"}})
                (git-sha-dependency {:name "com.github.liquidz/dummy"
                                     :version "dummy-inferring-url"
-                                    :extra {:url "https://github.com/liquidz/dummy.git"}})}
+                                    :extra {:url "https://github.com/liquidz/dummy.git"}})
+               (git-tag-dependency {:name "tag-short-sha/tag-short-sha" :version "v1.2.3"
+                                    :extra {:url "https://github.com/example/tag-short.git"
+                                            :sha "123abcd"}})
+               (git-tag-dependency {:name "git-tag-long-sha/git-tag-long-sha" :version "v2.3.4"
+                                    :extra {:url "https://github.com/example/git-tag-long.git"
+                                            :sha "1234567890abcdefghijklmnopqrstuvwxyz1234"}})}
              (set deps)))))
 
 (t/deftest extract-deps-unexpected-test
@@ -51,4 +65,4 @@
 
 (t/deftest load-deps-test
   (let [deps (sut/load-deps "test/resources/dep")]
-    (t/is (every? #(contains? #{:java :git-sha} (:type %)) deps))))
+    (t/is (every? #(contains? #{:java :git-sha :git-tag-and-sha} (:type %)) deps))))

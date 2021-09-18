@@ -18,8 +18,21 @@
 (defmulti extract-type-and-version
   (fn [opt]
     (if (map? opt)
-      (or (and (:mvn/version opt) :java)
-          (and (:git/url opt) :git-sha))
+      (cond
+        (contains? opt :mvn/version)
+        :java
+
+        (and (contains? opt :git/url)
+             (some #(contains? opt %) [:tag :git/tag])
+             (some #(contains? opt %) [:sha :git/sha]))
+        :git-tag-and-sha
+
+        (and (contains? opt :git/url)
+             (some #(contains? opt %) [:sha :git/sha]))
+        :git-sha
+
+        :else
+        ::unknown)
       ::unknown)))
 
 (defmethod extract-type-and-version :default
@@ -36,6 +49,13 @@
   {:type :git-sha
    :version (:sha opt (:git/sha opt))
    :extra {:url (:git/url opt)}})
+
+(defmethod extract-type-and-version :git-tag-and-sha
+  [opt]
+  {:type :git-tag-and-sha
+   :version (:tag opt (:git/tag opt))
+   :extra {:url (:git/url opt)
+           :sha (:sha opt (:git/sha opt))}})
 
 (defn- adjust-version-via-deduction
   [dep-name opt]

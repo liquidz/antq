@@ -8,13 +8,19 @@
         git-sha {:git/url "https://github.com/example/git-sha.git"
                  :git/sha "dummy-git-sha"}
 
+        ;; :tag (short sha)
+        tag-short-sha {:git/url "https://github.com/example/tag-short.git"
+                       :tag "v1.2.3" :sha "123abcd"}
+        ;; :git/tag (long sha)
+        git-tag-long-sha {:git/url "https://github.com/example/git-tag-long.git"
+                          :git/tag "v2.3.4" :git/sha "1234567890abcdefghijklmnopqrstuvwxyz1234"}
+
         ;; local/root should be ignored
         local-repo/local-repo {:local/root "/path/to/local/repo"}
         ;; invalid versions should be ignored
         ver-not-string {:mvn/version :version}
         ver-empty {:mvn/version ""}
         ;; inferring :git/url from lib
-        ;; com.github.liquidz/dummy {:tag "v1.2.3" :sha "123abcd"}
         com.github.liquidz/dummy {:sha "dummy-inferring-url"}
         ;; no version
         no-version {}}
