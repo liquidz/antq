@@ -23,7 +23,8 @@
        (map #(str/join "\t" %))
        (str/join "\n")))
 
-(defn- dummy-url []
+(defn- dummy-url
+  []
   (str "dummy url" (UUID/randomUUID)))
 
 (t/deftest tags-by-ls-remote*-test

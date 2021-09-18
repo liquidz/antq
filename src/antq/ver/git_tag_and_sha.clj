@@ -3,8 +3,6 @@
    [antq.util.git :as u.git]
    [antq.util.ver :as u.ver]
    [antq.ver :as ver]
-   [clojure.java.shell :as sh]
-   [clojure.string :as str]
    [version-clj.core :as version]))
 
 (defmethod ver/get-sorted-versions :git-tag-and-sha

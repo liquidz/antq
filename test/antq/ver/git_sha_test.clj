@@ -2,7 +2,7 @@
   (:require
    [antq.util.git :as u.git]
    [antq.ver :as ver]
-   [antq.ver.git-sha :as sut]
+   [antq.ver.git-sha]
    [clojure.test :as t]))
 
 (t/deftest get-sorted-versions-test

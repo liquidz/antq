@@ -11,13 +11,6 @@
   (->> loc z/up z/left z/sexpr
        (contains? #{:deps :extra-deps :replace-deps :override-deps})))
 
-(defn- find-version-key
-  [loc version-checked-dep]
-  (if (= :git-sha (:type version-checked-dep))
-    (or (z/find-value loc z/right :sha)
-        (z/find-value loc z/right :git/sha))
-    (z/find-value loc z/right :mvn/version)))
-
 (defmulti replace-versions
   (fn [_loc version-checked-dep]
     (:type version-checked-dep)))

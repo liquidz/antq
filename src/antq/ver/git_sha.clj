@@ -1,9 +1,7 @@
 (ns antq.ver.git-sha
   (:require
    [antq.util.git :as u.git]
-   [antq.ver :as ver]
-   [clojure.java.shell :as sh]
-   [clojure.string :as str]))
+   [antq.ver :as ver]))
 
 (defmethod ver/get-sorted-versions :git-sha
   [dep]
