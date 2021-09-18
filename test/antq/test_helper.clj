@@ -13,7 +13,11 @@
 (defn name-version-sorted-list
   [deps]
   (->> deps
-       (map #(select-keys % [:name :version]))
+       (map #(let [url (get-in % [:extra :url])
+                   sha (get-in % [:extra :sha])]
+               (cond-> (select-keys % [:name :version])
+                 url (assoc :url url)
+                 sha (assoc :sha sha))))
        (sort-by #(str (:name %) (:version %)))))
 
 (defn diff-deps
@@ -22,5 +26,10 @@
                    (name-version-sorted-list actual-deps))
        (filter #(instance? Mismatch (:version %)))
        ;; convert `:version` to a simple map
-       (map #(update % :version (fn [m] (merge {} m))))
+       (map #(cond-> %
+               (contains? % :version)
+               (update :version (fn [m] (merge {} m)))
+
+               (contains? % :sha)
+               (update :sha (fn [m] (merge {} m)))))
        (set)))
