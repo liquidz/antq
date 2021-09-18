@@ -15,10 +15,18 @@
                              :file file-path
                              :repositories {"antq-test" {:url "s3://antq-repo/"}}}
                             m)))
-(defn- git-dependency
+(defn- git-sha-dependency
   [m]
   (r/map->Dependency (merge {:project :clojure
                              :type :git-sha
+                             :file file-path
+                             :repositories {"antq-test" {:url "s3://antq-repo/"}}}
+                            m)))
+
+(defn- git-tag-dependency
+  [m]
+  (r/map->Dependency (merge {:project :clojure
+                             :type :git-tag-and-sha
                              :file file-path
                              :repositories {"antq-test" {:url "s3://antq-repo/"}}}
                             m)))
@@ -35,13 +43,19 @@
                (java-dependency {:name "baz/baz" :version "3.0.0"})
                (java-dependency {:name "rep/rep" :version "4.0.0"})
                (java-dependency {:name "ovr/ovr" :version "5.0.0"})
-               (git-dependency {:name "git/hello" :version "dummy-sha"
-                                :extra {:url "https://github.com/example/hello.git"}})
-               (git-dependency {:name "com.github.liquidz/dummy"
-                                :version "123abcd"
-                                :extra {:url "https://github.com/liquidz/dummy.git"}})
-               (git-dependency {:name "git/world" :version "dummy-sha2"
-                                :extra {:url "https://github.com/example/world.git"}})}
+               (git-sha-dependency {:name "sha/sha" :version "dummy-sha"
+                                    :extra {:url "https://github.com/example/sha.git"}})
+               (git-sha-dependency {:name "git-sha/git-sha" :version "dummy-git-sha"
+                                    :extra {:url "https://github.com/example/git-sha.git"}})
+               (git-sha-dependency {:name "com.github.liquidz/dummy"
+                                    :version "dummy-inferring-url"
+                                    :extra {:url "https://github.com/liquidz/dummy.git"}})
+               (git-tag-dependency {:name "tag-short-sha/tag-short-sha" :version "v1.2.3"
+                                    :extra {:url "https://github.com/example/tag-short.git"
+                                            :sha "123abcd"}})
+               (git-tag-dependency {:name "git-tag-long-sha/git-tag-long-sha" :version "v2.3.4"
+                                    :extra {:url "https://github.com/example/git-tag-long.git"
+                                            :sha "1234567890abcdefghijklmnopqrstuvwxyz1234"}})}
              (set deps)))))
 
 (t/deftest extract-deps-unexpected-test
@@ -51,4 +65,4 @@
 
 (t/deftest load-deps-test
   (let [deps (sut/load-deps "test/resources/dep")]
-    (t/is (every? #(contains? #{:java :git-sha} (:type %)) deps))))
+    (t/is (every? #(contains? #{:java :git-sha :git-tag-and-sha} (:type %)) deps))))

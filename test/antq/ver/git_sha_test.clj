@@ -1,13 +1,14 @@
 (ns antq.ver.git-sha-test
   (:require
+   [antq.util.git :as u.git]
    [antq.ver :as ver]
-   [antq.ver.git-sha :as sut]
+   [antq.ver.git-sha]
    [clojure.test :as t]))
 
 (t/deftest get-sorted-versions-test
-  (with-redefs [sut/git-ls-remote (fn [url]
-                                    (when (= url "https://example.com")
-                                      {:out "foo-sha\tFOO\nhead-sha\tHEAD\nbar-sha\tBAR"}))]
+  (with-redefs [u.git/head-sha-by-ls-remote (fn [url]
+                                              (when (= url "https://example.com")
+                                                "head-sha"))]
     (t/is (= ["head-sha"]
              (ver/get-sorted-versions {:type :git-sha :extra {:url "https://example.com"}})))
 

@@ -2,6 +2,18 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 
+== 1.1.0 (2021-09-19)
+// {{{
+=== Added
+* https://github.com/liquidz/antq/issues/93[#93]: Added support for upgrading `:tag` and `:git/tag` in deps.edn.
+
+=== Changed
+* Bumped tools.deps.alpha to 0.12.1048.
+
+=== Fixed
+* https://github.com/liquidz/antq/issues/113[#113]: Fixed to keep SHA length when upgrading deps.edn with `:tag` or `:git/tag`.
+// }}}
+
 == 1.0.2 (2021-09-18)
 // {{{
 === Changed

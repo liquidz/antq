@@ -35,6 +35,7 @@
    [antq.upgrade.shadow]
    [antq.ver :as ver]
    [antq.ver.git-sha]
+   [antq.ver.git-tag-and-sha]
    [antq.ver.github-tag]
    [antq.ver.java]
    [clojure.string :as str]

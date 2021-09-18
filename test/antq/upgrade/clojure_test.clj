@@ -5,6 +5,7 @@
    [antq.test-helper :as h]
    [antq.upgrade :as upgrade]
    [antq.upgrade.clojure]
+   [antq.util.git :as u.git]
    [clojure.java.io :as io]
    [clojure.test :as t]))
 
@@ -18,16 +19,32 @@
 (def ^:private dummy-git-dep
   (r/map->Dependency {:project :clojure
                       :type :git-sha
-                      :name "git/hello"
+                      :name "sha/sha"
                       :latest-version "new-sha"
                       :file (io/resource "dep/deps.edn")}))
 
 (def ^:private dummy-git-git-sha-dep
   (r/map->Dependency {:project :clojure
                       :type :git-sha
-                      :name "git/world"
+                      :name "git-sha/git-sha"
                       :latest-version "new-sha"
                       :file (io/resource "dep/deps.edn")}))
+
+(def ^:private dummy-git-tag-short-sha-dep
+  (r/map->Dependency {:project :clojure
+                      :type :git-tag-and-sha
+                      :name "tag-short-sha/tag-short-sha"
+                      :latest-version "v9.9.9"
+                      :file (io/resource "dep/deps.edn")
+                      :extra {:sha "1234567"}}))
+
+(def ^:private dummy-git-tag-long-sha-dep
+  (r/map->Dependency {:project :clojure
+                      :type :git-tag-and-sha
+                      :name "git-tag-long-sha/git-tag-long-sha"
+                      :latest-version "v9.9.9"
+                      :file (io/resource "dep/deps.edn")
+                      :extra {:sha "123456789x123456789x123456789x123456789x"}}))
 
 (def ^:private dummy-no-version-dep
   (r/map->Dependency {:project :clojure
@@ -57,7 +74,9 @@
           to-deps (->> dummy-git-dep
                        (upgrade/upgrader)
                        (dep.clj/extract-deps ""))]
-      (t/is (= #{{:name "git/hello" :version {:- "dummy-sha" :+ "new-sha"}}}
+      (t/is (= #{{:name "sha/sha"
+                  :version {:- "dummy-sha" :+ "new-sha"}
+                  :url "https://github.com/example/sha.git"}}
                (h/diff-deps from-deps to-deps)))))
 
   (t/testing "git :git/sha"
@@ -68,8 +87,41 @@
           to-deps (->> dummy-git-git-sha-dep
                        (upgrade/upgrader)
                        (dep.clj/extract-deps ""))]
-      (t/is (= #{{:name "git/world" :version {:- "dummy-sha2" :+ "new-sha"}}}
+      (t/is (= #{{:name "git-sha/git-sha"
+                  :version {:- "dummy-git-sha" :+ "new-sha"}
+                  :url "https://github.com/example/git-sha.git"}}
                (h/diff-deps from-deps to-deps)))))
+
+  (t/testing "git :tag (short sha)"
+    (with-redefs [u.git/tag-sha-by-ls-remote (constantly "9876543210abcdefghijklmnopqrstuvwxyz1234")]
+      (let [from-deps (->> dummy-git-tag-short-sha-dep
+                           :file
+                           (slurp)
+                           (dep.clj/extract-deps ""))
+            to-deps (->> dummy-git-tag-short-sha-dep
+                         (upgrade/upgrader)
+                         (dep.clj/extract-deps ""))]
+        (t/is (= #{{:name "tag-short-sha/tag-short-sha"
+                    :version {:- "v1.2.3" :+ "v9.9.9"}
+                    :url "https://github.com/example/tag-short.git"
+                    :sha {:- "123abcd" :+ "9876543"}}}
+                 (h/diff-deps from-deps to-deps))))))
+
+  (t/testing "git :git/tag (long sha)"
+    (with-redefs [u.git/tag-sha-by-ls-remote (constantly "9876543210abcdefghijklmnopqrstuvwxyz1234")]
+      (let [from-deps (->> dummy-git-tag-long-sha-dep
+                           :file
+                           (slurp)
+                           (dep.clj/extract-deps ""))
+            to-deps (->> dummy-git-tag-long-sha-dep
+                         (upgrade/upgrader)
+                         (dep.clj/extract-deps ""))]
+        (t/is (= #{{:name "git-tag-long-sha/git-tag-long-sha"
+                    :version {:- "v2.3.4" :+ "v9.9.9"}
+                    :url "https://github.com/example/git-tag-long.git"
+                    :sha {:- "1234567890abcdefghijklmnopqrstuvwxyz1234"
+                          :+ "9876543210abcdefghijklmnopqrstuvwxyz1234"}}}
+                 (h/diff-deps from-deps to-deps))))))
 
   (t/testing "no corresponding value"
     (let [from-deps (->> dummy-no-version-dep
