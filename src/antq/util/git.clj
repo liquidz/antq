@@ -13,13 +13,13 @@
            (filter #(= 0 (.indexOf ^String % "refs/tags")))
            (map #(str/replace % #"^refs/tags/" ""))))
 
-(defn- extract-head-sha
-  [ls-remote-resp]
+(defn- extract-sha-by-ref-name
+  [ls-remote-resp target-ref-name]
   (some->> (:out ls-remote-resp)
            (str/split-lines)
            (some (fn [line]
                    (let [[sha ref-name] (str/split line #"\t" 2)]
-                     (and (= "HEAD" ref-name)
+                     (and (= target-ref-name ref-name)
                           sha))))))
 
 (defn- ls-remote*
@@ -52,7 +52,15 @@
 (defn head-sha-by-ls-remote*
   [url]
   (-> (ls-remote url)
-      (extract-head-sha)))
+      (extract-sha-by-ref-name "HEAD")))
+
+(defn tag-sha-by-ls-remote*
+  [url tag-name]
+  (-> (ls-remote url)
+      (extract-sha-by-ref-name (str "refs/tags/" tag-name))))
 
 (def head-sha-by-ls-remote
   (memoize head-sha-by-ls-remote*))
+
+(def tag-sha-by-ls-remote
+  (memoize tag-sha-by-ls-remote*))
