@@ -15,7 +15,7 @@
                              :file file-path
                              :repositories {"antq-test" {:url "s3://antq-repo/"}}}
                             m)))
-(defn- git-dependency
+(defn- git-sha-dependency
   [m]
   (r/map->Dependency (merge {:project :clojure
                              :type :git-sha
@@ -35,13 +35,13 @@
                (java-dependency {:name "baz/baz" :version "3.0.0"})
                (java-dependency {:name "rep/rep" :version "4.0.0"})
                (java-dependency {:name "ovr/ovr" :version "5.0.0"})
-               (git-dependency {:name "git/hello" :version "dummy-sha"
-                                :extra {:url "https://github.com/example/hello.git"}})
-               (git-dependency {:name "com.github.liquidz/dummy"
-                                :version "123abcd"
-                                :extra {:url "https://github.com/liquidz/dummy.git"}})
-               (git-dependency {:name "git/world" :version "dummy-sha2"
-                                :extra {:url "https://github.com/example/world.git"}})}
+               (git-sha-dependency {:name "sha/sha" :version "dummy-sha"
+                                    :extra {:url "https://github.com/example/sha.git"}})
+               (git-sha-dependency {:name "git-sha/git-sha" :version "dummy-git-sha"
+                                    :extra {:url "https://github.com/example/git-sha.git"}})
+               (git-sha-dependency {:name "com.github.liquidz/dummy"
+                                    :version "dummy-inferring-url"
+                                    :extra {:url "https://github.com/liquidz/dummy.git"}})}
              (set deps)))))
 
 (t/deftest extract-deps-unexpected-test

@@ -1,16 +1,21 @@
 {:deps {foo/core {:mvn/version "1.0.0"}
         bar {:mvn/version "2.0.0"}
-        git/hello {:git/url "https://github.com/example/hello.git"
-                   :sha "dummy-sha"}
-        git/world {:git/url "https://github.com/example/world.git"
-                   :git/sha "dummy-sha2"}
+
+        ;; :sha
+        sha {:git/url "https://github.com/example/sha.git"
+             :sha "dummy-sha"}
+        ;; :git/sha
+        git-sha {:git/url "https://github.com/example/git-sha.git"
+                 :git/sha "dummy-git-sha"}
+
         ;; local/root should be ignored
         local-repo/local-repo {:local/root "/path/to/local/repo"}
         ;; invalid versions should be ignored
         ver-not-string {:mvn/version :version}
         ver-empty {:mvn/version ""}
-        ;; inferring from lib
-        com.github.liquidz/dummy {:tag "v1.2.3" :sha "123abcd"}
+        ;; inferring :git/url from lib
+        ;; com.github.liquidz/dummy {:tag "v1.2.3" :sha "123abcd"}
+        com.github.liquidz/dummy {:sha "dummy-inferring-url"}
         ;; no version
         no-version {}}
 

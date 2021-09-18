@@ -18,14 +18,14 @@
 (def ^:private dummy-git-dep
   (r/map->Dependency {:project :clojure
                       :type :git-sha
-                      :name "git/hello"
+                      :name "sha/sha"
                       :latest-version "new-sha"
                       :file (io/resource "dep/deps.edn")}))
 
 (def ^:private dummy-git-git-sha-dep
   (r/map->Dependency {:project :clojure
                       :type :git-sha
-                      :name "git/world"
+                      :name "git-sha/git-sha"
                       :latest-version "new-sha"
                       :file (io/resource "dep/deps.edn")}))
 
@@ -57,7 +57,9 @@
           to-deps (->> dummy-git-dep
                        (upgrade/upgrader)
                        (dep.clj/extract-deps ""))]
-      (t/is (= #{{:name "git/hello" :version {:- "dummy-sha" :+ "new-sha"}}}
+      (t/is (= #{{:name "sha/sha"
+                  :version {:- "dummy-sha" :+ "new-sha"}
+                  :url "https://github.com/example/sha.git"}}
                (h/diff-deps from-deps to-deps)))))
 
   (t/testing "git :git/sha"
@@ -68,7 +70,9 @@
           to-deps (->> dummy-git-git-sha-dep
                        (upgrade/upgrader)
                        (dep.clj/extract-deps ""))]
-      (t/is (= #{{:name "git/world" :version {:- "dummy-sha2" :+ "new-sha"}}}
+      (t/is (= #{{:name "git-sha/git-sha"
+                  :version {:- "dummy-git-sha" :+ "new-sha"}
+                  :url "https://github.com/example/git-sha.git"}}
                (h/diff-deps from-deps to-deps)))))
 
   (t/testing "no corresponding value"
