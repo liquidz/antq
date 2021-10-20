@@ -1,6 +1,7 @@
 (ns antq.tool
   (:require
    [antq.core :as core]
+   [antq.log :as log]
    [clojure.set :as set]
    [clojure.tools.cli :as cli]))
 
@@ -39,10 +40,12 @@
   - :reporter      <string>
   - :directory     <array of string>
   - :upgrade       <boolean>
+  - :verbose       <boolean>
   - :force         <boolean>"
   [& [options]]
   (let [options (prepare-options options)]
-    (core/main* options nil)))
+    (binding [log/*verbose* (:verbose options false)]
+      (core/main* options nil))))
 
 (defn help
   [& _]
