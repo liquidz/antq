@@ -63,8 +63,8 @@
           (get-sorted-versions-by-url))
       (catch Exception ex
         (reset! failed-to-fetch-from-api true)
-        (log/error (str "Failed to fetch versions from GitHub, so fallback to `git ls-remote`: "
-                        (.getMessage ex)))
+        (log/warning (str "Failed to fetch versions from GitHub, so fallback to `git ls-remote`: "
+                          (.getMessage ex)))
         (fallback-to-ls-remote dep)))))
 
 (defn- nth-newer?
