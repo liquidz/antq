@@ -24,7 +24,7 @@
     false
 
     (:latest-version dep)
-    (do (print (format "Do you upgrade %s '%s' to '%s' in %s (y/n): "
+    (do (print (format "Do you want to upgrade %s '%s' to '%s' in %s (y/n): "
                        (:name dep)
                        (:version dep)
                        (:latest-version dep)

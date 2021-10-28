@@ -74,7 +74,7 @@
       (let [out-str (with-out-str
                       (with-redefs [read (constantly 'n)]
                         (sut/upgrade! [dep] false)))]
-        (t/is (not= -1 (.indexOf out-str "Do you upgrade"))))
+        (t/is (not= -1 (.indexOf out-str "Do you want to upgrade"))))
 
       (t/is (= "before0" (slurp temp1))))
 
@@ -82,6 +82,6 @@
       (let [out-str (with-out-str
                       (with-redefs [read (constantly 'y)]
                         (sut/upgrade! [dep] false)))]
-        (t/is (not= -1 (.indexOf out-str "Do you upgrade"))))
+        (t/is (not= -1 (.indexOf out-str "Do you want to upgrade"))))
 
       (t/is (= "afterLATEST" (slurp temp1))))))
