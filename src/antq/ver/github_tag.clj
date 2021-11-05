@@ -21,7 +21,9 @@
   (let [url (format "https://github.com/%s"
                     (str/join "/" (take 2 (str/split (:name dep) #"/"))))]
     (->> (u.git/tags-by-ls-remote url)
-         (filter (comp u.ver/sem-ver? u.ver/normalize-version))
+         (filter (comp u.ver/sem-ver?
+                       u.ver/remove-qualifiers
+                       u.ver/normalize-version))
          (sort (fn [& args]
                  (apply version/version-compare
                         (map u.ver/normalize-version args))))
@@ -36,7 +38,9 @@
       (slurp)
       (json/read-str :key-fn keyword)
       (->> (map :name)
-           (filter (comp u.ver/sem-ver? u.ver/normalize-version))
+           (filter (comp u.ver/sem-ver?
+                         u.ver/remove-qualifiers
+                         u.ver/normalize-version))
            (sort (fn [& args]
                    (apply version/version-compare
                           (map u.ver/normalize-version args))))

@@ -13,10 +13,13 @@
 (t/deftest get-sorted-versions-test
   (with-redefs [u.git/tags-by-ls-remote (fn [url]
                                           (when (= "https://example.com" url)
-                                            ["v2.0.0"
+                                            ["v3.0.0"
+                                             "v2.0.0-alpha1"
                                              "invalid"
-                                             "v1.0.0"]))]
-    (t/is (= ["v2.0.0" "v1.0.0"]
+                                             "v2.0.0-alpha2"
+                                             "v2.0.0"
+                                             "1.0.0"]))]
+    (t/is (= ["v3.0.0" "v2.0.0" "v2.0.0-alpha2" "v2.0.0-alpha1" "1.0.0"]
              (ver/get-sorted-versions (dep {:extra {:url "https://example.com"}})))))
 
   (t/testing "url is nil"
