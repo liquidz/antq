@@ -4,9 +4,8 @@
    [antq.util.ver :as sut]
    [clojure.test :as t]))
 
-(t/deftest normalize-version-test
-  (t/are [expected in] (= expected (sut/normalize-version in))
-    "1.0.0" "v1.0.0"
+(t/deftest remove-qualifiers-test
+  (t/are [expected in] (= expected (sut/remove-qualifiers in))
     "1.0.0" "1.0.0-alpha"
     "1.0.0" "1.0.0-alpha2"
     "1.0.0" "1.0.0.alpha"
@@ -16,7 +15,11 @@
     "1.0.0" "1.0.0-rc"
     "1.0.0" "1.0.0-snapshot"
     "1.0.0" "1.0.0-final"
-    "1.0.0" "1.0.0-stable"
+    "1.0.0" "1.0.0-stable"))
+
+(t/deftest normalize-version-test
+  (t/are [expected in] (= expected (sut/normalize-version in))
+    "1.0.0" "v1.0.0"
     "1.0.0" "vm-1.0.0"
     "1.0.0" "1.0.0"))
 
