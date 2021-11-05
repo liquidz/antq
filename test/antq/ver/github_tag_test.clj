@@ -23,9 +23,11 @@
 
 (def ^:private dummy-json
   (json/write-str
-   [{:name "v1.0.0"}
+   [{:name "1.0.0"}
     {:name "v2.0.0"}
-    {:name "v3.0.0"}]))
+    {:name "v3.0.0"}
+    {:name "v2.0.0-alpha1"}
+    {:name "v2.0.0-alpha2"}]))
 
 (defn- reset-fixture
   [f]
@@ -35,19 +37,22 @@
 (t/use-fixtures :each reset-fixture)
 
 (t/deftest get-sorted-versions-test
+  (reset! @#'sut/failed-to-fetch-from-api false)
   (with-redefs [slurp (constantly dummy-json)]
-    (t/is (= ["v3.0.0" "v2.0.0" "v1.0.0"]
+    (t/is (= ["v3.0.0" "v2.0.0" "v2.0.0-alpha2" "v2.0.0-alpha1" "1.0.0"]
              (get-sorted-versions {:name "foo/bar"}))))
 
   (t/testing "response should be cached"
-    (t/is (= ["v3.0.0" "v2.0.0" "v1.0.0"]
+    (t/is (= ["v3.0.0" "v2.0.0" "v2.0.0-alpha2" "v2.0.0-alpha1" "1.0.0"]
              (get-sorted-versions {:name "foo/bar"})))))
 
 (t/deftest get-sorted-versions-fallback-test
   (let [api-errored (atom false)
         dummy-out (->> [["foo-sha" "FOO"]
                         ["one-sha" "refs/tags/1.0"]
-                        ["two-sha" "refs/tags/2.0"]
+                        ["two-sha" "refs/tags/v2.0"]
+                        ["two-sha" "refs/tags/v3.0"]
+                        ["two-sha" "refs/tags/v2.0-beta1"]
                         ["bar-sha" "BAR"]]
                        (map #(str/join "\t" %))
                        (str/join "\n"))]
@@ -62,7 +67,7 @@
         (t/is (false? @api-errored))
         (t/is (false? @(deref #'sut/failed-to-fetch-from-api))))
 
-      (t/is (= ["2.0" "1.0"]
+      (t/is (= ["v3.0" "v2.0" "v2.0-beta1" "1.0"]
                (get-sorted-versions {:name "bar/baz"})))
 
       (t/testing "post"
@@ -91,6 +96,12 @@
     false "2.2" "2.3.4"
 
     false "2.3.3" "2.3.4"
+
+    false "v1" "v2"
+
+    ;; qualified version
+    false "1.0.0-alpha1" "1.0.0-alpha2"
+    true "1.0.0-alpha2" "1.0.0-alpha1"
 
     ;; if version tag is unparseable, just log an error and return true.
     true "v2.1.0" "v.2.x"

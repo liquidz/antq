@@ -5,6 +5,11 @@
 (def ^:private no-latest-version-error
   "Failed to fetch")
 
+(defn remove-qualifiers
+  "c.f. https://github.com/xsc/version-clj/blob/v2.0.2/src/version_clj/qualifiers.cljc"
+  [s]
+  (str/replace s #"[\-.](alpha|beta|milestone|rc|snapshot|final|stable)\d*" ""))
+
 (defn normalize-version
   [s]
   (str/replace s #"^[^\d]+" ""))

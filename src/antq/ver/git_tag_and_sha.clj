@@ -9,7 +9,9 @@
   [dep]
   (or (some->> (get-in dep [:extra :url])
                (u.git/tags-by-ls-remote)
-               (filter (comp u.ver/sem-ver? u.ver/normalize-version))
+               (filter (comp u.ver/sem-ver?
+                             u.ver/remove-qualifiers
+                             u.ver/normalize-version))
                (sort (fn [& args]
                        (apply version/version-compare
                               (map u.ver/normalize-version args))))
