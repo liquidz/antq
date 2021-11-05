@@ -32,10 +32,11 @@
           res
 
           (and (< 0 exit) (not (str/includes? err "Operation timed out")))
-          (log/error (str "git ls-remote failed on: " url))
+          (do (log/warning (str "git ls-remote failed on: " url))
+              nil)
 
           :else
-          (do (log/error "git ls-remote timed out, retrying")
+          (do (log/warning "git ls-remote timed out, retrying")
               (recur (inc i))))))))
 
 (def ^:private ls-remote

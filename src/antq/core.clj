@@ -80,6 +80,7 @@
     :validate [#(supported-reporter %) (str "Must be one of [" (str/join ", " supported-reporter) "]")]]
    ["-d" "--directory=DIRECTORY" :default ["."] :assoc-fn concat-assoc-fn]
    [nil "--upgrade"]
+   [nil "--verbose"]
    [nil "--force"]])
 
 (defn skip-artifacts?
@@ -265,4 +266,5 @@
 (defn -main
   [& args]
   (let [{:keys [options errors]} (cli/parse-opts args cli-options)]
-    (main* options errors)))
+    (binding [log/*verbose* (:verbose options false)]
+      (main* options errors))))

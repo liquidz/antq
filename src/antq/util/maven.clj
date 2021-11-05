@@ -55,7 +55,7 @@
   (reify TransferListener
     (transferStarted [_ event])
     (transferCorrupted [_ event]
-      (log/info "Download corrupted:" (.. ^TransferEvent event getException getMessage)))
+      (log/warning "Download corrupted:" (.. ^TransferEvent event getException getMessage)))
     ;; This happens when Maven can't find an artifact in a particular repo
     ;; (but still may find it in a different repo), ie this is a common event
     (transferFailed [_ event])
@@ -92,7 +92,7 @@
             (read-pom* url)
             (catch java.net.ConnectException e
               (if (= "Operation timed out" (.getMessage e))
-                (log/error (str "Fetching pom from " url " failed because it timed out, retrying"))
+                (log/warning (str "Fetching pom from " url " failed because it timed out, retrying"))
                 (throw e))))
           (recur (inc i))))))
 
