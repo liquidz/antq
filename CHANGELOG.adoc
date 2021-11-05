@@ -2,6 +2,20 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 
+// {{{
+=== Added
+* Added `--verbose` option to display detailed messages.
+
+=== Changed
+* Changed logs related to diff between versions not to display by default.
+** To display these logs, please use `--verbose` option.
+* Bumped tools.deps.alpha to 0.12.1067.
+* Bumped rewrite-clj to 1.0.699-alpha.
+
+=== Fixed
+* https://github.com/liquidz/antq/issues/117[#117]: Fixed to fetch qualified versions correctly.
+// }}}
+
 == 1.1.0 (2021-09-19)
 // {{{
 === Added
