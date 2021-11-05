@@ -2,6 +2,7 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 
+== 1.2.0 (2021-11-06)
 // {{{
 === Added
 * Added `--verbose` option to display detailed messages.
