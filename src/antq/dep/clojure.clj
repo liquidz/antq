@@ -13,11 +13,6 @@
 
 (declare load-deps)
 
-(defn- ignore?
-  [opt]
-  (and (map? opt)
-       (contains? opt :local/root)))
-
 (defmulti extract-type-and-version
   (fn [opt]
     (if (map? opt)
