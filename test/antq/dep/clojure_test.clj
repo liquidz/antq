@@ -6,7 +6,9 @@
    [clojure.test :as t]))
 
 (def ^:private file-path
-  "path/to/deps.edn")
+  ;; "path/to/deps.edn"
+  (.getAbsolutePath (io/file (io/resource "dep/deps.edn"))))
+
 
 (defn- java-dependency
   [m]
@@ -47,15 +49,21 @@
                                     :extra {:url "https://github.com/example/sha.git"}})
                (git-sha-dependency {:name "git-sha/git-sha" :version "dummy-git-sha"
                                     :extra {:url "https://github.com/example/git-sha.git"}})
-               (git-sha-dependency {:name "com.github.liquidz/dummy"
-                                    :version "dummy-inferring-url"
-                                    :extra {:url "https://github.com/liquidz/dummy.git"}})
                (git-tag-dependency {:name "tag-short-sha/tag-short-sha" :version "v1.2.3"
                                     :extra {:url "https://github.com/example/tag-short.git"
                                             :sha "123abcd"}})
                (git-tag-dependency {:name "git-tag-long-sha/git-tag-long-sha" :version "v2.3.4"
                                     :extra {:url "https://github.com/example/git-tag-long.git"
-                                            :sha "1234567890abcdefghijklmnopqrstuvwxyz1234"}})}
+                                            :sha "1234567890abcdefghijklmnopqrstuvwxyz1234"}})
+               (git-sha-dependency {:name "com.github.liquidz/dummy"
+                                    :version "dummy-inferring-url"
+                                    :extra {:url "https://github.com/liquidz/dummy.git"}})
+               (java-dependency {:name "local/core" :version "9.9.9"
+                                 :file (.getAbsolutePath (io/file (io/resource "dep/local/deps.edn")))
+                                 :repositories nil})
+               (java-dependency {:name "local/nested-core" :version "8.8.8"
+                                 :file (.getAbsolutePath (io/file (io/resource "dep/local/nested/deps.edn")))
+                                 :repositories nil})}
              (set deps)))))
 
 (t/deftest extract-deps-unexpected-test
