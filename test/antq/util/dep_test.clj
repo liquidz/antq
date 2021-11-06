@@ -49,3 +49,18 @@
            (sut/name-candidates "foo/foo")))
   (t/is (= #{}
            (sut/name-candidates ""))))
+
+(t/deftest normalize-path-test
+  (t/are [expected input] (= expected (sut/normalize-path input))
+    "foo/bar" "foo/bar"
+    "foo/bar" "foo/./bar"
+    "bar" "foo/../bar"
+    "bar/baz" "foo/../bar/baz"
+    "bar/baz" "foo/../bar/./baz"
+    "../foo" "../foo"
+    "../bar" "foo/../../bar"
+    ".." ".."
+    "." "."
+    "" ""
+    "foo" "foo"
+    "foo" "./foo"))
