@@ -90,7 +90,7 @@
   [file-path deps-edn-content-str & [loaded-dir-set]]
   (let [deps (atom [])
         edn (edn/read-string deps-edn-content-str)
-        loaded-dir-set (or loaded-dir-set #{})]
+        loaded-dir-set (or loaded-dir-set (atom #{}))]
     (walk/postwalk (fn [form]
                      (when (and (sequential? form)
                                 (#{:deps :extra-deps :replace-deps :override-deps} (first form))
@@ -131,13 +131,13 @@
 
 (defn load-deps
   ([] (load-deps "."))
-  ([dir] (load-deps dir #{}))
+  ([dir] (load-deps dir (atom #{})))
   ([dir loaded-dir-set]
    (let [dir (u.dep/normalize-path dir)]
      ;; Avoid infinite loop
-     (when-not (contains? loaded-dir-set dir)
-       (let [file (io/file dir project-file)
-             loaded-dir-set (conj loaded-dir-set dir)]
+     (when-not (contains? @loaded-dir-set dir)
+       (swap! loaded-dir-set conj dir)
+       (let [file (io/file dir project-file)]
          (when (.exists file)
            (extract-deps (u.dep/relative-path file)
                          (slurp file)
