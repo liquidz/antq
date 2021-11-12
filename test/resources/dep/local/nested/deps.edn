@@ -1,0 +1,3 @@
+{:deps {local/nested-core {:mvn/version "8.8.8"}
+        ;; should be skip
+        local-repo/local-repo {:local/root ".."}}}
