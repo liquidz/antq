@@ -1,8 +1,37 @@
 (ns antq.util.maven-test
   (:require
    [antq.record :as r]
+   [antq.util.leiningen :as u.lein]
    [antq.util.maven :as sut]
-   [clojure.test :as t]))
+   [clojure.test :as t]
+   [clojure.tools.deps.alpha.util.maven :as deps.util.maven])
+  (:import
+   (org.apache.maven.settings
+    Server
+    Settings)))
+
+(def ^:private dummy-settings
+  (doto (Settings.)
+    (.addServer (doto (Server.)
+                  (.setId "serv1")))
+    (.addServer (doto (Server.)
+                  (.setId "serv2")
+                  (.setUsername "two-user")
+                  (.setPassword "two-pass")))))
+
+(def ^:private dummy-repos
+  {"serv1" {:url "https://one.example.com"}
+   "serv2" {:url "https://two.example.com"}
+   "serv3" {:url "https://three.example.com"
+            :username "three-user"
+            :password "three-pass"}
+   "serv4" {:url "https://three.example.com"
+            :username :env
+            :password :env/four}})
+
+(def ^:private dummy-env
+  {"LEIN_PASSWORD" "lein-pass"
+   "FOUR" "env-four"})
 
 (t/deftest normalize-repo-url-test
   (t/are [expected in] (= expected (sut/normalize-repo-url in))
@@ -41,6 +70,26 @@
             :snapshots? true}
            (sut/dep->opts (r/map->Dependency {:repositories {"foo" {:url "s3p://foo"}}
                                               :version "1.0.0-SNAPSHOT"})))))
+
+(t/deftest get-maven-settings-test
+  (with-redefs [deps.util.maven/get-settings (constantly dummy-settings)
+                u.lein/getenv #(get dummy-env %)]
+    (let [settings (sut/get-maven-settings {:repositories dummy-repos})
+          servers (map #(hash-map
+                         :id (.getId %)
+                         :username (.getUsername %)
+                         :password (.getPassword %))
+                       (.getServers settings))]
+      (t/is (= 4 (count servers)))
+
+      (t/is (= #{{:id "serv1" :username nil :password nil}
+                 ;; from settings.xml
+                 {:id "serv2" :username "two-user" :password "two-pass"}
+                 ;; from project.clj
+                 {:id "serv3" :username "three-user" :password "three-pass"}
+                 ;; from project.clj with environmental variable
+                 {:id "serv4" :username "lein-pass" :password "env-four"}}
+               (set servers))))))
 
 (t/deftest get-url-test
   (let [model (sut/read-pom "pom.xml")]
