@@ -1,10 +1,7 @@
 (ns antq.util.leiningen
   (:require
+   [antq.util.env :as u.env]
    [clojure.string :as str]))
-
-(defn- getenv
-  [x]
-  (System/getenv x))
 
 (defn- env-name
   "cf. https://github.com/technomancy/leiningen/blob/master/doc/DEPLOY.md#credentials-in-the-environment"
@@ -23,4 +20,4 @@
 (defn env
   [kw]
   (some-> (env-name kw)
-          (getenv)))
+          (u.env/getenv)))

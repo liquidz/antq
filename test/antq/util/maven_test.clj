@@ -1,7 +1,7 @@
 (ns antq.util.maven-test
   (:require
    [antq.record :as r]
-   [antq.util.leiningen :as u.lein]
+   [antq.util.env :as u.env]
    [antq.util.maven :as sut]
    [clojure.test :as t]
    [clojure.tools.deps.alpha.util.maven :as deps.util.maven])
@@ -73,7 +73,7 @@
 
 (t/deftest get-maven-settings-test
   (with-redefs [deps.util.maven/get-settings (constantly dummy-settings)
-                u.lein/getenv #(get dummy-env %)]
+                u.env/getenv #(get dummy-env %)]
     (let [settings (sut/get-maven-settings {:repositories dummy-repos})
           servers (map #(hash-map
                          :id (.getId %)
