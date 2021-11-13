@@ -13,6 +13,23 @@
 
 (declare load-deps)
 
+(defn cross-project-configuration-files
+  "cf. https://clojure.org/reference/deps_and_cli#_deps_edn_sources"
+  []
+  (->> [(some-> (System/getenv "CLJ_CONFIG") (io/file project-file))
+        (some-> (System/getenv "XDG_CONFIG_HOME") (io/file "clojure" project-file))
+        (some-> (System/getenv "HOME") (io/file ".clojure" project-file))]
+       (filter #(and % (.exists %)))))
+
+(defn repositories-by-files
+  [files]
+  (reduce
+   (fn [accm file]
+     (merge accm
+            (some-> file slurp edn/read-string :mvn/repos)))
+   {}
+   files))
+
 (defmulti extract-type-and-version
   (fn [opt]
     (if (map? opt)
@@ -90,7 +107,9 @@
   [file-path deps-edn-content-str & [loaded-dir-set]]
   (let [deps (atom [])
         edn (edn/read-string deps-edn-content-str)
-        loaded-dir-set (or loaded-dir-set (atom #{}))]
+        loaded-dir-set (or loaded-dir-set (atom #{}))
+        cross-project-repositories (-> (cross-project-configuration-files)
+                                       (repositories-by-files))]
     (walk/postwalk (fn [form]
                      (when (and (sequential? form)
                                 (#{:deps :extra-deps :replace-deps :override-deps} (first form))
@@ -120,7 +139,8 @@
                             :name  (if (qualified-symbol? dep-name)
                                      (str dep-name)
                                      (str dep-name "/" dep-name))
-                            :repositories (:mvn/repos edn)}
+                            :repositories (merge cross-project-repositories
+                                                 (:mvn/repos edn))}
                            (merge type-and-version)
                            (r/map->Dependency)
                            (vector))
