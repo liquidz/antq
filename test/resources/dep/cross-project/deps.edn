@@ -1,0 +1,1 @@
+{:mvn/repos {"clj-config" {:url "https://clj-config.example.com"}}}

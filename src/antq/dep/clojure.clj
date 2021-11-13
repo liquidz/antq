@@ -3,6 +3,7 @@
   (:require
    [antq.record :as r]
    [antq.util.dep :as u.dep]
+   [antq.util.env :as u.env]
    [clojure.edn :as edn]
    [clojure.java.io :as io]
    [clojure.string :as str]
@@ -16,9 +17,9 @@
 (defn cross-project-configuration-files
   "cf. https://clojure.org/reference/deps_and_cli#_deps_edn_sources"
   []
-  (->> [(some-> (System/getenv "CLJ_CONFIG") (io/file project-file))
-        (some-> (System/getenv "XDG_CONFIG_HOME") (io/file "clojure" project-file))
-        (some-> (System/getenv "HOME") (io/file ".clojure" project-file))]
+  (->> [(some-> (u.env/getenv "CLJ_CONFIG") (io/file project-file))
+        (some-> (u.env/getenv "XDG_CONFIG_HOME") (io/file "clojure" project-file))
+        (some-> (u.env/getenv "HOME") (io/file ".clojure" project-file))]
        (filter #(and % (.exists %)))))
 
 (defn repositories-by-files

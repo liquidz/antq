@@ -2,13 +2,13 @@
   (:require
    [antq.dep.clojure :as sut]
    [antq.record :as r]
+   [antq.util.env :as u.env]
    [clojure.java.io :as io]
    [clojure.test :as t]))
 
 (def ^:private file-path
   ;; "path/to/deps.edn"
   (.getAbsolutePath (io/file (io/resource "dep/deps.edn"))))
-
 
 (defn- java-dependency
   [m]
@@ -65,6 +65,39 @@
                                  :file (.getAbsolutePath (io/file (io/resource "dep/local/nested/deps.edn")))
                                  :repositories {}})}
              (set deps)))))
+
+(t/deftest extract-deps-cross-project-configuration-test
+  (let [cross-project-dir (.getAbsolutePath
+                           (io/file
+                            (.getParentFile (io/file (io/resource "dep/deps.edn")))
+                            "cross-project"))
+        content (pr-str '{:deps {foo/bar {:mvn/version "0.0.1"}}})]
+    (t/testing "CLJ_CONFIG"
+      (with-redefs [u.env/getenv #(when (= "CLJ_CONFIG" %) cross-project-dir)]
+        (t/is (= [(java-dependency
+                   {:name "foo/bar"
+                    :version "0.0.1"
+                    :file "dummy"
+                    :repositories {"clj-config" {:url "https://clj-config.example.com"}}})]
+                 (sut/extract-deps "dummy" content)))))
+
+    (t/testing "XDG_CONFIG_HOME"
+      (with-redefs [u.env/getenv #(when (= "XDG_CONFIG_HOME" %) cross-project-dir)]
+        (t/is (= [(java-dependency
+                   {:name "foo/bar"
+                    :version "0.0.1"
+                    :file "dummy"
+                    :repositories {"xdg-config-home" {:url "https://xdg-config-home.example.com"}}})]
+                 (sut/extract-deps "dummy" content)))))
+
+    (t/testing "HOME"
+      (with-redefs [u.env/getenv #(when (= "HOME" %) cross-project-dir)]
+        (t/is (= [(java-dependency
+                   {:name "foo/bar"
+                    :version "0.0.1"
+                    :file "dummy"
+                    :repositories {"home" {:url "https://home.example.com"}}})]
+                 (sut/extract-deps "dummy" content)))))))
 
 (t/deftest extract-deps-unexpected-test
   (t/is (empty? (sut/extract-deps file-path "[:deps \"foo\"]")))
