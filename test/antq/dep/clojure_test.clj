@@ -60,10 +60,10 @@
                                     :extra {:url "https://github.com/liquidz/dummy.git"}})
                (java-dependency {:name "local/core" :version "9.9.9"
                                  :file (.getAbsolutePath (io/file (io/resource "dep/local/deps.edn")))
-                                 :repositories nil})
+                                 :repositories {}})
                (java-dependency {:name "local/nested-core" :version "8.8.8"
                                  :file (.getAbsolutePath (io/file (io/resource "dep/local/nested/deps.edn")))
-                                 :repositories nil})}
+                                 :repositories {}})}
              (set deps)))))
 
 (t/deftest extract-deps-unexpected-test
