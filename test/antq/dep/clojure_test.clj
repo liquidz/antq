@@ -2,9 +2,9 @@
   (:require
    [antq.dep.clojure :as sut]
    [antq.record :as r]
-   [antq.util.env :as u.env]
    [clojure.java.io :as io]
-   [clojure.test :as t]))
+   [clojure.test :as t]
+   [clojure.tools.deps.alpha :as alpha]))
 
 (def ^:private file-path
   ;; "path/to/deps.edn"
@@ -60,44 +60,26 @@
                                     :extra {:url "https://github.com/liquidz/dummy.git"}})
                (java-dependency {:name "local/core" :version "9.9.9"
                                  :file (.getAbsolutePath (io/file (io/resource "dep/local/deps.edn")))
-                                 :repositories {}})
+                                 :repositories nil})
                (java-dependency {:name "local/nested-core" :version "8.8.8"
                                  :file (.getAbsolutePath (io/file (io/resource "dep/local/nested/deps.edn")))
-                                 :repositories {}})}
+                                 :repositories nil})}
              (set deps)))))
 
 (t/deftest extract-deps-cross-project-configuration-test
-  (let [cross-project-dir (.getAbsolutePath
-                           (io/file
-                            (.getParentFile (io/file (io/resource "dep/deps.edn")))
-                            "cross-project"))
+  (let [cross-project-path (.getAbsolutePath
+                            (io/file
+                             (.getParentFile (io/file (io/resource "dep/deps.edn")))
+                             "cross-project"
+                             "deps.edn"))
         content (pr-str '{:deps {foo/bar {:mvn/version "0.0.1"}}})]
-    (t/testing "CLJ_CONFIG"
-      (with-redefs [u.env/getenv #(when (= "CLJ_CONFIG" %) cross-project-dir)]
-        (t/is (= [(java-dependency
-                   {:name "foo/bar"
-                    :version "0.0.1"
-                    :file "dummy"
-                    :repositories {"clj-config" {:url "https://clj-config.example.com"}}})]
-                 (sut/extract-deps "dummy" content)))))
-
-    (t/testing "XDG_CONFIG_HOME"
-      (with-redefs [u.env/getenv #(when (= "XDG_CONFIG_HOME" %) cross-project-dir)]
-        (t/is (= [(java-dependency
-                   {:name "foo/bar"
-                    :version "0.0.1"
-                    :file "dummy"
-                    :repositories {"xdg-config-home" {:url "https://xdg-config-home.example.com"}}})]
-                 (sut/extract-deps "dummy" content)))))
-
-    (t/testing "HOME"
-      (with-redefs [u.env/getenv #(when (= "HOME" %) cross-project-dir)]
-        (t/is (= [(java-dependency
-                   {:name "foo/bar"
-                    :version "0.0.1"
-                    :file "dummy"
-                    :repositories {"home" {:url "https://home.example.com"}}})]
-                 (sut/extract-deps "dummy" content)))))))
+    (with-redefs [alpha/user-deps-path (constantly cross-project-path)]
+      (t/is (= [(java-dependency
+                 {:name "foo/bar"
+                  :version "0.0.1"
+                  :file "dummy"
+                  :repositories {"cross-project" {:url "https://cross-project.example.com"}}})]
+               (sut/extract-deps "dummy" content))))))
 
 (t/deftest extract-deps-unexpected-test
   (t/is (empty? (sut/extract-deps file-path "[:deps \"foo\"]")))

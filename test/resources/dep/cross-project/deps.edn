@@ -1,1 +1,1 @@
-{:mvn/repos {"clj-config" {:url "https://clj-config.example.com"}}}
+{:mvn/repos {"cross-project" {:url "https://cross-project.example.com"}}}

@@ -10,5 +10,5 @@
                                 :name "bb/core"
                                 :version "1.0.0"
                                 :project :clojure
-                                :repositories {}})]
+                                :repositories nil})]
            (sut/load-deps "test/resources/dep"))))

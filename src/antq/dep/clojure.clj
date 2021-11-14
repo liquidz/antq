@@ -3,10 +3,10 @@
   (:require
    [antq.record :as r]
    [antq.util.dep :as u.dep]
-   [antq.util.env :as u.env]
    [clojure.edn :as edn]
    [clojure.java.io :as io]
    [clojure.string :as str]
+   [clojure.tools.deps.alpha :as alpha]
    [clojure.tools.deps.alpha.extensions.git :as git]
    [clojure.walk :as walk]))
 
@@ -14,22 +14,11 @@
 
 (declare load-deps)
 
-(defn cross-project-configuration-files
-  "cf. https://clojure.org/reference/deps_and_cli#_deps_edn_sources"
+(defn user-deps-repository
   []
-  (->> [(some-> (u.env/getenv "CLJ_CONFIG") (io/file project-file))
-        (some-> (u.env/getenv "XDG_CONFIG_HOME") (io/file "clojure" project-file))
-        (some-> (u.env/getenv "HOME") (io/file ".clojure" project-file))]
-       (filter #(and % (.exists %)))))
-
-(defn repositories-by-files
-  [files]
-  (reduce
-   (fn [accm file]
-     (merge accm
-            (some-> file slurp edn/read-string :mvn/repos)))
-   {}
-   files))
+  (let [file (io/file (alpha/user-deps-path))]
+    (when (.exists file)
+      (-> file slurp edn/read-string :mvn/repos))))
 
 (defmulti extract-type-and-version
   (fn [opt]
@@ -109,8 +98,7 @@
   (let [deps (atom [])
         edn (edn/read-string deps-edn-content-str)
         loaded-dir-set (or loaded-dir-set (atom #{}))
-        cross-project-repositories (-> (cross-project-configuration-files)
-                                       (repositories-by-files))]
+        cross-project-repositories (user-deps-repository)]
     (walk/postwalk (fn [form]
                      (when (and (sequential? form)
                                 (#{:deps :extra-deps :replace-deps :override-deps} (first form))
