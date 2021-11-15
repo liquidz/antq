@@ -75,7 +75,9 @@
     ;; In Leiningen, authentication information is defined in project.clj instead of ~/.m2/settings.xml,
     ;; so if there is authentication information in `:repositories`, apply to `settings`
     (doseq [[id {:keys [username password]}] (:repositories opts)]
-      (when-not (contains? server-ids id)
+      (when (and username
+                 password
+                 (not (contains? server-ids id)))
         (.addServer settings
                     (new-repository-server {:id id :username username :password password}))))
     settings))

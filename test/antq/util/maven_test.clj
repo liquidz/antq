@@ -20,14 +20,20 @@
                   (.setPassword "two-pass")))))
 
 (def ^:private dummy-repos
-  {"serv1" {:url "https://one.example.com"}
+  {;; duplicated with dummy-settings
+   "serv1" {:url "https://one.example.com"}
+   ;; duplicated with dummy-settings
    "serv2" {:url "https://two.example.com"}
+   ;; new to appear
    "serv3" {:url "https://three.example.com"
             :username "three-user"
             :password "three-pass"}
+   ;; new to appear
    "serv4" {:url "https://three.example.com"
             :username :env
-            :password :env/four}})
+            :password :env/four}
+   ;; should not be added because of missing username and password
+   "dummy" {:url "https://dummy.example.com"}})
 
 (def ^:private dummy-env
   {"LEIN_PASSWORD" "lein-pass"
