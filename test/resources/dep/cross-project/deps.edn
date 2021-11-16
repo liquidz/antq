@@ -1,0 +1,1 @@
+{:mvn/repos {"cross-project" {:url "https://cross-project.example.com"}}}

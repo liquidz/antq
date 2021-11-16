@@ -6,12 +6,19 @@
    [clojure.edn :as edn]
    [clojure.java.io :as io]
    [clojure.string :as str]
+   [clojure.tools.deps.alpha :as alpha]
    [clojure.tools.deps.alpha.extensions.git :as git]
    [clojure.walk :as walk]))
 
 (def ^:private project-file "deps.edn")
 
 (declare load-deps)
+
+(defn user-deps-repository
+  []
+  (let [file (io/file (alpha/user-deps-path))]
+    (when (.exists file)
+      (-> file slurp edn/read-string :mvn/repos))))
 
 (defmulti extract-type-and-version
   (fn [opt]
@@ -90,7 +97,8 @@
   [file-path deps-edn-content-str & [loaded-dir-set]]
   (let [deps (atom [])
         edn (edn/read-string deps-edn-content-str)
-        loaded-dir-set (or loaded-dir-set (atom #{}))]
+        loaded-dir-set (or loaded-dir-set (atom #{}))
+        cross-project-repositories (user-deps-repository)]
     (walk/postwalk (fn [form]
                      (when (and (sequential? form)
                                 (#{:deps :extra-deps :replace-deps :override-deps} (first form))
@@ -120,7 +128,8 @@
                             :name  (if (qualified-symbol? dep-name)
                                      (str dep-name)
                                      (str dep-name "/" dep-name))
-                            :repositories (:mvn/repos edn)}
+                            :repositories (merge cross-project-repositories
+                                                 (:mvn/repos edn))}
                            (merge type-and-version)
                            (r/map->Dependency)
                            (vector))

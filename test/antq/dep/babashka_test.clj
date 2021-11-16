@@ -9,5 +9,6 @@
                                 :file "test/resources/dep/bb.edn"
                                 :name "bb/core"
                                 :version "1.0.0"
-                                :project :clojure})]
+                                :project :clojure
+                                :repositories nil})]
            (sut/load-deps "test/resources/dep"))))

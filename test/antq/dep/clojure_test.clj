@@ -3,12 +3,12 @@
    [antq.dep.clojure :as sut]
    [antq.record :as r]
    [clojure.java.io :as io]
-   [clojure.test :as t]))
+   [clojure.test :as t]
+   [clojure.tools.deps.alpha :as alpha]))
 
 (def ^:private file-path
   ;; "path/to/deps.edn"
   (.getAbsolutePath (io/file (io/resource "dep/deps.edn"))))
-
 
 (defn- java-dependency
   [m]
@@ -65,6 +65,21 @@
                                  :file (.getAbsolutePath (io/file (io/resource "dep/local/nested/deps.edn")))
                                  :repositories nil})}
              (set deps)))))
+
+(t/deftest extract-deps-cross-project-configuration-test
+  (let [cross-project-path (.getAbsolutePath
+                            (io/file
+                             (.getParentFile (io/file (io/resource "dep/deps.edn")))
+                             "cross-project"
+                             "deps.edn"))
+        content (pr-str '{:deps {foo/bar {:mvn/version "0.0.1"}}})]
+    (with-redefs [alpha/user-deps-path (constantly cross-project-path)]
+      (t/is (= [(java-dependency
+                 {:name "foo/bar"
+                  :version "0.0.1"
+                  :file "dummy"
+                  :repositories {"cross-project" {:url "https://cross-project.example.com"}}})]
+               (sut/extract-deps "dummy" content))))))
 
 (t/deftest extract-deps-unexpected-test
   (t/is (empty? (sut/extract-deps file-path "[:deps \"foo\"]")))
