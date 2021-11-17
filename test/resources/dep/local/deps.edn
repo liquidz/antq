@@ -1,0 +1,2 @@
+{:deps {local/core {:mvn/version "9.9.9"}
+        local-repo2/local-repo2 {:local/root "./nested"}}}

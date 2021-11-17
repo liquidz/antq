@@ -2,6 +2,19 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 
+== 1.3.0 (2021-11-18)
+
+// {{{
+=== Added
+* https://github.com/liquidz/antq/issues/115[#115]: Added support for detecting libraries in `:local/root` dependencies.
+
+=== Changed
+* Bumped tools.deps.alpha to 0.12.1071.
+
+=== Fixed
+* https://github.com/liquidz/antq/issues/109[#109]: Fixed to correctly check versions of libraries in private repositories.
+// }}}
+
 == 1.2.0 (2021-11-06)
 // {{{
 === Added

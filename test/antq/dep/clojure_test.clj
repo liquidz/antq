@@ -3,10 +3,12 @@
    [antq.dep.clojure :as sut]
    [antq.record :as r]
    [clojure.java.io :as io]
-   [clojure.test :as t]))
+   [clojure.test :as t]
+   [clojure.tools.deps.alpha :as alpha]))
 
 (def ^:private file-path
-  "path/to/deps.edn")
+  ;; "path/to/deps.edn"
+  (.getAbsolutePath (io/file (io/resource "dep/deps.edn"))))
 
 (defn- java-dependency
   [m]
@@ -47,16 +49,37 @@
                                     :extra {:url "https://github.com/example/sha.git"}})
                (git-sha-dependency {:name "git-sha/git-sha" :version "dummy-git-sha"
                                     :extra {:url "https://github.com/example/git-sha.git"}})
-               (git-sha-dependency {:name "com.github.liquidz/dummy"
-                                    :version "dummy-inferring-url"
-                                    :extra {:url "https://github.com/liquidz/dummy.git"}})
                (git-tag-dependency {:name "tag-short-sha/tag-short-sha" :version "v1.2.3"
                                     :extra {:url "https://github.com/example/tag-short.git"
                                             :sha "123abcd"}})
                (git-tag-dependency {:name "git-tag-long-sha/git-tag-long-sha" :version "v2.3.4"
                                     :extra {:url "https://github.com/example/git-tag-long.git"
-                                            :sha "1234567890abcdefghijklmnopqrstuvwxyz1234"}})}
+                                            :sha "1234567890abcdefghijklmnopqrstuvwxyz1234"}})
+               (git-sha-dependency {:name "com.github.liquidz/dummy"
+                                    :version "dummy-inferring-url"
+                                    :extra {:url "https://github.com/liquidz/dummy.git"}})
+               (java-dependency {:name "local/core" :version "9.9.9"
+                                 :file (.getAbsolutePath (io/file (io/resource "dep/local/deps.edn")))
+                                 :repositories nil})
+               (java-dependency {:name "local/nested-core" :version "8.8.8"
+                                 :file (.getAbsolutePath (io/file (io/resource "dep/local/nested/deps.edn")))
+                                 :repositories nil})}
              (set deps)))))
+
+(t/deftest extract-deps-cross-project-configuration-test
+  (let [cross-project-path (.getAbsolutePath
+                            (io/file
+                             (.getParentFile (io/file (io/resource "dep/deps.edn")))
+                             "cross-project"
+                             "deps.edn"))
+        content (pr-str '{:deps {foo/bar {:mvn/version "0.0.1"}}})]
+    (with-redefs [alpha/user-deps-path (constantly cross-project-path)]
+      (t/is (= [(java-dependency
+                 {:name "foo/bar"
+                  :version "0.0.1"
+                  :file "dummy"
+                  :repositories {"cross-project" {:url "https://cross-project.example.com"}}})]
+               (sut/extract-deps "dummy" content))))))
 
 (t/deftest extract-deps-unexpected-test
   (t/is (empty? (sut/extract-deps file-path "[:deps \"foo\"]")))

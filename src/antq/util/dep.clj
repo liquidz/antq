@@ -30,3 +30,22 @@
 (defmethod normalize-by-name :default
   [dep]
   dep)
+
+(defn normalize-path
+  [^String path]
+  (let [sep (System/getProperty "file.separator")]
+    (loop [[v :as elements] (seq (.split path sep))
+           accm []]
+      (if-not v
+        (str/join sep accm)
+        (recur (rest elements)
+               (condp = v
+                 "." (cond
+                       (seq accm) accm
+                       (seq (rest elements))  accm
+                       :else (conj accm v))
+
+                 ".." (if (seq accm)
+                        (vec (butlast accm))
+                        (conj accm v))
+                 (conj accm v)))))))
