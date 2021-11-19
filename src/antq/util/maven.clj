@@ -162,10 +162,12 @@
                   remote-repos]} (repository-system name version opts)
           req (doto (ArtifactRequest.)
                 (.setArtifact artifact)
-                (.setRepositories remote-repos))]
-      (some-> (.resolveArtifact system session req)
-              ^RemoteRepository (.getRepository)
-              (.getUrl)))
+                (.setRepositories remote-repos))
+          repo (some-> (.resolveArtifact system session req)
+                       (.getRepository))]
+      ;; repo may be org.eclipse.aether.repository.LocalRepository
+      (when (instance? RemoteRepository repo)
+        (.getUrl ^RemoteRepository repo)))
     ;; Skip showing diff URL when fetching repository URL is failed
     (catch Exception ex
       (.printStackTrace ex)
