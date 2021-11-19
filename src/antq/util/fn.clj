@@ -9,3 +9,7 @@
         (let [ret (apply f m args)]
           (swap! mem assoc (get m key-fn) ret)
           ret)))))
+
+(comment
+  ;; for testing
+  (defn memoize-by [f _key-fn] f))
