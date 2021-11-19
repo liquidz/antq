@@ -47,7 +47,7 @@
     <dependency>
       <groupId>org.clojure</groupId>
       <artifactId>tools.deps.alpha</artifactId>
-      <version>0.12.1071</version>
+      <version>0.12.1076</version>
     </dependency>
     <dependency>
       <groupId>org.clojure</groupId>
