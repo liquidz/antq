@@ -1,9 +1,9 @@
 (ns antq.core-test
   (:require
    [antq.core :as sut]
-   [antq.diff.java :as d.java]
    [antq.record :as r]
    [antq.util.git :as u.git]
+   [antq.util.maven :as u.mvn]
    [antq.ver :as ver]
    [clojure.string :as str]
    [clojure.test :as t]
@@ -167,7 +167,7 @@
 
 (t/deftest assoc-diff-url-test
   (let [dummy-dep {:type :java :name "foo/bar" :version "1" :latest-version "2"}]
-    (with-redefs [d.java/get-scm-url (constantly "https://github.com/foo/bar")
+    (with-redefs [u.mvn/get-scm-url-by-version-checked-dep (constantly "https://github.com/foo/bar")
                   u.git/tags-by-ls-remote (constantly ["1" "2"])]
       (t/is (= (assoc dummy-dep :diff-url "https://github.com/foo/bar/compare/1...2")
                (sut/assoc-diff-url dummy-dep)))
