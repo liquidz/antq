@@ -1,0 +1,44 @@
+(ns antq.changelog-test
+  (:require
+   [antq.changelog :as sut]
+   [antq.record :as r]
+   [antq.util.dep :as u.dep]
+   [clojure.test :as t]))
+
+(t/deftest get-changelog-url-test
+  (t/testing "java"
+    (let [dep (r/map->Dependency {:type :java
+                                  :name "foo/java"
+                                  :version "1.0"
+                                  :latest-version "2.0"})]
+      (with-redefs [u.dep/get-scm-url (constantly "https://github.com/foo/java")
+                    sut/get-root-file-names (constantly ["CHANGELOG.md"])]
+        (t/is (= "https://github.com/foo/java/blob/2.0/CHANGELOG.md"
+                 (sut/get-changelog-url dep))))))
+
+  (t/testing "git-sha"
+    (let [dep (r/map->Dependency {:type :git-sha
+                                  :name "foo/git-sha"
+                                  :extra {:url "https://github.com/foo/git-sha"}
+                                  :version "1.0"
+                                  :latest-version "2.0"})]
+      (with-redefs [sut/get-root-file-names (constantly ["CHANGELOG.adoc"])]
+        (t/is (= "https://github.com/foo/git-sha/blob/2.0/CHANGELOG.adoc"
+                 (sut/get-changelog-url dep))))))
+
+  (t/testing "github-tag"
+    (let [dep (r/map->Dependency {:type :github-tag
+                                  :name "foo/github-tag"
+                                  :version "1.0"
+                                  :latest-version "2.0"})]
+      (with-redefs [sut/get-root-file-names (constantly ["CHANGELOG.org"])]
+        (t/is (= "https://github.com/foo/github-tag/blob/2.0/CHANGELOG.org"
+                 (sut/get-changelog-url dep)))))))
+
+(t/deftest get-changelog-url-not-supported-test
+  (let [dep (r/map->Dependency {:type :git-sha
+                                :name "foo/git-sha"
+                                :extra {:url "https://gitlab.com/not/supported"}
+                                :version "1.0"
+                                :latest-version "2.0"})]
+    (t/is (nil? (sut/get-changelog-url dep)))))
