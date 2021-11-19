@@ -165,7 +165,10 @@
                 (test-dep {:name "bob" :version "2.0.0" :latest-version "3.0.0"})]
                (sut/outdated-deps deps {:exclude ["alice@3.0.0"]}))))))
 
+;; FIXME
 (t/deftest assoc-diff-url-test
+  (t/testing "changelog")
+  (t/testing "compare")
   (let [dummy-dep {:type :java :name "foo/bar" :version "1" :latest-version "2"}]
     (with-redefs [u.mvn/get-scm-url-by-version-checked-dep (constantly "https://github.com/foo/bar")
                   u.git/tags-by-ls-remote (constantly ["1" "2"])]

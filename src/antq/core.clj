@@ -8,6 +8,7 @@
 (ns antq.core
   (:gen-class)
   (:require
+   [antq.changelog :as changelog]
    [antq.dep.babashka :as dep.bb]
    [antq.dep.boot :as dep.boot]
    [antq.dep.clojure :as dep.clj]
@@ -174,7 +175,8 @@
 
 (defn assoc-diff-url
   [version-checked-dep]
-  (if-let [url (diff/get-diff-url version-checked-dep)]
+  (if-let [url (or (changelog/get-changelog-url version-checked-dep)
+                   (diff/get-diff-url version-checked-dep))]
     (assoc version-checked-dep :diff-url url)
     version-checked-dep))
 
