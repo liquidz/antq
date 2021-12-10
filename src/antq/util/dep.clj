@@ -1,5 +1,6 @@
 (ns antq.util.dep
   (:require
+   [clojure.java.io :as io]
    [clojure.string :as str])
   (:import
    java.io.File))
@@ -33,19 +34,26 @@
 
 (defn normalize-path
   [^String path]
-  (let [sep (System/getProperty "file.separator")]
-    (loop [[v :as elements] (seq (.split path sep))
-           accm []]
-      (if-not v
-        (str/join sep accm)
-        (recur (rest elements)
-               (condp = v
-                 "." (cond
-                       (seq accm) accm
-                       (seq (rest elements))  accm
-                       :else (conj accm v))
+  (let [sep (System/getProperty "file.separator")
+        file (io/file path)]
+    (try
+      (if (= (.getAbsoluteFile file)
+             (.getCanonicalPath file))
+        path
+        (loop [[v :as elements] (seq (.split path sep))
+               accm []]
+          (if-not v
+            (str/join sep accm)
+            (recur (rest elements)
+                   (condp = v
+                     "." (cond
+                           (seq accm) accm
+                           (seq (rest elements))  accm
+                           :else (conj accm v))
 
-                 ".." (if (seq accm)
-                        (vec (butlast accm))
-                        (conj accm v))
-                 (conj accm v)))))))
+                     ".." (if (seq accm)
+                            (vec (butlast accm))
+                            (conj accm v))
+                     (conj accm v))))))
+      (catch Exception _
+        (.getCanonicalPath file)))))
