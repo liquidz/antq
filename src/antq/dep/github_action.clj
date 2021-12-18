@@ -45,6 +45,7 @@
    (let [dir-file (io/file dir ".github" "workflows")]
      (when (.isDirectory dir-file)
        (->> (file-seq dir-file)
-            (filter #(.isFile ^File %))
+            (filter #(and (.isFile ^File %)
+                          (re-seq #"\.ya?ml$" (.getName %))))
             (mapcat #(extract-deps (u.dep/relative-path %)
                                    (slurp %))))))))
