@@ -20,7 +20,7 @@
   :dev
   {:extra-paths ["test"
                  "test/resources"]
-   :extra-deps {lambdaisland/kaocha {:mvn/version "1.60.945"}
+   :extra-deps {lambdaisland/kaocha {:mvn/version "1.60.972"}
                 lambdaisland/deep-diff2 {:mvn/version "2.0.108"}}}
 
   :nop
