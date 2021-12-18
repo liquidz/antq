@@ -86,12 +86,12 @@
   "Copy from clojure.tools.deps.alpha.util.maven/console-listener
   But no outputs for `transferStarted`"
   (reify TransferListener
-    (transferStarted [_ event])
+    (transferStarted [_ _event])
     (transferCorrupted [_ event]
-      (log/warning "Download corrupted:" (.. ^TransferEvent event getException getMessage)))
+      (log/warning (str "Download corrupted:" (.. ^TransferEvent event getException getMessage))))
     ;; This happens when Maven can't find an artifact in a particular repo
     ;; (but still may find it in a different repo), ie this is a common event
-    (transferFailed [_ event])
+    (transferFailed [_ _event])
     (transferInitiated [_ _event])
     (transferProgressed [_ _event])
     (transferSucceeded [_ _event])))
