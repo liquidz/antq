@@ -4,4 +4,5 @@
   :dependencies [[org.clojure/clojure "1.10.3"]
                  [com.stuartsierra/dependency]]
   :plugins [[lein-pprint "1.3.2"]
-            [com.github.liquidz/antq "RELEASE"]])
+            [com.github.liquidz/antq "RELEASE"]]
+  :antq {:exclude ["nrepl/nrepl"]})
