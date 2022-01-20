@@ -12,7 +12,9 @@
         ["dummy-sha2" "refs/heads/foo"]
         ["dummy-sha3" "refs/pull/1/head"]
         ["dummy-sha4" "refs/tags/v1"]
-        ["dummy-sha5" "refs/tags/v2"]]
+        ["dummy-sha5" "refs/tags/v2"]
+        ;; Annotated
+        ["dummy-sha6" "refs/tags/v2^{}"]]
        (map #(str/join "\t" %))
        (str/join "\n")))
 
@@ -46,4 +48,6 @@
                                    :out dummy-ls-remote-tag-out
                                    :err ""})]
     (t/is (= "dummy-sha4"
-             (sut/tag-sha-by-ls-remote* (dummy-url) "v1")))))
+             (sut/tag-sha-by-ls-remote* (dummy-url) "v1")))
+    (t/is (= "dummy-sha6"
+             (sut/tag-sha-by-ls-remote* (dummy-url) "v2")))))

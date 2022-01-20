@@ -11,16 +11,28 @@
            (str/split-lines)
            (keep #(second (str/split % #"\t" 2)))
            (filter #(= 0 (.indexOf ^String % "refs/tags")))
-           (map #(str/replace % #"^refs/tags/" ""))))
+           (map #(str/replace % #"^refs/tags/" ""))
+           ;; Remove annotated tags
+           (remove #(str/ends-with? % "^{}"))))
+
+(defn- same-tag?
+  [ref-name s]
+  (or (= ref-name s)
+      ;; Annotated tag
+      (= ref-name (str s "^{}"))))
 
 (defn- extract-sha-by-ref-name
   [ls-remote-resp target-ref-name]
   (some->> (:out ls-remote-resp)
            (str/split-lines)
-           (some (fn [line]
-                   (let [[sha ref-name] (str/split line #"\t" 2)]
-                     (and (= target-ref-name ref-name)
-                          sha))))))
+           (map #(str/split % #"\t" 2))
+           (filter (fn [[_ ref-name]]
+                     (same-tag? ref-name target-ref-name)))
+           (seq)
+           ;; NOTE: The annotated tag have priority
+           (sort-by second)
+           (last)
+           (first)))
 
 (defn- ls-remote*
   [url]
