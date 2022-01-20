@@ -144,7 +144,7 @@ See link:./doc/gradle.adoc[here] for details.
 == Options
 === --upgrade
 Upgrade outdated versions interactively.
-You can use `--force` option for upgrading without confirmation.
+You can use `--force` option for upgrading without confirmation, and `--download` option for downloading upgraded dependencies on the fly.
 
 [WARNING]
 ====
