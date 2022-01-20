@@ -81,7 +81,8 @@
    ["-d" "--directory=DIRECTORY" :default ["."] :assoc-fn concat-assoc-fn]
    [nil "--upgrade"]
    [nil "--verbose"]
-   [nil "--force"]])
+   [nil "--force"]
+   [nil "--download"]])
 
 (defn skip-artifacts?
   [dep options]
@@ -254,7 +255,7 @@
       (let [outdated (antq options deps)]
         (cond-> outdated
           (:upgrade options)
-          (upgrade/upgrade! (or (:force options) false))
+          (upgrade/upgrade! options)
 
           true
           (exit)))

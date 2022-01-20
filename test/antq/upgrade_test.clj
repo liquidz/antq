@@ -43,7 +43,7 @@
     (t/is (every? #(= 0 (.indexOf % "before"))
                   (map slurp temp-files)))
 
-    (sut/upgrade! [dep1 dep2] true)
+    (sut/upgrade! [dep1 dep2] {:force true})
 
     (t/is (= "afterLATEST" (slurp temp1)))
     (t/is (= "before1" (slurp temp2)))))
@@ -57,7 +57,7 @@
 
     (let [sw (java.io.StringWriter.)
           err-str (binding [*err* sw]
-                    (sut/upgrade! [dep] true)
+                    (sut/upgrade! [dep] {:force true})
                     (str sw))]
       (t/is (not= -1 (.indexOf err-str "Not supported"))))
 
@@ -73,7 +73,7 @@
     (t/testing "input no"
       (let [out-str (with-out-str
                       (with-redefs [read (constantly 'n)]
-                        (sut/upgrade! [dep] false)))]
+                        (sut/upgrade! [dep] {:force false})))]
         (t/is (not= -1 (.indexOf out-str "Do you want to upgrade"))))
 
       (t/is (= "before0" (slurp temp1))))
@@ -81,7 +81,7 @@
     (t/testing "input yes"
       (let [out-str (with-out-str
                       (with-redefs [read (constantly 'y)]
-                        (sut/upgrade! [dep] false)))]
+                        (sut/upgrade! [dep] {:force false})))]
         (t/is (not= -1 (.indexOf out-str "Do you want to upgrade"))))
 
       (t/is (= "afterLATEST" (slurp temp1))))))
