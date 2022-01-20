@@ -263,7 +263,7 @@ When you use `--error-format` option, this reporter will be used automatically.
 
 == License
 
-Copyright © 2020-2021 https://twitter.com/uochan[Masashi Iizuka]
+Copyright © 2020-2022 https://twitter.com/uochan[Masashi Iizuka]
 
 This program and the accompanying materials are made available under the
 terms of the Eclipse Public License 2.0 which is available at
