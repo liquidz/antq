@@ -84,7 +84,7 @@ From Clojure CLI ver `1.10.3.933`, https://clojure.org/reference/deps_and_cli#to
 [source,sh]
 ----
 # install
-clojure -Ttools install com.github.liquidz/antq '{:git/tag "1.3.1"}' :as antq
+clojure -Ttools install com.github.liquidz/antq '{:git/tag "1.3.2"}' :as antq
 # uninstall
 clojure -Ttools remove :tool antq
 # execute
@@ -263,7 +263,7 @@ When you use `--error-format` option, this reporter will be used automatically.
 
 == License
 
-Copyright © 2020-2021 https://twitter.com/uochan[Masashi Iizuka]
+Copyright © 2020-2022 https://twitter.com/uochan[Masashi Iizuka]
 
 This program and the accompanying materials are made available under the
 terms of the Eclipse Public License 2.0 which is available at

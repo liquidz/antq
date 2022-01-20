@@ -13,8 +13,6 @@ jobs:
           path: ~/.m2
           key: coverage-m2-${{ hashFiles('deps.edn') }}-v1
       - name: Run cloverage
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-        run: |
-          make coverage
-          bash <(curl -s https://codecov.io/bash)
+        run: make coverage
+      - name: Upload reports
+        uses: codecov/codecov-action@v2

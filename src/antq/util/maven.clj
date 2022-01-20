@@ -120,17 +120,17 @@
 
 (defn ^Model read-pom
   [^String url]
-  (when-not (str/includes? url "s3://") ;; can't do diff's on s3:// repos, https://github.com/liquidz/antq/issues/133.
+  (when-not (str/includes? url "s3://") ; can't do diff's on s3:// repos, https://github.com/liquidz/antq/issues/133.
     (loop [i 0]
       (when (< i const/retry-limit)
         (or (try
-             (read-pom* url)
-             (catch java.net.ConnectException e
-               (if (= "Operation timed out" (.getMessage e))
-                 (log/warning (str "Fetching pom from " url " failed because it timed out, retrying"))
-                 (throw e)))
-             (catch java.io.IOException e
-               (log/warning (str "Fetching pom from " url " failed because of the following error: " (.getMessage e)))))
+              (read-pom* url)
+              (catch java.net.ConnectException e
+                (if (= "Operation timed out" (.getMessage e))
+                  (log/warning (str "Fetching pom from " url " failed because it timed out, retrying"))
+                  (throw e)))
+              (catch java.io.IOException e
+                (log/warning (str "Fetching pom from " url " failed because of the following error: " (.getMessage e)))))
             (recur (inc i)))))))
 
 (defn ^String get-url
