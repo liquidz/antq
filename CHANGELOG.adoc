@@ -2,6 +2,7 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 
+== 1.3.2 (2022-01-21)
 // {{{
 === Changed
 * Bumped tools.build to v0.7.5.
