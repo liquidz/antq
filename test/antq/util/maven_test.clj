@@ -97,6 +97,9 @@
                  {:id "serv4" :username "lein-pass" :password "env-four"}}
                (set servers))))))
 
+(t/deftest read-pom-s3-repos-test
+  (t/is (nil? (sut/read-pom "s3://foo"))))
+
 (t/deftest get-url-test
   (let [model (sut/read-pom "pom.xml")]
     (t/is (= "https://github.com/liquidz/antq"
