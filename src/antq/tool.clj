@@ -41,7 +41,8 @@
   - :directory     <array of string>
   - :upgrade       <boolean>
   - :verbose       <boolean>
-  - :force         <boolean>"
+  - :force         <boolean>
+  - :download      <boolean>"
   [& [options]]
   (let [options (prepare-options options)]
     (binding [log/*verbose* (:verbose options false)]
