@@ -99,7 +99,7 @@
 (defn repository-system
   [name version opts]
   (let [lib (cond-> name (string? name) symbol)
-        local-repo deps.util.maven/default-local-repo
+        local-repo @deps.util.maven/cached-local-repo
         system ^RepositorySystem (deps.util.session/retrieve :mvn/system #(deps.util.maven/make-system))
         settings ^Settings (get-maven-settings opts)
         session ^DefaultRepositorySystemSession (deps.util.maven/make-session system settings local-repo)
