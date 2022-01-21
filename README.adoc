@@ -144,7 +144,7 @@ See link:./doc/gradle.adoc[here] for details.
 == Options
 === --upgrade
 Upgrade outdated versions interactively.
-You can use `--force` option for upgrading without confirmation.
+You can use `--force` option for upgrading without confirmation, and `--download` option for downloading upgraded dependencies on the fly.
 
 [WARNING]
 ====
@@ -248,6 +248,19 @@ When you use `--error-format` option, this reporter will be used automatically.
 | Report results as a EDN format.
 
 |===
+
+=== --download
+If `download` is set and updated dependencies are found,
+download them at the same time as a convenience. The default action
+is not to download anything.
+
+[WARNING]
+====
+antq only downloads **upgraded** dependencies by `--upgrade` option.
+
+If you upgrade manually or without the `--download` option and the version is changed to the latest,
+the new version will not be downloaded even if you specify the `--download` option later (because antq does not detect differences).
+====
 
 == Projects using antq
 
