@@ -254,6 +254,14 @@ If `download` is set and updated dependencies are found,
 download them at the same time as a convenience. The default action
 is not to download anything.
 
+[WARNING]
+====
+antq only downloads **upgraded** dependencies by `--upgrade` option.
+
+If you upgrade manually or without the `--download` option and the version is changed to the latest,
+the new version will not be downloaded even if you specify the `--download` option later (because antq does not detect differences).
+====
+
 == Projects using antq
 
 * https://github.com/nnichols/clojure-dependency-update-action[clojure-dependency-update-action]: A simple GitHub Actions to create Pull Requests for outdated tools.deps dependencies
