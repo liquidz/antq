@@ -1,6 +1,14 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+// {{{
+=== Added
+* https://github.com/liquidz/antq/issues/132[#132]: Added `--download` option to allow downloading *upgraded* dependencies at the same time as a convenience.
+** If you upgrade manually or without the `--download` option and the version is changed to the latest, the new version will not be downloaded even if you specify the `--download` option later (because antq does not detect differences).
+
+=== Fixed
+* https://github.com/liquidz/antq/issues/137[#137]: Fixed to use SHA of annotated tags for specified `:git/tag`
+// }}}
 
 == 1.3.2 (2022-01-21)
 // {{{
