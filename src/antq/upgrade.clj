@@ -1,5 +1,6 @@
 (ns antq.upgrade
   (:require
+   [antq.download :as download]
    [antq.log :as log]))
 
 (defmulti upgrader
@@ -37,24 +38,28 @@
 
 (defn upgrade!
   "Return only non-upgraded deps"
-  [deps force?]
-  (let [version-checked-deps (filter :latest-version deps)]
+  [deps options]
+  (let [force? (or (:force options) false)
+        download? (or (:download options) false)
+        version-checked-deps (filter :latest-version deps)]
     (when (and (seq version-checked-deps)
                (not force?))
       (log/info ""))
 
-    (doall
-     (remove
-      (fn [dep]
-        (if (confirm dep force?)
-          (if-let [upgraded-content (upgrader dep)]
-            (do (log/info (format "Upgraded %s '%s' to '%s' in %s."
-                                  (:name dep)
-                                  (:version dep)
-                                  (:latest-version dep)
-                                  (:file dep)))
-                (spit (:file dep) upgraded-content)
-                true)
-            false)
-          false))
-      version-checked-deps))))
+    (let [upgrade-result (group-by
+                          (fn [dep]
+                            (if (confirm dep force?)
+                              (if-let [upgraded-content (upgrader dep)]
+                                (do (log/info (format "Upgraded %s '%s' to '%s' in %s."
+                                                      (:name dep)
+                                                      (:version dep)
+                                                      (:latest-version dep)
+                                                      (:file dep)))
+                                    (spit (:file dep) upgraded-content)
+                                    true)
+                                false)
+                              false))
+                          version-checked-deps)]
+      (when download?
+        (download/download! (get upgrade-result true)))
+      (get upgrade-result false))))
