@@ -37,15 +37,10 @@
   {:extra-deps {cloverage/cloverage {:mvn/version "RELEASE"}}
    :main-opts ["-m" "cloverage.coverage" "--ns-exclude-regex" "leiningen.antq"]}
 
-  :depstar
-  {:extra-deps {com.github.seancorfield/depstar {:mvn/version "RELEASE"}}
-   :ns-default hf.depstar
-   :exec-args {}}
-
-  :deploy
-  {:extra-deps {slipset/deps-deploy {:mvn/version "RELEASE"}}
-   :exec-fn deps-deploy.deps-deploy/deploy
-   :exec-args {}}
+  :build
+  {:deps {io.github.seancorfield/build-clj {:git/tag "v0.6.7"
+                                            :git/sha "22c2d09"}}
+   :ns-default script.build}
 
   ;; -X
   :latest

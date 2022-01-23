@@ -19,30 +19,23 @@ lint:
 	cljstyle check
 	clj-kondo --lint src:test
 
-.PHONY: pom
-pom:
-	clojure -Spom
-
-target/antq-standalone.jar: pom
-	clojure -X:depstar uberjar :jar $@ :aot true :main-class antq.core :aliases '[:nop]'
-
 .PHONY: uberjar
-uberjar: clean target/antq-standalone.jar
+uberjar:
+	clojure -T:build uberjar
 
-$(ARTIFACT): pom
-	clojure -X:depstar jar :jar $@
 .PHONY: jar
-jar: clean $(ARTIFACT)
+jar:
+	clojure -T:build jar
 
 .PHONY: install
-install: clean $(ARTIFACT)
-	clojure -X:deploy :installer :local :artifact $(ARTIFACT)
+install:
+	clojure -T:build install
 
 .PHONY: deploy
-deploy: clean $(ARTIFACT)
+deploy:
 	echo "Testing if CLOJARS_USERNAME environmental variable exists."
 	test $(CLOJARS_USERNAME)
-	clojure -X:deploy :installer :remote :artifact $(ARTIFACT)
+	clojure -T:build deploy
 
 .PHONY: docker
 docker:

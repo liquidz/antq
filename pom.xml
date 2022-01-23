@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+  <packaging>jar</packaging>
   <groupId>com.github.liquidz</groupId>
   <artifactId>antq</artifactId>
-  <version>1.4.0</version>
+  <version>0.0.0</version>
   <name>antq</name>
   <description>Point out your outdated dependencies</description>
   <url>https://github.com/liquidz/antq</url>
@@ -17,54 +18,8 @@
     <url>https://github.com/liquidz/antq</url>
     <connection>scm:git:git://github.com/liquidz/antq.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/liquidz/antq.git</developerConnection>
+    <tag>0.0.0</tag>
   </scm>
-  <dependencies>
-    <dependency>
-      <groupId>org.clojure</groupId>
-      <artifactId>data.json</artifactId>
-      <version>2.4.0</version>
-    </dependency>
-    <dependency>
-      <groupId>org.clojure</groupId>
-      <artifactId>clojure</artifactId>
-      <version>1.10.3</version>
-    </dependency>
-    <dependency>
-      <groupId>org.clojure</groupId>
-      <artifactId>tools.cli</artifactId>
-      <version>1.0.206</version>
-    </dependency>
-    <dependency>
-      <groupId>org.clojure</groupId>
-      <artifactId>data.zip</artifactId>
-      <version>1.0.0</version>
-    </dependency>
-    <dependency>
-      <groupId>rewrite-clj</groupId>
-      <artifactId>rewrite-clj</artifactId>
-      <version>1.0.699-alpha</version>
-    </dependency>
-    <dependency>
-      <groupId>org.clojure</groupId>
-      <artifactId>tools.deps.alpha</artifactId>
-      <version>0.12.1090</version>
-    </dependency>
-    <dependency>
-      <groupId>org.clojure</groupId>
-      <artifactId>data.xml</artifactId>
-      <version>0.2.0-alpha6</version>
-    </dependency>
-    <dependency>
-      <groupId>clj-commons</groupId>
-      <artifactId>clj-yaml</artifactId>
-      <version>0.7.107</version>
-    </dependency>
-    <dependency>
-      <groupId>version-clj</groupId>
-      <artifactId>version-clj</artifactId>
-      <version>2.0.2</version>
-    </dependency>
-  </dependencies>
   <build>
     <sourceDirectory>src</sourceDirectory>
   </build>
