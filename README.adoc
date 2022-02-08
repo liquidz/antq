@@ -262,6 +262,10 @@ If you upgrade manually or without the `--download` option and the version is ch
 the new version will not be downloaded even if you specify the `--download` option later (because antq does not detect differences).
 ====
 
+=== --ignore-locals
+
+For java dependencies, ignore versions installed to your local Maven repository(`~/.m2/`)
+
 == Projects using antq
 
 * https://github.com/nnichols/clojure-dependency-update-action[clojure-dependency-update-action]: A simple GitHub Actions to create Pull Requests for outdated tools.deps dependencies
