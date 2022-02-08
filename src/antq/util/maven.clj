@@ -3,6 +3,8 @@
    [antq.constant :as const]
    [antq.log :as log]
    [antq.util.leiningen :as u.lein]
+   [antq.util.xml :as u.xml]
+   [clojure.data.xml :as xml]
    [clojure.java.io :as io]
    [clojure.string :as str]
    [clojure.tools.deps.alpha.util.maven :as deps.util.maven]
@@ -144,3 +146,29 @@
 (defn ^String get-scm-url
   [^Scm scm]
   (.getUrl scm))
+
+(defn- get-local-versions*
+  [name]
+  (let [sep (System/getProperty "file.separator")
+        path (-> (str name)
+                 (str/replace "/" sep)
+                 (str/replace "." sep))
+        file (io/file (System/getenv "HOME") ".m2" "repository" path "maven-metadata-local.xml")]
+    (when (.exists file)
+      (try
+        (->> (slurp file)
+             (xml/parse-str)
+             (xml-seq)
+             (u.xml/get-tags :version)
+             (map (comp first :content)))
+        (catch Exception ex
+          (log/warning (str "Failed to get local versions for "
+                            name
+                            " from "
+                            (.getAbsolutePath file)
+                            " because: "
+                            (.getMessage ex)))
+          nil)))))
+
+(def get-local-versions
+  (memoize get-local-versions*))

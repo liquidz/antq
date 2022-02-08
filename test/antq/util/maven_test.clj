@@ -3,9 +3,12 @@
    [antq.record :as r]
    [antq.util.env :as u.env]
    [antq.util.maven :as sut]
+   [clojure.data.xml :as xml]
+   [clojure.java.io :as io]
    [clojure.test :as t]
    [clojure.tools.deps.alpha.util.maven :as deps.util.maven])
   (:import
+   java.util.UUID
    (org.apache.maven.settings
     Server
     Settings)))
@@ -110,3 +113,20 @@
         scm (sut/get-scm model)]
     (t/is (= "https://github.com/liquidz/antq"
              (sut/get-scm-url scm)))))
+
+(t/deftest get-local-versions-test
+  (let [dummy-file (io/file (io/resource "util/maven/maven-metadata-local.xml"))
+        non-existing-file (io/file "/tmp" (str (UUID/randomUUID)))]
+    (t/testing "valid maven-metadata-local.xml"
+      (with-redefs [io/file (constantly dummy-file)]
+        (t/is (= ["8.0.0" "9.0.0"]
+                 (#'sut/get-local-versions* 'com.github.liquidz/antq)))))
+
+    (t/testing "non-existing file"
+      (with-redefs [io/file (constantly non-existing-file)]
+        (t/is (nil? (#'sut/get-local-versions* 'com.github.liquidz/antq)))))
+
+    (t/testing "non-existing file"
+      (with-redefs [io/file (constantly dummy-file)
+                    xml/parse-str (fn [& _] (throw (ex-info "test" {})))]
+        (t/is (nil? (#'sut/get-local-versions* 'com.github.liquidz/antq)))))))
