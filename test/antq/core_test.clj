@@ -10,7 +10,7 @@
    [clojure.tools.cli :as cli]))
 
 (defmethod ver/get-sorted-versions :test
-  [_]
+  [_ _]
   ["3.0.0" "2.0.0" "1.0.0"])
 
 (def ^:private test-parse-opts #(cli/parse-opts % sut/cli-options))

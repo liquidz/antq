@@ -19,7 +19,8 @@
 
 (defn- get-sorted-versions
   [m]
-  (ver/get-sorted-versions (dep (merge {:version "1.0.0"} m))))
+  (ver/get-sorted-versions (dep (merge {:version "1.0.0"} m))
+                           {}))
 
 (def ^:private dummy-json
   (json/write-str

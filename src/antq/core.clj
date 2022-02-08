@@ -124,7 +124,7 @@
     (-> (r/map->Dependency
          {:type dep-type
           :name dep-name})
-        (ver/get-sorted-versions)
+        (ver/get-sorted-versions {})
         (first)
         (log/info))))
 
