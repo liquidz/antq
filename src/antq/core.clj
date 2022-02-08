@@ -110,8 +110,8 @@
   (contains? #{"RELEASE" "master" "main" "latest"} (:version dep)))
 
 (defn- assoc-versions
-  [dep]
-  (assoc dep :_versions (ver/get-sorted-versions dep)))
+  [dep options]
+  (assoc dep :_versions (ver/get-sorted-versions dep options)))
 
 (defn latest
   [arg-map]
@@ -165,7 +165,7 @@
                          deps)
         uniq-deps-with-vers (->> org-deps
                                  distinct-deps
-                                 (pmap assoc-versions))
+                                 (pmap #(assoc-versions % options)))
         assoc-latest-version* #(assoc-latest-version % options)]
     (->> org-deps
          (pmap #(complete-versions-by % uniq-deps-with-vers))

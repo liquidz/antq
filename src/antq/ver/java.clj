@@ -37,7 +37,7 @@
   (memoize get-sorted-versions-by-name*))
 
 (defmethod ver/get-sorted-versions :java
-  [dep]
-  (get-sorted-versions-by-name
-   (:name dep)
-   (u.mvn/dep->opts dep)))
+  [dep options]
+  (get-sorted-versions-by-name (:name dep)
+                               (u.mvn/dep->opts dep)
+                               options))

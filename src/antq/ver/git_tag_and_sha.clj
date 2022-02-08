@@ -6,7 +6,7 @@
    [version-clj.core :as version]))
 
 (defmethod ver/get-sorted-versions :git-tag-and-sha
-  [dep]
+  [dep _options]
   (or (some->> (get-in dep [:extra :url])
                (u.git/tags-by-ls-remote)
                (filter (comp u.ver/sem-ver?

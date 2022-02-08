@@ -4,7 +4,7 @@
    [antq.ver :as ver]))
 
 (defmethod ver/get-sorted-versions :git-sha
-  [dep]
+  [dep _options]
   (or (some-> (get-in dep [:extra :url])
               (u.git/head-sha-by-ls-remote)
               (vector))
