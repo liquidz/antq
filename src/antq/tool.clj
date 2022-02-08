@@ -42,7 +42,8 @@
   - :upgrade       <boolean>
   - :verbose       <boolean>
   - :force         <boolean>
-  - :download      <boolean>"
+  - :download      <boolean>
+  - :ignore-locals <boolean>"
   [& [options]]
   (let [options (prepare-options options)]
     (binding [log/*verbose* (:verbose options false)]

@@ -82,7 +82,8 @@
    [nil "--upgrade"]
    [nil "--verbose"]
    [nil "--force"]
-   [nil "--download"]])
+   [nil "--download"]
+   [nil "--ignore-locals"]])
 
 (defn skip-artifacts?
   [dep options]
