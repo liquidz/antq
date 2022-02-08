@@ -2,6 +2,14 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 
+// {{{
+=== Added
+* https://github.com/liquidz/antq/issues/136[#136]: Added `--ignore-locals` option to ignore Java dependencies installed to your local Maven repository(~/.m2/).
+
+=== Changed
+* Bumped kaocha to 1.62.993.
+// }}}
+
 == 1.4.0 (2022-01-23)
 // {{{
 === Added
