@@ -2,6 +2,7 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 
+== 1.5.0 (2022-02-11)
 // {{{
 === Added
 * https://github.com/liquidz/antq/issues/136[#136]: Added `--ignore-locals` option to ignore Java dependencies installed to your local Maven repository(~/.m2/).
