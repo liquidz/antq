@@ -18,9 +18,11 @@
     (str/includes? (str/lower-case s) "snapshot")
     false))
 
-(defmulti get-sorted-versions :type)
+(defmulti get-sorted-versions
+  (fn [dep _options]
+    (:type dep)))
 (defmethod get-sorted-versions :default
-  [dep]
+  [dep _]
   (throw (ex-info "Unknown dependency type" dep)))
 
 (defmulti latest? :type)

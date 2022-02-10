@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>com.github.liquidz</groupId>
+  <artifactId>antq</artifactId>
+  <versioning>
+    <release>9.0.0</release>
+    <versions>
+      <version>8.0.0</version>
+      <version>9.0.0</version>
+    </versions>
+    <lastUpdated>20220122223025</lastUpdated>
+  </versioning>
+</metadata>

@@ -84,7 +84,7 @@ From Clojure CLI ver `1.10.3.933`, https://clojure.org/reference/deps_and_cli#to
 [source,sh]
 ----
 # install
-clojure -Ttools install com.github.liquidz/antq '{:git/tag "1.4.0"}' :as antq
+clojure -Ttools install com.github.liquidz/antq '{:git/tag "1.5.0"}' :as antq
 # uninstall
 clojure -Ttools remove :tool antq
 # execute
@@ -261,6 +261,10 @@ antq only downloads **upgraded** dependencies by `--upgrade` option.
 If you upgrade manually or without the `--download` option and the version is changed to the latest,
 the new version will not be downloaded even if you specify the `--download` option later (because antq does not detect differences).
 ====
+
+=== --ignore-locals
+
+For java dependencies, ignore versions installed to your local Maven repository(`~/.m2/`)
 
 == Projects using antq
 

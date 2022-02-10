@@ -82,7 +82,8 @@
    [nil "--upgrade"]
    [nil "--verbose"]
    [nil "--force"]
-   [nil "--download"]])
+   [nil "--download"]
+   [nil "--ignore-locals"]])
 
 (defn skip-artifacts?
   [dep options]
@@ -110,8 +111,8 @@
   (contains? #{"RELEASE" "master" "main" "latest"} (:version dep)))
 
 (defn- assoc-versions
-  [dep]
-  (assoc dep :_versions (ver/get-sorted-versions dep)))
+  [dep options]
+  (assoc dep :_versions (ver/get-sorted-versions dep options)))
 
 (defn latest
   [arg-map]
@@ -123,7 +124,7 @@
     (-> (r/map->Dependency
          {:type dep-type
           :name dep-name})
-        (ver/get-sorted-versions)
+        (ver/get-sorted-versions {})
         (first)
         (log/info))))
 
@@ -165,7 +166,7 @@
                          deps)
         uniq-deps-with-vers (->> org-deps
                                  distinct-deps
-                                 (pmap assoc-versions))
+                                 (pmap #(assoc-versions % options)))
         assoc-latest-version* #(assoc-latest-version % options)]
     (->> org-deps
          (pmap #(complete-versions-by % uniq-deps-with-vers))

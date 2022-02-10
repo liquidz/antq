@@ -10,10 +10,12 @@
                                               (when (= url "https://example.com")
                                                 "head-sha"))]
     (t/is (= ["head-sha"]
-             (ver/get-sorted-versions {:type :git-sha :extra {:url "https://example.com"}})))
+             (ver/get-sorted-versions {:type :git-sha :extra {:url "https://example.com"}}
+                                      {})))
 
     (t/is (= []
-             (ver/get-sorted-versions {:type :git-sha :extra {:url "failed to fetch"}})))))
+             (ver/get-sorted-versions {:type :git-sha :extra {:url "failed to fetch"}}
+                                      {})))))
 
 (t/deftest latest?-test
   (t/is (true? (ver/latest? {:type :git-sha :version "foo" :latest-version "foo"})))

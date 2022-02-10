@@ -58,7 +58,7 @@
                       (.getMessage ex))))))
 
 (defmethod ver/get-sorted-versions :github-tag
-  [dep]
+  [dep _options]
   (if @failed-to-fetch-from-api
     (fallback-to-ls-remote dep)
     (try

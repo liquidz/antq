@@ -2,6 +2,7 @@
   (:require
    [antq.util.maven :as u.mvn]
    [antq.ver :as ver]
+   [clojure.set :as set]
    [version-clj.core :as version])
   (:import
    (org.eclipse.aether
@@ -25,19 +26,27 @@
          (.getVersions))))
 
 (defn get-sorted-versions-by-name*
-  [name opts]
-  (let [sorted-versions (->> (get-versions name opts)
-                             (map str)
+  [name
+   {:as dep-opts :keys [snapshots?]}
+   options]
+  (let [maven-vers (->> (get-versions name dep-opts)
+                        (map str))
+        versions (if (:ignore-locals options)
+                   (seq (set/difference (set maven-vers)
+                                        (set (u.mvn/get-local-versions name))))
+                   maven-vers)
+        sorted-versions (->> versions
                              (sort version/version-compare)
                              (reverse))]
     (cond->> sorted-versions
-      (not (:snapshots? opts)) (remove ver/snapshot?))))
+      (not snapshots?) (remove ver/snapshot?))))
+
 
 (def get-sorted-versions-by-name
   (memoize get-sorted-versions-by-name*))
 
 (defmethod ver/get-sorted-versions :java
-  [dep]
-  (get-sorted-versions-by-name
-   (:name dep)
-   (u.mvn/dep->opts dep)))
+  [dep options]
+  (get-sorted-versions-by-name (:name dep)
+                               (u.mvn/dep->opts dep)
+                               options))

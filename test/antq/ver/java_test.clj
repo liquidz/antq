@@ -28,7 +28,8 @@
 
 (defn- get-sorted-versions
   [m]
-  (ver/get-sorted-versions (r/map->Dependency (assoc m :type :java :name "dummy"))))
+  (ver/get-sorted-versions (r/map->Dependency (assoc m :type :java :name "dummy"))
+                           {}))
 
 (t/deftest get-sorted-versions-test
   (with-redefs [sut/get-versions dummy-versions]
@@ -40,7 +41,7 @@
              (get-sorted-versions {:version "1.0.0-snapshot"}))))
 
   (t/testing "normalizing repository URL"
-    (with-redefs [sut/get-sorted-versions-by-name (fn [_ opts] opts)]
+    (with-redefs [sut/get-sorted-versions-by-name (fn [_ opts _] opts)]
       (let [res (get-sorted-versions {:repositories {"foo" {:url "s3p://bar"}}})
             diff (set/difference (set (:repositories res))
                                  (set u.mvn/default-repos))]
