@@ -28,11 +28,12 @@
 (defn pom
   [arg]
   (let [basis (or (:basis arg) (get-basis arg))
-        lib' (or (:lib arg) lib)]
+        lib' (or (:lib arg) lib)
+        ver' (or (:version arg) (get-current-version pom-file))]
     (b/write-pom {:basis basis
                   :class-dir class-dir
                   :lib lib'
-                  :version (get-current-version pom-file)
+                  :version ver'
                   :src-dirs ["src"]})
     (when (:copy? arg true)
       (b/copy-file {:src (b/pom-path {:lib lib' :class-dir class-dir})
@@ -79,4 +80,14 @@
                (System/getenv "CLOJARS_PASSWORD")))
   (jar arg)
   (deploy/deploy {:artifact jar-file
-                  :installer :remote}))
+                  :installer :remote
+                  :pom-file (b/pom-path {:lib (or (:lib arg) lib)
+                                         :class-dir class-dir})}))
+
+(defn deploy-snapshot
+  [arg]
+  (let [version (str (get-current-version pom-file)
+                     "-SNAPSHOT")]
+    (deploy (assoc arg
+                   :version version
+                   :copy? false))))
