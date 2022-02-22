@@ -2,6 +2,13 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 
+// {{{
+=== Changed
+* https://github.com/liquidz/antq/issues/129[#129]: Changed to use tools.build.
+* Bumped clj-yaml to 0.7.108.
+* Bumped kaocha to 1.63.998.
+// }}}
+
 == 1.5.0 (2022-02-11)
 // {{{
 === Added
