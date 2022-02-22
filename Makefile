@@ -1,5 +1,3 @@
-ARTIFACT=target/antq.jar
-
 .PHONY: repl
 repl:
 	iced repl -A:dev
@@ -21,28 +19,24 @@ lint:
 
 .PHONY: pom
 pom:
-	clojure -Spom
-
-target/antq-standalone.jar: pom
-	clojure -X:depstar uberjar :jar $@ :aot true :main-class antq.core :aliases '[:nop]'
+	clojure -T:build pom
 
 .PHONY: uberjar
-uberjar: clean target/antq-standalone.jar
+uberjar: clean
+	clojure -T:build uberjar
 
-$(ARTIFACT): pom
-	clojure -X:depstar jar :jar $@
 .PHONY: jar
-jar: clean $(ARTIFACT)
+jar: clean
+	clojure -T:build jar
 
 .PHONY: install
-install: clean $(ARTIFACT)
-	clojure -X:deploy :installer :local :artifact $(ARTIFACT)
+install: clean
+	clojure -T:build install
 
 .PHONY: deploy
-deploy: clean $(ARTIFACT)
-	echo "Testing if CLOJARS_USERNAME environmental variable exists."
-	test $(CLOJARS_USERNAME)
-	clojure -X:deploy :installer :remote :artifact $(ARTIFACT)
+deploy:
+	clojure -T:build deploy
+	clojure -T:build deploy :lib antq/antq
 
 .PHONY: docker
 docker:
