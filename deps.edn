@@ -39,8 +39,7 @@
 
   :build
   {:deps {io.github.clojure/tools.build {:git/tag "v0.7.7" :git/sha "1474ad6"}
-          slipset/deps-deploy {:mvn/version "0.2.0"}
-          org.slf4j/slf4j-nop {:mvn/version "RELEASE"}}
+          slipset/deps-deploy {:mvn/version "0.2.0"}}
    :ns-default build}
 
   :deploy
