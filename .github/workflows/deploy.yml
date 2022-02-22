@@ -1,0 +1,31 @@
+name: release
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+      - run: java -version
+      - uses: DeLaGuardo/setup-clojure@master
+        with:
+          tools-deps: latest
+          lein: latest
+      - uses: actions/cache@v2
+        with:
+          path: ~/.m2
+          key: test-m2-${{ hashFiles('deps.edn') }}-v1
+      - name: deploy to clojars
+        run: make deploy
+        env:
+          CLOJARS_PASSWORD: ${{secrets.CLOJARS_PASSWORD}}
+          CLOJARS_USERNAME: ${{secrets.CLOJARS_USERNAME}}
