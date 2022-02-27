@@ -31,6 +31,7 @@
    [antq.upgrade :as upgrade]
    [antq.upgrade.boot]
    [antq.upgrade.clojure]
+   [antq.upgrade.clojure.tool]
    [antq.upgrade.leiningen]
    [antq.upgrade.pom]
    [antq.upgrade.shadow]
