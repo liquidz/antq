@@ -11,6 +11,7 @@
    [antq.dep.babashka :as dep.bb]
    [antq.dep.boot :as dep.boot]
    [antq.dep.clojure :as dep.clj]
+   [antq.dep.clojure.tool :as dep.clj.tool]
    [antq.dep.github-action :as dep.gh-action]
    [antq.dep.gradle :as dep.gradle]
    [antq.dep.leiningen :as dep.lein]
@@ -56,6 +57,7 @@
 (def ^:private skippable
   #{"boot"
     "clojure-cli"
+    "clojure-cli-tool"
     "github-action"
     "gradle"
     "pom"
@@ -206,7 +208,8 @@
               (when-not (skip "shadow-cljs") (dep.shadow/load-deps %))
               (when-not (skip "leiningen") (dep.lein/load-deps %))
               (when-not (skip "babashka") (dep.bb/load-deps %))
-              (when-not (skip "gradle") (dep.gradle/load-deps %)))
+              (when-not (skip "gradle") (dep.gradle/load-deps %))
+              (when-not (skip "clojure-cli-tool") (dep.clj.tool/load-deps)))
             (distinct (:directory options)))))
 
 (defn mark-only-newest-version-flag
