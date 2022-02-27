@@ -33,6 +33,7 @@
    [antq.upgrade.leiningen]
    [antq.upgrade.pom]
    [antq.upgrade.shadow]
+   [antq.util.maven :as u.maven]
    [antq.ver :as ver]
    [antq.ver.git-sha]
    [antq.ver.git-tag-and-sha]
@@ -241,6 +242,7 @@
 
 (defn main*
   [options errors]
+  (u.maven/initialize-proxy-setting!)
   (let [options (cond-> options
                   ;; Force "format" reporter when :error-format is specified
                   (some?  (:error-format options)) (assoc :reporter "format"))

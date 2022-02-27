@@ -10,6 +10,9 @@
    [clojure.tools.deps.alpha.util.maven :as deps.util.maven]
    [clojure.tools.deps.alpha.util.session :as deps.util.session])
   (:import
+   (java.net
+    Authenticator
+    PasswordAuthentication)
    (org.apache.maven.model
     Model
     Scm)
@@ -172,3 +175,26 @@
 
 (def get-local-versions
   (memoize get-local-versions*))
+
+(defn ^Authenticator authenticator
+  [^String username ^String password]
+  (proxy [Authenticator] []
+    (getPasswordAuthentication []
+      (PasswordAuthentication. username (char-array password)))))
+
+(defn initialize-proxy-setting!
+  []
+  (when-let [prxy (some-> (get-maven-settings {})
+                          (.getActiveProxy))]
+    (let [host (.getHost prxy)
+          port (.getPort prxy)
+          username (.getUsername prxy)
+          password (.getPassword prxy)]
+      (System/setProperty "http.proxyHost" host)
+      (System/setProperty "http.proxyPort" (str port))
+      (System/setProperty "https.proxyHost" host)
+      (System/setProperty "https.proxyPort" (str port))
+      (when (and username password)
+        (System/setProperty "jdk.http.auth.tunneling.disabledSchemes" "")
+        (System/setProperty "jdk.http.auth.proxying.disabledSchemes" "")
+        (Authenticator/setDefault (authenticator username password))))))
