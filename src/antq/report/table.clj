@@ -2,6 +2,7 @@
   (:require
    [antq.report :as report]
    [antq.util.dep :as u.dep]
+   [antq.util.file :as u.file]
    [antq.util.ver :as u.ver]
    [clojure.pprint :as pprint]
    [clojure.set :as set]))
@@ -25,6 +26,7 @@
          (sort u.dep/compare-deps)
          skip-duplicated-file-name
          (map #(assoc % :latest-version (u.ver/normalize-latest-version %)))
+         (map #(update % :file u.file/normalize-path))
          (map #(let [latest-key (if (seq (:latest-name %))
                                   :latest-name
                                   :latest-version)]
