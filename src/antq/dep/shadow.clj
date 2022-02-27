@@ -2,15 +2,12 @@
   (:require
    [antq.record :as r]
    [antq.util.dep :as u.dep]
+   [antq.util.env :as u.env]
    [clojure.edn :as edn]
    [clojure.java.io :as io]
    [clojure.walk :as walk]))
 
 (def ^:private project-file "shadow-cljs.edn")
-
-(defn- getenv
-  [k]
-  (System/getenv k))
 
 (defn- read-env
   [arg]
@@ -20,7 +17,7 @@
                  (cond->> opts
                    (not (keyword? (first opts))) (cons :default)
                    true (apply hash-map)))]
-    (or (getenv envname)
+    (or (u.env/getenv envname)
         (get option :default))))
 
 (def ^:private readers

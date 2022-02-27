@@ -2,6 +2,7 @@
   (:require
    [antq.constant :as const]
    [antq.log :as log]
+   [antq.util.env :as u.env]
    [antq.util.leiningen :as u.lein]
    [antq.util.xml :as u.xml]
    [clojure.data.xml :as xml]
@@ -156,7 +157,7 @@
         path (-> (str name)
                  (str/replace "/" sep)
                  (str/replace "." sep))
-        file (io/file (System/getenv "HOME") ".m2" "repository" path "maven-metadata-local.xml")]
+        file (io/file (u.env/getenv "HOME") ".m2" "repository" path "maven-metadata-local.xml")]
     (when (.exists file)
       (try
         (->> (slurp file)
