@@ -87,7 +87,8 @@
    [nil "--verbose"]
    [nil "--force"]
    [nil "--download"]
-   [nil "--ignore-locals"]])
+   [nil "--ignore-locals"]
+   [nil "--check-clojure-tools"]])
 
 (defn skip-artifacts?
   [dep options]
@@ -210,7 +211,7 @@
               (when-not (skip "leiningen") (dep.lein/load-deps %))
               (when-not (skip "babashka") (dep.bb/load-deps %))
               (when-not (skip "gradle") (dep.gradle/load-deps %))
-              (when-not (skip "clojure-cli-tool") (dep.clj.tool/load-deps)))
+              (when (:check-clojure-tools options) (dep.clj.tool/load-deps)))
             (distinct (:directory options)))))
 
 (defn mark-only-newest-version-flag
