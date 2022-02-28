@@ -13,14 +13,16 @@
     (when (and sha tag url)
       (r/map->Dependency {:type :git-tag-and-sha
                           :file file-path
-                          :name (:lib edn)
+                          :name (str (:lib edn))
                           :project :clojure-tool
                           :version tag
                           :extra {:url url :sha sha}}))))
 
 (defn load-deps
-  []
-  (some->> (io/file (u.env/getenv "HOME") ".clojure" "tools")
-           (file-seq)
-           (filter #(and (.isFile %) (str/ends-with? (.getName %) ".edn")))
-           (keep #(extract-deps (.getAbsolutePath %) (slurp %)))))
+  ([]
+   (load-deps (io/file (u.env/getenv "HOME") ".clojure" "tools")))
+  ([dir-file]
+   (some->> dir-file
+            (file-seq)
+            (filter #(and (.isFile %) (str/ends-with? (.getName %) ".edn")))
+            (keep #(extract-deps (.getAbsolutePath %) (slurp %))))))
