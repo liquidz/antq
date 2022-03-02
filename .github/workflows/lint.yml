@@ -4,7 +4,7 @@ jobs:
   clj-kondo:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: DeLaGuardo/setup-clj-kondo@master
         with:
           version: '2022.02.09'
@@ -13,7 +13,7 @@ jobs:
   cljstyle:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: 0918nobita/setup-cljstyle@v0.5.4
         with:
           cljstyle-version: 0.15.0
@@ -21,5 +21,5 @@ jobs:
   shellcheck:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - run: shellcheck script/*.sh
