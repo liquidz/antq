@@ -53,6 +53,10 @@ If you'd like to use with 1.8.0 or earlier, please see link:./doc/clojure-1.8.ad
 | https://gradle.org[Gradle]
 | Experimental. `gradle` command must be installed.
 
+| ~/.clojure/tools
+| https://clojure.org/reference/deps_and_cli#tool_install[Clojure CLI Tools]
+| Disabled by default. See `--check-clojure-tools` option.
+
 |===
 
 == Usage
@@ -265,6 +269,11 @@ the new version will not be downloaded even if you specify the `--download` opti
 === --ignore-locals
 
 For java dependencies, ignore versions installed to your local Maven repository(`~/.m2/`)
+
+=== --check-clojure-tools
+
+Detect all tools installed in `~/.clojure/tools` as dependencies.
+You can also upgrade them with `--upgrade` option.
 
 == Projects using antq
 
