@@ -5,8 +5,11 @@
    [clojure.java.io :as io]
    [clojure.test :as t]))
 
+(def ^:private test-dir-file
+  (io/file "test" "resources" "dep" "clojure-cli-tool"))
+
 (def ^:private file-path
-  (.getAbsolutePath (io/file (io/resource "dep/clojure-cli-tool/dummy.edn"))))
+  (.getAbsolutePath (io/file test-dir-file "dummy.edn")))
 
 (defn- git-tag-dependency
   [m]
@@ -30,6 +33,6 @@
     (t/is (nil? (sut/extract-deps file-path content)))))
 
 (t/deftest load-deps-test
-  (let [dir (io/file (io/resource "dep/clojure-cli-tool"))
+  (let [dir test-dir-file
         deps (sut/load-deps dir)]
     (t/is (every? #(= :git-tag-and-sha (:type %)) deps))))
