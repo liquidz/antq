@@ -286,6 +286,7 @@ You can also upgrade them with `--upgrade` option.
 * link:./doc/latest-version-of-a-specific-library.adoc[Latest version of a specific library]
 * link:./doc/clojure-1.8.adoc[Antq with Clojure 1.8.0 or earlier]
 * link:./doc/gradle.adoc[Work with Gradle]
+* link:./doc/proxy.adoc[Run behind proxy]
 
 == License
 
