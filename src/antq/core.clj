@@ -58,7 +58,6 @@
 (def ^:private skippable
   #{"boot"
     "clojure-cli"
-    "clojure-cli-tool"
     "github-action"
     "gradle"
     "pom"
