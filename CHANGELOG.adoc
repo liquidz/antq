@@ -2,6 +2,7 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 
+== 1.6.0 (2022-03-05)
 // {{{
 === Added
 * https://github.com/liquidz/antq/issues/145[#145]: Added support for running behind proxies.
