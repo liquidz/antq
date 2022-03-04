@@ -2,6 +2,17 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 
+// {{{
+=== Added
+* https://github.com/liquidz/antq/issues/145[#145]: Added support for running behind proxies.
+** See details: link:./doc/proxy.adoc[Run behind proxy]
+* https://github.com/liquidz/antq/issues/146[#146]: Added support for checking and upgrading https://clojure.org/reference/deps_and_cli#tool_install[Clojure CLI Tools] installed to `~/.clojure/tools`.
+** Required `--check-clojure-tools` option to enable. (Disabled by default)
+
+=== Changed
+* Bumped tools.build to v0.8.0.
+// }}}
+
 == 1.5.1 (2022-02-23)
 // {{{
 === Changed
