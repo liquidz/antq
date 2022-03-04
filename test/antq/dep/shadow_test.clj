@@ -2,6 +2,7 @@
   (:require
    [antq.dep.shadow :as sut]
    [antq.record :as r]
+   [antq.util.env :as u.env]
    [clojure.java.io :as io]
    [clojure.test :as t]))
 
@@ -27,9 +28,9 @@
              (set deps)))))
 
 (t/deftest extract-deps-with-env-tag-test
-  (with-redefs [sut/getenv  {"ENV1" "1.0.0"
-                             "ENV2" "2.0.0"
-                             "ENV5" "5.0.0"}]
+  (with-redefs [u.env/getenv  {"ENV1" "1.0.0"
+                               "ENV2" "2.0.0"
+                               "ENV5" "5.0.0"}]
 
     (let [deps (sut/extract-deps
                 file-path

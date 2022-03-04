@@ -1,7 +1,8 @@
 (ns antq.upgrade
   (:require
    [antq.download :as download]
-   [antq.log :as log]))
+   [antq.log :as log]
+   [antq.util.file :as u.file]))
 
 (defmulti upgrader
   (fn [version-checked-dep]
@@ -29,7 +30,7 @@
                        (:name dep)
                        (:version dep)
                        (:latest-version dep)
-                       (:file dep)))
+                       (u.file/normalize-path (:file dep))))
         (flush)
         (contains? #{'y 'Y 'yes 'Yes 'YES} (read)))
 

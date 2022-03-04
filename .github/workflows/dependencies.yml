@@ -7,7 +7,7 @@ jobs:
   antq:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: liquidz/antq-action@v1
         with:
           excludes: 'clojure/brew-install org.clojure/tools.deps.alpha'

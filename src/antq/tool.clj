@@ -33,17 +33,18 @@
   "Point out outdated dependencies.
 
   Options:
-  - :exclude       <array of string>
-  - :focus         <array of string>
-  - :skip          <array of string>
-  - :error-format  <string>
-  - :reporter      <string>
-  - :directory     <array of string>
-  - :upgrade       <boolean>
-  - :verbose       <boolean>
-  - :force         <boolean>
-  - :download      <boolean>
-  - :ignore-locals <boolean>"
+  - :exclude             <array of string>
+  - :focus               <array of string>
+  - :skip                <array of string>
+  - :error-format        <string>
+  - :reporter            <string>
+  - :directory           <array of string>
+  - :upgrade             <boolean>
+  - :verbose             <boolean>
+  - :force               <boolean>
+  - :download            <boolean>
+  - :ignore-locals       <boolean>
+  - :check-clojure-tools <boolean>"
   [& [options]]
   (let [options (prepare-options options)]
     (binding [log/*verbose* (:verbose options false)]
