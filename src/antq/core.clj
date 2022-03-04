@@ -11,6 +11,7 @@
    [antq.dep.babashka :as dep.bb]
    [antq.dep.boot :as dep.boot]
    [antq.dep.clojure :as dep.clj]
+   [antq.dep.clojure.tool :as dep.clj.tool]
    [antq.dep.github-action :as dep.gh-action]
    [antq.dep.gradle :as dep.gradle]
    [antq.dep.leiningen :as dep.lein]
@@ -30,9 +31,11 @@
    [antq.upgrade :as upgrade]
    [antq.upgrade.boot]
    [antq.upgrade.clojure]
+   [antq.upgrade.clojure.tool]
    [antq.upgrade.leiningen]
    [antq.upgrade.pom]
    [antq.upgrade.shadow]
+   [antq.util.maven :as u.maven]
    [antq.ver :as ver]
    [antq.ver.git-sha]
    [antq.ver.git-tag-and-sha]
@@ -83,7 +86,8 @@
    [nil "--verbose"]
    [nil "--force"]
    [nil "--download"]
-   [nil "--ignore-locals"]])
+   [nil "--ignore-locals"]
+   [nil "--check-clojure-tools"]])
 
 (defn skip-artifacts?
   [dep options]
@@ -205,7 +209,8 @@
               (when-not (skip "shadow-cljs") (dep.shadow/load-deps %))
               (when-not (skip "leiningen") (dep.lein/load-deps %))
               (when-not (skip "babashka") (dep.bb/load-deps %))
-              (when-not (skip "gradle") (dep.gradle/load-deps %)))
+              (when-not (skip "gradle") (dep.gradle/load-deps %))
+              (when (:check-clojure-tools options) (dep.clj.tool/load-deps)))
             (distinct (:directory options)))))
 
 (defn mark-only-newest-version-flag
@@ -241,6 +246,7 @@
 
 (defn main*
   [options errors]
+  (u.maven/initialize-proxy-setting!)
   (let [options (cond-> options
                   ;; Force "format" reporter when :error-format is specified
                   (some?  (:error-format options)) (assoc :reporter "format"))

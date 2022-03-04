@@ -1,0 +1,23 @@
+= Run behind proxy
+
+antq uses the proxy setting defined in `~/.m2/setting.xml`.
+
+So if you'd like to run antq behind proxy, please add a proxy setting like below.
+
+E.g.
+[source,setting.xml]
+----
+<settings>
+  <proxies>
+    <proxy>
+      <id>testproxy</id>
+      <active>true</active>
+      <protocol>https</protocol>
+      <host>localhost</host>
+      <port>3128</port>
+      <username>foo</username>
+      <password>bar</password>
+    </proxy>
+  </proxies>
+</settings>
+----

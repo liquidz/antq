@@ -53,6 +53,10 @@ If you'd like to use with 1.8.0 or earlier, please see link:./doc/clojure-1.8.ad
 | https://gradle.org[Gradle]
 | Experimental. `gradle` command must be installed.
 
+| ~/.clojure/tools
+| https://clojure.org/reference/deps_and_cli#tool_install[Clojure CLI Tools]
+| Disabled by default. See `--check-clojure-tools` option.
+
 |===
 
 == Usage
@@ -84,7 +88,7 @@ From Clojure CLI ver `1.10.3.933`, https://clojure.org/reference/deps_and_cli#to
 [source,sh]
 ----
 # install
-clojure -Ttools install com.github.liquidz/antq '{:git/tag "1.5.1"}' :as antq
+clojure -Ttools install com.github.liquidz/antq '{:git/tag "1.6.0"}' :as antq
 # uninstall
 clojure -Ttools remove :tool antq
 # execute
@@ -93,6 +97,8 @@ clojure -Tantq outdated
 clojure -Tantq outdated :upgrade true
 # help
 clojure -A:deps -Tantq help/doc
+# upgrade
+clojure -Tantq outdated :check-clojure-tools true :upgrade true
 ----
 
 === Leiningen (as a `main` program)
@@ -266,6 +272,11 @@ the new version will not be downloaded even if you specify the `--download` opti
 
 For java dependencies, ignore versions installed to your local Maven repository(`~/.m2/`)
 
+=== --check-clojure-tools
+
+Detect all tools installed in `~/.clojure/tools` as dependencies.
+You can also upgrade them with `--upgrade` option.
+
 == Projects using antq
 
 * https://github.com/nnichols/clojure-dependency-update-action[clojure-dependency-update-action]: A simple GitHub Actions to create Pull Requests for outdated tools.deps dependencies
@@ -277,6 +288,7 @@ For java dependencies, ignore versions installed to your local Maven repository(
 * link:./doc/latest-version-of-a-specific-library.adoc[Latest version of a specific library]
 * link:./doc/clojure-1.8.adoc[Antq with Clojure 1.8.0 or earlier]
 * link:./doc/gradle.adoc[Work with Gradle]
+* link:./doc/proxy.adoc[Run behind proxy]
 
 == License
 
