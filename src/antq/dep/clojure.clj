@@ -101,7 +101,7 @@
         cross-project-repositories (user-deps-repository)]
     (walk/postwalk (fn [form]
                      (when (and (sequential? form)
-                                (#{:deps :extra-deps :replace-deps :override-deps} (first form))
+                                (#{:deps :extra-deps :replace-deps :override-deps :default-deps} (first form))
                                 (map? (second form)))
                        (->> form
                             (second)
