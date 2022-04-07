@@ -1,5 +1,6 @@
 (ns antq.upgrade.clojure
   (:require
+   [antq.constant :as const]
    [antq.upgrade :as upgrade]
    [antq.util.dep :as u.dep]
    [antq.util.git :as u.git]
@@ -9,7 +10,7 @@
 (defn- in-deps?
   [loc]
   (->> loc z/up z/left z/sexpr
-       (contains? #{:deps :extra-deps :replace-deps :override-deps})))
+       (contains? const/clojure-deps-keys)))
 
 (defmulti replace-versions
   (fn [_loc version-checked-dep]

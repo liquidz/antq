@@ -1,6 +1,7 @@
 (ns antq.dep.clojure
   "Clojure CLI"
   (:require
+   [antq.constant :as const]
    [antq.record :as r]
    [antq.util.dep :as u.dep]
    [clojure.edn :as edn]
@@ -101,7 +102,7 @@
         cross-project-repositories (user-deps-repository)]
     (walk/postwalk (fn [form]
                      (when (and (sequential? form)
-                                (#{:deps :extra-deps :replace-deps :override-deps} (first form))
+                                (const/clojure-deps-keys (first form))
                                 (map? (second form)))
                        (->> form
                             (second)
