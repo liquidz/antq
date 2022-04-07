@@ -42,7 +42,7 @@
     <dependency>
       <groupId>rewrite-clj</groupId>
       <artifactId>rewrite-clj</artifactId>
-      <version>1.0.699-alpha</version>
+      <version>1.0.767-alpha</version>
     </dependency>
     <dependency>
       <groupId>org.clojure</groupId>
