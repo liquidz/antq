@@ -31,7 +31,8 @@
  :aliases
  {:foo {:extra-deps {baz {:mvn/version "3.0.0"}}
         :replace-deps {rep {:mvn/version "4.0.0"}}
-        :override-deps {ovr {:mvn/version "5.0.0"}}}
+        :override-deps {ovr {:mvn/version "5.0.0"}}
+        :default-deps {dft {:mvn/version "6.0.0"}}}
   :bar {;; same artifact name, but different version number
         :extra-deps {foo/core {:mvn/version "1.1.0"}}}}
 

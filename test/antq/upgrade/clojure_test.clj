@@ -156,3 +156,15 @@
                      (dep.clj/extract-deps ""))]
     (t/is (= #{{:name "ovr/ovr" :version {:- "5.0.0" :+ "9.0.0"}}}
              (h/diff-deps from-deps to-deps)))))
+
+(t/deftest upgrade-dep-default-deps-test
+  (let [dummy-dep (assoc dummy-java-dep :name "dft")
+        from-deps (->> dummy-dep
+                       :file
+                       (slurp)
+                       (dep.clj/extract-deps ""))
+        to-deps (->> dummy-dep
+                     (upgrade/upgrader)
+                     (dep.clj/extract-deps ""))]
+    (t/is (= #{{:name "dft/dft" :version {:- "6.0.0" :+ "9.0.0"}}}
+             (h/diff-deps from-deps to-deps)))))

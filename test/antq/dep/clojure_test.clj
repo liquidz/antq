@@ -45,6 +45,7 @@
                (java-dependency {:name "baz/baz" :version "3.0.0"})
                (java-dependency {:name "rep/rep" :version "4.0.0"})
                (java-dependency {:name "ovr/ovr" :version "5.0.0"})
+               (java-dependency {:name "dft/dft" :version "6.0.0"})
                (git-sha-dependency {:name "sha/sha" :version "dummy-sha"
                                     :extra {:url "https://github.com/example/sha.git"}})
                (git-sha-dependency {:name "git-sha/git-sha" :version "dummy-git-sha"
