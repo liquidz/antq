@@ -66,14 +66,16 @@
     (or (u.lein/env x)
         (str x))))
 
-(defn- ^Server new-repository-server
+(defn- new-repository-server
+  ^Server
   [{:keys [id username password]}]
   (doto (Server.)
     (.setId id)
     (.setUsername (ensure-username-or-password username))
     (.setPassword (ensure-username-or-password password))))
 
-(defn ^Settings get-maven-settings
+(defn get-maven-settings
+  ^Settings
   [opts]
   (let [settings ^Settings (deps.util.maven/get-settings)
         server-ids (set (map #(.getId %) (.getServers settings)))]
@@ -119,12 +121,14 @@
      :artifact artifact
      :remote-repos remote-repos}))
 
-(defn- ^Model read-pom*
+(defn- read-pom*
+  ^Model
   [^String url]
   (with-open [reader (io/reader url)]
     (.read (MavenXpp3Reader.) reader)))
 
-(defn ^Model read-pom
+(defn read-pom
+  ^Model
   [^String url]
   (when-not (str/includes? url "s3://") ; can't do diff's on s3:// repos, https://github.com/liquidz/antq/issues/133.
     (loop [i 0]
@@ -139,15 +143,18 @@
                 (log/warning (str "Fetching pom from " url " failed because of the following error: " (.getMessage e)))))
             (recur (inc i)))))))
 
-(defn ^String get-url
+(defn get-url
+  ^String
   [^Model model]
   (.getUrl model))
 
-(defn ^Scm get-scm
+(defn get-scm
+  ^Scm
   [^Model model]
   (.getScm model))
 
-(defn ^String get-scm-url
+(defn get-scm-url
+  ^String
   [^Scm scm]
   (.getUrl scm))
 
@@ -177,7 +184,8 @@
 (def get-local-versions
   (memoize get-local-versions*))
 
-(defn ^Authenticator authenticator
+(defn authenticator
+  ^Authenticator
   [^String username ^String password]
   (proxy [Authenticator] []
     (getPasswordAuthentication []

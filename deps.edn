@@ -1,6 +1,6 @@
 {:paths ["src"]
  :deps
- {org.clojure/clojure {:mvn/version "1.10.3"}
+ {org.clojure/clojure {:mvn/version "1.11.1"}
   org.clojure/data.xml {:mvn/version "0.2.0-alpha6"}
   org.clojure/data.zip {:mvn/version "1.0.0"}
   org.clojure/tools.cli {:mvn/version "1.0.206"}
@@ -9,7 +9,7 @@
   org.clojure/data.json {:mvn/version "2.4.0"}
   clj-commons/clj-yaml {:mvn/version "0.7.108"}
   version-clj/version-clj {:mvn/version "2.0.2"}
-  rewrite-clj/rewrite-clj {:mvn/version "1.0.699-alpha"}}
+  rewrite-clj/rewrite-clj {:mvn/version "1.0.767-alpha"}}
 
  :tools/usage
  {:ns-default antq.tool}
@@ -18,10 +18,13 @@
  {:1.9
   {:override-deps {org.clojure/clojure {:mvn/version "1.9.0"}}}
 
+  :1.10
+  {:override-deps {org.clojure/clojure {:mvn/version "1.10.3"}}}
+
   :dev
   {:extra-paths ["test"
                  "test/resources"]
-   :extra-deps {lambdaisland/kaocha {:mvn/version "1.63.998"}
+   :extra-deps {lambdaisland/kaocha {:mvn/version "1.64.1010"}
                 lambdaisland/deep-diff2 {:mvn/version "2.0.108"}}}
 
   :nop
@@ -38,7 +41,7 @@
    :main-opts ["-m" "cloverage.coverage" "--ns-exclude-regex" "leiningen.antq"]}
 
   :build
-  {:deps {io.github.clojure/tools.build {:git/tag "v0.8.0" :git/sha "e3e3532"}
+  {:deps {io.github.clojure/tools.build {:git/tag "v0.8.1" :git/sha "7d40500"}
           slipset/deps-deploy {:mvn/version "0.2.0"}}
    :ns-default build}
 
