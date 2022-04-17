@@ -21,7 +21,9 @@
                  :lein {:name "technomancy/leiningen" :version v}
                  :boot {:name "boot-clj/boot" :version v}
                  nil)))
-       (map #(-> (assoc % :type :github-tag)
+       (map #(-> %
+                 (assoc :type :github-tag)
+                 (assoc-in [:extra :antq.dep.github-action/type] "DeLaGuardo/setup-clojure")
                  (r/map->Dependency)))))
 
 (defmethod detect "DeLaGuardo/setup-clj-kondo"
@@ -30,7 +32,8 @@
     [(r/map->Dependency
       {:name "clj-kondo/clj-kondo"
        :version v
-       :type :java})]))
+       :type :java
+       :extra {:antq.dep.github-action/type "DeLaGuardo/setup-clj-kondo"}})]))
 
 (defmethod u.dep/normalize-by-name "graalvm/graalvm-ce-builds"
   [dep]
@@ -47,7 +50,8 @@
       (r/map->Dependency
        {:name "graalvm/graalvm-ce-builds"
         :version v
-        :type :github-tag}))]))
+        :type :github-tag
+        :extra {:antq.dep.github-action/type "DeLaGuardo/setup-graalvm"}}))]))
 
 (defmethod detect "0918nobita/setup-cljstyle"
   [form]
@@ -55,4 +59,5 @@
     [(r/map->Dependency
       {:name "greglook/cljstyle"
        :version v
-       :type :github-tag})]))
+       :type :github-tag
+       :extra {:antq.dep.github-action/type "0918nobita/setup-cljstyle"}})]))
