@@ -4,7 +4,8 @@
 
 (defn- matrix-variable-name
   [version]
-  (when-let [[[_ vname]] (re-seq #"\$\{\{\s*matrix\.(.+?)\s*}}" version)]
+  (when-let [[[_ vname]] (re-seq #"\$\{\{\s*matrix\.(.+?)\s*}}"
+                                 (str version))]
     vname))
 
 (defn expand-matrix-value

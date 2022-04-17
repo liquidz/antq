@@ -17,19 +17,22 @@
 
 (def ^:private dummy-deps
   [(r/map->Dependency {:name "foo" :version "${{matrix.foo}}"})
-   (r/map->Dependency {:name "bar" :version "9"})])
+   (r/map->Dependency {:name "bar" :version "9"})
+   (r/map->Dependency {:name "baz" :version 10})])
 
 (t/deftest expand-matrixed-value-test
   (t/is (= #{(r/map->Dependency {:name "foo" :version "1" :only-newest-version? true})
              (r/map->Dependency {:name "foo" :version "two" :only-newest-version? true})
-             (r/map->Dependency {:name "bar" :version "9"})}
+             (r/map->Dependency {:name "bar" :version "9"})
+             (r/map->Dependency {:name "baz" :version 10})}
            (set (sut/expand-matrix-value
                  dummy-parsed-yaml
                  :job1
                  dummy-deps))))
   (t/is (= #{(r/map->Dependency {:name "foo" :version "3" :only-newest-version? true})
              (r/map->Dependency {:name "foo" :version "4" :only-newest-version? true})
-             (r/map->Dependency {:name "bar" :version "9"})}
+             (r/map->Dependency {:name "bar" :version "9"})
+             (r/map->Dependency {:name "baz" :version 10})}
            (set (sut/expand-matrix-value
                  dummy-parsed-yaml
                  :job2
