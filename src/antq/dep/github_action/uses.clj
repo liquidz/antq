@@ -27,8 +27,9 @@
   [dep]
   (let [[name version] (str/split dep #"@" 2)]
     (when (seq version)
-      (merge {:name name}
-             (extract-type-and-version name version)))))
+      (-> {:name name}
+          (merge (extract-type-and-version name version))
+          (assoc-in [:extra :antq.dep.github-action/type] "uses")))))
 
 (defn detect
   [form]
