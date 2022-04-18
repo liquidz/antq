@@ -36,7 +36,7 @@
        :type :java
        :extra {const.gh-action/type-key "DeLaGuardo/setup-clj-kondo"}})]))
 
-(defmethod u.dep/normalize-by-name "graalvm/graalvm-ce-builds"
+(defmethod u.dep/normalize-version-by-name "graalvm/graalvm-ce-builds"
   [dep]
   (update dep :version #(str/replace % #"\.java\d+$" "")))
 
@@ -47,7 +47,7 @@
                 (get-in form [:with :graalvm-version])
                 ;; v4.0 or later
                 (get-in form [:with :graalvm]))]
-    [(u.dep/normalize-by-name
+    [(u.dep/normalize-version-by-name
       (r/map->Dependency
        {:name "graalvm/graalvm-ce-builds"
         :version v
