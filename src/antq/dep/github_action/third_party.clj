@@ -1,5 +1,6 @@
 (ns antq.dep.github-action.third-party
   (:require
+   [antq.constant.github-action :as const.gh-action]
    [antq.record :as r]
    [antq.util.dep :as u.dep]
    [clojure.string :as str]))
@@ -23,7 +24,7 @@
                  nil)))
        (map #(-> %
                  (assoc :type :github-tag)
-                 (assoc-in [:extra :antq.dep.github-action/type] "DeLaGuardo/setup-clojure")
+                 (assoc-in [:extra const.gh-action/type-key] "DeLaGuardo/setup-clojure")
                  (r/map->Dependency)))))
 
 (defmethod detect "DeLaGuardo/setup-clj-kondo"
@@ -33,7 +34,7 @@
       {:name "clj-kondo/clj-kondo"
        :version v
        :type :java
-       :extra {:antq.dep.github-action/type "DeLaGuardo/setup-clj-kondo"}})]))
+       :extra {const.gh-action/type-key "DeLaGuardo/setup-clj-kondo"}})]))
 
 (defmethod u.dep/normalize-by-name "graalvm/graalvm-ce-builds"
   [dep]
@@ -51,7 +52,7 @@
        {:name "graalvm/graalvm-ce-builds"
         :version v
         :type :github-tag
-        :extra {:antq.dep.github-action/type "DeLaGuardo/setup-graalvm"}}))]))
+        :extra {const.gh-action/type-key "DeLaGuardo/setup-graalvm"}}))]))
 
 (defmethod detect "0918nobita/setup-cljstyle"
   [form]
@@ -60,4 +61,4 @@
       {:name "greglook/cljstyle"
        :version v
        :type :github-tag
-       :extra {:antq.dep.github-action/type "0918nobita/setup-cljstyle"}})]))
+       :extra {const.gh-action/type-key "0918nobita/setup-cljstyle"}})]))
