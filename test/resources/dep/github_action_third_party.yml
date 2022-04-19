@@ -1,0 +1,21 @@
+name: dummy
+on: [push]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: DeLaGuardo/setup-clojure@master
+        with:
+          cli: 1
+          lein: 2
+          boot: 3
+          bb: 4
+      - uses: DeLaGuardo/setup-clj-kondo@master
+        with:
+          version: '5'
+      - uses: DeLaGuardo/setup-graalvm@master
+        with:
+          graalvm: 6
+      - uses: 0918nobita/setup-cljstyle@master
+        with:
+          cljstyle-version: "7"
