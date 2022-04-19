@@ -18,7 +18,8 @@
     (str/replace line #"([^:]+\s*:\s*['\"]?)[^\s'\"]+(['\"]?)"
                  (str "$1" new-value "$2"))))
 
-(defn- action? [action-name]
+(defn- action?
+  [action-name]
   (let [re (re-pattern (str "uses\\s*:\\s*" action-name))]
     #(some? (re-seq re %))))
 
