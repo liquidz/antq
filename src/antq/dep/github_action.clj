@@ -1,5 +1,6 @@
 (ns antq.dep.github-action
   (:require
+   [antq.constant.github-action :as const.gh-action]
    [antq.dep.github-action.matrix :as d.gha.matrix]
    [antq.dep.github-action.third-party :as d.gha.third-party]
    [antq.dep.github-action.uses :as d.gha.uses]
@@ -21,6 +22,10 @@
      (concat accm (f form)))
    []
    detect-functions))
+
+(defn get-type
+  [dep]
+  (get-in dep [:extra const.gh-action/type-key]))
 
 (defn extract-deps
   [file-path workflow-content-str]
