@@ -4,7 +4,6 @@
    [antq.log :as log]
    [antq.upgrade :as upgrade]
    [clojure.string :as str]
-   [clojure.zip :as zip]
    [rewrite-indented.zip :as ri.zip]))
 
 (defn- update-action-version
@@ -41,7 +40,7 @@
                (ri.zip/update (update-action-version (:latest-version version-checked-dep)))
 
                :always
-               (zip/next)))
+               (ri.zip/next)))
       (ri.zip/move-to-root loc))))
 
 (defmethod upgrade-dep "DeLaGuardo/setup-clojure"
@@ -61,7 +60,7 @@
                    (ri.zip/update (update-value (:latest-version version-checked-dep)))
 
                    :always
-                   (zip/next)))
+                   (ri.zip/next)))
           (ri.zip/move-to-root loc))))))
 
 (defmethod upgrade-dep "DeLaGuardo/setup-clj-kondo"
@@ -73,7 +72,7 @@
                (ri.zip/update (update-value (:latest-version version-checked-dep)))
 
                :always
-               (zip/next)))
+               (ri.zip/next)))
       (ri.zip/move-to-root loc))))
 
 (defmethod upgrade-dep "DeLaGuardo/setup-graalvm"
@@ -86,7 +85,7 @@
                (ri.zip/update (update-value (:latest-version version-checked-dep)))
 
                :always
-               (zip/next)))
+               (ri.zip/next)))
       (ri.zip/move-to-root loc))))
 
 (defmethod upgrade-dep "0918nobita/setup-cljstyle"
@@ -98,7 +97,7 @@
                (ri.zip/update (update-value (:latest-version version-checked-dep)))
 
                :always
-               (zip/next)))
+               (ri.zip/next)))
       (ri.zip/move-to-root loc))))
 
 (defmethod upgrade/upgrader :github-action

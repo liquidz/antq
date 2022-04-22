@@ -67,7 +67,7 @@
     <dependency>
       <groupId>com.github.liquidz</groupId>
       <artifactId>rewrite-indented</artifactId>
-      <version>0.1.0-SNAPSHOT</version>
+      <version>0.1.27</version>
     </dependency>
   </dependencies>
   <build>
