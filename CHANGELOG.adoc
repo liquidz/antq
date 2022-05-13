@@ -2,6 +2,15 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 
+// {{{
+=== Changed
+* Bumped tools.build to v0.8.2.
+* Bumped kaocha to 1.66.1034.
+
+=== Fixed
+* https://github.com/liquidz/antq/pull/159[#159]: Fixed `check-clojure-tools` to work with `$XDG_CONFIG_HOME`.
+// }}}
+
 == 1.6.1 (2022-04-09)
 // {{{
 === Changed
