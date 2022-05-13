@@ -1,10 +1,17 @@
 (ns antq.dep.clojure.tool
   (:require
    [antq.record :as r]
-   [antq.util.env :as u.env]
    [clojure.edn :as edn]
    [clojure.java.io :as io]
-   [clojure.string :as str]))
+   [clojure.string :as str]
+   [clojure.tools.deps.alpha :as deps]))
+
+(defn- tools-dir
+  ^java.io.File []
+  (-> (deps/user-deps-path)
+      (io/file)
+      (.getParentFile)
+      (io/file "tools")))
 
 (defn extract-deps
   [file-path tool-edn-content-str]
@@ -20,7 +27,7 @@
 
 (defn load-deps
   ([]
-   (load-deps (io/file (u.env/getenv "HOME") ".clojure" "tools")))
+   (load-deps (tools-dir)))
   ([dir-file]
    (some->> dir-file
             (file-seq)

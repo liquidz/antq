@@ -17,7 +17,7 @@ jobs:
       - run: java -version
       - uses: DeLaGuardo/setup-clojure@master
         with:
-          tools-deps: latest
+          cli: latest
           lein: latest
       - uses: actions/cache@v3
         with:

@@ -10,4 +10,4 @@ jobs:
       - uses: actions/checkout@v3
       - uses: liquidz/antq-action@v1
         with:
-          excludes: 'clojure/brew-install org.clojure/tools.deps.alpha'
+          excludes: 'org.clojure/tools.deps.alpha lambdaisland/deep-diff2'
