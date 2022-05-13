@@ -88,7 +88,7 @@ From Clojure CLI ver `1.10.3.933`, https://clojure.org/reference/deps_and_cli#to
 [source,sh]
 ----
 # install
-clojure -Ttools install com.github.liquidz/antq '{:git/tag "1.6.1"}' :as antq
+clojure -Ttools install com.github.liquidz/antq '{:git/tag "1.6.2"}' :as antq
 # uninstall
 clojure -Ttools remove :tool antq
 # execute
