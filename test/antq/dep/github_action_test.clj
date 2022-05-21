@@ -51,6 +51,5 @@
                ".github/workflows/docker.yml"
                ".github/workflows/lint.yml"
                ".github/workflows/reviewdog.yml"
-               ".github/workflows/static.yml"
                ".github/workflows/test.yml"}
              (set (map :file deps))))))
