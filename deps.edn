@@ -41,8 +41,7 @@
    :main-opts ["-m" "cloverage.coverage" "--ns-exclude-regex" "leiningen.antq"]}
 
   :build
-  {:deps {io.github.clojure/tools.build {:git/tag "v0.8.2" :git/sha "ba1a2bf"}
-          slipset/deps-deploy {:mvn/version "0.2.0"}}
+  {:deps {com.github.liquidz/build.edn {:git/tag "0.1.46" :git/sha "1516034"}}
    :ns-default build}
 
   ;; -X
