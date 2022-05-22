@@ -1,0 +1,78 @@
+name: Tag and Release
+on: workflow_dispatch
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  tag-and-release:
+    runs-on: ubuntu-latest
+    permissions: write-all
+    outputs:
+      version: ${{ steps.deploy.outputs.version }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'adopt'
+          java-version: 11
+      - uses: DeLaGuardo/setup-clojure@master
+        with:
+          cli: latest
+
+      - name: Show versions
+        run: |
+          java -version
+          clojure --version
+
+      - uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: test-m2-${{ hashFiles('deps.edn') }}-v1
+
+      - name: deploy to clojars
+        id: deploy
+        run: clojure -T:build deploy
+        env:
+          CLOJARS_PASSWORD: ${{secrets.CLOJARS_PASSWORD}}
+          CLOJARS_USERNAME: ${{secrets.CLOJARS_USERNAME}}
+
+      - uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.deploy.outputs.version }}
+          release_name: ${{ steps.deploy.outputs.version }}
+          body: released
+          draft: false
+          prerelease: false
+
+      - run: |
+          clojure -T:build update-documents
+          git diff
+          git config --global user.email "github-actions@example.com"
+          git config --global user.name "github-actions"
+          git add -A
+          git commit -m "Update for release" || exit 0
+          git push
+
+  docker-push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: docker login
+        run: |
+         echo ${{ secrets.CONTAINER_REGISTRY_TOKEN }} | docker login ${{ env.REGISTRY }} -u $GITHUB_ACTOR --password-stdin
+         docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+      # FIXME docker build . -t ...:latest -t ...:ref
+      - name: build latest
+        run: |
+         docker build . -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest --cache-from ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+         docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+      - name: build for tag
+        run: |
+         docker build . -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ needs.tag-and-release.outputs.version }} --cache-from ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+         docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ needs.tag-and-release.outputs.version }}
