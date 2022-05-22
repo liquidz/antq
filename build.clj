@@ -1,93 +1,56 @@
 (ns build
   (:require
-   [clojure.tools.build.api :as b]
-   [clojure.xml :as xml]
-   [deps-deploy.deps-deploy :as deploy]))
+   [build-edn.core :as build-edn]))
 
-(def ^:private class-dir "target/classes")
-(def ^:private jar-file "target/antq.jar")
-(def ^:private lib 'com.github.liquidz/antq)
-(def ^:private main 'antq.core)
-(def ^:private pom-file "./pom.xml")
-(def ^:private uber-file "target/antq-standalone.jar")
-
-(defn- get-basis
-  [opt]
-  (-> (select-keys opt [:aliases])
-      (merge {:project "deps.edn"})
-      (b/create-basis)))
-
-(defn- get-current-version
-  [pom-file-path]
-  (->> (xml/parse pom-file-path)
-       (xml-seq)
-       (some #(and (= :version (:tag %)) %))
-       (:content)
-       (first)))
-
-(defn pom
-  [arg]
-  (let [basis (or (:basis arg) (get-basis arg))
-        lib' (or (:lib arg) lib)
-        ver' (or (:version arg) (get-current-version pom-file))]
-    (b/write-pom {:basis basis
-                  :class-dir class-dir
-                  :lib lib'
-                  :version ver'
-                  :src-dirs ["src"]})
-    (when (:copy? arg true)
-      (b/copy-file {:src (b/pom-path {:lib lib' :class-dir class-dir})
-                    :target pom-file}))))
+(def ^:private config
+  {:lib 'com.github.liquidz/antq
+   :version "1.6.{{commit-count}}"
+   :main 'antq.core
+   :scm {:connection "scm:git:git://github.com/liquidz/antq.git"
+         :developerConnection "scm:git:ssh://git@github.com/liquidz/antq.git"
+         :url "https://github.com/liquidz/antq"}
+   :documents [{:file "CHANGELOG.adoc"
+                :match "Unreleased"
+                :action :append-after
+                :text "\n== {{version}} ({{yyyy-mm-dd}})"}
+               {:file "README.adoc"
+                :match "install com\\.github\\.liquidz/antq"
+                :action :replace
+                :text "clojure -Ttools install com.github.liquidz/antq '{:git/tag \"{{version}}\"}' :as antq"}]
+   :github-actions? true})
 
 (defn jar
-  [arg]
-  (let [basis (get-basis {})
-        arg (assoc arg :basis basis)]
-    (pom arg)
-    (b/copy-dir {:src-dirs (:paths basis)
-                 :target-dir class-dir})
-    (b/jar {:class-dir class-dir
-            :jar-file jar-file})))
+  [m]
+  (-> (merge config m)
+      (build-edn/jar)))
 
 (defn uberjar
-  [arg]
-  (let [;; NOTE: To include org.slf4j/slf4j-nop
-        basis (get-basis {:aliases [:nop]})
-        arg (assoc arg
-                   :basis basis
-                   :copy? false)]
-    (pom arg)
-    (b/copy-dir {:src-dirs (:paths basis)
-                 :target-dir class-dir})
-    (b/compile-clj {:basis basis
-                    ;; NOTE: does not contain src/leiningen
-                    :src-dirs ["src/antq"]
-                    :class-dir class-dir})
-    (b/uber {:class-dir class-dir
-             :uber-file uber-file
-             :basis basis
-             :main main})))
+  [m]
+  (-> (merge config m)
+      (assoc
+       ;; NOTE: To include org.slf4j/slf4j-nop
+       :aliases [:nop]
+       ;; NOTE: does not contain src/leiningen
+       :src-dirs ["src/antq"])
+      (build-edn/uberjar)))
 
 (defn install
-  [arg]
-  (jar arg)
-  (deploy/deploy {:artifact jar-file
-                  :installer :local}))
+  [m]
+  (-> (merge config m)
+      (build-edn/install)))
 
 (defn deploy
-  [arg]
-  (assert (and (System/getenv "CLOJARS_USERNAME")
-               (System/getenv "CLOJARS_PASSWORD")))
-  (jar arg)
-  (deploy/deploy {:artifact jar-file
-                  :installer :remote
-                  :pom-file (b/pom-path {:lib (or (:lib arg) lib)
-                                         :class-dir class-dir})}))
+  [m]
+  (let [config (merge config m)]
+    (build-edn/deploy (assoc config :lib 'antq/antq))
+    (build-edn/deploy config)))
 
-(defn deploy-snapshot
-  [arg]
-  (let [version (str (get-current-version pom-file)
-                     "-SNAPSHOT")]
-    (deploy (assoc arg
-                   :version version
-                   :copy? false))))
+(defn update-documents
+  [m]
+  (-> (merge config m)
+      (build-edn/update-documents)))
+
+(defn lint
+  [m]
+  (-> (merge config m)
+      (build-edn/lint)))

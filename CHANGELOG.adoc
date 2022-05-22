@@ -1,6 +1,14 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+// {{{
+=== Changed
+* Changed to use https://github.com/liquidz/build.edn[build.edn].
+* Changed version format to `MAJOR.MINOR.COMMIT`.
+
+=== Fixed
+* Fixed `dep.github-action.matrix` not to throw exception with integer.
+// }}}
 
 == 1.6.2 (2022-05-14)
 // {{{

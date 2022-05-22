@@ -249,7 +249,7 @@
   (u.maven/initialize-proxy-setting!)
   (let [options (cond-> options
                   ;; Force "format" reporter when :error-format is specified
-                  (some?  (:error-format options)) (assoc :reporter "format"))
+                  (some? (:error-format options)) (assoc :reporter "format"))
         deps (and (not errors)
                   (fetch-deps options))]
     (cond

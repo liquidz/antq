@@ -5,7 +5,7 @@ jobs:
   test:
     strategy:
       matrix:
-        java: ['8', '11', '16', '17-ea']
+        java: ['8', '11', '17']
 
     runs-on: ubuntu-latest
     steps:

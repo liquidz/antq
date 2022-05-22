@@ -47,10 +47,8 @@
   (let [deps (sut/load-deps)]
     (t/is (= #{".github/workflows/coverage.yml"
                ".github/workflows/dependencies.yml"
-               ".github/workflows/deploy.yml"
-               ".github/workflows/docker.yml"
+               ".github/workflows/release.yml"
                ".github/workflows/lint.yml"
                ".github/workflows/reviewdog.yml"
-               ".github/workflows/static.yml"
                ".github/workflows/test.yml"}
              (set (map :file deps))))))
