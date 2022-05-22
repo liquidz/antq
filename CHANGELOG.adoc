@@ -1,6 +1,8 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+
+== 1.6.771 (2022-05-22)
 // {{{
 === Fixed
 * Fixed release workflow to be able to push docker images correctly.
