@@ -1,12 +1,12 @@
-FROM clojure:openjdk-15-tools-deps-1.10.1.739
+FROM clojure:openjdk-17-tools-deps
 
 RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /tmp/antq
 COPY deps.edn /tmp/antq/deps.edn
+COPY build.clj /tmp/antq/build.clj
 COPY src/ /tmp/antq/src/
-RUN clojure -Spom && \
-        clojure -X:depstar uberjar :jar antq.jar :aot true :main-class antq.core :aliases '[:nop]'
+RUN clojure -T:build uberjar
 
 WORKDIR /tmp
-ENTRYPOINT ["java", "-jar", "/tmp/antq/antq.jar"]
+ENTRYPOINT ["java", "-jar", "/tmp/antq/target/antq-standalone.jar"]
