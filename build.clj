@@ -4,7 +4,7 @@
 
 (def ^:private config
   {:lib 'com.github.liquidz/antq
-   :version "1.6.{{commit-count}}"
+   :version "1.6.{{git/commit-count}}"
    :main 'antq.core
    :scm {:connection "scm:git:git://github.com/liquidz/antq.git"
          :developerConnection "scm:git:ssh://git@github.com/liquidz/antq.git"
@@ -12,7 +12,7 @@
    :documents [{:file "CHANGELOG.adoc"
                 :match "Unreleased"
                 :action :append-after
-                :text "\n== {{version}} ({{yyyy-mm-dd}})"}
+                :text "\n== {{version}} ({{now/yyyy}}-{{now/mm}}-{{now/dd}})"}
                {:file "README.adoc"
                 :match "install com\\.github\\.liquidz/antq"
                 :action :replace
