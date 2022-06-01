@@ -1,5 +1,6 @@
 (ns antq.dep.github-action.third-party
   (:require
+   [antq.constant.github-action :as const.gh-action]
    [antq.record :as r]
    [antq.util.dep :as u.dep]
    [clojure.string :as str]))
@@ -21,7 +22,9 @@
                  :lein {:name "technomancy/leiningen" :version v}
                  :boot {:name "boot-clj/boot" :version v}
                  nil)))
-       (map #(-> (assoc % :type :github-tag)
+       (map #(-> %
+                 (assoc :type :github-tag)
+                 (assoc-in [:extra const.gh-action/type-key] "DeLaGuardo/setup-clojure")
                  (r/map->Dependency)))))
 
 (defmethod detect "DeLaGuardo/setup-clj-kondo"
@@ -30,9 +33,10 @@
     [(r/map->Dependency
       {:name "clj-kondo/clj-kondo"
        :version v
-       :type :java})]))
+       :type :java
+       :extra {const.gh-action/type-key "DeLaGuardo/setup-clj-kondo"}})]))
 
-(defmethod u.dep/normalize-by-name "graalvm/graalvm-ce-builds"
+(defmethod u.dep/normalize-version-by-name "graalvm/graalvm-ce-builds"
   [dep]
   (update dep :version #(str/replace % #"\.java\d+$" "")))
 
@@ -43,11 +47,12 @@
                 (get-in form [:with :graalvm-version])
                 ;; v4.0 or later
                 (get-in form [:with :graalvm]))]
-    [(u.dep/normalize-by-name
+    [(u.dep/normalize-version-by-name
       (r/map->Dependency
        {:name "graalvm/graalvm-ce-builds"
         :version v
-        :type :github-tag}))]))
+        :type :github-tag
+        :extra {const.gh-action/type-key "DeLaGuardo/setup-graalvm"}}))]))
 
 (defmethod detect "0918nobita/setup-cljstyle"
   [form]
@@ -55,4 +60,5 @@
     [(r/map->Dependency
       {:name "greglook/cljstyle"
        :version v
-       :type :github-tag})]))
+       :type :github-tag
+       :extra {const.gh-action/type-key "0918nobita/setup-cljstyle"}})]))

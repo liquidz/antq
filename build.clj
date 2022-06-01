@@ -4,11 +4,8 @@
 
 (def ^:private config
   {:lib 'com.github.liquidz/antq
-   :version "1.6.{{git/commit-count}}"
+   :version "1.7.{{git/commit-count}}"
    :main 'antq.core
-   :scm {:connection "scm:git:git://github.com/liquidz/antq.git"
-         :developerConnection "scm:git:ssh://git@github.com/liquidz/antq.git"
-         :url "https://github.com/liquidz/antq"}
    :documents [{:file "CHANGELOG.adoc"
                 :match "Unreleased"
                 :action :append-after

@@ -16,7 +16,7 @@
                             (matrix-variable-name))]
        (let [values (-> (:jobs parsed-yaml)
                         (get-in  [job-name :strategy :matrix (keyword vname)]))]
-         (map #(u.dep/normalize-by-name
+         (map #(u.dep/normalize-version-by-name
                 (assoc dep
                        :version %
                        :only-newest-version? true))

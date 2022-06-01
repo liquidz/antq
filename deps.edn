@@ -9,7 +9,8 @@
   org.clojure/data.json {:mvn/version "2.4.0"}
   clj-commons/clj-yaml {:mvn/version "0.7.108"}
   version-clj/version-clj {:mvn/version "2.0.2"}
-  rewrite-clj/rewrite-clj {:mvn/version "1.0.767-alpha"}}
+  rewrite-clj/rewrite-clj {:mvn/version "1.0.767-alpha"}
+  com.github.liquidz/rewrite-indented {:mvn/version "0.1.29"}}
 
  :tools/usage
  {:ns-default antq.tool}
@@ -25,7 +26,7 @@
   {:extra-paths ["test"
                  "test/resources"]
    :extra-deps {lambdaisland/kaocha {:mvn/version "1.66.1034"}
-                lambdaisland/deep-diff2 {:mvn/version "2.0.108"}}}
+                lambdaisland/deep-diff2 {:mvn/version "2.2.124"}}}
 
   :nop
   {:extra-deps {org.slf4j/slf4j-nop {:mvn/version "RELEASE"}}}
@@ -41,7 +42,7 @@
    :main-opts ["-m" "cloverage.coverage" "--ns-exclude-regex" "leiningen.antq"]}
 
   :build
-  {:deps {com.github.liquidz/build.edn {:git/tag "0.2.63" :git/sha "f4e571d"}}
+  {:deps {com.github.liquidz/build.edn {:git/tag "0.3.90" :git/sha "e3a3e31"}}
    :ns-default build}
 
   ;; -X

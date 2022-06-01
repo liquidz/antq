@@ -1,8 +1,10 @@
 (ns antq.upgrade
   (:require
+   [antq.dep.github-action :as dep.gh-action]
    [antq.download :as download]
    [antq.log :as log]
-   [antq.util.file :as u.file]))
+   [antq.util.file :as u.file]
+   [clojure.string :as str]))
 
 (defmulti upgrader
   (fn [version-checked-dep]
@@ -21,10 +23,6 @@
          force?)
     true
 
-    ;; TODO: Remove this condition when upgrading YAML is supported
-    (= :github-action (:project dep))
-    false
-
     (:latest-version dep)
     (do (print (format "Do you want to upgrade %s '%s' to '%s' in %s (y/n): "
                        (:name dep)
@@ -37,12 +35,30 @@
     :else
     false))
 
+(defn- normalize-version
+  [dep]
+  (cond
+    ;; For github-action workflows, upgrade to `v2` from `v1` in the latest version named `v2.3.4`
+    ;; because `v1` does not contain any dots.
+    (and (= :github-action (:project dep))
+         (= :github-tag (:type dep))
+         (some? (:version dep))
+         (some? (:latest-version dep))
+         (= "uses" (dep.gh-action/get-type dep))
+         (not (str/includes? (str (:version dep)) ".")))
+    (update dep :latest-version #(first (str/split % #"\.")))
+
+    :else
+    dep))
+
 (defn upgrade!
   "Return only non-upgraded deps"
   [deps options]
   (let [force? (or (:force options) false)
         download? (or (:download options) false)
-        version-checked-deps (filter :latest-version deps)]
+        version-checked-deps (->> deps
+                                  (filter :latest-version)
+                                  (map normalize-version))]
     (when (and (seq version-checked-deps)
                (not force?))
       (log/info ""))

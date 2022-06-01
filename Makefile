@@ -1,7 +1,3 @@
-.PHONY: repl
-repl:
-	iced repl -A:dev
-
 .PHONY: outdated
 outdated:
 	clojure -M:outdated:nop --upgrade
@@ -17,10 +13,6 @@ lint:
 	cljstyle check
 	clj-kondo --lint src:test
 
-.PHONY: pom
-pom:
-	clojure -T:build pom
-
 .PHONY: uberjar
 uberjar: clean
 	clojure -T:build uberjar
@@ -32,11 +24,6 @@ jar: clean
 .PHONY: install
 install: clean
 	clojure -T:build install
-
-.PHONY: deploy
-deploy:
-	clojure -T:build deploy
-	clojure -T:build deploy :lib antq/antq
 
 .PHONY: docker
 docker:

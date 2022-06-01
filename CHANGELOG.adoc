@@ -1,6 +1,15 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+// {{{
+=== Added
+* Added upgrader for GitHub Actions YAML.
+** This upgrader is experimental, but it should work.
+
+=== Changed
+* Bumped deep-diff2 to 2.2.124.
+* Bumped build.edn to 0.3.90.
+// }}}
 
 == 1.6.774 (2022-05-22)
 // {{{

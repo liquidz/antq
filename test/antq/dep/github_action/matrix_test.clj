@@ -6,7 +6,7 @@
    [clojure.test :as t]))
 
 ;; dummy multimethod to confirm u.dep/normalize-by-name
-(defmethod u.dep/normalize-by-name "foo"
+(defmethod u.dep/normalize-version-by-name "foo"
   [dep]
   (update dep :version #(if (= "2" %) "two" %)))
 

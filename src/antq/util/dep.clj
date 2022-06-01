@@ -25,10 +25,10 @@
     (cond-> candidates
       (= group-id artifact-id) (conj (symbol group-id)))))
 
-(defmulti normalize-by-name
+(defmulti normalize-version-by-name
   (fn [dep] (:name dep)))
 
-(defmethod normalize-by-name :default
+(defmethod normalize-version-by-name :default
   [dep]
   dep)
 

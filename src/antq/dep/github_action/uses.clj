@@ -1,5 +1,6 @@
 (ns antq.dep.github-action.uses
   (:require
+   [antq.constant.github-action :as const.gh-action]
    [antq.record :as r]
    [clojure.string :as str]))
 
@@ -27,8 +28,9 @@
   [dep]
   (let [[name version] (str/split dep #"@" 2)]
     (when (seq version)
-      (merge {:name name}
-             (extract-type-and-version name version)))))
+      (-> {:name name}
+          (merge (extract-type-and-version name version))
+          (assoc-in [:extra const.gh-action/type-key] "uses")))))
 
 (defn detect
   [form]

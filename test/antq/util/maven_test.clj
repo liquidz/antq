@@ -42,6 +42,9 @@
   {"LEIN_PASSWORD" "lein-pass"
    "FOUR" "env-four"})
 
+(def ^:private test-pom-path
+  (.getAbsolutePath (io/file (io/resource "util/maven/pom.xml"))))
+
 (t/deftest normalize-repo-url-test
   (t/are [expected in] (= expected (sut/normalize-repo-url in))
     "" ""
@@ -104,12 +107,12 @@
   (t/is (nil? (sut/read-pom "s3://foo"))))
 
 (t/deftest get-url-test
-  (let [model (sut/read-pom "pom.xml")]
+  (let [model (sut/read-pom test-pom-path)]
     (t/is (= "https://github.com/liquidz/antq"
              (sut/get-url model)))))
 
 (t/deftest get-scm-url-test
-  (let [model (sut/read-pom "pom.xml")
+  (let [model (sut/read-pom test-pom-path)
         scm (sut/get-scm model)]
     (t/is (= "https://github.com/liquidz/antq"
              (sut/get-scm-url scm)))))
