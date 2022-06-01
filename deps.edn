@@ -42,7 +42,7 @@
    :main-opts ["-m" "cloverage.coverage" "--ns-exclude-regex" "leiningen.antq"]}
 
   :build
-  {:deps {com.github.liquidz/build.edn {:git/tag "0.2.63" :git/sha "f4e571d"}}
+  {:deps {com.github.liquidz/build.edn {:git/tag "0.3.90" :git/sha "e3a3e31"}}
    :ns-default build}
 
   ;; -X
