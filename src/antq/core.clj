@@ -236,13 +236,15 @@
 
 (defn antq
   [options deps]
-  (let [deps (->> deps
+  (let [alog (log/start-async-logger!)
+        deps (->> deps
                   (mark-only-newest-version-flag)
                   (unify-deps-having-only-newest-version-flag))
         outdated (->> (outdated-deps deps options)
                       (map assoc-diff-url)
                       (concat (unverified-deps deps)))]
     (report/reporter outdated options)
+    (log/stop-async-logger! alog)
     outdated))
 
 (defn main*
