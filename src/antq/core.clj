@@ -117,7 +117,9 @@
 
 (defn- assoc-versions
   [dep options]
-  (assoc dep :_versions (ver/get-sorted-versions dep options)))
+  (let [res (assoc dep :_versions (ver/get-sorted-versions dep options))]
+    (report/run-progress dep options)
+    res))
 
 (defn latest
   [arg-map]
@@ -169,9 +171,9 @@
   (let [org-deps (remove #(or (skip-artifacts? % options)
                               (using-release-version? %))
                          deps)
-        uniq-deps-with-vers (->> org-deps
-                                 distinct-deps
-                                 (pmap #(assoc-versions % options)))
+        uniq-deps (distinct-deps org-deps)
+        _ (report/init-progress uniq-deps options)
+        uniq-deps-with-vers (pmap #(assoc-versions % options) uniq-deps)
         assoc-latest-version* #(assoc-latest-version % options)]
     (->> org-deps
          (pmap #(complete-versions-by % uniq-deps-with-vers))

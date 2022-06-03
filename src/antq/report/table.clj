@@ -1,11 +1,14 @@
 (ns antq.report.table
   (:require
+   [antq.log :as log]
    [antq.report :as report]
    [antq.util.dep :as u.dep]
    [antq.util.file :as u.file]
    [antq.util.ver :as u.ver]
    [clojure.pprint :as pprint]
    [clojure.set :as set]))
+
+(def ^:private progress (atom nil))
 
 (defn skip-duplicated-file-name
   [sorted-deps]
@@ -45,3 +48,26 @@
       (println "\nAvailable diffs:")
       (doseq [u urls]
         (println "-" u)))))
+
+(defn- progress-text
+  [{:keys [width total-count current-count]}]
+  (let [width (or width 50)
+        ratio (int (* width (/ current-count total-count)))]
+    (format "[ %s%s ] %d/%d\r"
+            (apply str (repeat ratio "#"))
+            (apply str (repeat (- width ratio) "-"))
+            current-count
+            total-count)))
+
+(defmethod report/init-progress "table"
+  [deps _options]
+  (reset! progress {:total-count (count deps)
+                    :count-atom (atom 0)}))
+
+(defmethod report/run-progress "table"
+  [_dep _options]
+  (when-let [{:keys [total-count count-atom]} @progress]
+    (when (< @count-atom total-count)
+      (swap! count-atom inc)
+      (log/async-print
+       (progress-text {:total-count total-count :current-count @count-atom})))))
