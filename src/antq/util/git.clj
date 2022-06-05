@@ -2,6 +2,7 @@
   (:require
    [antq.constant :as const]
    [antq.log :as log]
+   [antq.util.async :as u.async]
    [clojure.java.shell :as sh]
    [clojure.string :as str]))
 
@@ -51,8 +52,13 @@
           (do (log/warning "git ls-remote timed out, retrying")
               (recur (inc i))))))))
 
+(def ^:private ls-remote*-with-timeout
+  (u.async/fn-with-timeout
+   ls-remote*
+   const/ls-remote-timeout-msec))
+
 (def ^:private ls-remote
-  (memoize ls-remote*))
+  (memoize ls-remote*-with-timeout))
 
 (defn tags-by-ls-remote*
   [url]
