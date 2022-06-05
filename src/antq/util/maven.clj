@@ -2,6 +2,7 @@
   (:require
    [antq.constant :as const]
    [antq.log :as log]
+   [antq.util.async :as u.async]
    [antq.util.env :as u.env]
    [antq.util.leiningen :as u.lein]
    [antq.util.xml :as u.xml]
@@ -127,6 +128,11 @@
   (with-open [reader (io/reader url)]
     (.read (MavenXpp3Reader.) reader)))
 
+(def ^:private read-pom*-with-timeout
+  (u.async/fn-with-timeout
+   read-pom*
+   const/pom-timeout-msec))
+
 (defn read-pom
   ^Model
   [^String url]
@@ -134,7 +140,7 @@
     (loop [i 0]
       (when (< i const/retry-limit)
         (or (try
-              (read-pom* url)
+              (read-pom*-with-timeout url)
               (catch java.net.ConnectException e
                 (if (= "Operation timed out" (.getMessage e))
                   (log/warning (str "Fetching pom from " url " failed because it timed out, retrying"))
