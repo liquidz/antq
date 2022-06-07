@@ -1,6 +1,8 @@
 (ns antq.ver.github-tag
   (:require
+   [antq.constant :as const]
    [antq.log :as log]
+   [antq.util.async :as u.async]
    [antq.util.git :as u.git]
    [antq.util.ver :as u.ver]
    [antq.ver :as ver]
@@ -16,7 +18,7 @@
   (format "https://api.github.com/repos/%s/tags"
           (str/join "/" (take 2 (str/split (:name dep) #"/")))))
 
-(defn get-sorted-versions-by-ls-remote*
+(defn- get-sorted-versions-by-ls-remote*
   [dep]
   (let [url (format "https://github.com/%s"
                     (str/join "/" (take 2 (str/split (:name dep) #"/"))))]
@@ -32,10 +34,9 @@
 (def get-sorted-versions-by-ls-remote
   (memoize get-sorted-versions-by-ls-remote*))
 
-(defn get-sorted-versions-by-url*
+(defn- get-sorted-versions-by-url*
   [url]
-  (-> url
-      (slurp)
+  (-> (slurp url)
       (json/read-str :key-fn keyword)
       (->> (map :name)
            (filter (comp u.ver/sem-ver?
@@ -46,8 +47,13 @@
                           (map u.ver/normalize-version args))))
            (reverse))))
 
-(def get-sorted-versions-by-url
+(def ^:private get-sorted-versions-by-url
   (memoize get-sorted-versions-by-url*))
+
+(def ^:private get-sorted-versions-by-url-with-timeout
+  (u.async/fn-with-timeout
+   get-sorted-versions-by-url
+   const/github-api-timeout-msec))
 
 (defn- fallback-to-ls-remote
   [dep]
@@ -64,7 +70,7 @@
     (try
       (-> dep
           (tag-api-url)
-          (get-sorted-versions-by-url))
+          (get-sorted-versions-by-url-with-timeout))
       (catch Exception ex
         (reset! failed-to-fetch-from-api true)
         (log/warning (str "Failed to fetch versions from GitHub, so fallback to `git ls-remote`: "

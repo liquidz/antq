@@ -39,7 +39,8 @@
 
 (t/deftest get-sorted-versions-test
   (reset! @#'sut/failed-to-fetch-from-api false)
-  (with-redefs [slurp (constantly dummy-json)]
+  (with-redefs [sut/get-sorted-versions-by-url-with-timeout #'sut/get-sorted-versions-by-url
+                slurp (constantly dummy-json)]
     (t/is (= ["v3.0.0" "v2.0.0" "v2.0.0-alpha2" "v2.0.0-alpha1" "1.0.0"]
              (get-sorted-versions {:name "foo/bar"}))))
 
@@ -57,7 +58,8 @@
                         ["bar-sha" "BAR"]]
                        (map #(str/join "\t" %))
                        (str/join "\n"))]
-    (with-redefs [slurp (fn [& _]
+    (with-redefs [sut/get-sorted-versions-by-url-with-timeout #'sut/get-sorted-versions-by-url
+                  slurp (fn [& _]
                           (reset! api-errored true)
                           (throw (Exception. "test exception")))
                   sh/sh (fn [& args]
