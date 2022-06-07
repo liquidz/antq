@@ -1,5 +1,7 @@
 (ns antq.ver.java
   (:require
+   [antq.constant :as const]
+   [antq.util.async :as u.async]
    [antq.util.maven :as u.mvn]
    [antq.ver :as ver]
    [clojure.set :as set]
@@ -13,7 +15,7 @@
    (org.eclipse.aether.resolution
     VersionRangeRequest)))
 
-(defn get-versions
+(defn- get-versions
   [name opts]
   (let [{:keys [^RepositorySystem system
                 ^DefaultRepositorySystemSession  session
@@ -25,11 +27,16 @@
     (->> (.resolveVersionRange system session req)
          (.getVersions))))
 
+(def ^:private get-versions-with-timeout
+  (u.async/fn-with-timeout
+   get-versions
+   const/maven-timeout-msec))
+
 (defn get-sorted-versions-by-name*
   [name
    {:as dep-opts :keys [snapshots?]}
    options]
-  (let [maven-vers (->> (get-versions name dep-opts)
+  (let [maven-vers (->> (get-versions-with-timeout name dep-opts)
                         (map str))
         versions (if (:ignore-locals options)
                    (seq (set/difference (set maven-vers)
@@ -40,7 +47,6 @@
                              (reverse))]
     (cond->> sorted-versions
       (not snapshots?) (remove ver/snapshot?))))
-
 
 (def get-sorted-versions-by-name
   (memoize get-sorted-versions-by-name*))

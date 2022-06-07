@@ -13,8 +13,8 @@
           [:deps 'org.clojure/clojure :mvn/version]))
 
 (t/deftest get-versions-test
-  (let [vers (sut/get-versions 'org.clojure/clojure
-                               {:repositories u.mvn/default-repos})]
+  (let [vers (#'sut/get-versions 'org.clojure/clojure
+                                 {:repositories u.mvn/default-repos})]
     (t/is (seq vers))
     (t/is (contains? (set (map str vers)) current-clojure-version))))
 
@@ -32,7 +32,7 @@
                            {}))
 
 (t/deftest get-sorted-versions-test
-  (with-redefs [sut/get-versions dummy-versions]
+  (with-redefs [sut/get-versions-with-timeout dummy-versions]
     (t/is (= ["2" "1"]
              (get-sorted-versions {:version "1.0.0"})))
     (t/is (= ["2" "1.6-SNAPSHOT" "1"]
