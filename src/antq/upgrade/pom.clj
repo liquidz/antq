@@ -43,7 +43,7 @@
   [version-checked-dep]
   (-> (:file version-checked-dep)
       (io/input-stream)
-      (xml/parse)
+      (xml/parse :skip-whitespace true)
       (zip/xml-zip)
       (upgrade-dep version-checked-dep)
       (xml/indent-str)))
