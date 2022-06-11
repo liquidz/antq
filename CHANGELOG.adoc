@@ -1,6 +1,10 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+// {{{
+=== Fixed
+* https://github.com/liquidz/antq/pull/165[#165]: Fixed to avoid adding extra whitespaces when upgrading pom.xml.
+// }}}
 
 == 1.7.798 (2022-06-01)
 // {{{
