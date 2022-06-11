@@ -2,7 +2,6 @@
   (:require
    [antq.upgrade :as upgrade]
    [clojure.data.xml :as xml]
-   [clojure.data.zip :as d.zip]
    [clojure.java.io :as io]
    [clojure.string :as str]
    [clojure.zip :as zip]))
@@ -22,12 +21,10 @@
 
 (defn- edit-version
   [loc new-version]
-  (loop [loc (zip/right loc)]
-    (if (d.zip/rightmost? loc)
-      loc
-      (if (= "version" (some-> (zip/node loc) :tag name))
-        (zip/edit loc #(assoc % :content [new-version]))
-        (recur (zip/right loc))))))
+  (loop [loc loc]
+    (if (= "version" (some-> (zip/node loc) :tag name))
+      (zip/edit loc #(assoc % :content [new-version]))
+      (recur (zip/right loc)))))
 
 (defn upgrade-dep
   [loc version-checked-dep]
