@@ -2,6 +2,9 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 // {{{
+=== Changed
+* Bumped rewrite-clj to 1.1.45.
+
 === Fixed
 * https://github.com/liquidz/antq/pull/165[#165]: Fixed to avoid adding extra whitespaces when upgrading pom.xml.
 // }}}
