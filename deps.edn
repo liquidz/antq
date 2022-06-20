@@ -26,7 +26,7 @@
   :dev
   {:extra-paths ["test"
                  "test/resources"]
-   :extra-deps {lambdaisland/kaocha {:mvn/version "1.66.1034"}
+   :extra-deps {lambdaisland/kaocha {:mvn/version "1.67.1055"}
                 lambdaisland/deep-diff2 {:mvn/version "2.2.124"}}
    :jvm-opts ["-Dclojure.core.async.go-checking=true"]}
 
