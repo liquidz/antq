@@ -1,6 +1,7 @@
 (ns antq.ver.github-tag-test
   (:require
    [antq.record :as r]
+   [antq.util.git :as u.git]
    [antq.ver :as ver]
    [antq.ver.github-tag :as sut]
    [clojure.data.json :as json]
@@ -39,8 +40,7 @@
 
 (t/deftest get-sorted-versions-test
   (reset! @#'sut/failed-to-fetch-from-api false)
-  (with-redefs [sut/get-sorted-versions-by-url-with-timeout #'sut/get-sorted-versions-by-url
-                slurp (constantly dummy-json)]
+  (with-redefs [slurp (constantly dummy-json)]
     (t/is (= ["v3.0.0" "v2.0.0" "v2.0.0-alpha2" "v2.0.0-alpha1" "1.0.0"]
              (get-sorted-versions {:name "foo/bar"}))))
 
@@ -49,6 +49,7 @@
              (get-sorted-versions {:name "foo/bar"})))))
 
 (t/deftest get-sorted-versions-fallback-test
+  (reset! @#'sut/failed-to-fetch-from-api false)
   (let [api-errored (atom false)
         dummy-out (->> [["foo-sha" "FOO"]
                         ["one-sha" "refs/tags/1.0"]
@@ -58,7 +59,12 @@
                         ["bar-sha" "BAR"]]
                        (map #(str/join "\t" %))
                        (str/join "\n"))]
-    (with-redefs [sut/get-sorted-versions-by-url-with-timeout #'sut/get-sorted-versions-by-url
+    (with-redefs [;; Disable memoize
+                  u.git/ls-remote #'u.git/ls-remote*-with-timeout
+                  u.git/tags-by-ls-remote #'u.git/tags-by-ls-remote*
+                  sut/get-sorted-versions-by-ls-remote #'sut/get-sorted-versions-by-ls-remote*
+                  sut/get-sorted-versions-by-url #'sut/get-sorted-versions-by-url*
+
                   slurp (fn [& _]
                           (reset! api-errored true)
                           (throw (Exception. "test exception")))
