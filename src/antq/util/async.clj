@@ -6,17 +6,16 @@
   [f timeout-ms]
   (fn [& args]
     (let [ch (async/chan)]
-      (async/go
-        (let [ret (try
-                    (apply f args)
-                    (catch Throwable ex
-                      [::exception ex]))]
-          (async/>! ch ret)))
+      (async/pipe (async/thread
+                    (try
+                      (apply f args)
+                      (catch Throwable ex
+                        ex)))
+                  ch)
       (let [ret (-> [ch
                      (async/timeout timeout-ms)]
                     (async/alts!!)
                     (first))]
-
-        (if (and (vector? ret) (= ::exception (first ret)))
-          (throw (second ret))
-          ret)))))
+        (when (instance? Throwable ret)
+          (throw ret))
+        ret))))

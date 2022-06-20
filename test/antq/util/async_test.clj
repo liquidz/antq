@@ -24,5 +24,3 @@
   (t/is (nil? (test-async-fn ::timeout)))
   (t/is (thrown-with-msg? Exception #"^test error$"
           (test-async-fn ::error))))
-
-
