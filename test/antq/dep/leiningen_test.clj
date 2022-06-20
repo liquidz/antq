@@ -20,7 +20,7 @@
 (t/deftest extract-deps-test
   (let [deps (sut/extract-deps
               file-path
-              (slurp (io/resource "dep/project.clj")))]
+              (slurp (io/resource "dep/test_project.clj")))]
     (t/is (sequential? deps))
     (t/is (every? #(instance? antq.record.Dependency %) deps))
     (t/is (= #{(dependency {:name "foo/core" :version "1.0.0"})
@@ -32,5 +32,7 @@
              (set deps)))))
 
 (t/deftest load-deps-test
-  (let [deps (sut/load-deps "test/resources/dep")]
-    (t/is (every? #(= :java (:type %)) deps))))
+  (with-redefs [sut/project-file "test_project.clj"]
+    (let [deps (sut/load-deps "test/resources/dep")]
+      (t/is (seq deps))
+      (t/is (every? #(= :java (:type %)) deps)))))

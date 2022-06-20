@@ -14,7 +14,7 @@
                       :type :github-tag
                       :name "foo/bar"
                       :latest-version "v9.0.0"
-                      :file (io/resource "dep/github_action.yml")
+                      :file (io/resource "dep/test_github_action.yml")
                       :extra {const.gh-action/type-key "uses"}}))
 
 (def ^:private dummy-not-supported-dep
@@ -22,14 +22,14 @@
                       :type :github-tag
                       :name "bar/baz"
                       :latest-version "v9.0.0"
-                      :file (io/resource "dep/github_action.yml")}))
+                      :file (io/resource "dep/test_github_action.yml")}))
 
 (def ^:private dummy-clojure-cli-dep
   (r/map->Dependency {:project :github-action
                       :type :github-tag
                       :name "clojure/brew-install"
                       :latest-version "9.0.0"
-                      :file (io/resource "dep/github_action_third_party.yml")
+                      :file (io/resource "dep/test_github_action_third_party.yml")
                       :extra {const.gh-action/type-key "DeLaGuardo/setup-clojure"}}))
 
 (def ^:private dummy-leiningen-dep
@@ -37,7 +37,7 @@
                       :type :github-tag
                       :name "technomancy/leiningen"
                       :latest-version "9.0.0"
-                      :file (io/resource "dep/github_action_third_party.yml")
+                      :file (io/resource "dep/test_github_action_third_party.yml")
                       :extra {const.gh-action/type-key "DeLaGuardo/setup-clojure"}}))
 
 (def ^:private dummy-boot-dep
@@ -45,7 +45,7 @@
                       :type :github-tag
                       :name "boot-clj/boot"
                       :latest-version "9.0.0"
-                      :file (io/resource "dep/github_action_third_party.yml")
+                      :file (io/resource "dep/test_github_action_third_party.yml")
                       :extra {const.gh-action/type-key "DeLaGuardo/setup-clojure"}}))
 
 (def ^:private dummy-clj-kondo-dep
@@ -53,7 +53,7 @@
                       :type :java
                       :name "clj-kondo/clj-kondo"
                       :latest-version "9.0.0"
-                      :file (io/resource "dep/github_action_third_party.yml")
+                      :file (io/resource "dep/test_github_action_third_party.yml")
                       :extra {const.gh-action/type-key "DeLaGuardo/setup-clj-kondo"}}))
 
 (def ^:private dummy-graalvm-dep
@@ -61,7 +61,7 @@
                       :type :github-tag
                       :name "graalvm/graalvm-ce-builds"
                       :latest-version "9.0.0"
-                      :file (io/resource "dep/github_action_third_party.yml")
+                      :file (io/resource "dep/test_github_action_third_party.yml")
                       :extra {const.gh-action/type-key "DeLaGuardo/setup-graalvm"}}))
 
 (def ^:private dummy-cljstyle-dep
@@ -69,7 +69,7 @@
                       :type :github-tag
                       :name "greglook/cljstyle"
                       :latest-version "9.0.0"
-                      :file (io/resource "dep/github_action_third_party.yml")
+                      :file (io/resource "dep/test_github_action_third_party.yml")
                       :extra {const.gh-action/type-key "0918nobita/setup-cljstyle"}}))
 
 (t/deftest upgrade-dep-test

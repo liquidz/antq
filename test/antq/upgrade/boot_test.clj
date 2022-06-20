@@ -13,7 +13,7 @@
                       :type :java
                       :name "bar/bar"
                       :latest-version "9.0.0"
-                      :file (io/resource "dep/build.boot")}))
+                      :file (io/resource "dep/test_build.boot")}))
 
 (t/deftest upgrade-dep-test
   (let [from-deps (->> dummy-java-dep
