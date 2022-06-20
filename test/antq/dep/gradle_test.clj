@@ -39,11 +39,12 @@
 (t/deftest extract-deps-without-repositories-test
   (let [deps (sut/extract-deps
               file-path
-              (.getPath (io/resource "dep/build_no_repo.gradle")))
+              (.getPath (io/resource "dep/no_repo_gradle/build.gradle")))
         defined-deps (->> defined-deps
                           (map #(assoc % :repositories nil))
                           (set))
         actual-deps (set deps)]
+    (t/is (seq actual-deps))
     (t/is (every? #(contains? actual-deps %) defined-deps))))
 
 (t/deftest extract-deps-command-error-test

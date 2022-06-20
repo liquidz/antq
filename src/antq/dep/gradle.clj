@@ -13,7 +13,9 @@
 
 (defn- get-repositories
   [file-path]
-  (let [{:keys [exit out]} (sh/sh gradle-command "--build-file" file-path
+  (let [parent-path (.getParent (io/file file-path))
+        {:keys [exit out]} (sh/sh gradle-command
+                                  "--project-dir" parent-path
                                   "antq_list_repositories")]
     (when (= 0 exit)
       (->> (str/split-lines out)
@@ -24,8 +26,9 @@
 
 (defn- filter-deps-from-gradle-dependencies
   [file-path]
-  (let [{:keys [exit out]} (sh/sh gradle-command
-                                  "--build-file" file-path
+  (let [parent-path (.getParent (io/file file-path))
+        {:keys [exit out]} (sh/sh gradle-command
+                                  "--project-dir" parent-path
                                   "--quiet"
                                   "dependencies")]
     (if (= 0 exit)
