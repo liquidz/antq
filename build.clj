@@ -9,11 +9,7 @@
    :documents [{:file "CHANGELOG.adoc"
                 :match "Unreleased"
                 :action :append-after
-                :text "\n== {{version}} ({{now/yyyy}}-{{now/mm}}-{{now/dd}})"}
-               {:file "README.adoc"
-                :match "install com\\.github\\.liquidz/antq"
-                :action :replace
-                :text "clojure -Ttools install com.github.liquidz/antq '{:git/tag \"{{version}}\"}' :as antq"}]
+                :text "\n== {{version}} ({{now/yyyy}}-{{now/mm}}-{{now/dd}})"}]
    :github-actions? true})
 
 (defn jar

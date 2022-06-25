@@ -81,23 +81,26 @@ Or add the following alias to your `$HOME/.clojure/deps.edn`.
 Then, run `clojure -M:outdated`.
 (run `clojure -A:outdated` for Clojure CLI Tool 1.10.1.645 or earlier).
 
-=== Clojure CLI Tools (`1.10.3.933` or later)
+=== Clojure CLI Tools (`1.11.1.1139` or later)
 
-From Clojure CLI ver `1.10.3.933`, https://clojure.org/reference/deps_and_cli#tool_install[tool] installation is supported.
+From Clojure CLI ver `1.11.1.1139`, https://clojure.org/reference/deps_and_cli#tool_install[tool] installation is supported.
 
 [source,sh]
 ----
-# install
-clojure -Ttools install com.github.liquidz/antq '{:git/tag "1.7.804"}' :as antq
-# uninstall
+# Install tool
+clojure -Ttools install-latest :lib com.github.liquidz/antq :as antq
+# Uninstall tool
 clojure -Ttools remove :tool antq
-# execute
+# Update tool
+clojure -Ttools install-latest :tool antq
+
+# Execute
 clojure -Tantq outdated
-# execute with parameter
+# Execute with parameter
 clojure -Tantq outdated :upgrade true
-# help
+# Show help
 clojure -A:deps -Tantq help/doc
-# upgrade
+# Upgrade oudated dependencies
 clojure -Tantq outdated :check-clojure-tools true :upgrade true
 ----
 
