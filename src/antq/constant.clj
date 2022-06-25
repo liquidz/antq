@@ -13,7 +13,7 @@
   #{:deps :default-deps :extra-deps :override-deps :replace-deps})
 
 (def default-timeout-msec
-  (u.env/getlong "ANTQ_DEFAULT_TIMEOUT" 5000))
+  (u.env/getlong "ANTQ_DEFAULT_TIMEOUT" 10000))
 
 (def ls-remote-timeout-msec
   "Timeout msec for
