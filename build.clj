@@ -5,6 +5,7 @@
 (def ^:private config
   {:lib 'com.github.liquidz/antq
    :version "1.7.{{git/commit-count}}"
+   :description "Point out your outdated dependencies"
    :main 'antq.core
    :documents [{:file "CHANGELOG.adoc"
                 :match "Unreleased"
