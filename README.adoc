@@ -150,6 +150,11 @@ In another way, you can use the following action.
 Antq experimentally supports https://gradle.org[Gradle].
 See link:./doc/gradle.adoc[here] for details.
 
+=== Timeouts
+
+Antq has timeouts for acquiring various information.
+See link:./doc/timeout.adoc[here] for details.
+
 == Options
 === --upgrade
 Upgrade outdated versions interactively.
@@ -292,6 +297,7 @@ You can also upgrade them with `--upgrade` option.
 * link:./doc/clojure-1.8.adoc[Antq with Clojure 1.8.0 or earlier]
 * link:./doc/gradle.adoc[Work with Gradle]
 * link:./doc/proxy.adoc[Run behind proxy]
+* link:./doc/timeout.adoc[Timeouts]
 
 == License
 
