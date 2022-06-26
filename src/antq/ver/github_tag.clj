@@ -3,6 +3,7 @@
    [antq.constant :as const]
    [antq.log :as log]
    [antq.util.async :as u.async]
+   [antq.util.exception :as u.ex]
    [antq.util.git :as u.git]
    [antq.util.ver :as u.ver]
    [antq.ver :as ver]
@@ -60,8 +61,10 @@
   (try
     (get-sorted-versions-by-ls-remote dep)
     (catch Exception ex
-      (log/error (str "Failed to fetch versions from GitHub: "
-                      (.getMessage ex))))))
+      (if (u.ex/ex-timeout? ex)
+        [ex]
+        (log/error (str "Failed to fetch versions from GitHub: "
+                        (.getMessage ex)))))))
 
 (defmethod ver/get-sorted-versions :github-tag
   [dep _options]
@@ -86,19 +89,24 @@
 
 (defmethod ver/latest? :github-tag
   [dep]
-  (let [current (some-> dep :version u.ver/normalize-version version/version->seq)
-        latest (some-> dep :latest-version u.ver/normalize-version version/version->seq)]
-    (try
-      (when (and current latest)
-        (case (count (first current))
-          1 (nth-newer? current latest 0)
-          2 (and (nth-newer? current latest 0)
-                 (nth-newer? current latest 1))
-          (<= 0 (version/version-seq-compare current latest))))
-      (catch Throwable e
-        (log/error (format "Error determining latest version for GitHub dep %s (current: %s, latest: %s): %s"
-                           (pr-str (:name dep))
-                           (pr-str (:version dep))
-                           (pr-str (:latest-version dep))
-                           (.getMessage e)))
-        true))))
+  (let [current (some-> dep :version)
+        latest (some-> dep :latest-version)]
+    (if (and (string? current)
+             (string? latest))
+      (let [current (-> current (u.ver/normalize-version) (version/version->seq))
+            latest (-> latest (u.ver/normalize-version) (version/version->seq))]
+        (try
+          (when (and current latest)
+            (case (count (first current))
+              1 (nth-newer? current latest 0)
+              2 (and (nth-newer? current latest 0)
+                     (nth-newer? current latest 1))
+              (<= 0 (version/version-seq-compare current latest))))
+          (catch Throwable e
+            (log/error (format "Error determining latest version for GitHub dep %s (current: %s, latest: %s): %s"
+                               (pr-str (:name dep))
+                               (pr-str (:version dep))
+                               (pr-str (:latest-version dep))
+                               (.getMessage e)))
+            true)))
+      false)))

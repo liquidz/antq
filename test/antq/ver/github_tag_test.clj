@@ -1,6 +1,7 @@
 (ns antq.ver.github-tag-test
   (:require
    [antq.record :as r]
+   [antq.util.exception :as u.ex]
    [antq.util.git :as u.git]
    [antq.ver :as ver]
    [antq.ver.github-tag :as sut]
@@ -83,6 +84,15 @@
         (t/is (true? @api-errored))
         (t/is (true? @(deref #'sut/failed-to-fetch-from-api)))))))
 
+(t/deftest get-sorted-versions-timeout-test
+  (reset! @#'sut/failed-to-fetch-from-api true)
+  (with-redefs [sut/get-sorted-versions-by-ls-remote #'sut/get-sorted-versions-by-ls-remote*
+                u.git/tags-by-ls-remote (fn [& _] (throw (u.ex/ex-timeout "test timeout")))]
+
+    (let [deps (get-sorted-versions {:name "foo/bar"})]
+      (t/is (= 1 (count deps)))
+      (t/is (u.ex/ex-timeout? (first deps))))))
+
 (defn- latest?
   [m]
   (ver/latest? (dep m)))
@@ -115,3 +125,6 @@
     ;; if version tag is unparseable, just log an error and return true.
     true "v2.1.0" "v.2.x"
     true "v.2.x" "v2.1.0"))
+
+(t/deftest latest?-timeout-test
+  (t/is (false? (latest? {:version "1" :latest-version (u.ex/ex-timeout "dummy")}))))
