@@ -60,7 +60,7 @@
 (def ^:private ls-remote
   (memoize ls-remote*-with-timeout))
 
-(defn tags-by-ls-remote*
+(defn- tags-by-ls-remote*
   [url]
   (-> (ls-remote url)
       (extract-tags)))
@@ -68,12 +68,12 @@
 (def tags-by-ls-remote
   (memoize tags-by-ls-remote*))
 
-(defn head-sha-by-ls-remote*
+(defn- head-sha-by-ls-remote*
   [url]
   (-> (ls-remote url)
       (extract-sha-by-ref-name "HEAD")))
 
-(defn tag-sha-by-ls-remote*
+(defn- tag-sha-by-ls-remote*
   [url tag-name]
   (-> (ls-remote url)
       (extract-sha-by-ref-name (str "refs/tags/" tag-name))))

@@ -34,20 +34,20 @@
                                    :out dummy-ls-remote-tag-out
                                    :err ""})]
     (t/is (= ["v1" "v2"]
-             (sut/tags-by-ls-remote* (dummy-url))))))
+             (#'sut/tags-by-ls-remote* (dummy-url))))))
 
 (t/deftest head-sha-by-ls-remote*-test
   (with-redefs [sh/sh (constantly {:exit 0
                                    :out dummy-ls-remote-sha-out
                                    :err ""})]
     (t/is (= "head-sha"
-             (sut/head-sha-by-ls-remote* (dummy-url))))))
+             (#'sut/head-sha-by-ls-remote* (dummy-url))))))
 
 (t/deftest tag-sha-by-ls-remote*-test
   (with-redefs [sh/sh (constantly {:exit 0
                                    :out dummy-ls-remote-tag-out
                                    :err ""})]
     (t/is (= "dummy-sha4"
-             (sut/tag-sha-by-ls-remote* (dummy-url) "v1")))
+             (#'sut/tag-sha-by-ls-remote* (dummy-url) "v1")))
     (t/is (= "dummy-sha6"
-             (sut/tag-sha-by-ls-remote* (dummy-url) "v2")))))
+             (#'sut/tag-sha-by-ls-remote* (dummy-url) "v2")))))
