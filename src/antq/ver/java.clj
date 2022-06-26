@@ -2,11 +2,13 @@
   (:require
    [antq.constant :as const]
    [antq.util.async :as u.async]
+   [antq.util.exception :as u.ex]
    [antq.util.maven :as u.mvn]
    [antq.ver :as ver]
    [clojure.set :as set]
    [version-clj.core :as version])
   (:import
+   clojure.lang.ExceptionInfo
    (org.eclipse.aether
     DefaultRepositorySystemSession
     RepositorySystem)
@@ -36,17 +38,22 @@
   [name
    {:as dep-opts :keys [snapshots?]}
    options]
-  (let [maven-vers (->> (get-versions-with-timeout name dep-opts)
-                        (map str))
-        versions (if (:ignore-locals options)
-                   (seq (set/difference (set maven-vers)
-                                        (set (u.mvn/get-local-versions name))))
-                   maven-vers)
-        sorted-versions (->> versions
-                             (sort version/version-compare)
-                             (reverse))]
-    (cond->> sorted-versions
-      (not snapshots?) (remove ver/snapshot?))))
+  (try
+    (let [maven-vers (->> (get-versions-with-timeout name dep-opts)
+                          (map str))
+          versions (if (:ignore-locals options)
+                     (seq (set/difference (set maven-vers)
+                                          (set (u.mvn/get-local-versions name))))
+                     maven-vers)
+          sorted-versions (->> versions
+                               (sort version/version-compare)
+                               (reverse))]
+      (cond->> sorted-versions
+        (not snapshots?) (remove ver/snapshot?)))
+    (catch ExceptionInfo ex
+      (if (u.ex/ex-timeout? ex)
+        [ex]
+        (throw ex)))))
 
 (def get-sorted-versions-by-name
   (memoize get-sorted-versions-by-name*))
