@@ -36,6 +36,7 @@
    [antq.upgrade.leiningen]
    [antq.upgrade.pom]
    [antq.upgrade.shadow]
+   [antq.util.exception :as u.ex]
    [antq.util.maven :as u.maven]
    [antq.ver :as ver]
    [antq.ver.git-sha]
@@ -44,7 +45,9 @@
    [antq.ver.java]
    [clojure.string :as str]
    [clojure.tools.cli :as cli]
-   [version-clj.core :as version]))
+   [version-clj.core :as version])
+  (:import
+   clojure.lang.ExceptionInfo))
 
 (defn- concat-assoc-fn
   [opt k v]
@@ -183,7 +186,10 @@
 
 (defn assoc-diff-url
   [version-checked-dep]
-  (if-let [url (diff/get-diff-url version-checked-dep)]
+  (if-let [url (try (diff/get-diff-url version-checked-dep)
+                    (catch ExceptionInfo ex
+                      (when-not (u.ex/ex-timeout? ex)
+                        (throw ex))))]
     (assoc version-checked-dep :diff-url url)
     version-checked-dep))
 
