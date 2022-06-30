@@ -146,6 +146,10 @@
                   (log/warning (str "Fetching pom from " url " failed because it timed out, retrying"))
                   (throw e)))
               (catch java.io.IOException e
+                (log/warning (str "Fetching pom from " url " failed because of the following error: " (.getMessage e))))
+              (catch org.codehaus.plexus.util.xml.pull.XmlPullParserException e
+                ;; e.g. This exception is thrown by reading the following pom.xml
+                ;;      https://repo1.maven.org/maven2/jakarta/mail/jakarta.mail-api/2.0.1/jakarta.mail-api-2.0.1.pom
                 (log/warning (str "Fetching pom from " url " failed because of the following error: " (.getMessage e)))))
             (recur (inc i)))))))
 
