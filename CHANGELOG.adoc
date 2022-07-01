@@ -13,7 +13,8 @@ All notable changes to this project will be documented in this file. This change
 ** Fetching data from GitHub API
 ** Fetching data from git repositories
 * Bumped kaocha to 1.68.1059.
-* Bumped build.edn to 0.4.107.
+* Bumped deep-diff2 to 2.3.127.
+* Bumped build.edn to 0.5.116.
 
 === Fixed
 * https://github.com/liquidz/antq/pull/166[#166]: Fixed to catch `XmlPullParserExceptio`.
