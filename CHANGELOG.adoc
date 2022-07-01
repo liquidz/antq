@@ -1,6 +1,8 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+
+== 1.8.847 (2022-07-01)
 // {{{
 === Added
 * https://github.com/liquidz/antq/pull/157[#157]: Added progress bar to `table` reporter.
