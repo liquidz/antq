@@ -4,16 +4,13 @@
 
 (def ^:private config
   {:lib 'com.github.liquidz/antq
-   :version "1.7.{{git/commit-count}}"
+   :version "1.8.{{git/commit-count}}"
+   :description "Point out your outdated dependencies"
    :main 'antq.core
    :documents [{:file "CHANGELOG.adoc"
                 :match "Unreleased"
                 :action :append-after
-                :text "\n== {{version}} ({{now/yyyy}}-{{now/mm}}-{{now/dd}})"}
-               {:file "README.adoc"
-                :match "install com\\.github\\.liquidz/antq"
-                :action :replace
-                :text "clojure -Ttools install com.github.liquidz/antq '{:git/tag \"{{version}}\"}' :as antq"}]
+                :text "\n== {{version}} ({{now/yyyy}}-{{now/mm}}-{{now/dd}})"}]
    :github-actions? true})
 
 (defn jar

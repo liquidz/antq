@@ -1,6 +1,7 @@
 (ns antq.ver.git-tag-and-sha-test
   (:require
    [antq.record :as r]
+   [antq.util.exception :as u.ex]
    [antq.util.git :as u.git]
    [antq.ver :as ver]
    [antq.ver.git-tag-and-sha]
@@ -26,3 +27,10 @@
   (t/testing "url is nil"
     (t/is (empty? (ver/get-sorted-versions (dep {})
                                            {})))))
+
+(t/deftest get-sorted-versions-timeout-test
+  (with-redefs [u.git/tags-by-ls-remote (fn [& _] (throw (u.ex/ex-timeout "test timeout")))]
+    (let [deps (ver/get-sorted-versions (dep {:extra {:url "https://example.com"}})
+                                        {})]
+      (t/is (= 1 (count deps)))
+      (t/is (u.ex/ex-timeout? (first deps))))))

@@ -1,6 +1,24 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+// {{{
+=== Added
+* https://github.com/liquidz/antq/pull/157[#157]: Added progress bar to `table` reporter.
+* https://github.com/liquidz/antq/pull/158[#158]: Added environmental variables to customize timeout milli secs.
+** See details link:./doc/timeout.adoc[here].
+
+=== Changed
+* https://github.com/liquidz/antq/pull/158[#158]: Applied timeouts to the following operations.
+** Fetching data from Maven repositories
+** Fetching data from GitHub API
+** Fetching data from git repositories
+* Bumped kaocha to 1.68.1059.
+* Bumped deep-diff2 to 2.3.127.
+* Bumped build.edn to 0.5.116.
+
+=== Fixed
+* https://github.com/liquidz/antq/pull/166[#166]: Fixed to catch `XmlPullParserExceptio`.
+// }}}
 
 == 1.7.804 (2022-06-11)
 // {{{

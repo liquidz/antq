@@ -14,28 +14,28 @@
                       :type :java
                       :name "foo/core"
                       :latest-version "9.0.0"
-                      :file (io/resource "dep/deps.edn")}))
+                      :file (io/resource "dep/test_deps.edn")}))
 
 (def ^:private dummy-git-dep
   (r/map->Dependency {:project :clojure
                       :type :git-sha
                       :name "sha/sha"
                       :latest-version "new-sha"
-                      :file (io/resource "dep/deps.edn")}))
+                      :file (io/resource "dep/test_deps.edn")}))
 
 (def ^:private dummy-git-git-sha-dep
   (r/map->Dependency {:project :clojure
                       :type :git-sha
                       :name "git-sha/git-sha"
                       :latest-version "new-sha"
-                      :file (io/resource "dep/deps.edn")}))
+                      :file (io/resource "dep/test_deps.edn")}))
 
 (def ^:private dummy-git-tag-short-sha-dep
   (r/map->Dependency {:project :clojure
                       :type :git-tag-and-sha
                       :name "tag-short-sha/tag-short-sha"
                       :latest-version "v9.9.9"
-                      :file (io/resource "dep/deps.edn")
+                      :file (io/resource "dep/test_deps.edn")
                       :extra {:sha "1234567"}}))
 
 (def ^:private dummy-git-tag-long-sha-dep
@@ -43,7 +43,7 @@
                       :type :git-tag-and-sha
                       :name "git-tag-long-sha/git-tag-long-sha"
                       :latest-version "v9.9.9"
-                      :file (io/resource "dep/deps.edn")
+                      :file (io/resource "dep/test_deps.edn")
                       :extra {:sha "123456789x123456789x123456789x123456789x"}}))
 
 (def ^:private dummy-no-version-dep
@@ -51,7 +51,7 @@
                       :type :java
                       :name "no-version"
                       :latest-version "9.9.9"
-                      :file (io/resource "dep/deps.edn")}))
+                      :file (io/resource "dep/test_deps.edn")}))
 
 (t/deftest upgrade-dep-test
   (t/testing "java"

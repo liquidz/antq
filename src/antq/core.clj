@@ -36,6 +36,7 @@
    [antq.upgrade.leiningen]
    [antq.upgrade.pom]
    [antq.upgrade.shadow]
+   [antq.util.exception :as u.ex]
    [antq.util.maven :as u.maven]
    [antq.ver :as ver]
    [antq.ver.git-sha]
@@ -44,7 +45,9 @@
    [antq.ver.java]
    [clojure.string :as str]
    [clojure.tools.cli :as cli]
-   [version-clj.core :as version]))
+   [version-clj.core :as version])
+  (:import
+   clojure.lang.ExceptionInfo))
 
 (defn- concat-assoc-fn
   [opt k v]
@@ -117,7 +120,9 @@
 
 (defn- assoc-versions
   [dep options]
-  (assoc dep :_versions (ver/get-sorted-versions dep options)))
+  (let [res (assoc dep :_versions (ver/get-sorted-versions dep options))]
+    (report/run-progress dep options)
+    res))
 
 (defn latest
   [arg-map]
@@ -169,9 +174,9 @@
   (let [org-deps (remove #(or (skip-artifacts? % options)
                               (using-release-version? %))
                          deps)
-        uniq-deps-with-vers (->> org-deps
-                                 distinct-deps
-                                 (pmap #(assoc-versions % options)))
+        uniq-deps (distinct-deps org-deps)
+        _ (report/init-progress uniq-deps options)
+        uniq-deps-with-vers (pmap #(assoc-versions % options) uniq-deps)
         assoc-latest-version* #(assoc-latest-version % options)]
     (->> org-deps
          (pmap #(complete-versions-by % uniq-deps-with-vers))
@@ -181,7 +186,10 @@
 
 (defn assoc-diff-url
   [version-checked-dep]
-  (if-let [url (diff/get-diff-url version-checked-dep)]
+  (if-let [url (try (diff/get-diff-url version-checked-dep)
+                    (catch ExceptionInfo ex
+                      (when-not (u.ex/ex-timeout? ex)
+                        (throw ex))))]
     (assoc version-checked-dep :diff-url url)
     version-checked-dep))
 
@@ -236,13 +244,15 @@
 
 (defn antq
   [options deps]
-  (let [deps (->> deps
+  (let [alog (log/start-async-logger!)
+        deps (->> deps
                   (mark-only-newest-version-flag)
                   (unify-deps-having-only-newest-version-flag))
         outdated (->> (outdated-deps deps options)
                       (map assoc-diff-url)
                       (concat (unverified-deps deps)))]
     (report/reporter outdated options)
+    (log/stop-async-logger! alog)
     outdated))
 
 (defn main*

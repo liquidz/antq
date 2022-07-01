@@ -10,18 +10,18 @@
   [m]
   (r/map->Dependency (merge {:project :github-action
                              :type :github-tag
-                             :file "dep/github_action.yml"} m)))
+                             :file "dep/test_github_action.yml"} m)))
 
 (defn- git-sha-dependency
   [m]
   (r/map->Dependency (merge {:project :github-action
                              :type :git-sha
-                             :file "dep/github_action.yml"} m)))
+                             :file "dep/test_github_action.yml"} m)))
 
 (t/deftest extract-deps-test
   (let [deps (sut/extract-deps
-              "dep/github_action.yml"
-              (slurp (io/resource "dep/github_action.yml")))]
+              "dep/test_github_action.yml"
+              (slurp (io/resource "dep/test_github_action.yml")))]
     (t/is (sequential? deps))
     (t/is (every? #(instance? antq.record.Dependency %) deps))
     (t/is (= #{(git-tag-dependency {:name "foo/bar" :version "v1.0.0"
@@ -38,9 +38,9 @@
 
 (t/deftest extract-deps-matrix-test
   (let [deps (sut/extract-deps
-              "dep/github_action_matrix.yml"
-              (slurp (io/resource "dep/github_action_matrix.yml")))
-        git-tag-dependency #(git-tag-dependency (merge {:file "dep/github_action_matrix.yml"} %))]
+              "dep/test_github_action_matrix.yml"
+              (slurp (io/resource "dep/test_github_action_matrix.yml")))
+        git-tag-dependency #(git-tag-dependency (merge {:file "dep/test_github_action_matrix.yml"} %))]
     (t/is (sequential? deps))
     (t/is (every? #(instance? antq.record.Dependency %) deps))
     (t/is (= #{(git-tag-dependency {:name "DeLaGuardo/setup-graalvm" :version "master" :only-newest-version? nil

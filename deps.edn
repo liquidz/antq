@@ -4,6 +4,7 @@
   org.clojure/data.xml {:mvn/version "0.2.0-alpha6"}
   org.clojure/data.zip {:mvn/version "1.0.0"}
   org.clojure/tools.cli {:mvn/version "1.0.206"}
+  org.clojure/core.async {:mvn/version "1.5.648"}
   ;; NOTE: tools.deps.alpha v0.12.1098 or later does not work with CLojure 1.9.0
   org.clojure/tools.deps.alpha {:mvn/version "0.12.1090"}
   org.clojure/data.json {:mvn/version "2.4.0"}
@@ -25,8 +26,9 @@
   :dev
   {:extra-paths ["test"
                  "test/resources"]
-   :extra-deps {lambdaisland/kaocha {:mvn/version "1.66.1034"}
-                lambdaisland/deep-diff2 {:mvn/version "2.2.124"}}}
+   :extra-deps {lambdaisland/kaocha {:mvn/version "1.68.1059"}
+                lambdaisland/deep-diff2 {:mvn/version "2.3.127"}}
+   :jvm-opts ["-Dclojure.core.async.go-checking=true"]}
 
   :nop
   {:extra-deps {org.slf4j/slf4j-nop {:mvn/version "RELEASE"}}}
@@ -42,7 +44,7 @@
    :main-opts ["-m" "cloverage.coverage" "--ns-exclude-regex" "leiningen.antq"]}
 
   :build
-  {:deps {com.github.liquidz/build.edn {:git/tag "0.3.90" :git/sha "e3a3e31"}}
+  {:deps {com.github.liquidz/build.edn {:git/tag "0.5.116" :git/sha "f633fa3"}}
    :ns-default build}
 
   ;; -X

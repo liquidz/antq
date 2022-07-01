@@ -7,10 +7,13 @@
 
 (defn compare-deps
   [x y]
-  (let [prj (.compareTo ^String (:file x) ^String (:file y))]
-    (if (zero? prj)
-      (.compareTo ^String (:name x) ^String (:name y))
-      prj)))
+  (if (and (string? (:file x))
+           (string? (:file y)))
+    (let [prj (.compareTo ^String (:file x) ^String (:file y))]
+      (if (zero? prj)
+        (.compareTo ^String (:name x) ^String (:name y))
+        prj))
+    0))
 
 (defn relative-path
   [^File target-file]

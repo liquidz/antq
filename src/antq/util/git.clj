@@ -2,6 +2,7 @@
   (:require
    [antq.constant :as const]
    [antq.log :as log]
+   [antq.util.async :as u.async]
    [clojure.java.shell :as sh]
    [clojure.string :as str]))
 
@@ -51,10 +52,15 @@
           (do (log/warning "git ls-remote timed out, retrying")
               (recur (inc i))))))))
 
-(def ^:private ls-remote
-  (memoize ls-remote*))
+(def ^:private ls-remote*-with-timeout
+  (u.async/fn-with-timeout
+   ls-remote*
+   const/ls-remote-timeout-msec))
 
-(defn tags-by-ls-remote*
+(def ^:private ls-remote
+  (memoize ls-remote*-with-timeout))
+
+(defn- tags-by-ls-remote*
   [url]
   (-> (ls-remote url)
       (extract-tags)))
@@ -62,12 +68,12 @@
 (def tags-by-ls-remote
   (memoize tags-by-ls-remote*))
 
-(defn head-sha-by-ls-remote*
+(defn- head-sha-by-ls-remote*
   [url]
   (-> (ls-remote url)
       (extract-sha-by-ref-name "HEAD")))
 
-(defn tag-sha-by-ls-remote*
+(defn- tag-sha-by-ls-remote*
   [url tag-name]
   (-> (ls-remote url)
       (extract-sha-by-ref-name (str "refs/tags/" tag-name))))

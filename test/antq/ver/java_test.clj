@@ -1,6 +1,7 @@
 (ns antq.ver.java-test
   (:require
    [antq.record :as r]
+   [antq.util.exception :as u.ex]
    [antq.util.maven :as u.mvn]
    [antq.ver :as ver]
    [antq.ver.java :as sut]
@@ -13,8 +14,8 @@
           [:deps 'org.clojure/clojure :mvn/version]))
 
 (t/deftest get-versions-test
-  (let [vers (sut/get-versions 'org.clojure/clojure
-                               {:repositories u.mvn/default-repos})]
+  (let [vers (#'sut/get-versions 'org.clojure/clojure
+                                 {:repositories u.mvn/default-repos})]
     (t/is (seq vers))
     (t/is (contains? (set (map str vers)) current-clojure-version))))
 
@@ -32,7 +33,7 @@
                            {}))
 
 (t/deftest get-sorted-versions-test
-  (with-redefs [sut/get-versions dummy-versions]
+  (with-redefs [sut/get-versions-with-timeout dummy-versions]
     (t/is (= ["2" "1"]
              (get-sorted-versions {:version "1.0.0"})))
     (t/is (= ["2" "1.6-SNAPSHOT" "1"]
@@ -47,3 +48,10 @@
                                  (set u.mvn/default-repos))]
         (t/is (= #{["foo" {:url "s3://bar"}]}
                  diff))))))
+
+(t/deftest get-sorted-versions-timeout-test
+  (with-redefs [sut/get-sorted-versions-by-name sut/get-sorted-versions-by-name*
+                sut/get-versions-with-timeout (fn [& _] (throw (u.ex/ex-timeout "test timeout")))]
+    (let [deps (get-sorted-versions {:version "1.0.0"})]
+      (t/is (= 1 (count deps)))
+      (t/is (u.ex/ex-timeout? (first deps))))))

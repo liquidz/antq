@@ -13,7 +13,7 @@
                       :type :java
                       :name "foo/core"
                       :latest-version "9.0.0"
-                      :file (io/resource "dep/shadow-cljs.edn")}))
+                      :file (io/resource "dep/test_shadow-cljs.edn")}))
 
 (t/deftest upgrade-dep-test
   (let [from-deps (->> dummy-java-dep
