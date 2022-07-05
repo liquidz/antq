@@ -285,6 +285,10 @@ For java dependencies, ignore versions installed to your local Maven repository(
 Detect all tools installed in `~/.clojure/tools` as dependencies.
 You can also upgrade them with `--upgrade` option.
 
+=== --no-diff
+
+Skip checking diff between deps' versions. Disabled by default.
+
 == Projects using antq
 
 * https://github.com/nnichols/clojure-dependency-update-action[clojure-dependency-update-action]: A simple GitHub Actions to create Pull Requests for outdated tools.deps dependencies

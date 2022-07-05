@@ -91,7 +91,8 @@
    [nil "--force"]
    [nil "--download"]
    [nil "--ignore-locals"]
-   [nil "--check-clojure-tools"]])
+   [nil "--check-clojure-tools"]
+   [nil "--no-diff"]])
 
 (defn skip-artifacts?
   [dep options]
@@ -248,9 +249,9 @@
         deps (->> deps
                   (mark-only-newest-version-flag)
                   (unify-deps-having-only-newest-version-flag))
-        outdated (->> (outdated-deps deps options)
-                      (map assoc-diff-url)
-                      (concat (unverified-deps deps)))]
+        outdated (cond->> (outdated-deps deps options)
+                   (not (:no-diff options)) (map assoc-diff-url)
+                   true (concat (unverified-deps deps)))]
     (report/reporter outdated options)
     (log/stop-async-logger! alog)
     outdated))

@@ -44,7 +44,8 @@
   - :force               <boolean>
   - :download            <boolean>
   - :ignore-locals       <boolean>
-  - :check-clojure-tools <boolean>"
+  - :check-clojure-tools <boolean>
+  - :no-diff             <boolean>"
   [& [options]]
   (let [options (prepare-options options)]
     (binding [log/*verbose* (:verbose options false)]
