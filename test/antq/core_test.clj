@@ -76,7 +76,11 @@
 
   (t/testing "--upgrade"
     (t/is (true? (get-in (test-parse-opts ["--upgrade"])
-                         [:options :upgrade])))))
+                         [:options :upgrade]))))
+
+  (t/testing "--no-diff"
+    (t/is (true? (get-in (test-parse-opts ["--no-diff"])
+                         [:options :no-diff])))))
 
 (t/deftest skip-artifacts?-test
   (t/testing "default"

@@ -1,6 +1,10 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+// {{{
+=== Added
+* https://github.com/liquidz/antq/issues/130[#130], https://github.com/liquidz/antq/pull/168[#168]: Added `--no-diff` option to skip checking diff between deps' versions.
+// }}}
 
 == 1.8.847 (2022-07-01)
 // {{{
