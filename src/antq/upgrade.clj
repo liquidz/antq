@@ -3,6 +3,7 @@
    [antq.dep.github-action :as dep.gh-action]
    [antq.download :as download]
    [antq.log :as log]
+   [antq.util.exception :as u.ex]
    [antq.util.file :as u.file]
    [clojure.string :as str]))
 
@@ -57,7 +58,8 @@
   (let [force? (or (:force options) false)
         download? (or (:download options) false)
         version-checked-deps (->> deps
-                                  (filter :latest-version)
+                                  (filter (comp (complement u.ex/ex-timeout?)
+                                                :latest-version))
                                   (map normalize-version))]
     (when (and (seq version-checked-deps)
                (not force?))

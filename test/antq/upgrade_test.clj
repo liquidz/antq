@@ -2,11 +2,12 @@
   (:require
    [antq.record :as r]
    [antq.upgrade :as sut]
+   [antq.util.exception :as u.ex]
    [clojure.java.io :as io]
    [clojure.test :as t]))
 
 (def temp-files
-  (repeatedly 2 #(io/file (str "." (gensym)))))
+  (repeatedly 3 #(io/file (str "." (gensym)))))
 
 (defn- create-temp-file
   []
@@ -32,21 +33,26 @@
   (str "after" (:latest-version dep)))
 
 (t/deftest upgrade!-test
-  (let [[temp1 temp2] temp-files
+  (let [[temp1 temp2 temp3] temp-files
         dep1 (r/map->Dependency {:project ::test
                                  :latest-version "LATEST"
                                  :file temp1})
         ;; should be skipped because latest-version is nil
         dep2 (r/map->Dependency {:project ::test
                                  :latest-version nil
-                                 :file temp2})]
+                                 :file temp2})
+        ;; should be skipped because latest-version is ex-timeout
+        dep3 (r/map->Dependency {:project ::test
+                                 :latest-version (u.ex/ex-timeout "test")
+                                 :file temp3})]
     (t/is (every? #(= 0 (.indexOf % "before"))
                   (map slurp temp-files)))
 
-    (sut/upgrade! [dep1 dep2] {:force true})
+    (sut/upgrade! [dep1 dep2 dep3] {:force true})
 
     (t/is (= "afterLATEST" (slurp temp1)))
-    (t/is (= "before1" (slurp temp2)))))
+    (t/is (= "before1" (slurp temp2)))
+    (t/is (= "before2" (slurp temp3)))))
 
 (t/deftest upgrade!-unsupported-test
   (let [[temp1] temp-files
