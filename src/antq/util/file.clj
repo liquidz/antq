@@ -5,4 +5,6 @@
 
 (defn normalize-path
   [file-path]
-  (str/replace file-path (u.env/getenv "HOME") "~"))
+  (if-let [home (u.env/getenv "HOME")]
+    (str/replace file-path home "~")
+    file-path))
