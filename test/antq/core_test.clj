@@ -3,6 +3,7 @@
    [antq.core :as sut]
    [antq.diff.java :as d.java]
    [antq.record :as r]
+   [antq.util.exception :as u.ex]
    [antq.util.git :as u.git]
    [antq.ver :as ver]
    [clojure.string :as str]
@@ -177,7 +178,22 @@
                (sut/assoc-diff-url dummy-dep)))
 
       (t/is (= (assoc dummy-dep :type :test)
-               (sut/assoc-diff-url (assoc dummy-dep :type :test)))))))
+               (sut/assoc-diff-url (assoc dummy-dep :type :test))))))
+
+  (t/testing "timed out to fetch diffs"
+    (let [dummy-dep {:type :java :name "foo/bar" :version "1" :latest-version "2"}]
+      (with-redefs [d.java/get-scm-url (fn [& _] (throw (u.ex/ex-timeout "test")))]
+        (t/is (= dummy-dep
+                 (sut/assoc-diff-url dummy-dep))))))
+
+  (t/testing "timed out dependencies"
+    (let [timed-out-dep {:type :java
+                         :name "foo/bar"
+                         :version "1"
+                         :latest-version (u.ex/ex-timeout "test")}]
+      (with-redefs [d.java/get-scm-url (fn [& _] (throw (Exception. "must not be called")))]
+        (t/is (= timed-out-dep
+                 (sut/assoc-diff-url timed-out-dep)))))))
 
 (t/deftest unverified-deps-test
   (let [dummy-deps [{:type :java :name "antq/antq"}

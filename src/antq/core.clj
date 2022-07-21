@@ -186,11 +186,14 @@
          (remove ver/latest?))))
 
 (defn assoc-diff-url
-  [version-checked-dep]
-  (if-let [url (try (diff/get-diff-url version-checked-dep)
-                    (catch ExceptionInfo ex
-                      (when-not (u.ex/ex-timeout? ex)
-                        (throw ex))))]
+  [{:as version-checked-dep :keys [version latest-version]}]
+  (if-let [url (try
+                 (when (and version latest-version
+                            (not (u.ex/ex-timeout? latest-version)))
+                   (diff/get-diff-url version-checked-dep))
+                 (catch ExceptionInfo ex
+                   (when-not (u.ex/ex-timeout? ex)
+                     (throw ex))))]
     (assoc version-checked-dep :diff-url url)
     version-checked-dep))
 
