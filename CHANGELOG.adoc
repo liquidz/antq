@@ -1,6 +1,8 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+
+== 1.9.867 (2022-07-22)
 // {{{
 === Fixed
 * https://github.com/liquidz/antq/issues/174[#174]: Fixed to skip checking diff for timed out dependencies.
