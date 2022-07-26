@@ -71,3 +71,7 @@
       (swap! count-atom inc)
       (log/async-print
        (progress-text {:total-count total-count :current-count @count-atom})))))
+
+(defmethod report/deinit-progress "table"
+  [_ _]
+  (println ""))
