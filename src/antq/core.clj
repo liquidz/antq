@@ -177,7 +177,8 @@
                          deps)
         uniq-deps (distinct-deps org-deps)
         _ (report/init-progress uniq-deps options)
-        uniq-deps-with-vers (pmap #(assoc-versions % options) uniq-deps)
+        uniq-deps-with-vers (doall (pmap #(assoc-versions % options) uniq-deps))
+        _ (report/deinit-progress uniq-deps options)
         assoc-latest-version* #(assoc-latest-version % options)]
     (->> org-deps
          (pmap #(complete-versions-by % uniq-deps-with-vers))

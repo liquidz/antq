@@ -53,7 +53,7 @@
   [{:keys [width total-count current-count]}]
   (let [width (or width 50)
         ratio (int (* width (/ current-count total-count)))]
-    (format "[ %s%s ] %d/%d\r"
+    (format "[%s%s] %d/%d\r"
             (apply str (repeat ratio "#"))
             (apply str (repeat (- width ratio) "-"))
             current-count
@@ -71,3 +71,7 @@
       (swap! count-atom inc)
       (log/async-print
        (progress-text {:total-count total-count :current-count @count-atom})))))
+
+(defmethod report/deinit-progress "table"
+  [_ _]
+  (println ""))

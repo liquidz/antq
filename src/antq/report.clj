@@ -21,3 +21,9 @@
     (:reporter options)))
 
 (defmethod run-progress :default [_ _] nil)
+
+(defmulti deinit-progress
+  (fn [_dep options]
+    (:reporter options)))
+
+(defmethod deinit-progress :default [_ _] nil)
