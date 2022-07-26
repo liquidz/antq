@@ -1,6 +1,8 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+
+== 1.9.874 (2022-07-26)
 // {{{
 === Changed
 * Bumped kaocha to 1.69.1069.
