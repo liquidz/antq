@@ -1,7 +1,7 @@
 {:paths ["src"]
  :deps
  {org.clojure/clojure {:mvn/version "1.11.1"}
-  org.clojure/data.xml {:mvn/version "0.2.0-alpha6"}
+  org.clojure/data.xml {:mvn/version "0.2.0-alpha7"}
   org.clojure/data.zip {:mvn/version "1.0.0"}
   org.clojure/tools.cli {:mvn/version "1.0.206"}
   org.clojure/core.async {:mvn/version "1.5.648"}
