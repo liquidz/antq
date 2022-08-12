@@ -25,7 +25,7 @@
        ;; NOTE: To include org.slf4j/slf4j-nop
        :aliases [:nop]
        ;; NOTE: does not contain src/leiningen
-       :src-dirs ["src/antq"])
+       :source-dirs ["src/antq"])
       (build-edn/uberjar)))
 
 (defn install
