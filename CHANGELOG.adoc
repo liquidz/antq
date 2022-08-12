@@ -1,6 +1,17 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+// {{{
+=== Changed
+* Bumped data.xml to 0.2.0-alpha7.
+* Bumped build.edn to 0.7.145.
+* Bumped tools.deps.alpha to 0.14.1222.
+
+=== Removed
+* *BREAKING*: Dropped support for Clojure 1.9.
+** Basically, antq could work regardless of the Clojure version which your project depends.
+** If you have a trouble, please see link:./doc/non-supported-clojure-version.adoc[here].
+// }}}
 
 == 1.9.874 (2022-07-26)
 // {{{
@@ -246,7 +257,7 @@ All notable changes to this project will be documented in this file. This change
 
 === Removed
 * *BREAKING*: Drop support for Clojure 1.8.
-** If you'd like to use with 1.8.0 or earlier, please see link:./doc/clojure-1.8.adoc[here].
+** If you'd like to use with 1.8.0 or earlier, please see link:./doc/non-supported-clojure-version.adoc[here].
 // }}}
 
 == 0.16.3 (2021-08-14)
