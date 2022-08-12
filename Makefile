@@ -4,7 +4,7 @@ outdated:
 
 .PHONY: test
 test: install
-	clojure -M:dev:1.9:test
+	clojure -M:dev:1.10:test
 	clojure -M:dev:test
 	script/integration_test.sh
 
