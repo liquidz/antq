@@ -5,19 +5,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: DeLaGuardo/setup-clj-kondo@master
+      - uses: DeLaGuardo/setup-clojure@master
         with:
-          version: '2022.06.22'
+          clj-kondo: latest
       - run: clj-kondo --lint src:test --config '{:output {:pattern "::{{level}} file={{filename}},line={{row}},col={{col}}::{{message}}"}}'
 
   cljstyle:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: 0918nobita/setup-cljstyle@v0.5.4
+      - uses: DeLaGuardo/setup-clojure@master
         with:
-          cljstyle-version: 0.15.0
-      - run: cljstyle check
+          cljstyle: latest
+      - run: cljstyle check --report -v
+
   shellcheck:
     runs-on: ubuntu-latest
     steps:
