@@ -13,7 +13,8 @@ image:https://img.shields.io/badge/docker-automated-blue["GitHub Container Regis
 [NOTE]
 ====
 Antq requires Clojure 1.10.0 or later. +
-If you'd like to use with 1.8.0 or earlier, please see link:./doc/non-supported-clojure-version.adoc[here].
+Basically, antq could work regardless of the Clojure version which your project depends. +
+If you have a trouble, please see link:./doc/non-supported-clojure-version.adoc[here].
 ====
 
 == Supported files
