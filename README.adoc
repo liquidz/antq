@@ -12,8 +12,8 @@ image:https://img.shields.io/badge/docker-automated-blue["GitHub Container Regis
 
 [NOTE]
 ====
-Antq requires Clojure 1.9.0 or later. +
-If you'd like to use with 1.8.0 or earlier, please see link:./doc/clojure-1.8.adoc[here].
+Antq requires Clojure 1.10.0 or later. +
+If you'd like to use with 1.8.0 or earlier, please see link:./doc/non-supported-clojure-version.adoc[here].
 ====
 
 == Supported files
@@ -74,7 +74,8 @@ Or add the following alias to your `$HOME/.clojure/deps.edn`.
 ----
 {
  :aliases
- {:outdated {:extra-deps {com.github.liquidz/antq {:mvn/version "RELEASE"}}
+ {:outdated {;; Note that it is `:deps`, not `:extra-deps`
+             :deps {com.github.liquidz/antq {:mvn/version "RELEASE"}}
              :main-opts ["-m" "antq.core"]}}
  }
 ----
@@ -298,7 +299,7 @@ Skip checking diff between deps' versions. Disabled by default.
 * link:./doc/maven-s3-repos.adoc[Maven S3 reposhere].
 * link:./doc/avoid-slf4j-warnings.adoc[Avoid SLF4J warnings]
 * link:./doc/latest-version-of-a-specific-library.adoc[Latest version of a specific library]
-* link:./doc/clojure-1.8.adoc[Antq with Clojure 1.8.0 or earlier]
+* link:./doc/non-supported-clojure-version.adoc[Antq with non supported Clojure version]
 * link:./doc/gradle.adoc[Work with Gradle]
 * link:./doc/proxy.adoc[Run behind proxy]
 * link:./doc/timeout.adoc[Timeouts]
