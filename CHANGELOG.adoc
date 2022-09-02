@@ -2,6 +2,12 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 
+// {{{
+=== Changed
+* Bumped clj-yaml to 0.7.109.
+* Bumped deep-diff2 to 2.4.138.
+// }}}
+
 == 2.0.889 (2022-08-12)
 // {{{
 === Fixed
