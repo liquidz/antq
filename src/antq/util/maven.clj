@@ -158,7 +158,7 @@
   [^Model model]
   (.getUrl model))
 
-(defn get-scm
+(defn get-model-scm
   ^Scm
   [^Model model]
   (.getScm model))

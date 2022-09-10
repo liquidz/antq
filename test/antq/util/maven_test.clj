@@ -113,7 +113,7 @@
 
 (t/deftest get-scm-url-test
   (let [model (sut/read-pom test-pom-path)
-        scm (sut/get-scm model)]
+        scm (sut/get-model-scm model)]
     (t/is (= "https://github.com/liquidz/antq"
              (sut/get-scm-url scm)))))
 

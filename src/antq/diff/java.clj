@@ -57,7 +57,7 @@
                              (dep->pom-url)
                              (u.mvn/read-pom))]
       (let [scm-url (some-> model
-                            (u.mvn/get-scm)
+                            (u.mvn/get-model-scm)
                             (u.mvn/get-scm-url))
             project-url (u.mvn/get-model-url model)]
         (some-> (or scm-url project-url)
