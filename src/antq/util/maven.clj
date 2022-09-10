@@ -153,7 +153,7 @@
                 (log/warning (str "Fetching pom from " url " failed because of the following error: " (.getMessage e)))))
             (recur (inc i)))))))
 
-(defn get-url
+(defn get-model-url
   ^String
   [^Model model]
   (.getUrl model))

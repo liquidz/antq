@@ -59,7 +59,7 @@
       (let [scm-url (some-> model
                             (u.mvn/get-scm)
                             (u.mvn/get-scm-url))
-            project-url (u.mvn/get-url model)]
+            project-url (u.mvn/get-model-url model)]
         (some-> (or scm-url project-url)
                 (u.url/ensure-https)
                 (u.url/ensure-git-https-url))))
