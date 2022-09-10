@@ -2,6 +2,7 @@
   (:require
    [antq.diff :as diff]
    [antq.log :as log]
+   [antq.util.function :as u.fn]
    [antq.util.git :as u.git]
    [antq.util.maven :as u.mvn]
    [antq.util.url :as u.url]
@@ -16,16 +17,6 @@
     RemoteRepository)
    (org.eclipse.aether.resolution
     ArtifactRequest)))
-
-(defn memoize-by
-  [f key-fn]
-  (let [mem (atom {})]
-    (fn [m & args]
-      (if-let [res (get @mem (get m key-fn))]
-        res
-        (let [ret (apply f m args)]
-          (swap! mem assoc (get m key-fn) ret)
-          ret)))))
 
 (defn- get-repository-url*
   [{:keys [name version] :as dep}]
@@ -43,7 +34,7 @@
               (.getUrl)))
     ;; Skip showing diff URL when fetching repository URL is failed
     (catch Exception _ nil)))
-(def get-repository-url (memoize-by get-repository-url* :name))
+(def get-repository-url (u.fn/memoize-by get-repository-url* :name))
 
 (defn- dep->pom-url
   [dep]
@@ -74,7 +65,7 @@
                 (u.url/ensure-git-https-url))))
     ;; Skip showing diff URL when POM file is not found
     (catch java.io.FileNotFoundException _ nil)))
-(def get-scm-url (memoize-by get-scm-url* :name))
+(def get-scm-url (u.fn/memoize-by get-scm-url* :name))
 
 (defmethod diff/get-diff-url :java
   [{:as dep :keys [version latest-version]}]
