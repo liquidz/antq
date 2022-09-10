@@ -30,7 +30,7 @@
 (defn- get-repository-url*
   [{:keys [name version] :as dep}]
   (try
-    (let [opts (u.mvn/dep->opts dep)
+    (let [opts (u.mvn/dep->repository-opts dep)
           {:keys [^RepositorySystem system
                   ^DefaultRepositorySystemSession  session
                   ^Artifact artifact

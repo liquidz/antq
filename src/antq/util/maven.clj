@@ -53,7 +53,7 @@
     (str/includes? (str/lower-case s) "snapshot")
     false))
 
-(defn dep->opts
+(defn dep->repository-opts
   [dep]
   {:repositories (-> default-repos
                      (merge (:repositories dep))

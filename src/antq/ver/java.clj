@@ -61,5 +61,5 @@
 (defmethod ver/get-sorted-versions :java
   [dep options]
   (get-sorted-versions-by-name (:name dep)
-                               (u.mvn/dep->opts dep)
+                               (u.mvn/dep->repository-opts dep)
                                options))
