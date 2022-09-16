@@ -2,6 +2,7 @@
   (:require
    [antq.constant :as const]
    [antq.util.async :as u.async]
+   [antq.util.dep :as u.dep]
    [antq.util.exception :as u.ex]
    [antq.util.maven :as u.mvn]
    [antq.ver :as ver]
@@ -61,5 +62,5 @@
 (defmethod ver/get-sorted-versions :java
   [dep options]
   (get-sorted-versions-by-name (:name dep)
-                               (u.mvn/dep->repository-opts dep)
+                               (u.dep/repository-opts dep)
                                options))

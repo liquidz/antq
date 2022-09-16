@@ -53,13 +53,6 @@
     (str/includes? (str/lower-case s) "snapshot")
     false))
 
-(defn dep->repository-opts
-  [dep]
-  {:repositories (-> default-repos
-                     (merge (:repositories dep))
-                     (normalize-repos))
-   :snapshots? (snapshot? (:version dep))})
-
 (defn ensure-username-or-password
   [x]
   (if (string? x)

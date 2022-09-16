@@ -2,6 +2,7 @@
   (:require
    [antq.diff :as diff]
    [antq.log :as log]
+   [antq.util.dep :as u.dep]
    [antq.util.function :as u.fn]
    [antq.util.git :as u.git]
    [antq.util.maven :as u.mvn]
@@ -21,7 +22,7 @@
 (defn- get-repository-url*
   [{:keys [name version] :as dep}]
   (try
-    (let [opts (u.mvn/dep->repository-opts dep)
+    (let [opts (u.dep/repository-opts dep)
           {:keys [^RepositorySystem system
                   ^DefaultRepositorySystemSession  session
                   ^Artifact artifact

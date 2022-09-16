@@ -1,5 +1,6 @@
 (ns antq.util.dep
   (:require
+   [antq.util.maven :as u.mvn]
    [clojure.java.io :as io]
    [clojure.string :as str])
   (:import
@@ -27,6 +28,13 @@
                      (seq dep-name) (conj (symbol dep-name)))]
     (cond-> candidates
       (= group-id artifact-id) (conj (symbol group-id)))))
+
+(defn repository-opts
+  [dep]
+  {:repositories (-> u.mvn/default-repos
+                     (merge (:repositories dep))
+                     (u.mvn/normalize-repos))
+   :snapshots? (u.mvn/snapshot? (:version dep))})
 
 (defmulti normalize-version-by-name
   (fn [dep] (:name dep)))
