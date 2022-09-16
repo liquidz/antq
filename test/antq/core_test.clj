@@ -1,8 +1,8 @@
 (ns antq.core-test
   (:require
    [antq.core :as sut]
-   [antq.diff.java :as d.java]
    [antq.record :as r]
+   [antq.util.dep :as u.dep]
    [antq.util.exception :as u.ex]
    [antq.util.git :as u.git]
    [antq.ver :as ver]
@@ -172,7 +172,7 @@
 
 (t/deftest assoc-diff-url-test
   (let [dummy-dep {:type :java :name "foo/bar" :version "1" :latest-version "2"}]
-    (with-redefs [d.java/get-scm-url (constantly "https://github.com/foo/bar")
+    (with-redefs [u.dep/get-scm-url (constantly "https://github.com/foo/bar")
                   u.git/tags-by-ls-remote (constantly ["1" "2"])]
       (t/is (= (assoc dummy-dep :diff-url "https://github.com/foo/bar/compare/1...2")
                (sut/assoc-diff-url dummy-dep)))
@@ -182,7 +182,7 @@
 
   (t/testing "timed out to fetch diffs"
     (let [dummy-dep {:type :java :name "foo/bar" :version "1" :latest-version "2"}]
-      (with-redefs [d.java/get-scm-url (fn [& _] (throw (u.ex/ex-timeout "test")))]
+      (with-redefs [u.dep/get-scm-url (fn [& _] (throw (u.ex/ex-timeout "test")))]
         (t/is (= dummy-dep
                  (sut/assoc-diff-url dummy-dep))))))
 
@@ -191,7 +191,7 @@
                          :name "foo/bar"
                          :version "1"
                          :latest-version (u.ex/ex-timeout "test")}]
-      (with-redefs [d.java/get-scm-url (fn [& _] (throw (Exception. "must not be called")))]
+      (with-redefs [u.dep/get-scm-url (fn [& _] (throw (Exception. "must not be called")))]
         (t/is (= timed-out-dep
                  (sut/assoc-diff-url timed-out-dep)))))))
 
