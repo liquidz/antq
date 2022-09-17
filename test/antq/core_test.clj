@@ -3,6 +3,7 @@
    [antq.core :as sut]
    [antq.record :as r]
    [antq.util.dep :as u.dep]
+   [antq.changelog :as changelog]
    [antq.util.exception :as u.ex]
    [antq.util.git :as u.git]
    [antq.ver :as ver]
@@ -172,13 +173,25 @@
 
 (t/deftest assoc-diff-url-test
   (let [dummy-dep {:type :java :name "foo/bar" :version "1" :latest-version "2"}]
-    (with-redefs [u.dep/get-scm-url (constantly "https://github.com/foo/bar")
-                  u.git/tags-by-ls-remote (constantly ["1" "2"])]
-      (t/is (= (assoc dummy-dep :diff-url "https://github.com/foo/bar/compare/1...2")
-               (sut/assoc-diff-url dummy-dep)))
+    (t/testing "changelog"
+      (with-redefs [u.dep/get-scm-url (constantly "https://github.com/foo/bar")
+                    u.git/tags-by-ls-remote (constantly ["v1" "v2"])
+                    changelog/get-root-file-names (constantly ["CHANGELOG.md"])]
+        (t/is (= (assoc dummy-dep :diff-url "https://github.com/foo/bar/blob/v2/CHANGELOG.md")
+                 (sut/assoc-diff-url dummy-dep)))
 
-      (t/is (= (assoc dummy-dep :type :test)
-               (sut/assoc-diff-url (assoc dummy-dep :type :test))))))
+        (t/is (= (assoc dummy-dep :type :test)
+                 (sut/assoc-diff-url (assoc dummy-dep :type :test))))))
+
+    (t/testing "diff"
+      (with-redefs [u.dep/get-scm-url (constantly "https://github.com/foo/bar")
+                    u.git/tags-by-ls-remote (constantly ["v1" "v2"])
+                    changelog/get-root-file-names (constantly [])]
+        (t/is (= (assoc dummy-dep :diff-url "https://github.com/foo/bar/compare/v1...v2")
+                 (sut/assoc-diff-url dummy-dep)))
+
+        (t/is (= (assoc dummy-dep :type :test)
+                 (sut/assoc-diff-url (assoc dummy-dep :type :test)))))))
 
   (t/testing "timed out to fetch diffs"
     (let [dummy-dep {:type :java :name "foo/bar" :version "1" :latest-version "2"}]
