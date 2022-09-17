@@ -12,9 +12,8 @@
   (when-let [url (u.dep/get-scm-url dep)]
     (cond
       (str/starts-with? url "https://github.com/")
-      (let [tags (u.git/tags-by-ls-remote url)
-            current (first (filter #(str/includes? % version) tags))
-            latest (or (first (filter #(str/includes? % latest-version) tags))
+      (let [current (u.git/find-tag url version)
+            latest (or (u.git/find-tag url latest-version)
                        ;; If there isn't a tag for latest version
                        "head")]
         (if current
