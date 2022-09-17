@@ -38,14 +38,14 @@
          (pprint/print-table [:file :name :current :latest]))
     (println "All dependencies are up-to-date."))
 
-  ;; Show diff URLs
+  ;; Show changes URLs
   (let [urls (->> deps
                   (filter :latest-version)
                   (sort u.dep/compare-deps)
-                  (keep :diff-url)
+                  (keep :changes-url)
                   (distinct))]
     (when (seq urls)
-      (println "\nAvailable diffs:")
+      (println "\nAvailable changes:")
       (doseq [u urls]
         (println "-" u)))))
 

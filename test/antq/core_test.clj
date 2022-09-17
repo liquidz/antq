@@ -171,33 +171,33 @@
                 (test-dep {:name "bob" :version "2.0.0" :latest-version "3.0.0"})]
                (sut/outdated-deps deps {:exclude ["alice@3.0.0"]}))))))
 
-(t/deftest assoc-diff-url-test
+(t/deftest assoc-changes-url-test
   (let [dummy-dep {:type :java :name "foo/bar" :version "1" :latest-version "2"}]
     (t/testing "changelog"
       (with-redefs [u.dep/get-scm-url (constantly "https://github.com/foo/bar")
                     u.git/tags-by-ls-remote (constantly ["v1" "v2"])
                     changelog/get-root-file-names (constantly ["CHANGELOG.md"])]
-        (t/is (= (assoc dummy-dep :diff-url "https://github.com/foo/bar/blob/v2/CHANGELOG.md")
-                 (sut/assoc-diff-url dummy-dep)))
+        (t/is (= (assoc dummy-dep :changes-url "https://github.com/foo/bar/blob/v2/CHANGELOG.md")
+                 (sut/assoc-changes-url dummy-dep)))
 
         (t/is (= (assoc dummy-dep :type :test)
-                 (sut/assoc-diff-url (assoc dummy-dep :type :test))))))
+                 (sut/assoc-changes-url (assoc dummy-dep :type :test))))))
 
     (t/testing "diff"
       (with-redefs [u.dep/get-scm-url (constantly "https://github.com/foo/bar")
                     u.git/tags-by-ls-remote (constantly ["v1" "v2"])
                     changelog/get-root-file-names (constantly [])]
-        (t/is (= (assoc dummy-dep :diff-url "https://github.com/foo/bar/compare/v1...v2")
-                 (sut/assoc-diff-url dummy-dep)))
+        (t/is (= (assoc dummy-dep :changes-url "https://github.com/foo/bar/compare/v1...v2")
+                 (sut/assoc-changes-url dummy-dep)))
 
         (t/is (= (assoc dummy-dep :type :test)
-                 (sut/assoc-diff-url (assoc dummy-dep :type :test)))))))
+                 (sut/assoc-changes-url (assoc dummy-dep :type :test)))))))
 
   (t/testing "timed out to fetch diffs"
     (let [dummy-dep {:type :java :name "foo/bar" :version "1" :latest-version "2"}]
       (with-redefs [u.dep/get-scm-url (fn [& _] (throw (u.ex/ex-timeout "test")))]
         (t/is (= dummy-dep
-                 (sut/assoc-diff-url dummy-dep))))))
+                 (sut/assoc-changes-url dummy-dep))))))
 
   (t/testing "timed out dependencies"
     (let [timed-out-dep {:type :java
@@ -206,7 +206,7 @@
                          :latest-version (u.ex/ex-timeout "test")}]
       (with-redefs [u.dep/get-scm-url (fn [& _] (throw (Exception. "must not be called")))]
         (t/is (= timed-out-dep
-                 (sut/assoc-diff-url timed-out-dep)))))))
+                 (sut/assoc-changes-url timed-out-dep)))))))
 
 (t/deftest unverified-deps-test
   (let [dummy-deps [{:type :java :name "antq/antq"}

@@ -7,5 +7,7 @@
   (->> deps
        ;; Convert a record to just a map
        (map #(merge {} %))
+       ;; NOTE Add diff-url for backward compatibility
+       (map #(assoc % :diff-url (:changes-url %)))
        (pr-str)
        (println)))
