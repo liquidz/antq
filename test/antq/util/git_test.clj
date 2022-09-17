@@ -57,4 +57,7 @@
     (t/is (= "v1.0" (sut/find-tag "dummy" "1")))
     (t/is (= "v1.0" (sut/find-tag "dummy" "1.")))
     (t/is (= "1.0" (sut/find-tag "dummy" "1.0")))
-    (t/is (nil? (sut/find-tag "dummy" "2")))))
+    (t/is (nil? (sut/find-tag "dummy" "2")))
+    (t/is (nil? (sut/find-tag "dummy" nil)))
+    (t/is (nil? (sut/find-tag nil "1")))
+    (t/is (nil? (sut/find-tag nil nil)))))
