@@ -1,9 +1,9 @@
 (ns antq.core-test
   (:require
+   [antq.changelog :as changelog]
    [antq.core :as sut]
    [antq.record :as r]
    [antq.util.dep :as u.dep]
-   [antq.changelog :as changelog]
    [antq.util.exception :as u.ex]
    [antq.util.git :as u.git]
    [antq.ver :as ver]
