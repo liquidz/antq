@@ -8,6 +8,7 @@
 (ns antq.core
   (:gen-class)
   (:require
+   [antq.changelog :as changelog]
    [antq.dep.babashka :as dep.bb]
    [antq.dep.boot :as dep.boot]
    [antq.dep.clojure :as dep.clj]
@@ -191,7 +192,8 @@
   (if-let [url (try
                  (when (and version latest-version
                             (not (u.ex/ex-timeout? latest-version)))
-                   (diff/get-diff-url version-checked-dep))
+                   (or (changelog/get-changelog-url version-checked-dep)
+                       (diff/get-diff-url version-checked-dep)))
                  (catch ExceptionInfo ex
                    (when-not (u.ex/ex-timeout? ex)
                      (throw ex))))]
