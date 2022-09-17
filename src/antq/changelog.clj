@@ -2,6 +2,7 @@
   (:require
    [antq.log :as log]
    [antq.util.dep :as u.dep]
+   [antq.util.git :as u.git]
    [antq.util.maven :as u.mvn]
    [antq.util.url :as u.url]
    [clojure.java.io :as io]
@@ -50,22 +51,21 @@
   (when-let [url (get-git-url version-checked-dep)]
     (cond
       (str/starts-with? url "https://github.com/")
-      (let [file-names (get-root-file-names url
-                                            (symbol (:name version-checked-dep))
-                                            latest-version)
+      (let [lib (symbol (:name version-checked-dep))
+            latest-tag (or (u.git/find-tag url latest-version)
+                           ;; If there isn't a tag for latest version
+                           "head")
+            file-names (get-root-file-names url lib latest-tag)
             changelog (when file-names
                         (some #(and (contains? changelog-filenames (str/lower-case %)) %)
                               file-names))]
         (when changelog
           (str (u.url/ensure-git-https-url url)
-               "blob/" latest-version "/" changelog)))
+               "blob/" latest-tag "/" changelog)))
 
       :else
       (do (log/warning (str "Changelog is not supported for " url))
           nil))))
-
-
-
 
 (comment
   (require 'antq.record)
@@ -82,4 +82,11 @@
                                  :name "com.github.liquidz/antq"
                                  :version "1.1.0"
                                  :latest-version "1.2.0"
+                                 :repositories u.mvn/default-repos}))
+
+  (get-changelog-url
+   (antq.record/map->Dependency {:type :java
+                                 :name "org.babashka/sci"
+                                 :version "0.4.33"
+                                 :latest-version "0.4.33"
                                  :repositories u.mvn/default-repos})))
