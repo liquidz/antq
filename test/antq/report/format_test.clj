@@ -15,7 +15,7 @@
   (let [dummy-deps [(h/test-dep {:file "a" :name "foo" :version "1" :latest-version "2"})
                     (h/test-dep {:file "b" :name "bar" :version "1" :latest-version nil})
                     (h/test-dep {:file "c" :name "baz" :version "1" :latest-version "3"
-                                 :diff-url "https://example.com"})
+                                 :changes-url "https://example.com"})
                     (h/test-dep {:file "d" :name "old" :version "1" :latest-version nil
                                  :latest-name "new"})]]
 
@@ -31,4 +31,10 @@
               (with-out-str
                 (reporter
                  dummy-deps
-                 "::error file={{file}}::{{name}},{{version}},{{latest-version}},{{latest-name}}. {{diff-url}}")))))))
+                 "::error file={{file}}::{{name}},{{version}},{{latest-version}},{{latest-name}}. {{changes-url}}")))))
+
+    (t/testing "backward compatibility"
+      (t/is (= "https://example.com"
+               (str/trim
+                (with-out-str
+                  (reporter dummy-deps "{{diff-url}}"))))))))

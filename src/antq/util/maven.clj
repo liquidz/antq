@@ -53,13 +53,6 @@
     (str/includes? (str/lower-case s) "snapshot")
     false))
 
-(defn dep->opts
-  [dep]
-  {:repositories (-> default-repos
-                     (merge (:repositories dep))
-                     (normalize-repos))
-   :snapshots? (snapshot? (:version dep))})
-
 (defn ensure-username-or-password
   [x]
   (if (string? x)
@@ -153,12 +146,12 @@
                 (log/warning (str "Fetching pom from " url " failed because of the following error: " (.getMessage e)))))
             (recur (inc i)))))))
 
-(defn get-url
+(defn get-model-url
   ^String
   [^Model model]
   (.getUrl model))
 
-(defn get-scm
+(defn get-model-scm
   ^Scm
   [^Model model]
   (.getScm model))

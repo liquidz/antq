@@ -83,3 +83,12 @@
 
 (def tag-sha-by-ls-remote
   (memoize tag-sha-by-ls-remote*))
+
+(defn find-tag
+  [url s]
+  (when (and (seq url) (seq s))
+    (let [tags (tags-by-ls-remote url)]
+      (or
+       ;; If there is an exact match, it is preferred
+       (some #(and (= % s) %) tags)
+       (some #(and (str/includes? % s) %) tags)))))

@@ -24,7 +24,7 @@
 (t/deftest reporter-test
   (let [dummy-deps [(h/test-dep {:file "a" :name "foo" :version "1" :latest-version "2"})
                     (h/test-dep {:file "b" :name "bar" :version "1" :latest-version nil})
-                    (h/test-dep {:file "c" :name "baz" :version "2" :latest-version "3" :diff-url "here"})
+                    (h/test-dep {:file "c" :name "baz" :version "2" :latest-version "3" :changes-url "here"})
                     (h/test-dep {:file "c" :name "old" :version "1" :latest-version nil :latest-name "new"})]
         outputs (str/split-lines (with-out-str (reporter dummy-deps)))]
     (t/is (some #(and (str/includes? % "foo") (str/includes? % "1") (str/includes? % "2")) outputs))

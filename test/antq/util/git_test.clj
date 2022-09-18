@@ -51,3 +51,13 @@
              (#'sut/tag-sha-by-ls-remote* (dummy-url) "v1")))
     (t/is (= "dummy-sha6"
              (#'sut/tag-sha-by-ls-remote* (dummy-url) "v2")))))
+
+(t/deftest find-tag-test
+  (with-redefs [sut/tags-by-ls-remote (constantly ["v1.0" "1.0"])]
+    (t/is (= "v1.0" (sut/find-tag "dummy" "1")))
+    (t/is (= "v1.0" (sut/find-tag "dummy" "1.")))
+    (t/is (= "1.0" (sut/find-tag "dummy" "1.0")))
+    (t/is (nil? (sut/find-tag "dummy" "2")))
+    (t/is (nil? (sut/find-tag "dummy" nil)))
+    (t/is (nil? (sut/find-tag nil "1")))
+    (t/is (nil? (sut/find-tag nil nil)))))

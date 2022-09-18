@@ -6,7 +6,7 @@
    [clojure.string :as str]))
 
 (def ^:private default-outdated-message-format
-  "{{name}} {{version}} is outdated. Latest version is {{latest-version}}. {{diff-url}}")
+  "{{name}} {{version}} is outdated. Latest version is {{latest-version}}. {{changes-url}}")
 
 (def ^:private default-unverified-group-name-message-format
   "{{name}} will be unverified. Please consider using {{latest-name}}.")
@@ -17,8 +17,10 @@
 (defn apply-format-string
   [dep format-string]
   (let [dep (-> dep
-                (assoc :latest-version (u.ver/normalize-latest-version dep))
-                (select-keys [:file :name :version :latest-version :message :diff-url :latest-name]))]
+                (assoc :latest-version (u.ver/normalize-latest-version dep)
+                       ;; NOTE Add diff-url for backward compatibility
+                       :diff-url (:changes-url dep))
+                (select-keys [:file :name :version :latest-version :message :diff-url :changes-url :latest-name]))]
     (reduce-kv (fn [s k v]
                  (str/replace s (str "{{" (name k) "}}") (or v "")))
                format-string

@@ -8,6 +8,7 @@
 (ns antq.core
   (:gen-class)
   (:require
+   [antq.changelog :as changelog]
    [antq.dep.babashka :as dep.bb]
    [antq.dep.boot :as dep.boot]
    [antq.dep.clojure :as dep.clj]
@@ -92,7 +93,8 @@
    [nil "--download"]
    [nil "--ignore-locals"]
    [nil "--check-clojure-tools"]
-   [nil "--no-diff"]])
+   [nil "--no-diff"] ; deprecated (for backward compatibility)
+   [nil "--no-changes"]])
 
 (defn skip-artifacts?
   [dep options]
@@ -186,16 +188,17 @@
                     assoc-latest-version*))
          (remove ver/latest?))))
 
-(defn assoc-diff-url
+(defn assoc-changes-url
   [{:as version-checked-dep :keys [version latest-version]}]
   (if-let [url (try
                  (when (and version latest-version
                             (not (u.ex/ex-timeout? latest-version)))
-                   (diff/get-diff-url version-checked-dep))
+                   (or (changelog/get-changelog-url version-checked-dep)
+                       (diff/get-diff-url version-checked-dep)))
                  (catch ExceptionInfo ex
                    (when-not (u.ex/ex-timeout? ex)
                      (throw ex))))]
-    (assoc version-checked-dep :diff-url url)
+    (assoc version-checked-dep :changes-url url)
     version-checked-dep))
 
 (defn unverified-deps
@@ -254,8 +257,12 @@
                   (mark-only-newest-version-flag)
                   (unify-deps-having-only-newest-version-flag))
         outdated (cond->> (outdated-deps deps options)
-                   (not (:no-diff options)) (map assoc-diff-url)
-                   true (concat (unverified-deps deps)))]
+                   (and (not (:no-diff options))
+                        (not (:no-changes options)))
+                   (map assoc-changes-url)
+
+                   true
+                   (concat (unverified-deps deps)))]
     (report/reporter outdated options)
     (log/stop-async-logger! alog)
     outdated))

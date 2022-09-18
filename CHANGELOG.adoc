@@ -1,9 +1,20 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+// {{{
+=== Added
+* https://github.com/liquidz/antq/issues/84[#84]: Added support link for changelogs.
+
+=== Changed
+* Bumped data.xml to 0.2.0-alpha8.
+* Bumped clj-yaml to 0.7.110.
+* Renamed `--no-diff` option to `--no-changes`.
+** `--no-diff` option is still available, but *DEPRECATED*.
+* Renamed `diff-url` to `changes-url` in `format`, `json`, and `edn` reporter.
+** `diff-url` is still available, but *DEPRECATED*.
+// }}}
 
 == 2.0.895 (2022-09-02)
-
 // {{{
 === Changed
 * Bumped clj-yaml to 0.7.109.

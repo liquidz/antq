@@ -5,4 +5,8 @@
 
 (defmethod report/reporter "json"
   [deps _options]
-  (println (json/write-str deps)))
+  (->> deps
+       ;; NOTE Add diff-url for backward compatibility
+       (map #(assoc % :diff-url (:changes-url %)))
+       (json/write-str)
+       (println)))

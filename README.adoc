@@ -218,6 +218,7 @@ E.g.  `--error-format="::error file={{file}}::{{message}}"`
 
 You can use following variables:
 
+[cols="50,50a"]
 |===
 | Variable Name | Description
 
@@ -237,8 +238,15 @@ You can use following variables:
 | The latest artifact name.
 See details: https://github.com/clojars/clojars-web/wiki/Verified-Group-Names[Clojars Verified Group Names policy].
 
+| `{{changes-url}}`
+| The changes URL in Version Control System. (Nullable)
+
 | `{{diff-url}}`
-| The diff URL for Version Control System. (Nullable)
+| WARNING: DEPRECATED.
+Please use `changes-url` instead.
+
+The diff URL for Version Control System. (Nullable)
+
 
 | `{{message}}`
 | Default error message.
@@ -287,7 +295,14 @@ For java dependencies, ignore versions installed to your local Maven repository(
 Detect all tools installed in `~/.clojure/tools` as dependencies.
 You can also upgrade them with `--upgrade` option.
 
+=== --no-changes
+
+Skip checking changes between deps' versions. Disabled by default.
+
 === --no-diff
+
+WARNING: DEPRECATED.
+Please use `--no-changes` instead.
 
 Skip checking diff between deps' versions. Disabled by default.
 
