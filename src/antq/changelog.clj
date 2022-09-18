@@ -66,27 +66,3 @@
       :else
       (do (log/warning (str "Changelog is not supported for " url))
           nil))))
-
-(comment
-  (require 'antq.record)
-  ;(require 'antq.util.function)
-  (get-changelog-url
-   (antq.record/map->Dependency {:type :git-sha
-                                 :name "com.github.liquidz/antq"
-                                 :extra {:url "https://github.com/liquidz/antq.git"}
-                                 :version "1"
-                                 :latest-version "9b664f4b05be0d03366d418b1c4b50c5329726b4"}))
-
-  (get-changelog-url
-   (antq.record/map->Dependency {:type :java
-                                 :name "com.github.liquidz/antq"
-                                 :version "1.1.0"
-                                 :latest-version "1.2.0"
-                                 :repositories u.mvn/default-repos}))
-
-  (get-changelog-url
-   (antq.record/map->Dependency {:type :java
-                                 :name "org.babashka/sci"
-                                 :version "0.4.33"
-                                 :latest-version "0.4.33"
-                                 :repositories u.mvn/default-repos})))
