@@ -3,7 +3,6 @@
    [antq.log :as log]
    [antq.util.dep :as u.dep]
    [antq.util.git :as u.git]
-   [antq.util.maven :as u.mvn]
    [antq.util.url :as u.url]
    [clojure.java.io :as io]
    [clojure.string :as str]
