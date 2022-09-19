@@ -1,6 +1,13 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+// {{{
+=== Changed
+* Bumped kaocha to 1.70.1086.
+
+=== Fixed
+* https://github.com/liquidz/antq/issues/184[#184]: Fixed not to throw exception for checking changelogs.
+// }}}
 
 == 2.1.920 (2022-09-18)
 // {{{
