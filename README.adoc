@@ -113,9 +113,9 @@ Add the following dependency and alias to your `$HOME/.lein/profiles.clj`.
 ----
 {
  :user
- {:dependencies [[com.github.liquidz/antq "RELEASE"]]
-  :aliases {"outdated" ["run" "-m" "antq.core"]}
-  }
+ {:aliases {"outdated" ["with-profile" "antq" "run" "-m" "antq.core"]}}
+ :antq
+ {:dependencies [[com.github.liquidz/antq "RELEASE"]]}
  }
 ----
 Then, run `lein outdated`.
