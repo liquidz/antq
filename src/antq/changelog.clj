@@ -16,8 +16,12 @@
 
 (defn- silent-procure
   [url lib rev]
-  (binding [*err* (java.io.StringWriter.)]
-    (gitlibs/procure url lib rev)))
+  (try
+    (binding [*err* (java.io.StringWriter.)]
+      (gitlibs/procure url lib rev))
+    (catch Exception _
+      ;; Ignore exception for fallback to diff url
+      nil)))
 
 (defn- get-root-file-names
   [url lib rev]
