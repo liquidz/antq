@@ -8,7 +8,7 @@
   ;; NOTE: tools.deps.alpha v0.12.1098 or later does not work with CLojure 1.9.0
   org.clojure/tools.deps.alpha {:mvn/version "0.14.1222"}
   org.clojure/data.json {:mvn/version "2.4.0"}
-  clj-commons/clj-yaml {:mvn/version "0.7.110"}
+  clj-commons/clj-yaml {:mvn/version "0.7.169"}
   version-clj/version-clj {:mvn/version "2.0.2"}
   rewrite-clj/rewrite-clj {:mvn/version "1.1.45"}
   com.github.liquidz/rewrite-indented {:mvn/version "0.1.29"}}
