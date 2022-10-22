@@ -29,6 +29,17 @@
         (t/is (= "https://github.com/foo/git-sha/blob/2.0/CHANGELOG.adoc"
                  (sut/get-changelog-url dep))))))
 
+  (t/testing "git-tag-and-sha"
+    (let [dep (r/map->Dependency {:type :git-tag-and-sha
+                                  :name "foo/git-sha"
+                                  :extra {:url "https://github.com/foo/git-tag-and-sha"}
+                                  :version "1.0"
+                                  :latest-version "2.0"})]
+      (with-redefs [sut/get-root-file-names (constantly ["CHANGELOG.adoc"])
+                    u.git/tags-by-ls-remote (constantly ["v2.0" "2.0"])]
+        (t/is (= "https://github.com/foo/git-tag-and-sha/blob/2.0/CHANGELOG.adoc"
+                 (sut/get-changelog-url dep))))))
+
   (t/testing "github-tag"
     (let [dep (r/map->Dependency {:type :github-tag
                                   :name "foo/github-tag"
