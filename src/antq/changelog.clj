@@ -40,6 +40,10 @@
   [dep]
   (get-in dep [:extra :url]))
 
+(defmethod get-git-url :git-tag-and-sha
+  [dep]
+  (get-in dep [:extra :url]))
+
 (defmethod get-git-url :github-tag
   [dep]
   (format "https://github.com/%s"
