@@ -1,6 +1,8 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+
+== 2.1.946 (2022-11-11)
 // {{{
 === Changed
 * Bumped core.async to 1.6.673.
