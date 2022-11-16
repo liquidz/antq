@@ -94,6 +94,12 @@
       (get-relative-path-by-current-working-directory
        current-file-path local-root))))
 
+(defn- exclude?
+  [dep]
+  (-> (second dep)
+      (meta)
+      (contains? const/deps-exclude-key)))
+
 (defn extract-deps
   [file-path deps-edn-content-str & [loaded-dir-set]]
   (let [deps (atom [])
@@ -107,6 +113,7 @@
                        (->> form
                             (second)
                             (seq)
+                            (remove exclude?)
                             (swap! deps concat)))
                      form)
                    edn)
