@@ -8,10 +8,10 @@
 (defn- in-dependencies?
   [loc]
   (loop [loc (-> loc z/up z/up)]
-    (if (= :vector (z/tag loc))
-      (= :dependencies (-> loc z/left z/sexpr))
-      ;; skip elements like metadata
-      (recur (z/up loc)))))
+    (case (z/tag loc)
+      :meta (recur (z/up loc))
+      :vector (= :dependencies (-> loc z/left z/sexpr))
+      false)))
 
 (defn upgrade-dep
   [loc version-checked-dep]
