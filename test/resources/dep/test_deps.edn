@@ -20,6 +20,10 @@
         ;; local/root
         local-repo/local-repo {:local/root "./local"}
 
+        ;; metadata
+        short-meta ^:foo/bar {:mvn/version "2.5.8"}
+        full-meta ^{:foo/bar true} {:mvn/version "2.6.9"}
+
         ;; should be ignored
         local-repo/non-existing {:local/root "/path/to/non-existing-local/repo"}
         ;; invalid versions should be ignored

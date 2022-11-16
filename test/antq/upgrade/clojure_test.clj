@@ -46,6 +46,20 @@
                       :file (io/resource "dep/test_deps.edn")
                       :extra {:sha "123456789x123456789x123456789x123456789x"}}))
 
+(def ^:private dummy-short-meta-dep
+  (r/map->Dependency {:project :clojure
+                      :type :java
+                      :name "short-meta"
+                      :latest-version "9.0.0"
+                      :file (io/resource "dep/test_deps.edn")}))
+
+(def ^:private dummy-full-meta-dep
+  (r/map->Dependency {:project :clojure
+                      :type :java
+                      :name "full-meta"
+                      :latest-version "9.0.0"
+                      :file (io/resource "dep/test_deps.edn")}))
+
 (def ^:private dummy-no-version-dep
   (r/map->Dependency {:project :clojure
                       :type :java
@@ -122,6 +136,28 @@
                     :sha {:- "1234567890abcdefghijklmnopqrstuvwxyz1234"
                           :+ "9876543210abcdefghijklmnopqrstuvwxyz1234"}}}
                  (h/diff-deps from-deps to-deps))))))
+
+  (t/testing "short meta"
+    (let [from-deps (->> dummy-short-meta-dep
+                         :file
+                         (slurp)
+                         (dep.clj/extract-deps ""))
+          to-deps (->> dummy-short-meta-dep
+                       (upgrade/upgrader)
+                       (dep.clj/extract-deps ""))]
+      (t/is (= #{{:name "short-meta/short-meta" :version {:- "2.5.8" :+ "9.0.0"}}}
+               (h/diff-deps from-deps to-deps)))))
+
+  (t/testing "full meta"
+    (let [from-deps (->> dummy-full-meta-dep
+                         :file
+                         (slurp)
+                         (dep.clj/extract-deps ""))
+          to-deps (->> dummy-full-meta-dep
+                       (upgrade/upgrader)
+                       (dep.clj/extract-deps ""))]
+      (t/is (= #{{:name "full-meta/full-meta" :version {:- "2.6.9" :+ "9.0.0"}}}
+               (h/diff-deps from-deps to-deps)))))
 
   (t/testing "no corresponding value"
     (let [from-deps (->> dummy-no-version-dep
