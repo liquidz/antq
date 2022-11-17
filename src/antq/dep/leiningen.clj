@@ -1,5 +1,6 @@
 (ns antq.dep.leiningen
   (:require
+   [antq.constant :as const]
    [antq.record :as r]
    [antq.util.dep :as u.dep]
    [clojure.java.io :as io]
@@ -21,6 +22,11 @@
   [version]
   (and (string? version) (seq version)))
 
+(defn- exclude?
+  [v]
+  (-> (meta v)
+      (contains? const/deps-exclude-key)))
+
 (defn extract-deps
   [file-path project-clj-content-str]
   (let [dep-form? (atom false)
@@ -36,7 +42,10 @@
                       (and @dep-form?
                            (vector? form)
                            (vector? (first form)))
-                      (swap! deps concat form)
+                      (->> form
+                           (seq)
+                           (remove exclude?)
+                           (swap! deps concat))
 
                       (and @repos-form?
                            (vector? form)
