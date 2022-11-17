@@ -1,1 +1,3 @@
-{:deps {bb/core {:mvn/version "1.0.0"}}}
+{:deps {bb/core {:mvn/version "1.0.0"}
+        with/meta ^:foo/bar {:mvn/version "2.0.0"}
+        meta/ignore ^:antq/exclude {:mvn/version "3.0.0"}}}
