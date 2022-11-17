@@ -6,7 +6,9 @@
                   [baz "3.0.0" :scope "test"]
                   ^:foo/bar [with/meta "4.0.0"]
                   [ver-not-string :version]
-                  [ver-empty ""]])
+                  [ver-empty ""]
+                  ;; should be ignored
+                  ^:antq/exclude [meta/ignore "5.0.0"]])
 
 (set-env!
   :repositories #(conj % '["antq-test" {:url "s3://antq-repo/"}]))
