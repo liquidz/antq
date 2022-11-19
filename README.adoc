@@ -187,6 +187,9 @@ E.g.
 
 When you specified a version number, antq will report the latest version excluding only the specified version.
 
+You could also specify dependencies to exclude with `:antq/exclude` metadata.
+See link:./doc/exclusions.adoc[Exclusions] for more information.
+
 NOTE: You must specify `groupId/artifactId` for Java dependencies.
 
 === --directory=DIRECTORY
@@ -319,6 +322,7 @@ Skip checking diff between deps' versions. Disabled by default.
 * link:./doc/gradle.adoc[Work with Gradle]
 * link:./doc/proxy.adoc[Run behind proxy]
 * link:./doc/timeout.adoc[Timeouts]
+* link:./doc/exclusions.adoc[Exclusions]
 
 == License
 
