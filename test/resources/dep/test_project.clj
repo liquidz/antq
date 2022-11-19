@@ -2,7 +2,9 @@
   :dependencies [[foo/core "1.0.0"]
                  ^:inline-dep [bar "2.0.0" :exclusions [org.clojure/clojure]]
                  [ver-not-string :version]
-                 [ver-empty ""]]
+                 [ver-empty ""]
+                 ;; should be ignored
+                 ^:antq/exclude [meta-ignore "3.0.0"]]
 
   :plugins [[plug "4.0.0"]]
 

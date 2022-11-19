@@ -1,5 +1,6 @@
 (ns antq.dep.shadow
   (:require
+   [antq.constant :as const]
    [antq.record :as r]
    [antq.util.dep :as u.dep]
    [antq.util.env :as u.env]
@@ -26,13 +27,22 @@
    {'shadow/env read-env
     'env read-env}})
 
+(defn- exclude?
+  [v]
+  (-> (meta v)
+      (contains? const/deps-exclude-key)))
+
 (defn extract-deps
   [file-path shadow-cljs-edn-content-str]
   (let [deps (atom [])]
     (walk/postwalk (fn [form]
                      (when (and (sequential? form)
                                 (= :dependencies (first form)))
-                       (swap! deps concat (second form)))
+                       (->> form
+                            (second)
+                            (seq)
+                            (remove exclude?)
+                            (swap! deps concat)))
                      form)
                    (edn/read-string readers shadow-cljs-edn-content-str))
     (for [[dep-name version] @deps

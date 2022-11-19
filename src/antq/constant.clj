@@ -12,6 +12,10 @@
   "Keys for detecting dependencies in deps.edn"
   #{:deps :default-deps :extra-deps :override-deps :replace-deps})
 
+(def deps-exclude-key
+  "Keyword to ignore specific dependencies"
+  :antq/exclude)
+
 (def default-timeout-msec
   (u.env/getlong "ANTQ_DEFAULT_TIMEOUT" 10000))
 

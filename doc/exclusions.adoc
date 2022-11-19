@@ -1,0 +1,45 @@
+= Exclusions
+
+When you'd like to exclude specific dependencies, you could `--exclude` option as you know.
+
+Otherwise, the following ways are available.
+
+== Metadata in your project file
+
+`:antq/exclude` metadata is available for excluding dependencies.
+
+=== deps.edn
+[source,clojure]
+----
+{:deps {foo/bar ^:antq/exclude {:mvn/version "..."}}}
+----
+
+=== shadow-cljs.edn
+
+[source,clojure]
+----
+{:dependencies [^:antq/exclude [foo/bar "..."]]}
+----
+
+=== project.clj
+
+[source,clojure]
+----
+(defproject foo "0.1.0-SNAPSHOT"
+  :dependencies [^:antq/exclude [foo/bar "..."]]
+----
+
+=== build.boot
+
+[source,clojure]
+----
+(set-env!
+  :dependencies '[^:antq/exclude [foo/bar "..."]])
+----
+
+=== bb.edn
+
+[source,clojure]
+----
+{:deps {foo/bar ^:antq/exclude {:mvn/version "..."}}}
+----

@@ -7,8 +7,11 @@
 
 (defn- in-dependencies?
   [loc]
-  (-> loc z/up z/up z/left z/sexpr
-      (= :dependencies)))
+  (loop [loc (-> loc z/up z/up)]
+    (case (z/tag loc)
+      :meta (recur (z/up loc))
+      :vector (= :dependencies (-> loc z/left z/sexpr))
+      false)))
 
 (defn upgrade-dep
   [loc version-checked-dep]

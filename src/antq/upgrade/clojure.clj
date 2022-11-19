@@ -57,6 +57,14 @@
       :else
       loc)))
 
+(defn- skip-meta
+  [loc]
+  (if (= :meta (z/tag loc))
+    (-> loc
+        (z/down)
+        (z/right))
+    loc))
+
 (defn upgrade-dep
   [loc version-checked-dep]
   (let [name-set (u.dep/name-candidates (:name version-checked-dep))]
@@ -65,7 +73,9 @@
         (recur (if (in-deps? loc)
                  (or (some-> loc
                              ;; move to map
-                             (z/right) (z/down)
+                             (z/right)
+                             (skip-meta)
+                             (z/down)
                              (replace-versions version-checked-dep))
                      (z/next loc))
                  (z/next loc)))
