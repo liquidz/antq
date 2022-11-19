@@ -1,6 +1,16 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+// {{{
+=== Added
+* https://github.com/liquidz/antq/issues/190[#190]: Added support for `:antq/exlude` metadata to exclude specific dependencies in your project files.
+
+=== Changed
+* Bumped tools.deps.alpha to 0.15.1254.
+
+=== Fixed
+* https://github.com/liquidz/antq/issues/189[#189]: Fixed upgrader to work with dependencies which has metadata.
+// }}}
 
 == 2.1.946 (2022-11-11)
 // {{{
