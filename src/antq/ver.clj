@@ -6,7 +6,7 @@
 (def ^:private under-development-keywords
   #{"alpha" "beta" "rc"})
 
-(defn under-devleopment?
+(defn under-development?
   [s]
   (if-let [l (and s
                   (string? s)

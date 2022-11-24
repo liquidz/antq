@@ -144,8 +144,8 @@
 (defn- assoc-latest-version
   [dep options]
   (let [vers (cond->> (:_versions dep)
-               (not (ver/under-devleopment? (:version dep)))
-               (drop-while ver/under-devleopment?))
+               (not (ver/under-development? (:version dep)))
+               (drop-while ver/under-development?))
         vers (remove-skipping-versions vers (:name dep) options)
         latest-version (first vers)]
     (assoc dep :latest-version latest-version)))
