@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file. This change
 == 2.2.962 (2022-11-19)
 // {{{
 === Added
-* https://github.com/liquidz/antq/issues/190[#190]: Added support for `:antq/exlude` metadata to exclude specific dependencies in your project files.
+* https://github.com/liquidz/antq/issues/190[#190]: Added support for `:antq/exclude` metadata to exclude specific dependencies in your project files.
 
 === Changed
 * Bumped tools.deps.alpha to 0.15.1254.
