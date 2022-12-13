@@ -4,7 +4,7 @@
    [clojure.edn :as edn]
    [clojure.java.io :as io]
    [clojure.string :as str]
-   [clojure.tools.deps.alpha :as deps]))
+   [clojure.tools.deps :as deps]))
 
 (defn- tools-dir
   ^java.io.File []

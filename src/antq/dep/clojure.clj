@@ -7,8 +7,8 @@
    [clojure.edn :as edn]
    [clojure.java.io :as io]
    [clojure.string :as str]
-   [clojure.tools.deps.alpha :as alpha]
-   [clojure.tools.deps.alpha.extensions.git :as git]
+   [clojure.tools.deps :as deps]
+   [clojure.tools.deps.extensions.git :as git]
    [clojure.walk :as walk]))
 
 (def ^:private project-file "deps.edn")
@@ -17,7 +17,7 @@
 
 (defn user-deps-repository
   []
-  (let [file (io/file (alpha/user-deps-path))]
+  (let [file (io/file (deps/user-deps-path))]
     (when (.exists file)
       (-> file slurp edn/read-string :mvn/repos))))
 

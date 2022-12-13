@@ -3,7 +3,7 @@
    [antq.download :as sut]
    [antq.util.git :as u.git]
    [clojure.test :as t]
-   [clojure.tools.deps.alpha :as deps]))
+   [clojure.tools.deps :as deps]))
 
 (defn- test-download!
   [m]

@@ -4,8 +4,8 @@
    [antq.ver :as sut]
    [clojure.test :as t]))
 
-(t/deftest under-devleopment?-test
-  (t/are [expected in] (= expected (sut/under-devleopment? in))
+(t/deftest under-development?-test
+  (t/are [expected in] (= expected (sut/under-development? in))
     true "foo-alpha-bar"
     true "foo-beta-bar"
     true "foo-RC-bar"
