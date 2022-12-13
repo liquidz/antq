@@ -9,8 +9,8 @@
    [clojure.data.xml :as xml]
    [clojure.java.io :as io]
    [clojure.string :as str]
-   [clojure.tools.deps.alpha.util.maven :as deps.util.maven]
-   [clojure.tools.deps.alpha.util.session :as deps.util.session])
+   [clojure.tools.deps.util.maven :as deps.util.maven]
+   [clojure.tools.deps.util.session :as deps.util.session])
   (:import
    (java.net
     Authenticator
@@ -85,7 +85,7 @@
     settings))
 
 (def ^TransferListener custom-transfer-listener
-  "Copy from clojure.tools.deps.alpha.util.maven/console-listener
+  "Copy from clojure.tools.deps.util.maven/console-listener
   But no outputs for `transferStarted`"
   (reify TransferListener
     (transferStarted [_ _event])

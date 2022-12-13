@@ -5,7 +5,7 @@
    [clojure.data.xml :as xml]
    [clojure.java.io :as io]
    [clojure.test :as t]
-   [clojure.tools.deps.alpha.util.maven :as deps.util.maven])
+   [clojure.tools.deps.util.maven :as deps.util.maven])
   (:import
    java.util.UUID
    (org.apache.maven.settings

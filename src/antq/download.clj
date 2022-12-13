@@ -1,8 +1,8 @@
 (ns antq.download
   (:require
    [antq.util.git :as u.git]
-   [clojure.tools.deps.alpha :as deps]
-   [clojure.tools.deps.alpha.util.maven :as mvn]))
+   [clojure.tools.deps :as deps]
+   [clojure.tools.deps.util.maven :as mvn]))
 
 (defmulti dep->deps-map :type)
 
