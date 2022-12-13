@@ -1,6 +1,8 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+
+== 2.2.970 (2022-12-13)
 // {{{
 === Changed
 * https://github.com/liquidz/antq/issues/195[#195]: Updated to use clojure/tools.deps instead of tools.deps.alpha.
