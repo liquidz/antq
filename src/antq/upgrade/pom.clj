@@ -1,10 +1,17 @@
 (ns antq.upgrade.pom
   (:require
+   [antq.log :as log]
    [antq.upgrade :as upgrade]
    [clojure.data.xml :as xml]
    [clojure.java.io :as io]
    [clojure.string :as str]
    [clojure.zip :as zip]))
+
+(defn- find-version [loc]
+  (loop [loc loc]
+    (if (= "version" (some-> (zip/node loc) :tag name))
+      loc
+      (recur (zip/right loc)))))
 
 (defn- target-dependency?
   [loc group-id artifact-id]
@@ -19,12 +26,18 @@
            (some?))
       false)))
 
+(defn- property-version?
+  [loc]
+  (let [loc (find-version loc)
+        {:keys [content]} (zip/node loc)
+        current-version (first content)]
+    (some? (re-seq #"\$\{.+?\}" current-version))))
+
 (defn- edit-version
   [loc new-version]
-  (loop [loc loc]
-    (if (= "version" (some-> (zip/node loc) :tag name))
-      (zip/edit loc #(assoc % :content [new-version]))
-      (recur (zip/right loc)))))
+  (-> loc
+      (find-version)
+      (zip/edit #(assoc % :content [new-version]))))
 
 (defn upgrade-dep
   [loc version-checked-dep]
@@ -33,7 +46,12 @@
       (if (zip/end? loc)
         (zip/root loc)
         (if (target-dependency? loc group-id artifact-id)
-          (recur (edit-version loc (:latest-version version-checked-dep)))
+          (if (property-version? loc)
+            (do (log/info
+                 (format "Skipped to upgrade %s because the version is managed by properties."
+                         (:name version-checked-dep)))
+                (recur (zip/next loc)))
+            (recur (edit-version loc (:latest-version version-checked-dep))))
           (recur (zip/next loc)))))))
 
 (defmethod upgrade/upgrader :pom
