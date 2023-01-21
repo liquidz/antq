@@ -33,3 +33,11 @@
                (contains? % :sha)
                (update :sha (fn [m] (merge {} m)))))
        (set)))
+
+(defn diff-lines
+  [expected-lines actual-lines]
+  (->> (ddiff/diff expected-lines
+                   actual-lines)
+       (filter #(instance? Mismatch %))
+       (map #(select-keys % [:- :+]))
+       (set)))
