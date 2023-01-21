@@ -2,10 +2,12 @@
   (:require
    [antq.dep.pom :as dep.pom]
    [antq.record :as r]
+   [lambdaisland.deep-diff2 :as ddiff]
    [antq.test-helper :as h]
    [antq.upgrade :as upgrade]
    [antq.upgrade.pom]
    [clojure.java.io :as io]
+   [clojure.string :as str]
    [clojure.test :as t])
   (:import
    java.io.File))
@@ -21,7 +23,7 @@
   (r/map->Dependency {:project :pom
                       :type :java
                       :name "org.clojure/clojure"
-                      :latest-version "1.11.1"
+                      :latest-version "9.0.0"
                       :file (io/file (io/resource "dep/test_pom_properties.xml"))}))
 
 (t/deftest upgrade-dep-test
@@ -51,6 +53,14 @@
                    (upgrade/upgrader)
                    (spit tmp-file))
             to-deps (dep.pom/extract-deps "" tmp-file)]
-        (t/is (empty? (h/diff-deps from-deps to-deps))))
+        (t/is (= #{{:name "org.clojure/clojure" :version {:- "1.4.0" :+ "9.0.0"}}}
+                 (h/diff-deps from-deps to-deps)))
+
+        (t/testing "properties should be updated"
+          (t/is (= #{{:- "    <clojure.version>1.4.0</clojure.version>"
+                      :+ "    <clojure.version>9.0.0</clojure.version>"}}
+                   (h/diff-lines
+                    (str/split-lines (slurp (:file dummy-prop-java-dep)))
+                    (str/split-lines (slurp tmp-file)))))))
       (finally
         (.delete tmp-file)))))
