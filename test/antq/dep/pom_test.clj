@@ -41,6 +41,14 @@
                (dependency' {:name "org.tcrawley/dynapath" :version "1.0.0"})}
              (set deps)))))
 
+(t/deftest extract-deps-with-parent-child-pom-test
+  (let [deps (sut/extract-deps
+              file-path
+              (io/file (io/resource "dep/child_pom/child/pom.xml")))]
+    (t/is (= [(assoc (dependency {:name "org.clojure/clojure" :version "1.5.0"})
+                     :repositories {"central" {:url "https://repo.maven.apache.org/maven2"}})]
+             deps))))
+
 (t/deftest load-deps-test
   (with-redefs [sut/project-file "test_pom.xml"]
     (let [deps (sut/load-deps "test/resources/dep")]
