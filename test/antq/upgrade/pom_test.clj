@@ -2,7 +2,6 @@
   (:require
    [antq.dep.pom :as dep.pom]
    [antq.record :as r]
-   [lambdaisland.deep-diff2 :as ddiff]
    [antq.test-helper :as h]
    [antq.upgrade :as upgrade]
    [antq.upgrade.pom]
@@ -25,6 +24,13 @@
                       :name "org.clojure/clojure"
                       :latest-version "9.0.0"
                       :file (io/file (io/resource "dep/test_pom_properties.xml"))}))
+
+(def ^:private dummy-parent-child-java-dep
+  (r/map->Dependency {:project :pom
+                      :type :java
+                      :name "org.clojure/clojure"
+                      :latest-version "9.0.0"
+                      :file (io/file (io/resource "dep/child_pom/child/pom.xml"))}))
 
 (t/deftest upgrade-dep-test
   (let [tmp-file (File/createTempFile "upgrade-dep-test" "xml")]
@@ -64,3 +70,7 @@
                     (str/split-lines (slurp tmp-file)))))))
       (finally
         (.delete tmp-file)))))
+
+(t/deftest upgrade-dep-with-child-pom-test
+  (t/is (nil? (->> dummy-parent-child-java-dep
+                   (upgrade/upgrader)))))
