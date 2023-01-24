@@ -99,7 +99,8 @@
   [version-checked-dep]
   (some-> (:file version-checked-dep)
           (io/input-stream)
-          (xml/parse :skip-whitespace true)
+          (xml/parse :skip-whitespace true
+                     :include-node? #{:element :characters :comment})
           (zip/xml-zip)
           (upgrade-dep version-checked-dep)
           (xml/indent-str)))
