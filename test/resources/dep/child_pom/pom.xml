@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.github.liquidz</groupId>
+  <artifactId>antq-parent</artifactId>
+  <version>1.2.3</version>
+  <properties>
+    <clojure.version>1.5.0</clojure.version>
+    <mavenVersion>3.8.6</mavenVersion>
+    <resolverVersion>1.9.4</resolverVersion>
+  </properties>
+
+  <packaging>pom</packaging>
+</project>
