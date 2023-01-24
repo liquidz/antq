@@ -2,6 +2,8 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 
+== 2.2.983 (2023-01-24)
+
 // {{{
 === Changed
 * https://github.com/liquidz/antq/issues/197[#197]: Updated to support properties in pom.xml.
