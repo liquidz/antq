@@ -22,6 +22,13 @@
                       :latest-version "9.0.0"
                       :file (io/resource "dep/test_build.boot")}))
 
+(def ^:private dummy-excluded-dep
+  (r/map->Dependency {:project :boot
+                      :type :java
+                      :name "meta/ignore"
+                      :latest-version "9.0.0"
+                      :file (io/resource "dep/test_build.boot")}))
+
 (t/deftest upgrade-dep-test
   (let [from-deps (->> dummy-java-dep
                        :file
@@ -43,3 +50,11 @@
                      (dep.boot/extract-deps ""))]
     (t/is (= #{{:name "with/meta" :version {:- "4.0.0" :+ "9.0.0"}}}
              (h/diff-deps from-deps to-deps)))))
+
+(t/deftest upgrade-excluded-dep-test
+  (let [original (->> dummy-excluded-dep
+                      :file
+                      (slurp))
+        upgraded (upgrade/upgrader dummy-excluded-dep)]
+    (t/is (= original upgraded))))
+
