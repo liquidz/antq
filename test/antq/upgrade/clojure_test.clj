@@ -6,6 +6,7 @@
    [antq.upgrade :as upgrade]
    [antq.upgrade.clojure]
    [antq.util.git :as u.git]
+   [clojure.edn :as edn]
    [clojure.java.io :as io]
    [clojure.test :as t]))
 
@@ -73,12 +74,21 @@
                          :file
                          (slurp)
                          (dep.clj/extract-deps ""))
-          to-deps (->> dummy-java-dep
-                       (upgrade/upgrader)
-                       (dep.clj/extract-deps ""))]
+          upgraded (upgrade/upgrader dummy-java-dep)
+          upgraded-edn (edn/read-string upgraded)
+          to-deps (dep.clj/extract-deps "" upgraded)]
       (t/is (= #{{:name "foo/core" :version {:- "1.0.0" :+ "9.0.0"}}
                  {:name "foo/core" :version {:- "1.1.0" :+ "9.0.0"}}}
-               (h/diff-deps from-deps to-deps)))))
+               (h/diff-deps from-deps to-deps)))
+
+      (t/testing "same name deps should be upgraded"
+        (t/is (= '{foo/core {:mvn/version "9.0.0"}}
+                 (get-in upgraded-edn [:aliases :same-name :extra-deps]))))
+
+      (t/testing "excluded deps should not be upgraded"
+        (t/is (= '{foo/core {:mvn/version "0.0.1"}}
+                 (get-in upgraded-edn [:aliases :same-name-but-excluded :extra-deps]))))))
+
 
   (t/testing "git :sha"
     (let [from-deps (->> dummy-git-dep
