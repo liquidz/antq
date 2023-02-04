@@ -1,9 +1,16 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+// {{{
+=== Changed
+* Bumped kaocha to 1.77.1236.
+* Bumped rewrite-clj to 1.1.46.
+
+=== Fixed
+* https://github.com/liquidz/antq/issues/199[#199]: Fixed upgrader to skip excluded dependencies.
+// }}}
 
 == 2.2.983 (2023-01-24)
-
 // {{{
 === Changed
 * https://github.com/liquidz/antq/issues/197[#197]: Updated to support properties in pom.xml.
