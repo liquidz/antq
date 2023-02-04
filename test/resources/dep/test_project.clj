@@ -12,9 +12,13 @@
   {:foo
    {:dependencies [[baz "3.0.0"]]}
 
-   :bar
+   :same-name
    [;; same artifact name, but different version number
-    :dependencies [[foo/core "1.1.0"]]]}
+    :dependencies [[foo/core "1.1.0"]]]
+
+   :same-name-but-excluded
+   [;; same artifact name, but excluded
+    :dependencies [^:antq/exclude [foo/core "0.0.1"]]]}
 
   :repositories [["antq-test" {:url "s3://antq-repo/"}]
                  ["str-test" "https://example.com"]]

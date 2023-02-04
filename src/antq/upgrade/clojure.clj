@@ -12,6 +12,25 @@
   (->> loc z/up z/left z/sexpr
        (contains? const/clojure-deps-keys)))
 
+(defn- skip-meta
+  [loc]
+  (if (= :meta (z/tag loc))
+    (-> loc
+        (z/down)
+        (z/right))
+    loc))
+
+(defn- ignoring-meta?
+  [loc]
+  (and (= :meta (some-> loc z/tag))
+       (= const/deps-exclude-key
+          (some-> loc z/down z/sexpr))))
+
+(defn- target-deps?
+  [loc]
+  (and (in-deps? loc)
+       (not (ignoring-meta? (z/right loc)))))
+
 (defmulti replace-versions
   (fn [_loc version-checked-dep]
     (:type version-checked-dep)))
@@ -57,23 +76,16 @@
       :else
       loc)))
 
-(defn- skip-meta
-  [loc]
-  (if (= :meta (z/tag loc))
-    (-> loc
-        (z/down)
-        (z/right))
-    loc))
-
 (defn upgrade-dep
   [loc version-checked-dep]
   (let [name-set (u.dep/name-candidates (:name version-checked-dep))]
     (loop [loc loc]
       (if-let [loc (z/find-value loc z/next name-set)]
-        (recur (if (in-deps? loc)
+        (recur (if (target-deps? loc)
                  (or (some-> loc
                              ;; move to map
                              (z/right)
+                             ;; TODO check antq/ignore
                              (skip-meta)
                              (z/down)
                              (replace-versions version-checked-dep))

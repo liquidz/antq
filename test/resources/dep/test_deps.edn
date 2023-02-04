@@ -34,11 +34,18 @@
         no-version {}}
 
  :aliases
- {:foo {:extra-deps {baz {:mvn/version "3.0.0"}}
-        :replace-deps {rep {:mvn/version "4.0.0"}}
-        :override-deps {ovr {:mvn/version "5.0.0"}}
-        :default-deps {dft {:mvn/version "6.0.0"}}}
-  :bar {;; same artifact name, but different version number
-        :extra-deps {foo/core {:mvn/version "1.1.0"}}}}
+ {:foo
+  {:extra-deps {baz {:mvn/version "3.0.0"}}
+   :replace-deps {rep {:mvn/version "4.0.0"}}
+   :override-deps {ovr {:mvn/version "5.0.0"}}
+   :default-deps {dft {:mvn/version "6.0.0"}}}
+
+  :same-name
+  {;; same artifact name, but different version number
+   :extra-deps {foo/core {:mvn/version "1.1.0"}}}
+
+  :same-name-but-excluded
+  {;; same artifact name, but excluded
+   :extra-deps {foo/core ^:antq/exclude {:mvn/version "0.0.1"}}}}
 
  :mvn/repos {"antq-test" {:url "s3://antq-repo/"}}}
