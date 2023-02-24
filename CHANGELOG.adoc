@@ -1,6 +1,12 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+// {{{
+=== Changed
+* Bumped tools.deps to 0.16.1281.
+* Bumped kaocha to 1.78.1249.
+* Bumped build.edn to 0.9.194.
+// }}}
 
 == 2.2.992 (2023-02-04)
 // {{{

@@ -5,7 +5,7 @@
   org.clojure/data.zip {:mvn/version "1.0.0"}
   org.clojure/tools.cli {:mvn/version "1.0.214"}
   org.clojure/core.async {:mvn/version "1.6.673"}
-  org.clojure/tools.deps {:mvn/version "0.16.1264"}
+  org.clojure/tools.deps {:mvn/version "0.16.1281"}
   org.clojure/data.json {:mvn/version "2.4.0"}
   clj-commons/clj-yaml {:mvn/version "1.0.26"}
   version-clj/version-clj {:mvn/version "2.0.2"}
@@ -17,12 +17,12 @@
 
  :aliases
  {:1.10
-  {:override-deps {org.clojure/clojure {:mvn/version "1.10.3"}}}
+  {:override-deps {org.clojure/clojure ^:antq/exclude {:mvn/version "1.10.3"}}}
 
   :dev
   {:extra-paths ["test"
                  "test/resources"]
-   :extra-deps {lambdaisland/kaocha {:mvn/version "1.77.1236"}
+   :extra-deps {lambdaisland/kaocha {:mvn/version "1.78.1249"}
                 lambdaisland/deep-diff2 {:mvn/version "2.7.169"}}
    :jvm-opts ["-Dclojure.core.async.go-checking=true"]}
 
@@ -40,7 +40,7 @@
    :main-opts ["-m" "cloverage.coverage" "--ns-exclude-regex" "leiningen.antq"]}
 
   :build
-  {:deps {com.github.liquidz/build.edn {:git/tag "0.9.188" :git/sha "d2d25b0"}}
+  {:deps {com.github.liquidz/build.edn {:git/tag "0.9.194" :git/sha "8e36200"}}
    :ns-default build}
 
   ;; -X
