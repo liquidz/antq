@@ -1,6 +1,8 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+
+== 2.2.999 (2023-02-24)
 // {{{
 === Changed
 * Bumped tools.deps to 0.16.1281.
