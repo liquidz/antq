@@ -17,7 +17,7 @@
 
  :aliases
  {:1.10
-  {:override-deps {org.clojure/clojure {:mvn/version "1.10.3"}}}
+  {:override-deps {org.clojure/clojure ^:antq/exclude {:mvn/version "1.10.3"}}}
 
   :dev
   {:extra-paths ["test"
