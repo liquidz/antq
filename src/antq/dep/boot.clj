@@ -14,6 +14,9 @@
       (contains? const/deps-exclude-key)))
 
 (defn extract-deps
+  {:malli/schema [:=>
+                  [:cat 'string? 'string?]
+                  [:sequential r/?dependency]]}
   [file-path build-boot-content-str]
   (let [dep-form? (atom false)
         repos-form? (atom false)
@@ -52,6 +55,9 @@
                             :repositories repositories})))))
 
 (defn load-deps
+  {:malli/schema [:function
+                  [:=> :cat [:maybe [:sequential r/?dependency]]]
+                  [:=> [:cat 'string?] [:maybe [:sequential r/?dependency]]]]}
   ([] (load-deps "."))
   ([dir]
    (let [file (io/file dir project-file)]

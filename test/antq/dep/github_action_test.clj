@@ -59,4 +59,6 @@
                ".github/workflows/lint.yml"
                ".github/workflows/reviewdog.yml"
                ".github/workflows/test.yml"}
-             (set (map :file deps))))))
+             (set (map :file deps)))))
+
+  (t/is (nil? (sut/load-deps "non_existing_directory"))))

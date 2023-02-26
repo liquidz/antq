@@ -30,20 +30,24 @@
     end-ch))
 
 (defn info
+  {:malli/schema [:=> [:cat 'string?] 'nil?]}
   [s]
   (println s))
 
 (defn warning
+  {:malli/schema [:=> [:cat 'string?] 'nil?]}
   [s]
   (when *verbose*
     (binding [*out* *err*]
       (println s))))
 
 (defn error
+  {:malli/schema [:=> [:cat 'string?] 'nil?]}
   [s]
   (binding [*out* *err*]
     (println s)))
 
 (defn async-print
+  {:malli/schema [:=> [:cat 'string?] 'boolean?]}
   [s]
   (async/>!! logger-ch s))

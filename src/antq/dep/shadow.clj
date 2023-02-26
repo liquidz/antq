@@ -33,6 +33,9 @@
       (contains? const/deps-exclude-key)))
 
 (defn extract-deps
+  {:malli/schema [:=>
+                  [:cat 'string? 'string?]
+                  [:sequential r/?dependency]]}
   [file-path shadow-cljs-edn-content-str]
   (let [deps (atom [])]
     (walk/postwalk (fn [form]
@@ -54,6 +57,9 @@
                           :version version}))))
 
 (defn load-deps
+  {:malli/schema [:function
+                  [:=> :cat [:maybe [:sequential r/?dependency]]]
+                  [:=> [:cat 'string?] [:maybe [:sequential r/?dependency]]]]}
   ([] (load-deps "."))
   ([dir]
    (let [file (io/file dir project-file)]
