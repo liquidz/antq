@@ -1,5 +1,21 @@
 (ns antq.record)
 
+(def ?repository
+  [:map [:url 'string?]])
+
+(def ?dependency
+  [:map
+   [:type 'keyword?]
+   [:file 'string?]
+   [:name 'string?]
+   [:version 'string?]
+   [:latest-version [:maybe 'string?]]
+   [:repositories [:maybe [:map-of 'string? ?repository]]]
+   [:project 'keyword?]
+   [:changes-url [:maybe 'string?]]
+   [:latest-name [:maybe 'string?]]
+   [:only-newest-version? [:maybe boolean?]]])
+
 (defrecord Dependency
   [;; Dependency type keyword
    ;; e.g. :java, :git-sha or :github-tag
