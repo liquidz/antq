@@ -1,8 +1,13 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
-
-== 2.2.1008 (2023-03-04)
+// {{{
+=== Changed
+* Bumped tools.deps to 0.17.1297.
+* Bumped kaocha to 1.80.1274.
+* Bumped build.edn to 0.9.203.
+* Updateed release workflow to use https://github.com/ncipollo/release-action[ncipollo/release-action].
+// }}}
 
 == 2.2.999 (2023-02-24)
 // {{{
