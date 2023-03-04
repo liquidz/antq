@@ -32,4 +32,7 @@
   (with-redefs [sut/project-file "test_build.boot"]
     (let [deps (sut/load-deps "test/resources/dep")]
       (t/is (seq deps))
-      (t/is (every? #(= :java (:type %)) deps)))))
+      (t/is (every? #(= :java (:type %)) deps))))
+
+  (with-redefs [sut/project-file "non_existing_file.edn"]
+    (t/is (nil? (sut/load-deps "test/resources/dep")))))

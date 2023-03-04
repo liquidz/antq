@@ -4,6 +4,7 @@
    [antq.dep.github-action.matrix :as d.gha.matrix]
    [antq.dep.github-action.third-party :as d.gha.third-party]
    [antq.dep.github-action.uses :as d.gha.uses]
+   [antq.record :as r]
    [antq.util.dep :as u.dep]
    [clj-yaml.core :as yaml]
    [clojure.java.io :as io]
@@ -28,6 +29,9 @@
   (get-in dep [:extra const.gh-action/type-key]))
 
 (defn extract-deps
+  {:malli/schema [:=>
+                  [:cat 'string? 'string?]
+                  [:sequential r/?dependency]]}
   [file-path workflow-content-str]
   (let [deps (atom [])
         parsed (yaml/parse-string workflow-content-str)]
@@ -45,6 +49,9 @@
          @deps)))
 
 (defn load-deps
+  {:malli/schema [:function
+                  [:=> :cat [:maybe [:sequential r/?dependency]]]
+                  [:=> [:cat 'string?] [:maybe [:sequential r/?dependency]]]]}
   ([] (load-deps "."))
   ([dir]
    (let [dir-file (io/file dir ".github" "workflows")]

@@ -101,6 +101,9 @@
       (contains? const/deps-exclude-key)))
 
 (defn extract-deps
+  {:malli/schema [:=>
+                  [:cat 'string? 'string? [:* 'any?]]
+                  [:sequential r/?dependency]]}
   [file-path deps-edn-content-str & [loaded-dir-set]]
   (let [deps (atom [])
         edn (edn/read-string deps-edn-content-str)
@@ -147,6 +150,10 @@
          (remove nil?))))
 
 (defn load-deps
+  {:malli/schema [:function
+                  [:=> :cat [:maybe [:sequential r/?dependency]]]
+                  [:=> [:cat 'string?] [:maybe [:sequential r/?dependency]]]
+                  [:=> [:cat 'string? 'any?] [:maybe [:sequential r/?dependency]]]]}
   ([] (load-deps "."))
   ([dir] (load-deps dir (atom #{})))
   ([dir loaded-dir-set]

@@ -94,4 +94,7 @@
   (with-redefs [sut/project-file "test_deps.edn"]
     (let [deps (sut/load-deps "test/resources/dep")]
       (t/is (seq deps))
-      (t/is (every? #(contains? #{:java :git-sha :git-tag-and-sha} (:type %)) deps)))))
+      (t/is (every? #(contains? #{:java :git-sha :git-tag-and-sha} (:type %)) deps))))
+
+  (with-redefs [sut/project-file "non_existing_file.edn"]
+    (t/is (nil? (sut/load-deps "test/resources/dep")))))

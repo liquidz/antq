@@ -60,6 +60,9 @@
        (slurp file)))))
 
 (defn load-deps
+  {:malli/schema [:function
+                  [:=> :cat [:maybe [:sequential r/?dependency]]]
+                  [:=> [:cat 'string?] [:maybe [:sequential r/?dependency]]]]}
   ([] (load-deps "."))
   ([dir]
    (let [file (io/file dir project-file)]
