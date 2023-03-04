@@ -44,7 +44,7 @@ jobs:
           git push
 
       - name: deploy to clojars
-        run: clojure -T:build deploy '"${{ steps.tag.outputs.version }}"'
+        run: clojure -T:build deploy :version '"${{ steps.tag.outputs.version }}"'
         env:
           CLOJARS_PASSWORD: ${{secrets.CLOJARS_PASSWORD}}
           CLOJARS_USERNAME: ${{secrets.CLOJARS_USERNAME}}
