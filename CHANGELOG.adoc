@@ -2,6 +2,8 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 
+== 2.2.1008 (2023-03-04)
+
 == 2.2.999 (2023-02-24)
 // {{{
 === Changed
