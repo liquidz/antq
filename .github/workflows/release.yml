@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions: write-all
     outputs:
-      version: ${{ steps.deploy.outputs.version }}
+      version: ${{ steps.tag.outputs.version }}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -33,24 +33,8 @@ jobs:
           path: ~/.m2
           key: test-m2-${{ hashFiles('deps.edn') }}-v1
 
-      - name: deploy to clojars
-        id: deploy
-        run: clojure -T:build deploy
-        env:
-          CLOJARS_PASSWORD: ${{secrets.CLOJARS_PASSWORD}}
-          CLOJARS_USERNAME: ${{secrets.CLOJARS_USERNAME}}
-
-      - uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ steps.deploy.outputs.version }}
-          release_name: ${{ steps.deploy.outputs.version }}
-          body: released
-          draft: false
-          prerelease: false
-
-      - run: |
+      - id: tag
+        run: |
           clojure -T:build update-documents
           git diff
           git config --global user.email "github-actions@example.com"
@@ -58,6 +42,18 @@ jobs:
           git add -A
           git commit -m "Update for release" || exit 0
           git push
+
+      - name: deploy to clojars
+        run: clojure -T:build deploy '"${{ steps.tag.outputs.version }}"'
+        env:
+          CLOJARS_PASSWORD: ${{secrets.CLOJARS_PASSWORD}}
+          CLOJARS_USERNAME: ${{secrets.CLOJARS_USERNAME}}
+
+      - uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.tag.outputs.version }}
+          skipIfReleaseExists: true
+          generateReleaseNotes: true
 
   docker-push:
     runs-on: ubuntu-latest
