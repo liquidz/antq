@@ -80,10 +80,9 @@
               file
               (.getParentFile file))]
     (if dir
-      (-> (str (u.dep/relative-path dir)
-               (System/getProperty "file.separator")
-               relative-path)
-          (str/replace #"\./" ""))
+      (-> (u.dep/relative-path dir)
+          (io/file relative-path)
+          (str))
       relative-path)))
 
 (defn- get-local-root-relative-path
