@@ -5,7 +5,7 @@
   org.clojure/data.zip {:mvn/version "1.0.0"}
   org.clojure/tools.cli {:mvn/version "1.0.214"}
   org.clojure/core.async {:mvn/version "1.6.673"}
-  org.clojure/tools.deps {:mvn/version "0.17.1297"}
+  org.clojure/tools.deps {:mvn/version "0.18.1308"}
   org.clojure/data.json {:mvn/version "2.4.0"}
   clj-commons/clj-yaml {:mvn/version "1.0.26"}
   version-clj/version-clj {:mvn/version "2.0.2"}
@@ -23,7 +23,7 @@
   {:extra-paths ["dev"
                  "test"
                  "test/resources"]
-   :extra-deps {metosin/malli {:mvn/version "0.10.1"}
+   :extra-deps {metosin/malli {:mvn/version "0.10.3"}
                 lambdaisland/kaocha {:mvn/version "1.80.1274"}
                 lambdaisland/deep-diff2 {:mvn/version "2.7.169"}}
    :jvm-opts ["-Dclojure.core.async.go-checking=true"]}
