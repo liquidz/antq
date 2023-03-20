@@ -16,6 +16,9 @@
    [:latest-name [:maybe 'string?]]
    [:only-newest-version? [:maybe boolean?]]])
 
+(def ?dependencies
+  [:sequential ?dependency])
+
 (defrecord Dependency
   [;; Dependency type keyword
    ;; e.g. :java, :git-sha or :github-tag
