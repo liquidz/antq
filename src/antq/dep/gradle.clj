@@ -54,7 +54,7 @@
 (defn extract-deps
   {:malli/schema [:=>
                   [:cat 'string? 'string?]
-                  [:maybe [:sequential r/?dependency]]]}
+                  [:maybe r/?dependencies]]}
   [relative-file-path absolute-file-path]
   (try
     (let [repos (get-repositories absolute-file-path)
@@ -68,8 +68,8 @@
 
 (defn load-deps
   {:malli/schema [:function
-                  [:=> :cat [:maybe [:sequential r/?dependency]]]
-                  [:=> [:cat 'string?] [:maybe [:sequential r/?dependency]]]]}
+                  [:=> :cat [:maybe r/?dependencies]]
+                  [:=> [:cat 'string?] [:maybe r/?dependencies]]]}
   ([] (load-deps "."))
   ([dir]
    (let [file (io/file dir project-file)]

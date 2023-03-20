@@ -31,7 +31,7 @@
 (defn extract-deps
   {:malli/schema [:=>
                   [:cat 'string? 'string?]
-                  [:sequential r/?dependency]]}
+                  r/?dependencies]}
   [file-path workflow-content-str]
   (let [deps (atom [])
         parsed (yaml/parse-string workflow-content-str)]
@@ -50,8 +50,8 @@
 
 (defn load-deps
   {:malli/schema [:function
-                  [:=> :cat [:maybe [:sequential r/?dependency]]]
-                  [:=> [:cat 'string?] [:maybe [:sequential r/?dependency]]]]}
+                  [:=> :cat [:maybe r/?dependencies]]
+                  [:=> [:cat 'string?] [:maybe r/?dependencies]]]}
   ([] (load-deps "."))
   ([dir]
    (let [dir-file (io/file dir ".github" "workflows")]
