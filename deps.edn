@@ -23,9 +23,9 @@
   {:extra-paths ["dev"
                  "test"
                  "test/resources"]
-   :extra-deps {metosin/malli {:mvn/version "0.10.3"}
-                lambdaisland/kaocha {:mvn/version "1.80.1274"}
-                lambdaisland/deep-diff2 {:mvn/version "2.7.169"}}
+   :extra-deps {metosin/malli {:mvn/version "0.10.4"}
+                lambdaisland/kaocha {:mvn/version "1.82.1306"}
+                lambdaisland/deep-diff2 {:mvn/version "2.8.190"}}
    :jvm-opts ["-Dclojure.core.async.go-checking=true"]}
 
   :nop
