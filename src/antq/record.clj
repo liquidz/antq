@@ -3,18 +3,26 @@
 (def ?repository
   [:map [:url 'string?]])
 
+(def ?type
+  [:enum :git-sha :git-tag-and-sha :github-tag :java])
+
+(def ?project
+  [:enum :boot :clojure :clojure-tool :github-action :gradle :leiningen :pom :shadow-cljs])
+
 (def ?dependency
   [:map
-   [:type 'keyword?]
+   ;; Required
+   [:type ?type]
    [:file 'string?]
    [:name 'string?]
    [:version 'string?]
+   [:project ?project]
+   ;; Filled by version checking
    [:latest-version [:maybe 'string?]]
    [:repositories [:maybe [:map-of 'string? ?repository]]]
-   [:project 'keyword?]
    [:changes-url [:maybe 'string?]]
    [:latest-name [:maybe 'string?]]
-   [:only-newest-version? [:maybe boolean?]]])
+   [:only-newest-version? [:maybe 'boolean?]]])
 
 (def ?dependencies
   [:sequential ?dependency])
