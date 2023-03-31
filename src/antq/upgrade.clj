@@ -3,6 +3,7 @@
    [antq.dep.github-action :as dep.gh-action]
    [antq.download :as download]
    [antq.log :as log]
+   [antq.report :as report]
    [antq.util.exception :as u.ex]
    [antq.util.file :as u.file]
    [clojure.string :as str]))
@@ -69,11 +70,7 @@
                           (fn [dep]
                             (if (confirm dep force?)
                               (if-let [upgraded-content (upgrader dep)]
-                                (do (log/info (format "Upgraded %s '%s' to '%s' in %s."
-                                                      (:name dep)
-                                                      (:version dep)
-                                                      (:latest-version dep)
-                                                      (:file dep)))
+                                (do (report/upgraded-dep dep options)
                                     (spit (:file dep) upgraded-content)
                                     true)
                                 false)
