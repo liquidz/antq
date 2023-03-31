@@ -292,7 +292,9 @@
           (report/reporter outdated options)
           (cond-> outdated
             (:upgrade options)
-            (upgrade/upgrade! options)
+            (-> (upgrade/upgrade! options)
+                ;; get non-upgraded deps
+                (get false))
 
             true
             (exit))

@@ -54,7 +54,8 @@
     dep))
 
 (defn upgrade!
-  "Return only non-upgraded deps"
+  "Return a map as follows.
+  {true [upgraded-deps] false [non-upgraded deps]}"
   [deps options]
   (let [force? (or (:force options) false)
         download? (or (:download options) false)
@@ -78,4 +79,4 @@
                           version-checked-deps)]
       (when download?
         (download/download! (get upgrade-result true)))
-      (get upgrade-result false))))
+      upgrade-result)))
