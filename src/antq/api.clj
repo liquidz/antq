@@ -10,23 +10,24 @@
   - deps-map (Required)
     A map of the same form as `:deps` in deps.edn.
     E.g. '{org.clojure/clojure {:mvn/version \"1.11.1\"}}
-  - repositories (Optional)
-    A map of the same form as `:mvn/repos` in deps.edn.
-    E.g. {\"clojars\" {:url \"https://clojars.org/repo\"}}
-  - no-changes? (Optional)
-    If true, skip checking changes between deps' versions.
-    Default is false."
+  - options (Optional)
+    A CLI options map including additional API options.
+
+    API options:
+    - repositories
+      A map of the same form as `:mvn/repos` in deps.edn.
+      E.g. {\"clojars\" {:url \"https://clojars.org/repo\"}}"
   ([deps-map]
    (outdated-deps deps-map {}))
-  ([deps-map {:keys [repositories no-changes?]}]
+  ([deps-map {:as options :keys [repositories]}]
    (let [deps-edn (cond-> {:deps deps-map}
                     repositories (assoc :mvn/repos repositories))
          antq-deps (dep.clojure/extract-deps "" (pr-str deps-edn))
-         antq-options {:reporter report/no-output-reporter
-                       :no-changes no-changes?}]
-
+         antq-options (-> options
+                          (dissoc :repositories)
+                          (assoc :reporter report/no-output-reporter))]
      (core/antq antq-options antq-deps))))
 
 (comment
   (outdated-deps '{org.clojure/clojure {:mvn/version "1.8.0"}}
-                 {:no-changes? true}))
+                 {:no-changes true}))
