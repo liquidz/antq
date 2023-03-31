@@ -1,14 +1,13 @@
 (ns antq.dep.shadow
   (:require
    [antq.constant :as const]
+   [antq.constant.project-file :as const.project-file]
    [antq.record :as r]
    [antq.util.dep :as u.dep]
    [antq.util.env :as u.env]
    [clojure.edn :as edn]
    [clojure.java.io :as io]
    [clojure.walk :as walk]))
-
-(def ^:private project-file "shadow-cljs.edn")
 
 (defn- read-env
   [arg]
@@ -62,7 +61,7 @@
                   [:=> [:cat 'string?] [:maybe r/?dependencies]]]}
   ([] (load-deps "."))
   ([dir]
-   (let [file (io/file dir project-file)]
+   (let [file (io/file dir const.project-file/shadow-cljs)]
      (when (.exists file)
        (extract-deps (u.dep/relative-path file)
                      (slurp file))))))

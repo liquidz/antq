@@ -1,6 +1,7 @@
 (ns antq.dep.pom
   "Clojure CLI"
   (:require
+   [antq.constant.project-file :as const.project-file]
    [antq.record :as r]
    [antq.util.dep :as u.dep]
    [antq.util.maven :as u.mvn]
@@ -11,8 +12,6 @@
   (:import
    java.io.File
    org.apache.maven.model.Repository))
-
-(def ^:private project-file "pom.xml")
 
 (defn extract-repos-from-xml
   [xml]
@@ -65,7 +64,7 @@
                   [:=> [:cat 'string?] [:maybe r/?dependencies]]]}
   ([] (load-deps "."))
   ([dir]
-   (let [file (io/file dir project-file)]
+   (let [file (io/file dir const.project-file/maven)]
      (when (.exists file)
        (extract-deps (u.dep/relative-path file)
                      file)))))

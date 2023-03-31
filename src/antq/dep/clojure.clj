@@ -2,6 +2,7 @@
   "Clojure CLI"
   (:require
    [antq.constant :as const]
+   [antq.constant.project-file :as const.project-file]
    [antq.record :as r]
    [antq.util.dep :as u.dep]
    [clojure.edn :as edn]
@@ -10,8 +11,6 @@
    [clojure.tools.deps :as deps]
    [clojure.tools.deps.extensions.git :as git]
    [clojure.walk :as walk]))
-
-(def ^:private project-file "deps.edn")
 
 (declare load-deps)
 
@@ -160,7 +159,7 @@
      ;; Avoid infinite loop
      (when-not (contains? @loaded-dir-set dir)
        (swap! loaded-dir-set conj dir)
-       (let [file (io/file dir project-file)]
+       (let [file (io/file dir const.project-file/clojure-cli)]
          (when (.exists file)
            (extract-deps (u.dep/relative-path file)
                          (slurp file)

@@ -1,5 +1,6 @@
 (ns antq.dep.gradle
   (:require
+   [antq.constant.project-file :as const.project-file]
    [antq.log :as log]
    [antq.record :as r]
    [antq.util.dep :as u.dep]
@@ -8,7 +9,6 @@
    [clojure.string :as str]))
 
 (def gradle-command "gradle")
-(def ^:private project-file "build.gradle")
 (def ^:private dep-regexp #"^[^-]\-+\s")
 
 (defn- get-repositories
@@ -72,7 +72,7 @@
                   [:=> [:cat 'string?] [:maybe r/?dependencies]]]}
   ([] (load-deps "."))
   ([dir]
-   (let [file (io/file dir project-file)]
+   (let [file (io/file dir const.project-file/gradle)]
      (when (.exists file)
        (extract-deps (u.dep/relative-path file)
                      (.getAbsolutePath file))))))
