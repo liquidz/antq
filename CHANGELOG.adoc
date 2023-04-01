@@ -1,6 +1,8 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+
+== 2.3.1043 (2023-04-01)
 // {{{
 === Added
 * https://github.com/liquidz/antq/issues/209[#209]: Added `antq.api` namespace for using antq as a library.
