@@ -1,19 +1,18 @@
 (ns antq.dep.babashka
   (:require
+   [antq.constant.project-file :as const.project-file]
    [antq.dep.clojure :as dep.clj]
    [antq.record :as r]
    [antq.util.dep :as u.dep]
    [clojure.java.io :as io]))
 
-(def ^:private project-file "bb.edn")
-
 (defn load-deps
   {:malli/schema [:function
-                  [:=> :cat [:maybe [:sequential r/?dependency]]]
-                  [:=> [:cat 'string?] [:maybe [:sequential r/?dependency]]]]}
+                  [:=> :cat [:maybe r/?dependencies]]
+                  [:=> [:cat 'string?] [:maybe r/?dependencies]]]}
   ([] (load-deps "."))
   ([dir]
-   (let [file (io/file dir project-file)]
+   (let [file (io/file dir const.project-file/babashka)]
      (when (.exists file)
        (dep.clj/extract-deps (u.dep/relative-path file)
                              (slurp file))))))

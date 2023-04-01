@@ -1,11 +1,12 @@
 (ns antq.dep.babashka-test
   (:require
+   [antq.constant.project-file :as const.project-file]
    [antq.dep.babashka :as sut]
    [antq.record :as r]
    [clojure.test :as t]))
 
 (t/deftest load-deps-test
-  (with-redefs [sut/project-file "test_bb.edn"]
+  (with-redefs [const.project-file/babashka "test_bb.edn"]
     (t/is (= [(r/map->Dependency {:type :java
                                   :file "test/resources/dep/test_bb.edn"
                                   :name "bb/core"

@@ -1,12 +1,11 @@
 (ns antq.dep.leiningen
   (:require
    [antq.constant :as const]
+   [antq.constant.project-file :as const.project-file]
    [antq.record :as r]
    [antq.util.dep :as u.dep]
    [clojure.java.io :as io]
    [clojure.walk :as walk]))
-
-(def ^:private project-file "project.clj")
 
 (defn normalize-repositories
   [repos]
@@ -30,7 +29,7 @@
 (defn extract-deps
   {:malli/schema [:=>
                   [:cat 'string? 'string?]
-                  [:sequential r/?dependency]]}
+                  [r/?dependencies]]}
   [file-path project-clj-content-str]
   (let [dep-form? (atom false)
         repos-form? (atom false)
@@ -68,11 +67,11 @@
 
 (defn load-deps
   {:malli/schema [:function
-                  [:=> :cat [:maybe [:sequential r/?dependency]]]
-                  [:=> [:cat 'string?] [:maybe [:sequential r/?dependency]]]]}
+                  [:=> :cat [:maybe [r/?dependencies]]]
+                  [:=> [:cat 'string?] [:maybe r/?dependencies]]]}
   ([] (load-deps "."))
   ([dir]
-   (let [file (io/file dir project-file)]
+   (let [file (io/file dir const.project-file/leiningen)]
      (when (.exists file)
        (extract-deps (u.dep/relative-path file)
                      (slurp file))))))

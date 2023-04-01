@@ -2,7 +2,9 @@
   (:require
    [antq.core]
    [antq.dep.leiningen :as dep.lein]
+   [antq.log :as log]
    [antq.record :as r]
+   [antq.report :as report]
    [leiningen.core.main]))
 
 (defn antq
@@ -21,21 +23,26 @@
                        (not reporter)) (assoc :reporter "table"))
         _ (when upgrade
             (assert false ":upgrade option not supported under the Lein plugin."))
-        outdated (->> dependencies
-                      (into managed-dependencies)
-                      (into plugins)
-                      (distinct)
-                      (keep (fn [[dep-name version]]
-                              (when (dep.lein/acceptable-version? version)
-                                (r/map->Dependency {:project :leiningen
-                                                    :type :java
-                                                    :file "project.clj"
-                                                    :name (dep.lein/normalize-name dep-name)
-                                                    :version version
-                                                    :repositories repos}))))
-                      (antq.core/antq options)
-                      (seq))]
-    (binding [leiningen.core.main/*exit-process?* true]
-      (leiningen.core.main/exit (if outdated
-                                  1
-                                  0)))))
+        alog (log/start-async-logger!)]
+    (try
+      (let [outdated (->> dependencies
+                          (into managed-dependencies)
+                          (into plugins)
+                          (distinct)
+                          (keep (fn [[dep-name version]]
+                                  (when (dep.lein/acceptable-version? version)
+                                    (r/map->Dependency {:project :leiningen
+                                                        :type :java
+                                                        :file "project.clj"
+                                                        :name (dep.lein/normalize-name dep-name)
+                                                        :version version
+                                                        :repositories repos}))))
+                          (antq.core/antq options))]
+
+        (report/reporter outdated options)
+        (binding [leiningen.core.main/*exit-process?* true]
+          (leiningen.core.main/exit (if (seq outdated)
+                                      1
+                                      0))))
+      (finally
+        (log/stop-async-logger! alog)))))

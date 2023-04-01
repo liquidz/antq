@@ -323,6 +323,7 @@ Skip checking diff between deps' versions. Disabled by default.
 * link:./doc/proxy.adoc[Run behind proxy]
 * link:./doc/timeout.adoc[Timeouts]
 * link:./doc/exclusions.adoc[Exclusions]
+* link:./doc/use-as-library.adoc[Use antq as a library]
 
 == License
 

@@ -2,6 +2,7 @@
   "Clojure CLI"
   (:require
    [antq.constant :as const]
+   [antq.constant.project-file :as const.project-file]
    [antq.record :as r]
    [antq.util.dep :as u.dep]
    [clojure.edn :as edn]
@@ -10,8 +11,6 @@
    [clojure.tools.deps :as deps]
    [clojure.tools.deps.extensions.git :as git]
    [clojure.walk :as walk]))
-
-(def ^:private project-file "deps.edn")
 
 (declare load-deps)
 
@@ -102,7 +101,7 @@
 (defn extract-deps
   {:malli/schema [:=>
                   [:cat 'string? 'string? [:* 'any?]]
-                  [:sequential r/?dependency]]}
+                  r/?dependencies]}
   [file-path deps-edn-content-str & [loaded-dir-set]]
   (let [deps (atom [])
         edn (edn/read-string deps-edn-content-str)
@@ -150,9 +149,9 @@
 
 (defn load-deps
   {:malli/schema [:function
-                  [:=> :cat [:maybe [:sequential r/?dependency]]]
-                  [:=> [:cat 'string?] [:maybe [:sequential r/?dependency]]]
-                  [:=> [:cat 'string? 'any?] [:maybe [:sequential r/?dependency]]]]}
+                  [:=> :cat [:maybe r/?dependencies]]
+                  [:=> [:cat 'string?] [:maybe r/?dependencies]]
+                  [:=> [:cat 'string? 'any?] [:maybe r/?dependencies]]]}
   ([] (load-deps "."))
   ([dir] (load-deps dir (atom #{})))
   ([dir loaded-dir-set]
@@ -160,7 +159,7 @@
      ;; Avoid infinite loop
      (when-not (contains? @loaded-dir-set dir)
        (swap! loaded-dir-set conj dir)
-       (let [file (io/file dir project-file)]
+       (let [file (io/file dir const.project-file/clojure-cli)]
          (when (.exists file)
            (extract-deps (u.dep/relative-path file)
                          (slurp file)

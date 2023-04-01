@@ -1,5 +1,6 @@
 (ns antq.dep.pom-test
   (:require
+   [antq.constant.project-file :as const.project-file]
    [antq.dep.pom :as sut]
    [antq.record :as r]
    [clojure.java.io :as io]
@@ -50,10 +51,10 @@
              deps))))
 
 (t/deftest load-deps-test
-  (with-redefs [sut/project-file "test_pom.xml"]
+  (with-redefs [const.project-file/maven "test_pom.xml"]
     (let [deps (sut/load-deps "test/resources/dep")]
       (t/is (seq deps))
       (t/is (every? #(= :java (:type %)) deps))))
 
-  (with-redefs [sut/project-file "non_existing_file.edn"]
+  (with-redefs [const.project-file/maven "non_existing_file.edn"]
     (t/is (nil? (sut/load-deps "test/resources/dep")))))

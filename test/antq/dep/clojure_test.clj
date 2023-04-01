@@ -1,5 +1,6 @@
 (ns antq.dep.clojure-test
   (:require
+   [antq.constant.project-file :as const.project-file]
    [antq.dep.clojure :as sut]
    [antq.record :as r]
    [clojure.java.io :as io]
@@ -34,7 +35,7 @@
                             m)))
 
 (t/deftest extract-deps-test
-  (with-redefs [sut/project-file "test_deps.edn"]
+  (with-redefs [const.project-file/clojure-cli "test_deps.edn"]
     (let [deps (sut/extract-deps
                 file-path
                 (slurp file-path))]
@@ -91,10 +92,10 @@
   (t/is (empty? (sut/extract-deps file-path "{:deps {foo/core \"bar\"}}"))))
 
 (t/deftest load-deps-test
-  (with-redefs [sut/project-file "test_deps.edn"]
+  (with-redefs [const.project-file/clojure-cli "test_deps.edn"]
     (let [deps (sut/load-deps "test/resources/dep")]
       (t/is (seq deps))
       (t/is (every? #(contains? #{:java :git-sha :git-tag-and-sha} (:type %)) deps))))
 
-  (with-redefs [sut/project-file "non_existing_file.edn"]
+  (with-redefs [const.project-file/clojure-cli "non_existing_file.edn"]
     (t/is (nil? (sut/load-deps "test/resources/dep")))))

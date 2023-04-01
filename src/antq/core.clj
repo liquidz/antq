@@ -237,6 +237,11 @@
           (assoc :only-newest-version? true))
        deps))
 
+(defn- unmark-only-newest-version-flag
+  [deps]
+  (map #(dissoc % :only-newest-version?)
+       deps))
+
 (defn unify-deps-having-only-newest-version-flag
   "Keep only the newest version in the same file if `:only-newest-version?` flag is marked."
   [deps]
@@ -252,20 +257,19 @@
 
 (defn antq
   [options deps]
-  (let [alog (log/start-async-logger!)
-        deps (->> deps
+  (let [deps (->> deps
                   (mark-only-newest-version-flag)
-                  (unify-deps-having-only-newest-version-flag))
-        outdated (cond->> (outdated-deps deps options)
-                   (and (not (:no-diff options))
-                        (not (:no-changes options)))
-                   (map assoc-changes-url)
+                  (unify-deps-having-only-newest-version-flag))]
+    (cond->> (outdated-deps deps options)
+      (and (not (:no-diff options))
+           (not (:no-changes options)))
+      (map assoc-changes-url)
 
-                   true
-                   (concat (unverified-deps deps)))]
-    (report/reporter outdated options)
-    (log/stop-async-logger! alog)
-    outdated))
+      :always
+      (concat (unverified-deps deps))
+
+      :always
+      (unmark-only-newest-version-flag))))
 
 (defn main*
   [options errors]
@@ -282,13 +286,20 @@
           (System/exit 1))
 
       (seq deps)
-      (let [outdated (antq options deps)]
-        (cond-> outdated
-          (:upgrade options)
-          (upgrade/upgrade! options)
+      (let [alog (log/start-async-logger!)
+            outdated (antq options deps)]
+        (try
+          (report/reporter outdated options)
+          (cond-> outdated
+            (:upgrade options)
+            (-> (upgrade/upgrade! options)
+                ;; get non-upgraded deps
+                (get false))
 
-          true
-          (exit)))
+            true
+            (exit))
+          (finally
+            (log/stop-async-logger! alog))))
 
       :else
       (do (log/info "No project file")

@@ -1,5 +1,6 @@
 (ns antq.dep.leiningen-test
   (:require
+   [antq.constant.project-file :as const.project-file]
    [antq.dep.leiningen :as sut]
    [antq.record :as r]
    [clojure.java.io :as io]
@@ -32,10 +33,10 @@
              (set deps)))))
 
 (t/deftest load-deps-test
-  (with-redefs [sut/project-file "test_project.clj"]
+  (with-redefs [const.project-file/leiningen "test_project.clj"]
     (let [deps (sut/load-deps "test/resources/dep")]
       (t/is (seq deps))
       (t/is (every? #(= :java (:type %)) deps))))
 
-  (with-redefs [sut/project-file "non_existing_file.edn"]
+  (with-redefs [const.project-file/leiningen "non_existing_file.edn"]
     (t/is (nil? (sut/load-deps "test/resources/dep")))))

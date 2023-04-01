@@ -3,6 +3,7 @@
    [antq.dep.github-action :as dep.gh-action]
    [antq.download :as download]
    [antq.log :as log]
+   [antq.report :as report]
    [antq.util.exception :as u.ex]
    [antq.util.file :as u.file]
    [clojure.string :as str]))
@@ -53,7 +54,8 @@
     dep))
 
 (defn upgrade!
-  "Return only non-upgraded deps"
+  "Return a map as follows.
+  {true [upgraded-deps] false [non-upgraded deps]}"
   [deps options]
   (let [force? (or (:force options) false)
         download? (or (:download options) false)
@@ -69,11 +71,7 @@
                           (fn [dep]
                             (if (confirm dep force?)
                               (if-let [upgraded-content (upgrader dep)]
-                                (do (log/info (format "Upgraded %s '%s' to '%s' in %s."
-                                                      (:name dep)
-                                                      (:version dep)
-                                                      (:latest-version dep)
-                                                      (:file dep)))
+                                (do (report/upgraded-dep dep options)
                                     (spit (:file dep) upgraded-content)
                                     true)
                                 false)
@@ -81,4 +79,4 @@
                           version-checked-deps)]
       (when download?
         (download/download! (get upgrade-result true)))
-      (get upgrade-result false))))
+      upgrade-result)))
