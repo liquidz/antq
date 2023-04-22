@@ -18,6 +18,7 @@
    [antq.dep.leiningen :as dep.lein]
    [antq.dep.pom :as dep.pom]
    [antq.dep.shadow :as dep.shadow]
+   [antq.dep.transitive :as dep.transitive]
    [antq.diff :as diff]
    [antq.diff.git-sha]
    [antq.diff.github-tag]
@@ -95,7 +96,8 @@
    [nil "--ignore-locals"]
    [nil "--check-clojure-tools"]
    [nil "--no-diff"] ; deprecated (for backward compatibility)
-   [nil "--no-changes"]])
+   [nil "--no-changes"]
+   [nil "--transitive"]])
 
 (defn skip-artifacts?
   [dep options]
@@ -179,25 +181,36 @@
 
 (defn outdated-deps
   [deps options]
-  (let [org-deps (remove #(or (skip-artifacts? % options)
-                              (using-release-version? %))
-                         deps)
+  (let [org-deps (cond->> deps
+                   (:transitive options)
+                   (concat (dep.transitive/resolve-transitive-deps deps))
+
+                   :always
+                   (remove #(or (skip-artifacts? % options)
+                                (using-release-version? %))))
         uniq-deps (distinct-deps org-deps)
         _ (report/init-progress uniq-deps options)
         uniq-deps-with-vers (doall (pmap #(assoc-versions % options) uniq-deps))
         _ (report/deinit-progress uniq-deps options)
-        assoc-latest-version* #(assoc-latest-version % options)]
-    (->> org-deps
-         (pmap #(complete-versions-by % uniq-deps-with-vers))
-         (map (comp dissoc-no-longer-used-keys
-                    assoc-latest-version*))
-         (remove ver/latest?))))
+        assoc-latest-version* #(assoc-latest-version % options)
+        version-checked-deps (->> org-deps
+                                  (pmap #(complete-versions-by % uniq-deps-with-vers))
+                                  (map (comp dissoc-no-longer-used-keys
+                                             assoc-latest-version*)))
+        parent-dep-names (->> version-checked-deps
+                              (remove ver/latest?)
+                              (keep :parent)
+                              (set))]
+    (->> version-checked-deps
+         (remove #(and (ver/latest? %)
+                       (not (contains? parent-dep-names (:name %))))))))
 
 (defn assoc-changes-url
   [{:as version-checked-dep :keys [version latest-version]}]
   (if-let [url (try
                  (when (and version latest-version
-                            (not (u.ex/ex-timeout? latest-version)))
+                            (not (u.ex/ex-timeout? latest-version))
+                            (not= version latest-version))
                    (or (changelog/get-changelog-url version-checked-dep)
                        (diff/get-diff-url version-checked-dep)))
                  (catch ExceptionInfo ex
