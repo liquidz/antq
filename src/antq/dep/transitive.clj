@@ -43,9 +43,7 @@
   (fn [[_dep-name resolved]]
     (:deps/manifest resolved)))
 
-(defmethod resolved-dep->dep :default [x]
-  (println "FIXME " x)
-  nil)
+(defmethod resolved-dep->dep :default [_] nil)
 
 (defmethod resolved-dep->dep :mvn
   [[dep-name resolved]]
