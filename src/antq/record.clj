@@ -23,7 +23,8 @@
    [:changes-url [:maybe 'string?]]
    [:latest-name [:maybe 'string?]]
    [:only-newest-version? [:maybe 'boolean?]]
-   [:exclude-versions [:maybe [:sequential 'string?]]]])
+   [:exclude-versions [:maybe [:sequential 'string?]]]
+   [:parent [:maybe 'string?]]])
 
 (def ?dependencies
   [:sequential ?dependency])
@@ -55,4 +56,6 @@
    ;; Keep only the newest version in the same file.
    only-newest-version?
    ;; Ignore versions that match the specified version range
-   exclude-versions])
+   exclude-versions
+   ;; The parent dependency name
+   parent])
