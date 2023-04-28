@@ -110,11 +110,13 @@
       (contains? exclude-artifacts (:name dep)))))
 
 (defn remove-skipping-versions
-  [versions dep-name options]
-  (let [skip-vers (->> (:exclude options)
+  [versions dep options]
+  (let [dep-name (:name dep)
+        skip-vers (->> (:exclude options)
                        (map #(str/split % #"@" 2))
                        (filter #(= dep-name (first %)))
                        (keep second)
+                       (concat (or (:exclude-versions dep) []))
                        (distinct))]
     (remove (fn [target-version]
               (some #(u.ver/in-range? % target-version) skip-vers))
@@ -149,7 +151,7 @@
   (let [vers (cond->> (:_versions dep)
                (not (ver/under-development? (:version dep)))
                (drop-while ver/under-development?))
-        vers (remove-skipping-versions vers (:name dep) options)
+        vers (remove-skipping-versions vers dep options)
         latest-version (first vers)]
     (assoc dep :latest-version latest-version)))
 
