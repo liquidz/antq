@@ -29,7 +29,14 @@
 (defn- exclude?
   [v]
   (-> (meta v)
-      (contains? const/deps-exclude-key)))
+      (get const/deps-exclude-key)
+      (true?)))
+
+(defn- exclude-version-range
+  [v]
+  (-> (meta v)
+      (get const/deps-exclude-key)
+      (u.dep/ensure-version-list)))
 
 (defn extract-deps
   {:malli/schema [:=>
@@ -47,13 +54,14 @@
                             (swap! deps concat)))
                      form)
                    (edn/read-string readers shadow-cljs-edn-content-str))
-    (for [[dep-name version] @deps
+    (for [[dep-name version :as dep] @deps
           :when (and (string? version) (seq version))]
       (r/map->Dependency {:project :shadow-cljs
                           :type :java
                           :file file-path
                           :name  (str dep-name)
-                          :version version}))))
+                          :version version
+                          :exclude-versions (seq (exclude-version-range dep))}))))
 
 (defn load-deps
   {:malli/schema [:function
