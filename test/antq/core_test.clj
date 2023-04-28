@@ -141,7 +141,21 @@
     (t/is (= []
              (sut/remove-skipping-versions ["1" "2" "3"] "foo" {:exclude ["foo@1"
                                                                           "foo@2"
-                                                                          "foo@3"]})))))
+                                                                          "foo@3"]}))))
+
+  (t/testing "version range"
+    (let [vers ["1.0.0" "1.0.1" "1.1.0" "1.1.1" "1.2.0" "2.0.0"]]
+      (t/is (= ["2.0.0"]
+               (sut/remove-skipping-versions vers "foo" {:exclude ["foo@1.x"]})))
+      (t/is (= ["1.1.0" "1.1.1" "1.2.0" "2.0.0"]
+               (sut/remove-skipping-versions vers "foo" {:exclude ["foo@1.0.x"]})))
+      (t/is (= ["1.0.0" "1.0.1" "1.1.0" "1.1.1"]
+               (sut/remove-skipping-versions vers "foo" {:exclude ["foo@1.2.x"
+                                                                   "foo@2.x"]})))
+      (t/is (= ["1.0.0" "1.0.1" "1.1.0" "1.1.1" "1.2.0"]
+               (sut/remove-skipping-versions vers "foo" {:exclude ["foo@2.x"]})))
+      (t/is (= ["1.0.0" "1.0.1" "1.1.0" "1.1.1" "1.2.0" "2.0.0"]
+               (sut/remove-skipping-versions vers "foo" {:exclude ["foo@9.x"]}))))))
 
 (t/deftest using-release-version?-test
   (t/are [expected in] (= expected (sut/using-release-version?

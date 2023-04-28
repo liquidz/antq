@@ -39,6 +39,7 @@
    [antq.upgrade.shadow]
    [antq.util.exception :as u.ex]
    [antq.util.maven :as u.maven]
+   [antq.util.ver :as u.ver]
    [antq.ver :as ver]
    [antq.ver.git-sha]
    [antq.ver.git-tag-and-sha]
@@ -114,8 +115,10 @@
                        (map #(str/split % #"@" 2))
                        (filter #(= dep-name (first %)))
                        (keep second)
-                       (set))]
-    (remove skip-vers versions)))
+                       (distinct))]
+    (remove (fn [target-version]
+              (some #(u.ver/in-range? % target-version) skip-vers))
+            versions)))
 
 (defn using-release-version?
   [dep]
