@@ -96,7 +96,15 @@
   [dep]
   (-> (second dep)
       (meta)
-      (contains? const/deps-exclude-key)))
+      (get const/deps-exclude-key)
+      (true?)))
+
+(defn- exclude-version-range
+  [dep]
+  (-> (second dep)
+      (meta)
+      (get const/deps-exclude-key)
+      (u.dep/ensure-version-list)))
 
 (defn extract-deps
   {:malli/schema [:=>
@@ -119,7 +127,7 @@
                      form)
                    edn)
     (->> @deps
-         (mapcat (fn [[dep-name opt]]
+         (mapcat (fn [[dep-name opt :as dep]]
                    (let [opt (adjust-version-via-deduction dep-name opt)
                          type-and-version (extract-type-and-version opt)]
                      (cond
@@ -138,7 +146,8 @@
                                      (str dep-name)
                                      (str dep-name "/" dep-name))
                             :repositories (merge cross-project-repositories
-                                                 (:mvn/repos edn))}
+                                                 (:mvn/repos edn))
+                            :exclude-versions (seq (exclude-version-range dep))}
                            (merge type-and-version)
                            (r/map->Dependency)
                            (vector))

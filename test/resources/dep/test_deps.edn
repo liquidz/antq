@@ -27,6 +27,8 @@
         ;; should be ignored
         local-repo/non-existing {:local/root "/path/to/non-existing-local/repo"}
         meta-ignore ^:antq/exclude {:mvn/version "3.5.8"}
+        meta/range-ignore1 ^{:antq/exclude "5.x"} {:mvn/version "4.6.9"}
+        meta/range-ignore2 ^{:antq/exclude ["6.x" "7.x"]} {:mvn/version "4.6.9"}
         ;; invalid versions should be ignored
         ver-not-string {:mvn/version :version}
         ver-empty {:mvn/version ""}
