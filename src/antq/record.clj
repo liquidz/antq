@@ -22,7 +22,8 @@
    [:repositories [:maybe [:map-of 'string? ?repository]]]
    [:changes-url [:maybe 'string?]]
    [:latest-name [:maybe 'string?]]
-   [:only-newest-version? [:maybe 'boolean?]]])
+   [:only-newest-version? [:maybe 'boolean?]]
+   [:exclude-versions [:maybe [:sequential 'string?]]]])
 
 (def ?dependencies
   [:sequential ?dependency])
@@ -52,4 +53,6 @@
    ;; c.f. https://github.com/clojars/clojars-web/wiki/Verified-Group-Names
    latest-name
    ;; Keep only the newest version in the same file.
-   only-newest-version?])
+   only-newest-version?
+   ;; Ignore versions that match the specified version range
+   exclude-versions])
