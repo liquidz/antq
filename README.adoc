@@ -183,6 +183,8 @@ E.g.
 --exclude=com.github.liquidz/antq
 # Exclude specific version of specified artifact
 --exclude=com.github.liquidz/antq@0.13.0
+# Exclude version range of specified artifact
+--exclude=com.github.liquidz/antq@0.13.x
 ----
 
 When you specified a version number, antq will report the latest version excluding only the specified version.

@@ -43,3 +43,29 @@ Otherwise, the following ways are available.
 ----
 {:deps {foo/bar ^:antq/exclude {:mvn/version "..."}}}
 ----
+
+== Specify a version or version range via metadata
+
+Please repalce `^:antq/exclude` as follows.
+
+[source,clojure]
+----
+;; Specific version
+^{:antq/exclude "1.2.3"}
+^{:antq/exclude ["1.2.3" "1.2.4"]}
+
+;; Version range
+^{:antq/exclude "1.2.x"}
+^{:antq/exclude ["1.2.x" "1.3.x"]}
+----
+
+=== Supported version ranges
+
+[cols="50a,50a"]
+|===
+| Range | Description
+
+| `1.2.x`
+| Matches to `1.2.0`, `1.2.1`, etc.
+
+|===
