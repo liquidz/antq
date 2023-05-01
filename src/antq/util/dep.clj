@@ -119,3 +119,16 @@
     ;; Skip showing diff URL when POM file is not found
     (catch java.io.FileNotFoundException _ nil)))
 (def get-scm-url (u.fn/memoize-by get-scm-url* :name))
+
+(defn ensure-version-list
+  [x]
+  (cond
+    (string? x)
+    [x]
+
+    (and (sequential? x)
+         (every? string? x))
+    x
+
+    :else
+    []))

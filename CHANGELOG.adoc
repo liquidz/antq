@@ -1,6 +1,18 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+// {{{
+=== Added
+* https://github.com/liquidz/antq/issues/212[#212]: Added support for exclusion by specifying version ranges.
+** e.g.
+*** Command line: `--exclude=foo/bar@1.2.x`
+*** Meta data: `foo/bar ^{:antq/exclude "1.2.x"} {:mvn/version ...}`
+** See link:./doc/exclusions.adoc[Exclusions] for more information.
+
+=== Changed
+* Bumped tools.deps to 0.18.1335.
+* Bumped malli to 0.11.0.
+// }}}
 
 == 2.3.1043 (2023-04-01)
 // {{{

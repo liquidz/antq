@@ -118,30 +118,45 @@
                                         :focus ["org.clojure/clojure"]})))))
 
 (t/deftest remove-skipping-versions-test
-  (t/testing "there are no target to remove"
-    (t/is (= ["1" "2" "3"]
-             (sut/remove-skipping-versions ["1" "2" "3"] "foo" {})))
-    (t/is (= ["1" "2" "3"]
-             (sut/remove-skipping-versions ["1" "2" "3"] "foo" {:exclude ["foo@4"]}))))
+  (let [dep (r/map->Dependency {:name "foo"})]
+    (t/testing "there are no target to remove"
+      (t/is (= ["1" "2" "3"]
+               (sut/remove-skipping-versions ["1" "2" "3"] dep {})))
+      (t/is (= ["1" "2" "3"]
+               (sut/remove-skipping-versions ["1" "2" "3"] dep {:exclude ["foo@4"]}))))
 
-  (t/testing "only dep's name is matched"
-    (t/is (= ["1" "2" "3"]
-             (sut/remove-skipping-versions ["1" "2" "3"] "foo" {:exclude ["foo"]}))))
+    (t/testing "only dep's name is matched"
+      (t/is (= ["1" "2" "3"]
+               (sut/remove-skipping-versions ["1" "2" "3"] dep {:exclude ["foo"]}))))
 
-  (t/testing "only version number is matched"
-    (t/is (= ["1" "2" "3"]
-             (sut/remove-skipping-versions ["1" "2" "3"] "foo" {:exclude ["bar@2"]}))))
+    (t/testing "only version number is matched"
+      (t/is (= ["1" "2" "3"]
+               (sut/remove-skipping-versions ["1" "2" "3"] dep {:exclude ["bar@2"]}))))
 
-  (t/testing "dep's name and version number are matched"
-    (t/is (= ["1" "3"]
-             (sut/remove-skipping-versions ["1" "2" "3"] "foo" {:exclude ["foo@2"]})))
-    (t/is (= ["1"]
-             (sut/remove-skipping-versions ["1" "2" "3"] "foo" {:exclude ["foo@2"
+    (t/testing "dep's name and version number are matched"
+      (t/is (= ["1" "3"]
+               (sut/remove-skipping-versions ["1" "2" "3"] dep {:exclude ["foo@2"]})))
+      (t/is (= ["1"]
+               (sut/remove-skipping-versions ["1" "2" "3"] dep {:exclude ["foo@2"
                                                                           "foo@3"]})))
-    (t/is (= []
-             (sut/remove-skipping-versions ["1" "2" "3"] "foo" {:exclude ["foo@1"
+      (t/is (= []
+               (sut/remove-skipping-versions ["1" "2" "3"] dep {:exclude ["foo@1"
                                                                           "foo@2"
-                                                                          "foo@3"]})))))
+                                                                          "foo@3"]}))))
+
+    (t/testing "version range"
+      (let [vers ["1.0.0" "1.0.1" "1.1.0" "1.1.1" "1.2.0" "2.0.0"]]
+        (t/is (= ["2.0.0"]
+                 (sut/remove-skipping-versions vers dep {:exclude ["foo@1.x"]})))
+        (t/is (= ["1.1.0" "1.1.1" "1.2.0" "2.0.0"]
+                 (sut/remove-skipping-versions vers dep {:exclude ["foo@1.0.x"]})))
+        (t/is (= ["1.0.0" "1.0.1" "1.1.0" "1.1.1"]
+                 (sut/remove-skipping-versions vers dep {:exclude ["foo@1.2.x"
+                                                                   "foo@2.x"]})))
+        (t/is (= ["1.0.0" "1.0.1" "1.1.0" "1.1.1" "1.2.0"]
+                 (sut/remove-skipping-versions vers dep {:exclude ["foo@2.x"]})))
+        (t/is (= ["1.0.0" "1.0.1" "1.1.0" "1.1.1" "1.2.0" "2.0.0"]
+                 (sut/remove-skipping-versions vers dep {:exclude ["foo@9.x"]})))))))
 
 (t/deftest using-release-version?-test
   (t/are [expected in] (= expected (sut/using-release-version?

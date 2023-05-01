@@ -24,3 +24,12 @@
         [ex]
         (throw ex)))))
 
+(defmethod ver/latest? :git-tag-and-sha
+  [dep]
+  (and (:version dep)
+       (:latest-version dep)
+       (string? (:version dep))
+       (string? (:latest-version dep))
+       (<= 0  (version/version-compare
+               (u.ver/normalize-version (:version dep))
+               (u.ver/normalize-version (:latest-version dep))))))

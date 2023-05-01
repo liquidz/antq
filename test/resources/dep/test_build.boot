@@ -8,7 +8,9 @@
                   [ver-not-string :version]
                   [ver-empty ""]
                   ;; should be ignored
-                  ^:antq/exclude [meta/ignore "5.0.0"]])
+                  ^:antq/exclude [meta/ignore "5.0.0"]
+                  ^{:antq/exclude "7.x"} [meta/range-ignore1 "6.0.0"]
+                  ^{:antq/exclude ["8.x" "9.x"]} [meta/range-ignore2 "7.0.0"]])
 
 (set-env!
   :repositories #(conj % '["antq-test" {:url "s3://antq-repo/"}]))

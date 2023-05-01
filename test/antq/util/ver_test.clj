@@ -50,3 +50,16 @@
              (sut/normalize-latest-version (r/map->Dependency {:type :git-sha
                                                                :version "faf211b"
                                                                :latest-version "4c484d08630a5711f5a04c4f7e23c5fb1dad6cf9"}))))))
+
+(t/deftest in-range?-test
+  (t/is (true? (sut/in-range? "1.0.0" "1.0.0")))
+  (t/is (true? (sut/in-range? "1.0.x" "1.0.0")))
+  (t/is (true? (sut/in-range? "1.x" "1.0.0")))
+  (t/is (true? (sut/in-range? "1.x" "1.1.0")))
+  (t/is (true? (sut/in-range? "2.x" "2.0.0")))
+
+  (t/is (false? (sut/in-range? "1.0.0" "10000")))
+  (t/is (false? (sut/in-range? "1.0.1" "1.0.0")))
+  (t/is (false? (sut/in-range? "1.0.x" "1.1.0")))
+  (t/is (false? (sut/in-range? "1.x" "2.0.0")))
+  (t/is (false? (sut/in-range? "2.x" "1.2.0"))))

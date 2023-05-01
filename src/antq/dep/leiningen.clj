@@ -24,7 +24,14 @@
 (defn- exclude?
   [v]
   (-> (meta v)
-      (contains? const/deps-exclude-key)))
+      (get const/deps-exclude-key)
+      (true?)))
+
+(defn- exclude-version-range
+  [v]
+  (-> (meta v)
+      (get const/deps-exclude-key)
+      (u.dep/ensure-version-list)))
 
 (defn extract-deps
   {:malli/schema [:=>
@@ -56,14 +63,15 @@
                     form)
                   (read-string (str "(list " project-clj-content-str " )")))
     (let [repositories (normalize-repositories @repos)]
-      (for [[dep-name version] @deps
+      (for [[dep-name version :as dep] @deps
             :when (acceptable-version? version)]
         (r/map->Dependency {:project :leiningen
                             :type :java
                             :file file-path
                             :name (normalize-name dep-name)
                             :version version
-                            :repositories repositories})))))
+                            :repositories repositories
+                            :exclude-versions (seq (exclude-version-range dep))})))))
 
 (defn load-deps
   {:malli/schema [:function

@@ -4,7 +4,9 @@
                  [ver-not-string :version]
                  [ver-empty ""]
                  ;; should be ignored
-                 ^:antq/exclude [meta-ignore "3.0.0"]]
+                 ^:antq/exclude [meta-ignore "3.0.0"]
+                 ^{:antq/exclude "7.x"} [meta/range-ignore1 "6.0.0"]
+                 ^{:antq/exclude ["8.x" "9.x"]} [meta/range-ignore2 "7.0.0"]]
 
   :plugins [[plug "4.0.0"]]
 

@@ -51,3 +51,13 @@
 
     :else
     no-latest-version-error))
+
+(defn in-range?
+  "e.g. '1.x' matches '1.0.0', '1.1.0' and so on."
+  [version-range target-version]
+  (let [re (-> version-range
+               (str/replace "." "\\.")
+               (str/replace "\\.x" "\\.+")
+               (->> (str "^"))
+               (re-pattern))]
+    (some? (re-seq re target-version))))
