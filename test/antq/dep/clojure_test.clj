@@ -50,6 +50,10 @@
                  (java-dependency {:name "dft/dft" :version "6.0.0"})
                  (java-dependency {:name "short-meta/short-meta" :version "2.5.8"})
                  (java-dependency {:name "full-meta/full-meta" :version "2.6.9"})
+                 (java-dependency {:name "meta/range-ignore1" :version "4.6.9"
+                                   :exclude-versions ["5.x"]})
+                 (java-dependency {:name "meta/range-ignore2" :version "4.6.9"
+                                   :exclude-versions ["6.x" "7.x"]})
                  (git-sha-dependency {:name "sha/sha" :version "dummy-sha"
                                       :extra {:url "https://github.com/example/sha.git"}})
                  (git-sha-dependency {:name "git-sha/git-sha" :version "dummy-git-sha"

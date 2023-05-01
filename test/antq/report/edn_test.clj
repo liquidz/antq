@@ -25,7 +25,8 @@
                :only-newest-version? nil
                :repositories nil
                :changes-url nil
-               :diff-url nil}
+               :diff-url nil
+               :exclude-versions nil}
               {:file "b"
                :name "bar"
                :version "2"
@@ -36,5 +37,6 @@
                :only-newest-version? nil
                :repositories nil
                :changes-url "https://example.com"
-               :diff-url "https://example.com"}]
+               :diff-url "https://example.com"
+               :exclude-versions nil}]
              (sort-by :file (edn/read-string res))))))

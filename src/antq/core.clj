@@ -39,6 +39,7 @@
    [antq.upgrade.shadow]
    [antq.util.exception :as u.ex]
    [antq.util.maven :as u.maven]
+   [antq.util.ver :as u.ver]
    [antq.ver :as ver]
    [antq.ver.git-sha]
    [antq.ver.git-tag-and-sha]
@@ -109,13 +110,17 @@
       (contains? exclude-artifacts (:name dep)))))
 
 (defn remove-skipping-versions
-  [versions dep-name options]
-  (let [skip-vers (->> (:exclude options)
+  [versions dep options]
+  (let [dep-name (:name dep)
+        skip-vers (->> (:exclude options)
                        (map #(str/split % #"@" 2))
                        (filter #(= dep-name (first %)))
                        (keep second)
-                       (set))]
-    (remove skip-vers versions)))
+                       (concat (or (:exclude-versions dep) []))
+                       (distinct))]
+    (remove (fn [target-version]
+              (some #(u.ver/in-range? % target-version) skip-vers))
+            versions)))
 
 (defn using-release-version?
   [dep]
@@ -146,7 +151,7 @@
   (let [vers (cond->> (:_versions dep)
                (not (ver/under-development? (:version dep)))
                (drop-while ver/under-development?))
-        vers (remove-skipping-versions vers (:name dep) options)
+        vers (remove-skipping-versions vers dep options)
         latest-version (first vers)]
     (assoc dep :latest-version latest-version)))
 

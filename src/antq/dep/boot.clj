@@ -10,7 +10,14 @@
 (defn- exclude?
   [v]
   (-> (meta v)
-      (contains? const/deps-exclude-key)))
+      (get const/deps-exclude-key)
+      (true?)))
+
+(defn- exclude-version-range
+  [v]
+  (-> (meta v)
+      (get const/deps-exclude-key)
+      (u.dep/ensure-version-list)))
 
 (defn extract-deps
   {:malli/schema [:=>
@@ -42,7 +49,7 @@
                     form)
                   (read-string (str "(list " build-boot-content-str " )")))
     (let [repositories (apply hash-map @repos)]
-      (for [[dep-name version] @deps
+      (for [[dep-name version :as dep] @deps
             :when (and (string? version) (seq version))]
         (r/map->Dependency {:project :boot
                             :type :java
@@ -51,7 +58,8 @@
                                      (str dep-name)
                                      (str dep-name "/" dep-name))
                             :version version
-                            :repositories repositories})))))
+                            :repositories repositories
+                            :exclude-versions (seq (exclude-version-range dep))})))))
 
 (defn load-deps
   {:malli/schema [:function
