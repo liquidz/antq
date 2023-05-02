@@ -24,20 +24,37 @@
 (defn- target-dependency?
   [loc group-id artifact-id]
   (let [{:keys [tag content]} (zip/node loc)]
-    (if (and tag
-             (= "groupId" (name tag))
-             (= [group-id] content))
-      (->> (zip/rights loc)
-           (filter #(and (tag=? "artifactId")
-                         (= [artifact-id] (:content %))))
-           (seq)
-           (some?))
-      false)))
+
+    (cond
+      ;; group-id
+      (not (and tag
+                (= "groupId" (name tag))
+                (= [group-id] content)))
+      false
+
+      ;; artifact-id next to group-id
+      (not (->> (zip/rights loc)
+                (filter #(and (= "artifactId" (name (:tag %)))
+                              (= [artifact-id] (:content %))))
+                (seq)
+                (some?)))
+      false
+
+      ;; exlusion
+      (-> loc
+          (zip/up)
+          (tag-name)
+          (= "exclusion"))
+      false
+
+      :else
+      true)))
 
 (defn- version-property-name
   [loc]
-  (let [loc (find-version loc)
-        {:keys [content]} (zip/node loc)]
+  (let [{:keys [content]} (some-> loc
+                                  (find-version)
+                                  (zip/node))]
     (some->> (first content)
              (re-seq #"\$\{(.+?)\}")
              (first)
