@@ -2,6 +2,9 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 // {{{
+=== Changed
+* Bumped build.edn to 0.9.216.
+
 === Fixed
 * https://github.com/liquidz/antq/issues/217[#217]: Fixed pom.xml upgrader to work correctly when pom.xml contains `exclusions` tag.
 // }}}
