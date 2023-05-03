@@ -32,6 +32,13 @@
                       :latest-version "9.0.0"
                       :file (io/file (io/resource "dep/child_pom/child/pom.xml"))}))
 
+(def ^:private dummy-java-with-exclusion-dep
+  (r/map->Dependency {:project :pom
+                      :type :java
+                      :name "com.bar/bar"
+                      :latest-version "9.0.0"
+                      :file (io/file (io/resource "dep/test_pom_exclusions.xml"))}))
+
 (t/deftest upgrade-dep-test
   (let [tmp-file (File/createTempFile "upgrade-dep-test" "xml")]
     (try
@@ -74,3 +81,18 @@
 (t/deftest upgrade-dep-with-child-pom-test
   (t/is (nil? (->> dummy-parent-child-java-dep
                    (upgrade/upgrader)))))
+
+(t/deftest upgrade-dep-with-exclusion-test
+  (let [tmp-file (File/createTempFile "upgrade-dep-test" "xml")]
+    (try
+      (let [from-deps (->> dummy-java-with-exclusion-dep
+                           :file
+                           (dep.pom/extract-deps ""))
+            _ (->> dummy-java-with-exclusion-dep
+                   (upgrade/upgrader)
+                   (spit tmp-file))
+            to-deps (dep.pom/extract-deps "" tmp-file)]
+        (t/is (= #{{:name "com.bar/bar" :version {:- "1.0.0" :+ "9.0.0"}}}
+                 (h/diff-deps from-deps to-deps))))
+      (finally
+        (.delete tmp-file)))))

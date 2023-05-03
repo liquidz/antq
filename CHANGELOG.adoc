@@ -2,6 +2,12 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 // {{{
+=== Fixed
+* https://github.com/liquidz/antq/issues/217[#217]: Fixed pom.xml upgrader to work correctly when pom.xml contains `exclusions` tag.
+// }}}
+
+== 2.4.1062 (2023-05-01)
+// {{{
 === Added
 * https://github.com/liquidz/antq/issues/212[#212]: Added support for exclusion by specifying version ranges.
 ** e.g.
