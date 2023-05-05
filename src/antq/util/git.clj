@@ -3,8 +3,10 @@
    [antq.constant :as const]
    [antq.log :as log]
    [antq.util.async :as u.async]
+   [antq.util.date :as u.date]
    [clojure.java.shell :as sh]
-   [clojure.string :as str]))
+   [clojure.string :as str]
+   [clojure.tools.gitlibs :as gl]))
 
 (defn- extract-tags
   [ls-remote-resp]
@@ -92,3 +94,22 @@
        ;; If there is an exact match, it is preferred
        (some #(and (= % s) %) tags)
        (some #(and (str/includes? % s) %) tags)))))
+
+(defn- rev-date*
+  [url lib rev]
+  (let [path (gl/procure url lib rev)]
+    (some->> path
+             (sh/sh "git" "show" "--no-patch" "--format=%cI" rev :dir)
+             (:out)
+             (str/trim)
+             (u.date/iso-date-time))))
+
+(def rev-date
+  (memoize rev-date*))
+
+(defn head-date
+  [url lib]
+  (rev-date url lib "HEAD"))
+
+(comment
+  (head-date "https://github.com/liquidz/antq" 'liquidz/antq))
