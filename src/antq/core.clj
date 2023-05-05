@@ -9,6 +9,10 @@
   (:gen-class)
   (:require
    [antq.changelog :as changelog]
+   [antq.date :as date]
+   [antq.date.git-sha]
+   [antq.date.git-tag-and-sha]
+   [antq.date.java]
    [antq.dep.babashka :as dep.bb]
    [antq.dep.boot :as dep.boot]
    [antq.dep.clojure :as dep.clj]
@@ -95,7 +99,8 @@
    [nil "--ignore-locals"]
    [nil "--check-clojure-tools"]
    [nil "--no-diff"] ; deprecated (for backward compatibility)
-   [nil "--no-changes"]])
+   [nil "--no-changes"]
+   [nil "--check-stale"]])
 
 (defn skip-artifacts?
   [dep options]
@@ -177,11 +182,12 @@
     (assoc dep :_versions (:_versions dep-with-vers))
     dep))
 
-(defn outdated-deps
+(defn resolve-deps
   [deps options]
   (let [org-deps (remove #(or (skip-artifacts? % options)
                               (using-release-version? %))
                          deps)
+        check-stale? (:check-stale options)
         uniq-deps (distinct-deps org-deps)
         _ (report/init-progress uniq-deps options)
         uniq-deps-with-vers (doall (pmap #(assoc-versions % options) uniq-deps))
@@ -191,7 +197,15 @@
          (pmap #(complete-versions-by % uniq-deps-with-vers))
          (map (comp dissoc-no-longer-used-keys
                     assoc-latest-version*))
-         (remove ver/latest?))))
+         (map (fn [dep]
+                (if check-stale?
+                  (assoc dep :last-updated-at (date/get-last-updated-at dep options))
+                  dep))))))
+
+(defn outdated-deps
+  [resolved-deps]
+  (->> resolved-deps
+       (remove ver/latest?)))
 
 (defn assoc-changes-url
   [{:as version-checked-dep :keys [version latest-version]}]
@@ -262,10 +276,11 @@
 
 (defn antq
   [options deps]
-  (let [deps (->> deps
-                  (mark-only-newest-version-flag)
-                  (unify-deps-having-only-newest-version-flag))]
-    (cond->> (outdated-deps deps options)
+  (let [resolved-deps (-> deps
+                          (mark-only-newest-version-flag)
+                          (unify-deps-having-only-newest-version-flag)
+                          (resolve-deps options))]
+    (cond->> (outdated-deps resolved-deps)
       (and (not (:no-diff options))
            (not (:no-changes options)))
       (map assoc-changes-url)
