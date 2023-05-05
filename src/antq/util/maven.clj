@@ -98,6 +98,12 @@
     (transferProgressed [_ _event])
     (transferSucceeded [_ _event])))
 
+(defn remote-repos
+  ([opts]
+   (remote-repos (get-maven-settings opts) opts))
+  ([^Settings settings opts]
+   (deps.util.maven/remote-repos (:repositories opts) settings)))
+
 (defn repository-system
   [name version opts]
   (let [lib (cond-> name (string? name) symbol)
@@ -108,12 +114,11 @@
         ;; Overwrite TransferListener not to show "Downloading" messages
         _ (.setTransferListener session custom-transfer-listener)
         ;; c.f. https://stackoverflow.com/questions/35488167/how-can-you-find-the-latest-version-of-a-maven-artifact-from-java-using-aether
-        artifact (deps.util.maven/coord->artifact lib {:mvn/version version})
-        remote-repos (deps.util.maven/remote-repos (:repositories opts) settings)]
+        artifact (deps.util.maven/coord->artifact lib {:mvn/version version})]
     {:system system
      :session session
      :artifact artifact
-     :remote-repos remote-repos}))
+     :remote-repos (remote-repos settings opts)}))
 
 (defn- read-pom*
   ^Model
