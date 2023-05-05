@@ -21,7 +21,7 @@
 (defn- get-versions
   [name opts]
   (let [{:keys [^RepositorySystem system
-                ^DefaultRepositorySystemSession  session
+                ^DefaultRepositorySystemSession session
                 ^Artifact artifact
                 remote-repos]} (u.mvn/repository-system name "[0,)" opts)
         req (doto (VersionRangeRequest.)
