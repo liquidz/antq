@@ -3,6 +3,7 @@
    [antq.constant :as const]
    [antq.log :as log]
    [antq.util.async :as u.async]
+   [antq.util.date :as u.date]
    [antq.util.env :as u.env]
    [antq.util.leiningen :as u.lein]
    [antq.util.xml :as u.xml]
@@ -25,6 +26,13 @@
    (org.eclipse.aether
     DefaultRepositorySystemSession
     RepositorySystem)
+   (org.eclipse.aether.artifact
+    Artifact)
+   (org.eclipse.aether.metadata
+    DefaultMetadata
+    Metadata$Nature)
+   (org.eclipse.aether.resolution
+    MetadataRequest)
    (org.eclipse.aether.transfer
     TransferEvent
     TransferListener)))
@@ -215,3 +223,35 @@
         (System/setProperty "jdk.http.auth.tunneling.disabledSchemes" "")
         (System/setProperty "jdk.http.auth.proxying.disabledSchemes" "")
         (Authenticator/setDefault (authenticator username password))))))
+
+(defn- get-last-updated*
+  [name opts]
+  (let [{:keys [^RepositorySystem system
+                ^DefaultRepositorySystemSession session
+                ^Artifact artifact
+                remote-repos]} (repository-system name "[0,)" opts)
+        metadata (DefaultMetadata. (.getGroupId artifact) (.getArtifactId artifact)
+                                   "maven-metadata.xml" Metadata$Nature/RELEASE)
+        result (some (fn [remote-repo]
+                       (let [req (doto (MetadataRequest.)
+                                   (.setMetadata metadata)
+                                   (.setRepository remote-repo))
+                             res (first (.resolveMetadata system session [req]))]
+                         (when (.isResolved res)
+                           res)))
+                     remote-repos)]
+    (some->> result
+             (.getMetadata)
+             (.getFile)
+             (slurp)
+             (u.xml/str->xml-seq)
+             (u.xml/get-value :lastUpdated)
+             (u.date/yyyyMMddHHmmss))))
+
+(def get-last-updated
+  (memoize get-last-updated*))
+
+(comment
+  (def opts {:repositories default-repos})
+  (get-last-updated "org.apache.commons/commons-lang3" opts)
+  (get-last-updated "com.github.liquidz/antq" opts))
