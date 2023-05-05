@@ -55,4 +55,7 @@
    ;; Keep only the newest version in the same file.
    only-newest-version?
    ;; Ignore versions that match the specified version range
-   exclude-versions])
+   exclude-versions
+   ;; Last updated java.time.ZonedDateTime (required `--check-stale` option)
+   ;; This is the last update date and time at the Maven/Git repository level, not the version level.
+   last-updated-at])
