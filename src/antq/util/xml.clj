@@ -1,4 +1,9 @@
-(ns antq.util.xml)
+(ns antq.util.xml
+ (:require [clojure.data.xml :as xml]))
+
+(defn str->xml-seq
+  [s]
+  (xml-seq (xml/parse-str s)))
 
 (defn xml-ns
   "expects the result of `xml-seq` as content"
