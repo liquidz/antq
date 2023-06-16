@@ -63,7 +63,6 @@
   (if (empty? deps)
     (println "All dependencies are up-to-date.")
     (let [parent-grouped-deps (group-by :parent deps)]
-      ;; (clojure.pprint/pprint deps)
       (->> (or (get parent-grouped-deps nil)
                [])
            (map #(assoc % :level 0))
