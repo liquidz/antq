@@ -38,3 +38,7 @@
   "Timeout msec for
    - antq.util.maven/read-pom*"
   (u.env/getlong "ANTQ_POM_TIMEOUT" default-timeout-msec))
+
+(def transitive-max-depth
+  "Max depth for antq.dep.transitive/resolve-deps"
+  (u.env/getlong "ANTQ_TRANSITIVE_MAX_DEPTH" 5))

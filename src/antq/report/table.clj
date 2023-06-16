@@ -6,27 +6,77 @@
    [antq.util.file :as u.file]
    [antq.util.report :as u.report]
    [antq.util.ver :as u.ver]
-   [clojure.pprint :as pprint]
-   [clojure.set :as set]))
+   [clojure.set :as set]
+   [clojure.string :as str]))
 
 (def ^:private progress (atom nil))
+
+(defn- expand-children
+  [parent-grouped-deps parent-deps]
+  (->> parent-deps
+       (sort u.dep/compare-deps)
+       (mapcat (fn [parent-dep]
+                 (->> (or (get parent-grouped-deps (:name parent-dep))
+                          [])
+                      (map #(assoc % :level (inc (:level parent-dep))))
+                      (expand-children parent-grouped-deps)
+                      (concat [parent-dep]))))))
+
+(defn- calc-max-length
+  [column-name deps]
+  (apply max (count (str column-name)) (map (comp count column-name) deps)))
+
+(defn- generate-row
+  [dep columns max-lengths]
+  (->> columns
+       (map-indexed (fn [i column]
+                      (format (str "%-" (nth max-lengths i) "s")
+                              (get dep column))))
+       (str/join " | ")
+       (format "| %s |")))
+
+(defn- apply-level
+  [level s]
+  (let [indent (apply str (repeat (* level 2) " "))]
+    (str (when (seq indent)
+           (str indent))
+         s)))
+
+(defn- print-table
+  [deps]
+  (let [columns [:file :name :current :latest]
+        max-lengths (map #(calc-max-length % deps) columns)]
+    (println (generate-row (->> columns
+                                (map #(vector % (str %)))
+                                (into {}))
+                           columns max-lengths))
+    (println (->> max-lengths
+                  (map #(apply str (repeat % "-")))
+                  (str/join "-+-")
+                  (format "|-%s-|")))
+    (doseq [dep deps]
+      (println (generate-row dep columns max-lengths)))))
 
 (defmethod report/reporter "table"
   [deps _options]
   ;; Show table
-  (if (seq deps)
-    (->> deps
-         (sort u.dep/compare-deps)
-         u.report/skip-duplicated-file-name
-         (map #(assoc % :latest-version (u.ver/normalize-latest-version %)))
-         (map #(update % :file u.file/normalize-path))
-         (map #(let [latest-key (if (seq (:latest-name %))
-                                  :latest-name
-                                  :latest-version)]
-                 (set/rename-keys % {:version :current
-                                     latest-key :latest})))
-         (pprint/print-table [:file :name :current :latest]))
-    (println "All dependencies are up-to-date."))
+  (if (empty? deps)
+    (println "All dependencies are up-to-date.")
+    (let [parent-grouped-deps (group-by :parent deps)]
+      (->> (or (get parent-grouped-deps nil)
+               [])
+           (map #(assoc % :level 0))
+           (expand-children parent-grouped-deps)
+           (u.report/skip-duplicated-file-name)
+           (map #(assoc % :latest-version (u.ver/normalize-latest-version %)))
+           (map #(update % :file u.file/normalize-path))
+           (map #(let [latest-key (if (seq (:latest-name %))
+                                    :latest-name
+                                    :latest-version)]
+                   (set/rename-keys % {:version :current
+                                       latest-key :latest})))
+           (map #(update % :name (partial apply-level (or (:level %) 0))))
+           (print-table))))
 
   ;; Show changes URLs
   (let [urls (->> deps

@@ -26,7 +26,8 @@
                "repositories" nil
                "changes-url" nil
                "diff-url" nil
-               "exclude-versions" nil}
+               "exclude-versions" nil
+               "parent" nil}
               {"file" "b"
                "name" "bar"
                "version" "2"
@@ -38,5 +39,6 @@
                "repositories" nil
                "changes-url" "https://example.com"
                "diff-url" "https://example.com"
-               "exclude-versions" nil}]
+               "exclude-versions" nil
+               "parent" nil}]
              (sort-by #(get % "file") (json/read-str res))))))
