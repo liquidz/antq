@@ -3,9 +3,9 @@
  {org.clojure/clojure {:mvn/version "1.11.1"}
   org.clojure/data.xml {:mvn/version "0.2.0-alpha8"}
   org.clojure/data.zip {:mvn/version "1.0.0"}
-  org.clojure/tools.cli {:mvn/version "1.0.214"}
+  org.clojure/tools.cli {:mvn/version "1.0.219"}
   org.clojure/core.async {:mvn/version "1.6.673"}
-  org.clojure/tools.deps {:mvn/version "0.18.1335"}
+  org.clojure/tools.deps {:mvn/version "0.18.1354"}
   org.clojure/data.json {:mvn/version "2.4.0"}
   clj-commons/clj-yaml {:mvn/version "1.0.26"}
   version-clj/version-clj {:mvn/version "2.0.2"}
@@ -24,8 +24,8 @@
                  "test"
                  "test/resources"]
    :extra-deps {metosin/malli {:mvn/version "0.11.0"}
-                lambdaisland/kaocha {:mvn/version "1.82.1306"}
-                lambdaisland/deep-diff2 {:mvn/version "2.8.190"}}
+                lambdaisland/kaocha {:mvn/version "1.85.1342"}
+                lambdaisland/deep-diff2 {:mvn/version "2.9.202"}}
    :jvm-opts ["-Dclojure.core.async.go-checking=true"]}
 
   :nop

@@ -311,6 +311,21 @@ Please use `--no-changes` instead.
 
 Skip checking diff between deps' versions. Disabled by default.
 
+=== --transitive
+
+Scan outdated transitive dependencies. Disabled by default.
+
+[NOTE]
+=====
+The default scan depth is `5`, but it is customizable by the environmental variable `ANTQ_TRANSITIVE_MAX_DEPTH`.
+=====
+
+[WARNING]
+====
+With this option, the number of reported dependencies tends to be very large, so it is recommended to use it with the `--no-changes` option.
+Otherwise, it may take a long time for the results to be reported.
+====
+
 == Projects using antq
 
 * https://github.com/nnichols/clojure-dependency-update-action[clojure-dependency-update-action]: A simple GitHub Actions to create Pull Requests for outdated tools.deps dependencies

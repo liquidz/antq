@@ -2,6 +2,18 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 // {{{
+=== Added
+* https://github.com/liquidz/antq/issues/204:[#204]: Added `--transitive` option to scan outdated transitive dependencies.
+
+=== Changed
+* Bumped tools.deps to 0.18.1354.
+* Bumped tools.cli to 1.0.219.
+* Bumped kaocha to 1.85.1342.
+* Bumped deep-diff2 to 2.9.202.
+// }}}
+
+== 2.4.1070 (2023-05-03)
+// {{{
 === Changed
 * Bumped build.edn to 0.9.216.
 
