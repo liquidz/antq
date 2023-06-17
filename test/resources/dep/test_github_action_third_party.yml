@@ -19,3 +19,23 @@ jobs:
       - uses: 0918nobita/setup-cljstyle@master
         with:
           cljstyle-version: "7"
+
+      - name: with name
+        uses: DeLaGuardo/setup-clojure@master
+        with:
+          cli: -1
+          lein: -2
+          boot: -3
+          bb: -4
+      - name: with name
+        uses: DeLaGuardo/setup-clj-kondo@master
+        with:
+          version: '-5'
+      - name: with name
+        uses: DeLaGuardo/setup-graalvm@master
+        with:
+          graalvm: -6
+      - name: with name
+        uses: 0918nobita/setup-cljstyle@master
+        with:
+          cljstyle-version: "-7"

@@ -56,7 +56,7 @@
       (loop [loc loc]
         (if-let [loc (ri.zip/find-next-string loc #(re-seq target-re %))]
           (recur (cond-> loc
-                   (some? (ri.zip/find-ancestor-string loc (action? "DeLaGuardo/setup-clojure")))
+                   (some? (ri.zip/find-previous-string loc (action? "DeLaGuardo/setup-clojure")))
                    (ri.zip/update (update-value (:latest-version version-checked-dep)))
 
                    :always
@@ -68,7 +68,7 @@
   (loop [loc loc]
     (if-let [loc (ri.zip/find-next-string loc #(re-seq #"version\s*:" %))]
       (recur (cond-> loc
-               (some? (ri.zip/find-ancestor-string loc (action? "DeLaGuardo/setup-clj-kondo")))
+               (some? (ri.zip/find-previous-string loc (action? "DeLaGuardo/setup-clj-kondo")))
                (ri.zip/update (update-value (:latest-version version-checked-dep)))
 
                :always
@@ -81,7 +81,7 @@
     (if-let [loc (or (ri.zip/find-next-string loc #(re-seq #"graalvm\s*:" %))
                      (ri.zip/find-next-string loc #(re-seq #"graalvm-version\s*:" %)))]
       (recur (cond-> loc
-               (some? (ri.zip/find-ancestor-string loc (action? "DeLaGuardo/setup-graalvm")))
+               (some? (ri.zip/find-previous-string loc (action? "DeLaGuardo/setup-graalvm")))
                (ri.zip/update (update-value (:latest-version version-checked-dep)))
 
                :always
@@ -93,7 +93,7 @@
   (loop [loc loc]
     (if-let [loc (ri.zip/find-next-string loc #(re-seq #"cljstyle-version\s*:" %))]
       (recur (cond-> loc
-               (some? (ri.zip/find-ancestor-string loc (action? "0918nobita/setup-cljstyle")))
+               (some? (ri.zip/find-previous-string loc (action? "0918nobita/setup-cljstyle")))
                (ri.zip/update (update-value (:latest-version version-checked-dep)))
 
                :always

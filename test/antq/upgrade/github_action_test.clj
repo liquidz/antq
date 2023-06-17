@@ -95,7 +95,8 @@
             to-deps (->> dummy-clojure-cli-dep
                          (upgrade/upgrader)
                          (dep.gha/extract-deps ""))]
-        (t/is (= #{{:name "clojure/brew-install" :version {:- 1 :+ "9.0.0"}}}
+        (t/is (= #{{:name "clojure/brew-install" :version {:- 1 :+ "9.0.0"}}
+                   {:name "clojure/brew-install" :version {:- -1 :+ "9.0.0"}}}
                  (h/diff-deps from-deps to-deps)))))
 
     (t/testing "leiningen"
@@ -105,7 +106,8 @@
             to-deps (->> dummy-leiningen-dep
                          (upgrade/upgrader)
                          (dep.gha/extract-deps ""))]
-        (t/is (= #{{:name "technomancy/leiningen" :version {:- 2 :+ "9.0.0"}}}
+        (t/is (= #{{:name "technomancy/leiningen" :version {:- 2 :+ "9.0.0"}}
+                   {:name "technomancy/leiningen" :version {:- -2 :+ "9.0.0"}}}
                  (h/diff-deps from-deps to-deps)))))
 
     (t/testing "boot"
@@ -115,7 +117,8 @@
             to-deps (->> dummy-boot-dep
                          (upgrade/upgrader)
                          (dep.gha/extract-deps ""))]
-        (t/is (= #{{:name "boot-clj/boot" :version {:- 3 :+ "9.0.0"}}}
+        (t/is (= #{{:name "boot-clj/boot" :version {:- 3 :+ "9.0.0"}}
+                   {:name "boot-clj/boot" :version {:- -3 :+ "9.0.0"}}}
                  (h/diff-deps from-deps to-deps))))))
 
   (t/testing "clj-kondo"
@@ -125,7 +128,8 @@
           to-deps (->> dummy-clj-kondo-dep
                        (upgrade/upgrader)
                        (dep.gha/extract-deps ""))]
-      (t/is (= #{{:name "clj-kondo/clj-kondo" :version {:- "5" :+ "9.0.0"}}}
+      (t/is (= #{{:name "clj-kondo/clj-kondo" :version {:- "5" :+ "9.0.0"}}
+                 {:name "clj-kondo/clj-kondo" :version {:- "-5" :+ "9.0.0"}}}
                (h/diff-deps from-deps to-deps)))))
 
   (t/testing "graalvm"
@@ -135,7 +139,8 @@
           to-deps (->> dummy-graalvm-dep
                        (upgrade/upgrader)
                        (dep.gha/extract-deps ""))]
-      (t/is (= #{{:name "graalvm/graalvm-ce-builds" :version {:- "6" :+ "9.0.0"}}}
+      (t/is (= #{{:name "graalvm/graalvm-ce-builds" :version {:- "6" :+ "9.0.0"}}
+                 {:name "graalvm/graalvm-ce-builds" :version {:- "-6" :+ "9.0.0"}}}
                (h/diff-deps from-deps to-deps)))))
 
   (t/testing "cljstyle"
@@ -145,5 +150,6 @@
           to-deps (->> dummy-cljstyle-dep
                        (upgrade/upgrader)
                        (dep.gha/extract-deps ""))]
-      (t/is (= #{{:name "greglook/cljstyle" :version {:- "7" :+ "9.0.0"}}}
+      (t/is (= #{{:name "greglook/cljstyle" :version {:- "7" :+ "9.0.0"}}
+                 {:name "greglook/cljstyle" :version {:- "-7" :+ "9.0.0"}}}
                (h/diff-deps from-deps to-deps))))))

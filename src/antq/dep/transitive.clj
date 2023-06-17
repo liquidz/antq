@@ -22,14 +22,20 @@
 
 (defmethod dep->dep-map :git-sha
   [dep]
-  {(symbol (:name dep))
-   {:git/sha (:version dep)}})
+  (let [extra-url (get-in dep [:extra :url])]
+    {(symbol (:name dep))
+     (cond-> {:git/sha (:version dep)}
+       (seq extra-url)
+       (assoc :git/url extra-url))}))
 
 (defmethod dep->dep-map :git-tag-and-sha
   [dep]
-  {(symbol (:name dep))
-   {:git/tag (:version dep)
-    :git/sha (get-in dep [:extra :sha])}})
+  (let [extra-url (get-in dep [:extra :url])]
+    {(symbol (:name dep))
+     (cond-> {:git/tag (:version dep)
+              :git/sha (get-in dep [:extra :sha])}
+       (seq extra-url)
+       (assoc :git/url extra-url))}))
 
 ;; ===== resolved-dep->dep =====
 (defn- parent-name

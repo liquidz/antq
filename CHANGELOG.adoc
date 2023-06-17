@@ -1,6 +1,14 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+// {{{
+=== Changed
+* Bumped rewrite-indented to 0.2.36.
+
+=== Fixed
+* https://github.com/liquidz/antq/issues/192[#192]: Fixed to be able to upgrade third party actions which containing a name attribute.
+* https://github.com/liquidz/antq/issues/225[#225]: Fixed to handle `:git/url` when scanning transitive dependencies.
+// }}}
 
 == 2.5.1089 (2023-06-16)
 // {{{
