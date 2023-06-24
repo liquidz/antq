@@ -25,7 +25,7 @@
                                 :version "1.0"
                                 :latest-version "2.0"})]
     (t/testing "https://github.com"
-      (with-redefs [u.dep/get-repository-url (constantly "https://example.com")
+      (with-redefs [u.dep/get-pom-path (constantly "https://example.com/foo/bar/1.0/bar-1.0.pom")
                     u.mvn/read-pom (fn [url]
                                      (when (= "https://example.com/foo/bar/1.0/bar-1.0.pom" url)
                                        (gen-dummy-model "https://github.com/bar/baz")))
@@ -36,7 +36,7 @@
                  (diff/get-diff-url dep)))))
 
     (t/testing "git@github.com"
-      (with-redefs [u.dep/get-repository-url (constantly "https://example.com")
+      (with-redefs [u.dep/get-pom-path (constantly "https://example.com/git/at/1.0/at-1.0.pom")
                     u.mvn/read-pom (fn [url]
                                      (when (= "https://example.com/git/at/1.0/at-1.0.pom" url)
                                        (gen-dummy-model "git@github.com:git/at")))
@@ -56,7 +56,7 @@
         (t/is (nil? (diff/get-diff-url (assoc dep :name "pom/not-found"))))))
 
     (t/testing "POM does not have SCM"
-      (with-redefs [u.dep/get-repository-url (constantly "https://example.com")
+      (with-redefs [u.dep/get-pom-path (constantly "https://example.com/pom/noscm/1.0/noscm-1.0.pom")
                     u.mvn/read-pom (fn [url]
                                      (when (= "https://example.com/pom/noscm/1.0/noscm-1.0.pom" url)
                                        (doto (Model.)
