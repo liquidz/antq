@@ -18,4 +18,11 @@
     <connection>scm:git:git://github.com/liquidz/antq.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/liquidz/antq.git</developerConnection>
   </scm>
+  <distributionManagement>
+    <relocation>
+      <groupId>io.github.liquidz</groupId>
+      <artifactId>antq?</artifactId>
+      <message>dummy message</message>
+    </relocation>
+  </distributionManagement>
 </project>

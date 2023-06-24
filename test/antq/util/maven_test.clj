@@ -10,7 +10,8 @@
    java.util.UUID
    (org.apache.maven.settings
     Server
-    Settings)))
+    Settings)
+   org.apache.maven.model.DistributionManagement))
 
 (def ^:private dummy-settings
   (doto (Settings.)
@@ -106,6 +107,18 @@
         scm (sut/get-model-scm model)]
     (t/is (= "https://github.com/liquidz/antq"
              (sut/get-scm-url scm)))))
+
+(t/deftest get-distribution-management-test
+  (let [model (sut/read-pom test-pom-path)]
+    (t/is (instance? DistributionManagement (sut/get-distribution-management model)))))
+
+(t/deftest get-relocation-test
+  (let [model (sut/read-pom test-pom-path)
+        dm (sut/get-distribution-management model)]
+    (t/is (= {:group-id "io.github.liquidz"
+              :artifact-id "antq?"
+              :message "dummy message"}
+             (sut/get-relocation dm)))))
 
 (t/deftest get-local-versions-test
   (let [dummy-file (io/file (io/resource "util/maven/maven-metadata-local.xml"))

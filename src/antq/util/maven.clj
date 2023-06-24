@@ -17,7 +17,8 @@
     PasswordAuthentication)
    (org.apache.maven.model
     Model
-    Scm)
+    Scm
+    DistributionManagement)
    org.apache.maven.model.io.xpp3.MavenXpp3Reader
    (org.apache.maven.settings
     Server
@@ -108,7 +109,8 @@
         ;; Overwrite TransferListener not to show "Downloading" messages
         _ (.setTransferListener session custom-transfer-listener)
         ;; c.f. https://stackoverflow.com/questions/35488167/how-can-you-find-the-latest-version-of-a-maven-artifact-from-java-using-aether
-        artifact (deps.util.maven/coord->artifact lib {:mvn/version version})
+        artifact (when version
+                   (deps.util.maven/coord->artifact lib {:mvn/version version}))
         remote-repos (deps.util.maven/remote-repos (:repositories opts) settings)]
     {:system system
      :session session
@@ -160,6 +162,18 @@
   ^String
   [^Scm scm]
   (.getUrl scm))
+
+(defn get-distribution-management
+  ^DistributionManagement
+  [^Model model]
+  (.getDistributionManagement model))
+
+(defn get-relocation
+  [^DistributionManagement dm]
+  (when-let [rl (.getRelocation dm)]
+    {:group-id (.getGroupId rl)
+     :artifact-id (.getArtifactId rl)
+     :message (.getMessage rl)}))
 
 (defn- get-local-versions*
   [name]
