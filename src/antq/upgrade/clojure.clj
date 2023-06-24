@@ -76,6 +76,12 @@
       :else
       loc)))
 
+(defn- replace-name
+  [loc version-checked-dep]
+  (if-let [latest-name (:latest-name version-checked-dep)]
+    (z/replace loc (symbol latest-name))
+    loc))
+
 (defn upgrade-dep
   [loc version-checked-dep]
   (let [name-set (u.dep/name-candidates (:name version-checked-dep))]
@@ -83,6 +89,7 @@
       (if-let [loc (z/find-value loc z/next name-set)]
         (recur (if (target-deps? loc)
                  (or (some-> loc
+                             (replace-name version-checked-dep)
                              ;; move to map
                              (z/right)
                              ;; TODO check antq/ignore

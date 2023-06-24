@@ -179,7 +179,7 @@
                        (dep.clj/extract-deps ""))]
       (t/is (empty? (h/diff-deps from-deps to-deps))))))
 
-(t/deftest upgrade-dep-replce-deps-test
+(t/deftest upgrade-dep-replace-deps-test
   (let [dummy-dep (assoc dummy-java-dep :name "rep")
         from-deps (->> dummy-dep
                        :file
@@ -214,3 +214,31 @@
                      (dep.clj/extract-deps ""))]
     (t/is (= #{{:name "dft/dft" :version {:- "6.0.0" :+ "9.0.0"}}}
              (h/diff-deps from-deps to-deps)))))
+
+(t/deftest upgrade-dep-replace-name-test
+  (let [from-deps (->> dummy-java-dep
+                       :file
+                       (slurp)
+                       (dep.clj/extract-deps ""))
+        new-name-dep (assoc dummy-java-dep
+                            :latest-name "new/name")
+        upgraded (upgrade/upgrader new-name-dep)
+        upgraded-edn (edn/read-string upgraded)
+        to-deps (dep.clj/extract-deps "" upgraded)]
+    (t/is (= #{{:- {:name "foo/core" :version "1.1.0"}}
+               {:- {:name "foo/core" :version "1.0.0"}}
+               {:+ {:name "new/name" :version "9.0.0"}}}
+             (h/diff-deps from-deps to-deps)))
+
+    (t/testing "dependency name should be changed"
+      (t/is (= '{new/name {:mvn/version "9.0.0"}}
+               (-> (:deps upgraded-edn)
+                   (select-keys ['foo/core 'new/name])))))
+
+    (t/testing "same name deps should be upgraded"
+      (t/is (= '{new/name {:mvn/version "9.0.0"}}
+               (get-in upgraded-edn [:aliases :same-name :extra-deps]))))
+
+    (t/testing "excluded deps should not be upgraded"
+      (t/is (= '{foo/core {:mvn/version "0.0.1"}}
+               (get-in upgraded-edn [:aliases :same-name-but-excluded :extra-deps]))))))
