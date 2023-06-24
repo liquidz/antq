@@ -4,7 +4,10 @@
    [antq.upgrade.clojure]
    [lambdaisland.deep-diff2 :as ddiff])
   (:import
-   lambdaisland.deep_diff2.diff_impl.Mismatch))
+   (lambdaisland.deep_diff2.diff_impl
+    Deletion
+    Insertion
+    Mismatch)))
 
 (defn test-dep
   [m]
@@ -24,14 +27,27 @@
   [expected-deps actual-deps]
   (->> (ddiff/diff (name-version-sorted-list expected-deps)
                    (name-version-sorted-list actual-deps))
-       (filter #(instance? Mismatch (:version %)))
-       ;; convert `:version` to a simple map
+       (filter #(or (instance? Insertion %)
+                    (instance? Deletion %)
+                    (instance? Mismatch (:version %))
+                    (instance? Mismatch (:name %))))
+       ;; convert `:version`, `:sha` and `:name` to a simple map
        (map #(cond-> %
-               (contains? % :version)
+               (and (contains? % :version)
+                    (map? (:version %)))
                (update :version (fn [m] (merge {} m)))
 
-               (contains? % :sha)
-               (update :sha (fn [m] (merge {} m)))))
+               (and (contains? % :sha)
+                    (map? (:sha %)))
+               (update :sha (fn [m] (merge {} m)))
+
+               (and (contains? % :name)
+                    (map? (:name %)))
+               (update :name (fn [m] (merge {} m)))
+
+               (or (contains? % :+)
+                   (contains? % :-))
+               (->> (merge {}))))
        (set)))
 
 (defn diff-lines
