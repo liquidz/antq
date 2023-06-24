@@ -64,3 +64,14 @@
   (get-sorted-versions-by-name (:name dep)
                                (u.dep/repository-opts dep)
                                options))
+
+(comment
+  (get-sorted-versions-by-name*
+    'org.clojure/clojure
+    (u.dep/repository-opts {})
+    {})
+
+  (get-sorted-versions-by-name*
+    'mysql/mysql-connector-java
+    (u.dep/repository-opts {})
+    {}))
