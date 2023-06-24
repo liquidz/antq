@@ -25,6 +25,7 @@
    [antq.diff.java]
    [antq.log :as log]
    [antq.record :as r]
+   [antq.relocate :as relocate]
    [antq.report :as report]
    [antq.report.edn]
    [antq.report.format]
@@ -71,11 +72,6 @@
     "shadow-cljs"
     "leiningen"
     "babashka"})
-
-(def ^:private disallowed-unverified-deps-map
-  {"antq/antq" "com.github.liquidz/antq"
-   "seancorfield/depstar" "com.github.seancorfield/depstar"
-   "seancorfield/next.jdbc" "com.github.seancorfield/next.jdbc"})
 
 (def ^:private only-newest-version-dep-names
   #{"org.clojure/clojure"})
@@ -219,16 +215,6 @@
     (assoc version-checked-dep :changes-url url)
     version-checked-dep))
 
-(defn unverified-deps
-  [deps]
-  (keep #(when-let [verified-name (and (= :java (:type %))
-                                       (get disallowed-unverified-deps-map (:name %)))]
-           (assoc %
-                  :version (:name %)
-                  :latest-version nil
-                  :latest-name verified-name))
-        deps))
-
 (defn exit
   [outdated-deps]
   (System/exit (if (seq outdated-deps) 1 0)))
@@ -284,7 +270,8 @@
       (map assoc-changes-url)
 
       :always
-      (concat (unverified-deps deps))
+      ((fn [deps]
+         (concat deps (relocate/relocated-deps deps))))
 
       :always
       (unmark-only-newest-version-flag))))
