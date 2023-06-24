@@ -27,13 +27,22 @@
   (and (in-dependencies? loc)
        (not (ignoring-meta? loc))))
 
+(defn- replace-name
+  [loc version-checked-dep]
+  (if-let [latest-name (:latest-name version-checked-dep)]
+    (z/replace loc (symbol latest-name))
+    loc))
+
 (defn upgrade-dep
   [loc version-checked-dep]
   (let [name-set (u.dep/name-candidates (:name version-checked-dep))]
     (loop [loc loc]
       (if-let [loc (z/find-value loc z/next name-set)]
         (recur (if (target-dependencies? loc)
-                 (-> loc z/right (z/replace (:latest-version version-checked-dep)))
+                 (-> loc
+                     (replace-name version-checked-dep)
+                     (z/right)
+                     (z/replace (:latest-version version-checked-dep)))
                  (z/next loc)))
         (u.zip/move-to-root loc)))))
 

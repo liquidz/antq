@@ -5,6 +5,7 @@
    [antq.test-helper :as h]
    [antq.upgrade :as upgrade]
    [antq.upgrade.shadow]
+   [clojure.edn :as edn]
    [clojure.java.io :as io]
    [clojure.test :as t]))
 
@@ -57,3 +58,22 @@
                       (slurp))
         upgraded (upgrade/upgrader dummy-excluded-dep)]
     (t/is (= original upgraded))))
+
+(t/deftest upgrade-dep-replace-name-test
+  (let [from-deps (->> dummy-java-dep
+                       :file
+                       (slurp)
+                       (dep.shadow/extract-deps ""))
+        new-name-dep (assoc dummy-java-dep
+                            :latest-name "new/name")
+        upgraded (upgrade/upgrader new-name-dep)
+        upgraded-edn (edn/read-string upgraded)
+        to-deps (dep.shadow/extract-deps "" upgraded)]
+    (t/is (= #{{:- {:name "foo/core" :version "1.0.0"}}
+               {:+ {:name "new/name" :version "9.0.0"}}}
+             (h/diff-deps from-deps to-deps)))
+
+    (t/testing "dependency name should be changed"
+      (t/is (= '[[new/name "9.0.0"]]
+               (->> (:dependencies upgraded-edn)
+                    (filter #(contains? #{'foo/core 'new/name} (first %)))))))))
