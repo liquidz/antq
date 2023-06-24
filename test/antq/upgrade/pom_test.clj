@@ -96,3 +96,22 @@
                  (h/diff-deps from-deps to-deps))))
       (finally
         (.delete tmp-file)))))
+
+(t/deftest upgrade-dep-replace-name-test
+  (let [tmp-file (File/createTempFile "upgrade-dep-test" "xml")]
+    (try
+      (let [from-deps (->> dummy-java-dep
+                           :file
+                           (dep.pom/extract-deps ""))
+            _ (->> (assoc dummy-java-dep
+                          :latest-name "new/name")
+                   (upgrade/upgrader)
+                   (spit tmp-file))
+            to-deps (dep.pom/extract-deps "" tmp-file)]
+        (t/is (= #{{:name {:- "foo/core" :+ "new/name"}
+                    :version {:- "1.0.0" :+ "9.0.0"}}
+                   {:name {:- "foo/core" :+ "new/name"}
+                    :version {:- "1.1.0" :+ "9.0.0"}}}
+                 (h/diff-deps from-deps to-deps))))
+      (finally
+        (.delete tmp-file)))))

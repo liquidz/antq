@@ -72,6 +72,19 @@
                          (u.zip/find-next (tag=? property-name) zip/right))]
     loc))
 
+(defn- replace-group-id-and-artifact-id
+  [loc version-checked-dep]
+  (if-let [latest-name (:latest-name version-checked-dep)]
+    (let [[group-id artifact-id] (str/split latest-name #"/" 2)]
+      ;; `loc` should point "groupId"
+      (-> loc
+          (edit-content group-id)
+          (u.zip/find-next (tag=? "artifactId") zip/right)
+          (edit-content artifact-id)
+          ;; go back to "groupId"
+          (u.zip/find-next (tag=? "groupId") zip/left)))
+    loc))
+
 (defn upgrade-dep
   [loc version-checked-dep]
   (let [[group-id artifact-id] (str/split (:name version-checked-dep) #"/" 2)]
@@ -87,7 +100,8 @@
 
         ;; versions managed by properties
         (some? (version-property-name loc))
-        (let [prop-name (version-property-name loc)]
+        (let [loc (replace-group-id-and-artifact-id loc version-checked-dep)
+              prop-name (version-property-name loc)]
           (if (contains? updated-props prop-name)
             (recur (zip/next loc) updated-props)
             (if-let [loc (find-properties loc prop-name)]
@@ -105,7 +119,9 @@
 
         ;; hard-coded versions
         :else
-        (if-let [loc (find-version loc)]
+        (if-let [loc (-> loc
+                         (replace-group-id-and-artifact-id version-checked-dep)
+                         (find-version))]
           (recur (edit-content loc (:latest-version version-checked-dep))
                  updated-props)
           (do (log/info (format "Failed to upgrade %s because the version tag is not found."
