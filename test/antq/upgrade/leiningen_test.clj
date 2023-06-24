@@ -68,3 +68,43 @@
                      (dep.lein/extract-deps ""))]
     (t/is (= #{{:name "plug/plug" :version {:- "4.0.0" :+ "7.0.0"}}}
              (h/diff-deps from-deps to-deps)))))
+
+(t/deftest upgrade-dep-replace-name-test
+  (let [java-dep (r/map->Dependency {:project :leiningen
+                                     :type :java
+                                     :name "foo/core"
+                                     :latest-version "9.0.0"
+                                     :file (io/resource "dep/test_project.clj")})
+        from-deps (->> java-dep
+                       :file
+                       (slurp)
+                       (dep.lein/extract-deps ""))
+        new-name-dep (assoc java-dep
+                            :latest-name "new/name")
+        upgraded (upgrade/upgrader new-name-dep)
+        to-deps (dep.lein/extract-deps "" upgraded)]
+    (t/is (= #{{:- {:name "foo/core" :version "1.0.0"}}
+               {:- {:name "foo/core" :version "1.1.0"}}
+               {:+ {:name "new/name" :version "9.0.0"}}}
+             (h/diff-deps from-deps to-deps)))
+
+    (let [upgraded-sexpr (edn/read-string upgraded)
+          dependencies (->> upgraded-sexpr
+                            (drop-while #(not= :dependencies %))
+                            (second))
+          profiles (->> upgraded-sexpr
+                        (drop-while #(not= :profiles %))
+                        (second))]
+
+      (t/testing "dependency name should be changed"
+        (t/is (= '[[new/name "9.0.0"]]
+                 (->> dependencies
+                      (filter #(contains? #{'foo/core 'new/name} (first %)))))))
+
+      (t/testing "same name deps should be upgraded"
+        (t/is (= '[:dependencies [[new/name "9.0.0"]]]
+                 (:same-name profiles))))
+
+      (t/testing "excluded deps should not be upgraded"
+        (t/is (= '[:dependencies [[foo/core "0.0.1"]]]
+                 (:same-name-but-excluded profiles)))))))
