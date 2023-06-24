@@ -11,7 +11,8 @@
     DefaultRepositorySystemSession
     RepositorySystem)
    (org.eclipse.aether.artifact
-    Artifact)
+    Artifact
+    DefaultArtifact)
    (org.eclipse.aether.repository
     RemoteRepository)
    (org.eclipse.aether.resolution
@@ -89,35 +90,38 @@
     (catch Exception _ nil)))
 (def get-repository-url (u.fn/memoize-by get-repository-url* :name))
 
-(defn- dep->pom-url
+(defn get-pom-path
   [dep]
-  (let [{:keys [version]} dep
+  (let [{:keys [^RepositorySystem system
+                ^DefaultRepositorySystemSession session
+                remote-repos]} (u.mvn/repository-system (:name dep) nil (repository-opts dep))
         [group-id artifact-id] (str/split (:name dep) #"/" 2)
-        repo-url (get-repository-url dep)]
-    (when repo-url
-      (format "%s%s/%s/%s/%s-%s.pom"
-              (u.url/ensure-tail-slash repo-url)
-              (str/replace group-id "." "/")
-              artifact-id
-              version
-              artifact-id
-              version))))
+        version (or (:latest-version dep)
+                    (:version dep))
+        req (doto (ArtifactRequest.)
+              (.setArtifact (DefaultArtifact. group-id artifact-id "" "pom" version))
+              (.setRepositories remote-repos))]
+    (try
+      (.. (.resolveArtifact system session req)
+          (getArtifact)
+          (getFile)
+          (getAbsolutePath))
+      (catch Exception _ nil))))
 
 (defn- get-scm-url*
   [dep]
-  (try
-    (when-let [model (some-> dep
-                             (dep->pom-url)
-                             (u.mvn/read-pom))]
-      (let [scm-url (some-> model
+  (when-let [path (get-pom-path dep)]
+    (try
+      (let [model (u.mvn/read-pom path)
+            scm-url (some-> model
                             (u.mvn/get-model-scm)
                             (u.mvn/get-scm-url))
             project-url (u.mvn/get-model-url model)]
         (some-> (or scm-url project-url)
                 (u.url/ensure-https)
-                (u.url/ensure-git-https-url))))
-    ;; Skip showing diff URL when POM file is not found
-    (catch java.io.FileNotFoundException _ nil)))
+                (u.url/ensure-git-https-url)))
+      ;; Skip showing diff URL when POM file is not found
+      (catch java.io.FileNotFoundException _ nil))))
 (def get-scm-url (u.fn/memoize-by get-scm-url* :name))
 
 (defn ensure-version-list
@@ -132,3 +136,7 @@
 
     :else
     []))
+
+(comment
+  (get-pom-path {:name "org.clojure/clojure" :version "1.11.1"})
+  (get-scm-url* {:name "org.clojure/clojure" :version "1.11.1"}))
