@@ -25,11 +25,13 @@
          force?)
     true
 
-    (:latest-version dep)
+    (or (:latest-name dep)
+        (:latest-version dep))
     (do (print (format "Do you want to upgrade %s '%s' to '%s' in %s (y/n): "
                        (:name dep)
                        (:version dep)
-                       (:latest-version dep)
+                       (or (:latest-name dep)
+                           (:latest-version dep))
                        (u.file/normalize-path (:file dep))))
         (flush)
         (contains? #{'y 'Y 'yes 'Yes 'YES} (read)))
@@ -61,7 +63,9 @@
         download? (or (:download options) false)
         version-checked-deps (->> deps
                                   (filter (comp (complement u.ex/ex-timeout?)
-                                                :latest-version))
+                                                (fn [dep]
+                                                  (or (:latest-version dep)
+                                                      (:latest-name dep)))))
                                   (map normalize-version))]
     (when (and (seq version-checked-deps)
                (not force?))

@@ -43,7 +43,8 @@
   (log/info (format "Upgraded %s '%s' to '%s' in %s."
                     (:name dep)
                     (:version dep)
-                    (:latest-version dep)
+                    (or (:latest-name dep)
+                        (:latest-version dep))
                     (:file dep))))
 
 (defmethod upgraded-dep no-output-reporter
