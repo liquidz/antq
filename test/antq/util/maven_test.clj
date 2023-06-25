@@ -8,10 +8,10 @@
    [clojure.tools.deps.util.maven :as deps.util.maven])
   (:import
    java.util.UUID
+   org.apache.maven.model.DistributionManagement
    (org.apache.maven.settings
     Server
-    Settings)
-   org.apache.maven.model.DistributionManagement))
+    Settings)))
 
 (def ^:private dummy-settings
   (doto (Settings.)

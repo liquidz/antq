@@ -16,9 +16,9 @@
     Authenticator
     PasswordAuthentication)
    (org.apache.maven.model
+    DistributionManagement
     Model
-    Scm
-    DistributionManagement)
+    Scm)
    org.apache.maven.model.io.xpp3.MavenXpp3Reader
    (org.apache.maven.settings
     Server
