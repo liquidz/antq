@@ -1,6 +1,10 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+// {{{
+=== Fixed
+* https://github.com/liquidz/antq/issues/228[#228]: Updated tool's help to add `traisitive` option.
+// }}}
 
 == 2.5.1095 (2023-06-17)
 // {{{
