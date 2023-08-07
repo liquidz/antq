@@ -2,6 +2,10 @@ All notable changes to this project will be documented in this file. This change
 
 == Unreleased (dev)
 // {{{
+=== Changed
+* Bumped build.edn to 0.10.227.
+* Bumped deep-diff2 to 2.10.211.
+
 === Fixed
 * https://github.com/liquidz/antq/issues/228[#228]: Updated tool's help to add `traisitive` option.
 // }}}
