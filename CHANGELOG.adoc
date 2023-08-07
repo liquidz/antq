@@ -1,6 +1,8 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+
+== 2.5.1102 (2023-08-07)
 // {{{
 === Changed
 * Bumped build.edn to 0.10.227.
