@@ -27,6 +27,25 @@
                          :dependents ['foo/bob]}}
     {}))
 
+(def ^:private custom-repo-dep
+  {:type :java
+   :name "external/zulu"
+   :version "0.1.0"
+   :repositories {"external-repo" "https://repo.example.com"}})
+
+(defn- mock-resolve-deps-custom-repo
+  [{:keys [deps mvn/repos]} _]
+  (when-not (contains? repos "external-repo")
+    (throw (ex-info "missing expected repository" {:mvn/repos repos})))
+  (condp = (ffirst deps)
+    'external/zulu {'external/yankee {:deps/manifest :mvn
+                                      :mvn/version "0.2.0"
+                                      :dependents ['external/zulu]}}
+    'external/yankee {'external/x-ray {:deps/manifest :mvn
+                                       :mvn/version "0.3.0"
+                                       :dependents ['external/yankee]}}
+    {}))
+
 (t/deftest dep->dep-map-test
   (t/testing "java"
     (t/is (= {'foo/bar {:mvn/version "1.2.3"}}
@@ -83,4 +102,21 @@
                                   :extra {:sha "0987654321"
                                           :url "https://example.com/dave"}})]
              (->> (sut/resolve-transitive-deps [dummy-dep])
+                  (sort-by :name))))))
+
+(t/deftest resolve-transitive-deps-custom-repo-test
+  (with-redefs [deps/resolve-deps mock-resolve-deps-custom-repo]
+    (t/is (= [(r/map->Dependency {:type :java
+                                  :name "external/x-ray"
+                                  :version "0.3.0"
+                                  :repositories {"external-repo" "https://repo.example.com"}
+                                  :file ""
+                                  :parent "external/yankee"})
+              (r/map->Dependency {:type :java
+                                  :name "external/yankee"
+                                  :version "0.2.0"
+                                  :repositories {"external-repo" "https://repo.example.com"}
+                                  :file ""
+                                  :parent "external/zulu"})]
+             (->> (sut/resolve-transitive-deps [custom-repo-dep])
                   (sort-by :name))))))
