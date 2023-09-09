@@ -61,11 +61,16 @@ Please repalce `^:antq/exclude` as follows.
 
 === Supported version ranges
 
-[cols="50a,50a"]
+[cols="10a,40a,50a"]
 |===
-| Range | Description
+| Range | Example | Description
 
+| `.x`
 | `1.2.x`
 | Matches to `1.2.0`, `1.2.1`, etc.
+
+| `*`
+| `1.2.0-alpha*`
+| Matches to `1.2.0-alpha1`, `1.2.0-alpha2`, etc.
 
 |===
