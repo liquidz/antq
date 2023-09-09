@@ -64,7 +64,7 @@
                (str/replace "+" "\\+")
                (str/replace "?" "\\?")
                ;; .x
-               (str/replace "\\.x" "\\.+")
+               (str/replace "\\.x" "\\.\\d+")
                ;; *
                (str/replace "*" ".*")
                (->> (str "^"))

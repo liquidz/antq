@@ -80,4 +80,10 @@
     (t/is (true? (sut/in-range? "*" "2.0.0")))
 
     (t/is (false? (sut/in-range? "1.0.*" "1.1.0")))
-    (t/is (false? (sut/in-range? "1.0*" "1.1.0")))))
+    (t/is (false? (sut/in-range? "1.0*" "1.1.0"))))
+
+  (t/testing "combination"
+    (t/is (true? (sut/in-range? "1.0.x-alpha*" "1.0.0-alpha1")))
+
+    (t/is (false? (sut/in-range? "1.0.x-alpha*" "1.0.0-bata1")))
+    (t/is (false? (sut/in-range? "1.0.x-alpha*" "1.1.0-alpha1")))))
