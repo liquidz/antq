@@ -53,8 +53,13 @@
 
 (t/deftest in-range?-test
   (t/is (true? (sut/in-range? "1.0.0" "1.0.0")))
+  (t/is (true? (sut/in-range? "1.0.0+1" "1.0.0+1")))
+  (t/is (true? (sut/in-range? "1.0.0?" "1.0.0?")))
+
   (t/is (false? (sut/in-range? "1.0.0" "10000")))
   (t/is (false? (sut/in-range? "1.0.1" "1.0.0")))
+  (t/is (false? (sut/in-range? "1.0.0+1" "1.0.0+2")))
+  (t/is (false? (sut/in-range? "1.0.0?" "1.0.?")))
 
   (t/testing ".x"
     (t/is (true? (sut/in-range? "1.0.x" "1.0.0")))
