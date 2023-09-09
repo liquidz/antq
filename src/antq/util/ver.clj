@@ -63,7 +63,10 @@
                (str/replace "." "\\.")
                (str/replace "+" "\\+")
                (str/replace "?" "\\?")
+               ;; .x
                (str/replace "\\.x" "\\.+")
+               ;; *
+               (str/replace "*" ".*")
                (->> (str "^"))
                (re-pattern))]
     (some? (re-seq re target-version))))

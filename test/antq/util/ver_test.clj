@@ -69,4 +69,15 @@
 
     (t/is (false? (sut/in-range? "1.0.x" "1.1.0")))
     (t/is (false? (sut/in-range? "1.x" "2.0.0")))
-    (t/is (false? (sut/in-range? "2.x" "1.2.0")))))
+    (t/is (false? (sut/in-range? "2.x" "1.2.0"))))
+
+  (t/testing "*"
+    (t/is (true? (sut/in-range? "1.0.*" "1.0.0")))
+    (t/is (true? (sut/in-range? "1.0*" "1.0.0")))
+    (t/is (true? (sut/in-range? "1.0*" "1.00")))
+    (t/is (true? (sut/in-range? "1.0*" "1.0")))
+    (t/is (true? (sut/in-range? "*" "1.0.0")))
+    (t/is (true? (sut/in-range? "*" "2.0.0")))
+
+    (t/is (false? (sut/in-range? "1.0.*" "1.1.0")))
+    (t/is (false? (sut/in-range? "1.0*" "1.1.0")))))
