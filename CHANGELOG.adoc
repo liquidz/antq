@@ -1,6 +1,8 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+
+== 2.6.1121 (2023-09-11)
 // {{{
 === Added
 * https://github.com/liquidz/antq/issues/235[#235]: Added support for `*` version range.
