@@ -1,6 +1,18 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+// {{{
+=== Added
+* https://github.com/liquidz/antq/issues/235[#235]: Added support for `*` version range.
+** See link:./doc/exclusions.adoc[Exclusions] for more information.
+
+=== Changed
+* Bumped kaocha to 1.86.1355.
+* Bumped malli to 0.12.0.
+
+=== Fixed
+* Fixed `.x` version range to work correctly.
+// }}}
 
 == 2.5.1109 (2023-08-12)
 // {{{
