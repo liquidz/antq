@@ -20,7 +20,7 @@
                             m)))
 
 (t/deftest extract-deps-test
-  (with-redefs [u.lein/lein-home (fn [] "path/to/dummy/")]
+  (with-redefs [u.lein/lein-home (constantly "path/to/dummy/")]
     (let [deps (sut/extract-deps
                 file-path
                 (slurp (io/resource "dep/test_project.clj")))]

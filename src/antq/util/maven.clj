@@ -83,7 +83,7 @@
        :username username
        :password password}
 
-      creds
+      (= :gpg creds)
       (let [credential-info (get-credential)]
         {:id id
          :username (:username credential-info)

@@ -49,7 +49,7 @@
          (println "See `lein help gpg` for how to install gpg."))
        (read-string out)))))
 
-(defn read-credential
+(defn read-credentials
   []
   (credentials-fn))
 
