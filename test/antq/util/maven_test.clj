@@ -1,6 +1,7 @@
 (ns antq.util.maven-test
   (:require
    [antq.util.env :as u.env]
+   [antq.util.leiningen :as u.lein]
    [antq.util.maven :as sut]
    [clojure.data.xml :as xml]
    [clojure.java.io :as io]
@@ -31,9 +32,12 @@
             :username "three-user"
             :password "three-pass"}
    ;; new to appear
-   "serv4" {:url "https://three.example.com"
+   "serv4" {:url "https://four.example.com"
             :username :env
             :password :env/four}
+   ;; new to appear
+   "serv5" {:url "https://five.example.com"
+            :creds :gpg}
    ;; should not be added because of missing username and password
    "dummy" {:url "https://dummy.example.com"}})
 
@@ -75,14 +79,16 @@
 
 (t/deftest get-maven-settings-test
   (with-redefs [deps.util.maven/get-settings (constantly dummy-settings)
-                u.env/getenv #(get dummy-env %)]
+                u.env/getenv #(get dummy-env %)
+                u.lein/get-credential (constantly {:username "gpg-user"
+                                                   :password "gpg-pass"})]
     (let [settings (sut/get-maven-settings {:repositories dummy-repos})
           servers (map #(hash-map
                          :id (.getId %)
                          :username (.getUsername %)
                          :password (.getPassword %))
                        (.getServers settings))]
-      (t/is (= 4 (count servers)))
+      (t/is (= 5 (count servers)))
 
       (t/is (= #{{:id "serv1" :username nil :password nil}
                  ;; from settings.xml
@@ -90,7 +96,9 @@
                  ;; from project.clj
                  {:id "serv3" :username "three-user" :password "three-pass"}
                  ;; from project.clj with environmental variable
-                 {:id "serv4" :username "lein-pass" :password "env-four"}}
+                 {:id "serv4" :username "lein-pass" :password "env-four"}
+                   ;; from profiles.clj with gpg
+                 {:id "serv5" :username "gpg-user" :password "gpg-pass"}}
                (set servers))))))
 
 (t/deftest read-pom-s3-repos-test

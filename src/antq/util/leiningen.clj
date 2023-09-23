@@ -1,5 +1,6 @@
 (ns antq.util.leiningen
   (:require
+   [antq.log :as log]
    [antq.util.env :as u.env]
    [clojure.string :as str]
    [clojure.java.shell :as shell]
@@ -38,20 +39,27 @@
   "cf. https://leiningen.org/reference.html"
   ([] (let [cred-file (io/file (lein-home) "credentials.clj.gpg")]
         (if (.exists cred-file)
-          (credentials-fn cred-file))))
+          (credentials-fn cred-file)
+          (log/error (format "Could not find %s" (str cred-file))))))
   ([file]
    (let [{:keys [out err exit]} (gpg "--quiet" "--batch"
                                      "--decrypt" "--" (str file))]
      (if (pos? exit)
        (binding [*out* *err*]
-         (println "Could not decrypt credentials from" (str file))
-         (println err)
-         (println "See `lein help gpg` for how to install gpg."))
+         (log/error (format "Could not decrypt credentials from %s" (str file)))
+         (log/error err)
+         (log/error "See `lein help gpg` for how to install gpg."))
        (read-string out)))))
 
-(defn read-credentials
-  []
-  (credentials-fn))
+(defn get-credential
+  [url]
+  (let [{:keys [username password]}
+        (some->> (credentials-fn)
+                 (filter (fn [[pattern, _]] (re-matches pattern url)))
+                 first
+                 val)]
+    {:username username
+     :password password}))
 
 (defn env
   [kw]

@@ -68,15 +68,9 @@
     (.setUsername (ensure-username-or-password username))
     (.setPassword (ensure-username-or-password password))))
 
-(defn- get-credential
-  []
-  (let [{:keys [username password]} (->> (u.lein/read-credential) vals first)]
-    {:username username
-     :password password}))
-
 (defn- get-auth-info
   [repository]
-  (let [[id {:keys [username password creds]}] repository]
+  (let [[id {:keys [url username password creds]}] repository]
     (cond
       (and username password)
       {:id id
@@ -84,7 +78,7 @@
        :password password}
 
       (= :gpg creds)
-      (let [credential-info (get-credential)]
+      (let [credential-info (u.lein/get-credential url)]
         {:id id
          :username (:username credential-info)
          :password (:password credential-info)}))))
