@@ -97,7 +97,7 @@
                  {:id "serv3" :username "three-user" :password "three-pass"}
                  ;; from project.clj with environmental variable
                  {:id "serv4" :username "lein-pass" :password "env-four"}
-                   ;; from profiles.clj with gpg
+                 ;; from profiles.clj with gpg
                  {:id "serv5" :username "gpg-user" :password "gpg-pass"}}
                (set servers))))))
 
