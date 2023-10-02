@@ -35,12 +35,12 @@
     (catch java.io.IOException e
       {:exit 1 :err (.getMessage e)})))
 
-(defn- credentials-fn
+(defn- credentials-fn*
   "This method references to the code of Leiningen, an open-source project licensed under EPL 1.0.
   cf. https://codeberg.org/leiningen/leiningen/src/tag/2.10.0/leiningen-core/src/leiningen/core/user.clj#L138"
   ([] (let [cred-file (io/file (lein-home) "credentials.clj.gpg")]
         (if (.exists cred-file)
-          (credentials-fn cred-file)
+          (credentials-fn* cred-file)
           (log/error (format "Could not find %s" (str cred-file))))))
   ([file]
    (let [{:keys [out err exit]} (gpg "--quiet" "--batch"
@@ -51,6 +51,8 @@
          (log/error err)
          (log/error "See `lein help gpg` for how to install gpg."))
        (read-string out)))))
+
+(def ^:private credentials-fn (memoize credentials-fn*))
 
 (defn get-credential
   [url]

@@ -1,6 +1,14 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+// {{{
+=== Added
+* https://github.com/liquidz/antq/pull/237[#237]: Added support for accessing private repositories with GPG in Leiningen projects.
+
+=== Changed
+* Bumped kaocha to 1.87.1366.
+* Bumped malli to 0.13.0.
+// }}}
 
 == 2.6.1121 (2023-09-11)
 // {{{
