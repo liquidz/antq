@@ -68,20 +68,36 @@
     (.setUsername (ensure-username-or-password username))
     (.setPassword (ensure-username-or-password password))))
 
+(defn- get-auth-info
+  [repository]
+  (let [[id {:keys [url username password creds]}] repository]
+    (cond
+      (and username password)
+      {:id id
+       :username username
+       :password password}
+
+      (= :gpg creds)
+      (let [credential-info (u.lein/get-credential url)]
+        {:id id
+         :username (:username credential-info)
+         :password (:password credential-info)}))))
+
 (defn get-maven-settings
   ^Settings
   [opts]
   (let [settings ^Settings (deps.util.maven/get-settings)
         server-ids (set (map #(.getId %) (.getServers settings)))]
     ;; NOTE
-    ;; In Leiningen, authentication information is defined in project.clj instead of ~/.m2/settings.xml,
+    ;; In Leiningen, authentication information is defined in project.clj or profiles.clj instead of ~/.m2/settings.xml,
     ;; so if there is authentication information in `:repositories`, apply to `settings`
-    (doseq [[id {:keys [username password]}] (:repositories opts)]
-      (when (and username
-                 password
-                 (not (contains? server-ids id)))
-        (.addServer settings
-                    (new-repository-server {:id id :username username :password password}))))
+    (doseq [repo (:repositories opts)]
+      (let [{:keys [id username password]} (get-auth-info repo)]
+        (when (and username
+                   password
+                   (not (contains? server-ids id)))
+          (.addServer settings
+                      (new-repository-server {:id id :username username :password password})))))
     settings))
 
 (def ^TransferListener custom-transfer-listener
