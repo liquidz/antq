@@ -46,7 +46,7 @@ Otherwise, the following ways are available.
 
 == Specify a version or version range via metadata
 
-Please repalce `^:antq/exclude` as follows.
+Please, replace `^:antq/exclude` as follows.
 
 [source,clojure]
 ----
