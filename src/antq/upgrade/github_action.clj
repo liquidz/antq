@@ -18,8 +18,12 @@
                  (str "$1" new-value "$2"))))
 
 (defn- action?
-  [action-name]
-  (let [re (re-pattern (str "uses\\s*:\\s*" action-name))]
+  [action-name & [version]]
+  (let [version' (some-> version
+                         (str/replace "." "\\."))
+        re (re-pattern (if version'
+                         (str "uses\\s*:\\s*" action-name "@" version')
+                         (str "uses\\s*:\\s*" action-name)))]
     #(some? (re-seq re %))))
 
 (defmulti upgrade-dep
@@ -34,7 +38,8 @@
 (defmethod upgrade-dep "uses"
   [loc version-checked-dep]
   (loop [loc loc]
-    (if-let [loc (ri.zip/find-next-string loc (action? (:name version-checked-dep)))]
+    (if-let [loc (ri.zip/find-next-string loc (action? (:name version-checked-dep)
+                                                       (:version version-checked-dep)))]
       (recur (cond-> loc
                (some? (ri.zip/find-ancestor-string loc #(= "steps:" %)))
                (ri.zip/update (update-action-version (:latest-version version-checked-dep)))
