@@ -97,6 +97,7 @@
    [nil "--check-clojure-tools"]
    [nil "--no-diff"] ; deprecated (for backward compatibility)
    [nil "--no-changes"]
+   [nil "--changes-in-table"]
    [nil "--transitive"]])
 
 (defn skip-artifacts?
