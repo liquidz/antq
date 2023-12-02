@@ -31,6 +31,16 @@
   (and (in-deps? loc)
        (not (ignoring-meta? (z/right loc)))))
 
+(defn- down-considering-namespaced-map
+  "cf. https://github.com/clj-commons/rewrite-clj/blob/main/doc/01-user-guide.adoc#impact-of-namespaced-map-context-on-keywords-and-symbols"
+  [loc]
+  (if (z/namespaced-map? loc)
+    (-> loc
+        (z/down)
+        (z/rightmost)
+        (z/down))
+    (z/down loc)))
+
 (defmulti replace-versions
   (fn [_loc version-checked-dep]
     (:type version-checked-dep)))
@@ -87,7 +97,7 @@
                              (z/right)
                              ;; TODO check antq/ignore
                              (skip-meta)
-                             (z/down)
+                             (down-considering-namespaced-map)
                              (replace-versions version-checked-dep))
                      (z/next loc))
                  (z/next loc)))
