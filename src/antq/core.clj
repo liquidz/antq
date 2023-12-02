@@ -326,6 +326,9 @@
 
 (defn -main
   [& args]
-  (let [{:keys [options errors]} (cli/parse-opts args cli-options)]
+  (let [{:keys [options errors]} (cli/parse-opts args cli-options)
+        options (update options :error-format #(some-> %
+                                                       (str/replace #"\\n" "\n")
+                                                       (str/replace #"\\t" "\t")))]
     (binding [log/*verbose* (:verbose options false)]
       (main* options errors))))
