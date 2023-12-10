@@ -13,6 +13,7 @@
   (r/map->Dependency {:project :github-action
                       :type :github-tag
                       :name "foo/bar"
+                      :version "v1.0.0"
                       :latest-version "v9.0.0"
                       :file (io/resource "dep/test_github_action.yml")
                       :extra {const.gh-action/type-key "uses"}}))
@@ -77,10 +78,17 @@
     (let [from-deps (->> (:file dummy-dep)
                          (slurp)
                          (dep.gha/extract-deps ""))
-          to-deps (->> dummy-dep
-                       (upgrade/upgrader)
-                       (dep.gha/extract-deps ""))]
-      (t/is (= #{{:name "foo/bar" :version {:- "v1.0.0" :+ "v9.0.0"}}}
+          temp-content (->> dummy-dep
+                            (upgrade/upgrader))
+          to-deps (h/with-temp-file
+                   [temp-file temp-content]
+                   (->> (assoc dummy-dep
+                               :version "v2.0.0"
+                               :file temp-file)
+                        (upgrade/upgrader)
+                        (dep.gha/extract-deps "")))]
+      (t/is (= #{{:name "foo/bar" :version {:- "v1.0.0" :+ "v9.0.0"}}
+                 {:name "foo/bar" :version {:- "v2.0.0" :+ "v9.0.0"}}}
                (h/diff-deps from-deps to-deps)))))
 
   (t/testing "not supported"
