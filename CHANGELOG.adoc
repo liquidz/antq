@@ -1,6 +1,12 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+// {{{
+=== Added
+
+* https://github.com/liquidz/antq/issues/240[#240]: Added `--changes-in-table` option.
+** Show changes URLs in table. This option is only available for `table` reporter.
+// }}}
 
 == 2.7.1147 (2023-12-10)
 // {{{
