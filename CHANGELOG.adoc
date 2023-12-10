@@ -1,6 +1,14 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+// {{{
+=== Changed
+* Bumped tools.deps to 0.18.1374.
+* Bumped build.edn to 0.11.241.
+
+=== Fixed
+* https://github.com/liquidz/antq/pull/192[#192]: Fixed github ation upgrader to check version correctly.
+// }}}
 
 == 2.7.1133 (2023-10-02)
 // {{{
