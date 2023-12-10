@@ -311,6 +311,12 @@ Please use `--no-changes` instead.
 
 Skip checking diff between deps' versions. Disabled by default.
 
+=== --changes-in-table
+
+Show changes URLs in table.
+This option is only available for `table` reporter.
+Disabed by default.
+
 === --transitive
 
 Scan outdated transitive dependencies. Disabled by default.
