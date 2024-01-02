@@ -3,9 +3,17 @@ All notable changes to this project will be documented in this file. This change
 == Unreleased (dev)
 // {{{
 === Added
-
 * https://github.com/liquidz/antq/issues/240[#240]: Added `--changes-in-table` option.
 ** Show changes URLs in table. This option is only available for `table` reporter.
+
+=== Changed
+* Bumped data.json to 2.5.0.
+* Bumped tools.deps to 0.18.1385.
+
+=== Fixed
+* https://github.com/liquidz/antq/issues/241[#241]: Fixed upgrading process to be able to handle destructed map.
+** e.g. `#:mvn{:version "x.y.z"}`
+* Fixed `--directory` option to distinct same directories.
 // }}}
 
 == 2.7.1147 (2023-12-10)
