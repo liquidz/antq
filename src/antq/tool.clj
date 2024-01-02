@@ -46,6 +46,7 @@
   - :ignore-locals       <boolean>
   - :check-clojure-tools <boolean>
   - :no-diff             <boolean>
+  - :changes-in-table    <boolean>
   - :transitive          <boolean>"
   [& [options]]
   (let [options (prepare-options options)]

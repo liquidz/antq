@@ -258,6 +258,10 @@ The diff URL for Version Control System. (Nullable)
 
 |===
 
+Antq uses https://github.com/athos/pogonos[Pogonos] as a template engine, so you can use http://mustache.github.io/[Mustache] features.
+
+e.g. `{{name}}{{#latest-name}} -> {{.}}{{/latest-name}}`
+
 === --reporter=REPORTER
 
 |===
@@ -311,6 +315,12 @@ Please use `--no-changes` instead.
 
 Skip checking diff between deps' versions. Disabled by default.
 
+=== --changes-in-table
+
+Show changes URLs in table.
+This option is only available for `table` reporter.
+Disabed by default.
+
 === --transitive
 
 Scan outdated transitive dependencies. Disabled by default.
@@ -344,7 +354,7 @@ Otherwise, it may take a long time for the results to be reported.
 
 == License
 
-Copyright © 2020-2023 https://twitter.com/uochan[Masashi Iizuka]
+Copyright © 2020-2024 https://scrapbox.io/uochan/uochan[Masashi Iizuka]
 
 This program and the accompanying materials are made available under the
 terms of the Eclipse Public License 2.0 which is available at

@@ -39,6 +39,7 @@
    [antq.upgrade.pom]
    [antq.upgrade.shadow]
    [antq.util.exception :as u.ex]
+   [antq.util.file :as u.file]
    [antq.util.maven :as u.maven]
    [antq.util.ver :as u.ver]
    [antq.ver :as ver]
@@ -97,6 +98,7 @@
    [nil "--check-clojure-tools"]
    [nil "--no-diff"] ; deprecated (for backward compatibility)
    [nil "--no-changes"]
+   [nil "--changes-in-table"]
    [nil "--transitive"]])
 
 (defn skip-artifacts?
@@ -292,7 +294,7 @@
 (defn main*
   [options errors]
   (u.maven/initialize-proxy-setting!)
-  (let [options (cond-> options
+  (let [options (cond-> (update options :directory u.file/distinct-directory)
                   ;; Force "format" reporter when :error-format is specified
                   (some? (:error-format options)) (assoc :reporter "format"))
         deps (and (not errors)
@@ -325,6 +327,9 @@
 
 (defn -main
   [& args]
-  (let [{:keys [options errors]} (cli/parse-opts args cli-options)]
+  (let [{:keys [options errors]} (cli/parse-opts args cli-options)
+        options (update options :error-format #(some-> %
+                                                       (str/replace #"\\n" "\n")
+                                                       (str/replace #"\\t" "\t")))]
     (binding [log/*verbose* (:verbose options false)]
       (main* options errors))))

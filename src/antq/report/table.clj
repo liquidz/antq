@@ -31,7 +31,8 @@
   (->> columns
        (map-indexed (fn [i column]
                       (format (str "%-" (nth max-lengths i) "s")
-                              (get dep column))))
+                              (or (get dep column)
+                                  ""))))
        (str/join " | ")
        (format "| %s |")))
 
@@ -43,8 +44,10 @@
          s)))
 
 (defn- print-table
-  [deps]
-  (let [columns [:file :name :current :latest]
+  [options deps]
+  (let [columns (cond-> [:file :name :current :latest]
+                  (:changes-in-table options)
+                  (conj :changes-url))
         max-lengths (map #(calc-max-length % deps) columns)]
     (println (generate-row (->> columns
                                 (map #(vector % (str %)))
@@ -58,7 +61,7 @@
       (println (generate-row dep columns max-lengths)))))
 
 (defmethod report/reporter "table"
-  [deps _options]
+  [deps options]
   ;; Show table
   (if (empty? deps)
     (println "All dependencies are up-to-date.")
@@ -76,18 +79,19 @@
                    (set/rename-keys % {:version :current
                                        latest-key :latest})))
            (map #(update % :name (partial apply-level (or (:level %) 0))))
-           (print-table))))
+           (print-table options))))
 
   ;; Show changes URLs
-  (let [urls (->> deps
-                  (filter :latest-version)
-                  (sort u.dep/compare-deps)
-                  (keep :changes-url)
-                  (distinct))]
-    (when (seq urls)
-      (println "\nAvailable changes:")
-      (doseq [u urls]
-        (println "-" u)))))
+  (when-not (:changes-in-table options)
+    (let [urls (->> deps
+                    (filter :latest-version)
+                    (sort u.dep/compare-deps)
+                    (keep :changes-url)
+                    (distinct))]
+      (when (seq urls)
+        (println "\nAvailable changes:")
+        (doseq [u urls]
+          (println "-" u))))))
 
 (defn- progress-text
   [{:keys [width total-count current-count]}]
