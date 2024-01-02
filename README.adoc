@@ -258,6 +258,10 @@ The diff URL for Version Control System. (Nullable)
 
 |===
 
+Antq uses https://github.com/athos/pogonos[Pogonos] as a template engine, so you can use http://mustache.github.io/[Mustache] features.
+
+e.g. `{{name}}{{#latest-name}} -> {{.}}{{/latest-name}}`
+
 === --reporter=REPORTER
 
 |===
