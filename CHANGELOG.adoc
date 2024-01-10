@@ -1,6 +1,8 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+
+== 2.8.1173 (2024-01-10)
 // {{{
 === Changed
 * Bumped rewrite-indented to 0.2.44.
