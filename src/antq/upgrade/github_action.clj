@@ -1,5 +1,6 @@
 (ns antq.upgrade.github-action
   (:require
+   [antq.constant.github-action :as const.gh-action]
    [antq.dep.github-action :as dep.gh-action]
    [antq.log :as log]
    [antq.upgrade :as upgrade]
@@ -50,10 +51,15 @@
 
 (defmethod upgrade-dep "DeLaGuardo/setup-clojure"
   [loc version-checked-dep]
-  (let [target-re (case (:name version-checked-dep)
-                    "clojure/brew-install" #"cli\s*:"
-                    "technomancy/leiningen" #"lein\s*:"
-                    "boot-clj/boot" #"boot\s*:"
+  (let [target-re (condp = (:name version-checked-dep)
+                    const.gh-action/setup-clojure-name #"cli\s*:"
+                    const.gh-action/setup-leiningen-name #"lein\s*:"
+                    const.gh-action/setup-boot-name #"boot\s*:"
+                    const.gh-action/setup-babashka-name #"bb\s*:"
+                    const.gh-action/setup-clj-kondo-name #"clj-kondo\s*:"
+                    const.gh-action/setup-cljfmt-name #"cljfmt\s*:"
+                    const.gh-action/setup-cljstyle-name #"cljstyle\s*:"
+                    const.gh-action/setup-zprint-name #"zprint\s*:"
                     nil)]
     (if-not target-re
       (log/error (format "%s: Unexpected name for setup-clojure"
