@@ -28,7 +28,7 @@ jobs:
           java -version
           clojure --version
 
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: ~/.m2
           key: test-m2-${{ hashFiles('deps.edn') }}-v1
