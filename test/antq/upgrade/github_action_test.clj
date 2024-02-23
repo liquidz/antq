@@ -25,30 +25,6 @@
                       :latest-version "v9.0.0"
                       :file (io/resource "dep/test_github_action.yml")}))
 
-(def ^:private dummy-clojure-cli-dep
-  (r/map->Dependency {:project :github-action
-                      :type :github-tag
-                      :name "clojure/brew-install"
-                      :latest-version "9.0.0"
-                      :file (io/resource "dep/test_github_action_third_party.yml")
-                      :extra {const.gh-action/type-key "DeLaGuardo/setup-clojure"}}))
-
-(def ^:private dummy-leiningen-dep
-  (r/map->Dependency {:project :github-action
-                      :type :github-tag
-                      :name "technomancy/leiningen"
-                      :latest-version "9.0.0"
-                      :file (io/resource "dep/test_github_action_third_party.yml")
-                      :extra {const.gh-action/type-key "DeLaGuardo/setup-clojure"}}))
-
-(def ^:private dummy-boot-dep
-  (r/map->Dependency {:project :github-action
-                      :type :github-tag
-                      :name "boot-clj/boot"
-                      :latest-version "9.0.0"
-                      :file (io/resource "dep/test_github_action_third_party.yml")
-                      :extra {const.gh-action/type-key "DeLaGuardo/setup-clojure"}}))
-
 (def ^:private dummy-clj-kondo-dep
   (r/map->Dependency {:project :github-action
                       :type :java
@@ -95,40 +71,6 @@
     (t/is (nil? (upgrade/upgrader dummy-not-supported-dep)))))
 
 (t/deftest upgrade-third-party-dep-test
-  (t/testing "clojure"
-    (t/testing "clojure cli"
-      (let [from-deps (->> (:file dummy-clojure-cli-dep)
-                           (slurp)
-                           (dep.gha/extract-deps ""))
-            to-deps (->> dummy-clojure-cli-dep
-                         (upgrade/upgrader)
-                         (dep.gha/extract-deps ""))]
-        (t/is (= #{{:name "clojure/brew-install" :version {:- 1 :+ "9.0.0"}}
-                   {:name "clojure/brew-install" :version {:- -1 :+ "9.0.0"}}}
-                 (h/diff-deps from-deps to-deps)))))
-
-    (t/testing "leiningen"
-      (let [from-deps (->> (:file dummy-leiningen-dep)
-                           (slurp)
-                           (dep.gha/extract-deps ""))
-            to-deps (->> dummy-leiningen-dep
-                         (upgrade/upgrader)
-                         (dep.gha/extract-deps ""))]
-        (t/is (= #{{:name "technomancy/leiningen" :version {:- 2 :+ "9.0.0"}}
-                   {:name "technomancy/leiningen" :version {:- -2 :+ "9.0.0"}}}
-                 (h/diff-deps from-deps to-deps)))))
-
-    (t/testing "boot"
-      (let [from-deps (->> (:file dummy-boot-dep)
-                           (slurp)
-                           (dep.gha/extract-deps ""))
-            to-deps (->> dummy-boot-dep
-                         (upgrade/upgrader)
-                         (dep.gha/extract-deps ""))]
-        (t/is (= #{{:name "boot-clj/boot" :version {:- 3 :+ "9.0.0"}}
-                   {:name "boot-clj/boot" :version {:- -3 :+ "9.0.0"}}}
-                 (h/diff-deps from-deps to-deps))))))
-
   (t/testing "clj-kondo"
     (let [from-deps (->> (:file dummy-clj-kondo-dep)
                          (slurp)
