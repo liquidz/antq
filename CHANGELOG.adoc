@@ -1,6 +1,18 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+// {{{
+=== Fixed
+* https://github.com/liquidz/antq/pull/248[#248]: Updated github action thrird party detection to add babashka, clj-kondo, cljfmt, cljstyle, and zprint supports.
+* https://github.com/liquidz/antq/pull/248[#248]: Fixed github action upgrader to support bb, clj-kondo, cljfmt, cljstyle, and zprint on setup-clojure action.
+
+=== Changed
+* Bumped tools.cli to 1.1.230.
+* Bumped data.zip to 1.1.0.
+* Bumped data.xml to 0.2.0-alpha9.
+* Bumped deep-diff2 to 2.11.216.
+* Bumped malli to 0.14.0.
+// }}}
 
 == 2.8.1173 (2024-01-10)
 // {{{
