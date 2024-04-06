@@ -90,7 +90,8 @@
                       :file (io/resource "dep/test_deps.edn")
                       :extra {:sha "123abcd"}}))
 
-(defn- select-deps [name-pred file]
+(defn- select-deps
+  [name-pred file]
   (->> (slurp file)
        (dep.clj/extract-deps "")
        (filter #(name-pred (:name %)))

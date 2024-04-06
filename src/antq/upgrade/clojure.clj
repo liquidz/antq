@@ -10,11 +10,11 @@
 (defn- in-namespaced-map?
   [loc]
   (boolean
-    (some-> loc
-            z/up
-            z/leftmost
-            z/up
-            z/namespaced-map?)))
+   (some-> loc
+           z/up
+           z/leftmost
+           z/up
+           z/namespaced-map?)))
 
 (defn- in-deps?
   [loc]
