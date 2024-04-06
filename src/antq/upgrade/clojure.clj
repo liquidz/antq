@@ -7,10 +7,22 @@
    [antq.util.zip :as u.zip]
    [rewrite-clj.zip :as z]))
 
+(defn- in-namespaced-map?
+  [loc]
+  (boolean
+    (some-> loc
+            z/up
+            z/leftmost
+            z/up
+            z/namespaced-map?)))
+
 (defn- in-deps?
   [loc]
-  (->> loc z/up z/left z/sexpr
-       (contains? const/clojure-deps-keys)))
+  (if (in-namespaced-map? loc)
+    (->> loc z/up z/leftmost z/up z/left z/sexpr
+         (contains? const/clojure-deps-keys))
+    (->> loc z/up z/left z/sexpr
+         (contains? const/clojure-deps-keys))))
 
 (defn- skip-meta
   [loc]

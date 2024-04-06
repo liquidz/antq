@@ -90,6 +90,12 @@
                       :file (io/resource "dep/test_deps.edn")
                       :extra {:sha "123abcd"}}))
 
+(defn- select-deps [name-pred file]
+  (->> (slurp file)
+       (dep.clj/extract-deps "")
+       (filter #(name-pred (:name %)))
+       (map #(assoc % :file file))))
+
 (t/deftest upgrade-dep-test
   (t/testing "java"
     (let [from-deps (->> dummy-java-dep
@@ -275,4 +281,13 @@
                      (upgrade/upgrader)
                      (dep.clj/extract-deps ""))]
     (t/is (= #{{:name "dft/dft" :version {:- "6.0.0" :+ "9.0.0"}}}
+             (h/diff-deps from-deps to-deps)))))
+
+(t/deftest upgrade-dep-namespaced-java-deps-test
+  (let [from-deps (->> (io/resource "dep/test_deps_namespaced_map.edn")
+                       (select-deps #{"foo/bar"}))
+        to-deps (->> (assoc (first from-deps) :latest-version "9.0.0")
+                     (upgrade/upgrader)
+                     (dep.clj/extract-deps ""))]
+    (t/is (= #{{:name "foo/bar" :version {:- "1.0.0" :+ "9.0.0"}}}
              (h/diff-deps from-deps to-deps)))))
