@@ -1,6 +1,16 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+// {{{
+=== Changed
+* Bumped clojure to 1.11.2.
+* Bumped tools.deps to 0.19.1417.
+* Bumped malli to 0.15.0.
+* Bumped kaocha to 1.88.1376.
+
+=== Fixed
+* https://github.com/liquidz/antq/issues/251[#251]: Fixed clojure upgrader to be able to upgrade deps in namespaced map.
+// }}}
 
 == 2.8.1185 (2024-02-23)
 // {{{
