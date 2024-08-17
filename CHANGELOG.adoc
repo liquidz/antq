@@ -1,8 +1,23 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+// {{{
+=== Added
+* https://github.com/liquidz/antq/pull/255[#255]: Added `file-path` option to `antq.api/outdated-deps`.
+
+=== Changed
+* Bumped build.edn to 0.11.266.
+* Bumped malli to 0.16.3.
+* Bumped rewrite-clj to 1.1.48.
+* Bumped tools.deps to 0.20.1440.
+* Bumped clojure to 1.11.4.
+// }}}
 
 == 2.8.1206 (2024-07-14)
+// {{{
+=== Changed
+* Bump outdated libraries.
+// }}}
 
 == 2.8.1201 (2024-04-26)
 // {{{
