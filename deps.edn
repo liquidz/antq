@@ -1,6 +1,6 @@
 {:paths ["src"]
  :deps
- {org.clojure/clojure {:mvn/version "1.11.4"}
+ {org.clojure/clojure {:mvn/version "1.12.0"}
   org.clojure/data.xml {:mvn/version "0.2.0-alpha9"}
   org.clojure/data.zip {:mvn/version "1.1.0"}
   org.clojure/tools.cli {:mvn/version "1.1.230"}
@@ -19,6 +19,8 @@
  :aliases
  {:1.10
   {:override-deps {org.clojure/clojure ^:antq/exclude {:mvn/version "1.10.3"}}}
+  :1.11
+  {:override-deps {org.clojure/clojure ^:antq/exclude {:mvn/version "1.11.4"}}}
 
   :dev
   {:extra-paths ["dev"
