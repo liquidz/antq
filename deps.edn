@@ -1,11 +1,11 @@
 {:paths ["src"]
  :deps
- {org.clojure/clojure {:mvn/version "1.11.4"}
+ {org.clojure/clojure {:mvn/version "1.12.0"}
   org.clojure/data.xml {:mvn/version "0.2.0-alpha9"}
   org.clojure/data.zip {:mvn/version "1.1.0"}
   org.clojure/tools.cli {:mvn/version "1.1.230"}
   org.clojure/core.async {:mvn/version "1.6.681"}
-  org.clojure/tools.deps {:mvn/version "0.20.1440"}
+  org.clojure/tools.deps {:mvn/version "0.21.1449"}
   org.clojure/data.json {:mvn/version "2.5.0"}
   clj-commons/clj-yaml {:mvn/version "1.0.27"}
   version-clj/version-clj {:mvn/version "2.0.3"}
@@ -19,12 +19,14 @@
  :aliases
  {:1.10
   {:override-deps {org.clojure/clojure ^:antq/exclude {:mvn/version "1.10.3"}}}
+  :1.11
+  {:override-deps {org.clojure/clojure ^:antq/exclude {:mvn/version "1.11.4"}}}
 
   :dev
   {:extra-paths ["dev"
                  "test"
                  "test/resources"]
-   :extra-deps {metosin/malli {:mvn/version "0.16.3"}
+   :extra-deps {metosin/malli {:mvn/version "0.16.4"}
                 lambdaisland/kaocha {:mvn/version "1.91.1392"}
                 lambdaisland/deep-diff2 {:mvn/version "2.11.216"}}
    :jvm-opts ["-Dclojure.core.async.go-checking=true"]}

@@ -1,6 +1,12 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+// {{{
+=== Changed
+* Bumped clojure to 1.12.0.
+* Bumped tools.deps to 0.21.1449.
+* Bumped malli to 0.16.4.
+// }}}
 
 == 2.9.1221 (2024-08-23)
 // {{{
