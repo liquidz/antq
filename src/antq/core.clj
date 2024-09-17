@@ -101,10 +101,40 @@
    [nil "--changes-in-table"]
    [nil "--transitive"]])
 
+(defn- retrieve-artifact-name
+  "Retrieve artifact name from artifact string, which may contain version after `@` sign"
+  [artifact]
+  (let [specific-version (str/split (str artifact) #"@" 2)]
+    (if (some? (second specific-version)) (first specific-version) artifact)))
+
+(defn forced-artifacts
+  "Forced artifacts are coming from focus param and contain specific version targeted with @"
+  [options]
+  (->> (:focus options)
+       (remove (fn [artifact]
+                 (-> (str/split (str artifact) #"@" 2)
+                     second
+                     not)))
+       (map (fn [art]
+              (let [[name ver] (str/split (str art) #"@" 2)]
+                {:name name, :latest-version ver})))))
+
+(defn forced-version
+  "Returns forced version if exists for `dep`, otherwise nil"
+  [dep forced-artifacts]
+  (when-let [matching-artifact (some (fn [artifact]
+                                       (when (= (:name artifact) (:name dep))
+                                         artifact))
+                                     forced-artifacts)]
+    (:latest-version matching-artifact)))
+
 (defn skip-artifacts?
   [dep options]
   (let [exclude-artifacts (set (:exclude options []))
-        focus-artifacts (set (:focus options []))]
+        focus-artifacts (->> []
+                             (:focus options)
+                             (map retrieve-artifact-name)
+                             set)]
     (cond
       ;; `focus` is prefer than `exclude`
       (seq focus-artifacts)
@@ -151,13 +181,16 @@
         (log/info))))
 
 (defn- assoc-latest-version
-  [dep options]
+  [dep options forced-artifacts]
   (let [vers (cond->> (:_versions dep)
                (not (ver/under-development? (:version dep)))
                (drop-while ver/under-development?))
         vers (remove-skipping-versions vers dep options)
         latest-version (first vers)]
-    (assoc dep :latest-version latest-version)))
+    (if-let [forced-version (and (seq forced-artifacts)
+                                 (forced-version dep forced-artifacts))]
+      (assoc dep :latest-version forced-version :forced? true)
+      (assoc dep :latest-version latest-version))))
 
 (defn- dissoc-no-longer-used-keys
   [dep]
@@ -194,7 +227,7 @@
         _ (report/init-progress uniq-deps options)
         uniq-deps-with-vers (doall (pmap #(assoc-versions % options) uniq-deps))
         _ (report/deinit-progress uniq-deps options)
-        assoc-latest-version* #(assoc-latest-version % options)
+        assoc-latest-version* #(assoc-latest-version % options (forced-artifacts options))
         version-checked-deps (->> org-deps
                                   (pmap #(complete-versions-by % uniq-deps-with-vers))
                                   (map (comp dissoc-no-longer-used-keys
@@ -204,7 +237,8 @@
                               (keep :parent)
                               (set))]
     (->> version-checked-deps
-         (remove #(and (ver/latest? %)
+         (remove #(and (not (:forced? %))
+                       (ver/latest? %)
                        (not (contains? parent-dep-names (:name %))))))))
 
 (defn assoc-changes-url
