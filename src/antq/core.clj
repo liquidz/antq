@@ -231,9 +231,13 @@
                   :latest-name verified-name))
         deps))
 
+(defn- system-exit
+  [n]
+  (System/exit n))
+
 (defn exit
   [outdated-deps]
-  (System/exit (if (seq outdated-deps) 1 0)))
+  (system-exit (if (seq outdated-deps) 1 0)))
 
 (defn fetch-deps
   [options]
@@ -303,7 +307,7 @@
       errors
       (do (doseq [e errors]
             (log/error e))
-          (System/exit 1))
+          (system-exit 1))
 
       (seq deps)
       (let [alog (log/start-async-logger!)
@@ -323,7 +327,7 @@
 
       :else
       (do (log/info "No project file")
-          (System/exit 1)))))
+          (system-exit 1)))))
 
 (defn -main
   [& args]

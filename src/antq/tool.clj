@@ -51,7 +51,11 @@
   [& [options]]
   (let [options (prepare-options options)]
     (binding [log/*verbose* (:verbose options false)]
-      (core/main* options nil))))
+      (with-redefs [core/system-exit (fn [n]
+                                       (when (not= 0 n)
+                                         (throw (ex-info "Exited" {:code n})))
+                                       n)]
+        (core/main* options nil)))))
 
 (defn help
   [& _]
