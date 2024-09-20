@@ -1,6 +1,13 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+// {{{
+=== Changed
+* Bumped clj-yaml to 1.0.28.
+
+=== Fixed
+* https://github.com/liquidz/antq/issues/261[#261]: Fixed to work correctly when used as a tool.
+// }}}
 
 == 2.9.1227 (2024-09-07)
 // {{{
