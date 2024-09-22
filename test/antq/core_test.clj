@@ -197,7 +197,7 @@
       (t/is (= [(test-dep {:name "alice" :version "1.0.0" :latest-version "3.0.0"})]
                (sut/outdated-deps deps {:focus ["alice"]}))))
     (t/testing "focus containing specific version, should force it (0.5.0) even when newer exists (3.0.0)"
-      (t/is (= [(test-dep {:name "alice" :version "1.0.0" :latest-version "0.5.0" :forced? true})]
+      (t/is (= [(test-dep {:name "alice" :version "1.0.0" :latest-version "0.5.0" :forced-ver "0.5.0"})]
                (sut/outdated-deps deps {:focus ["alice@0.5.0"]}))))))
 
 (t/deftest assoc-changes-url-test
@@ -326,7 +326,7 @@
 
 (t/deftest forced-artifacts-test
   (t/testing "default"
-    (t/is [] (sut/forced-artifacts {:focus ["foo"]}))
-    (t/is [{:name "foo" :latest-version "2.0.0"}] (sut/forced-artifacts {:focus ["foo@2.0.0"]}))
+    (t/is [] (sut/forced-artifact-version-map {:focus ["foo"]}))
+    (t/is [{:name "foo" :latest-version "2.0.0"}] (sut/forced-artifact-version-map {:focus ["foo@2.0.0"]}))
     (t/is [{:name "foo" :latest-version "2.0.0"}
-           {:name "foo/zbar2" :latest-version "2"}] (sut/forced-artifacts {:focus ["foo@2.0.0" "foo" "foo/bar" "foo/zbar2@2"]}))))
+           {:name "foo/zbar2" :latest-version "2"}] (sut/forced-artifact-version-map {:focus ["foo@2.0.0" "foo" "foo/bar" "foo/zbar2@2"]}))))
