@@ -149,16 +149,16 @@
   (contains? #{"RELEASE" "master" "main" "latest"} (:version dep)))
 
 (defn mark-forced-version
-  "If dependency is in focused artifacts, sets `:forced-ver` information"
+  "If dependency is in focused artifacts, sets `:forced-version` information"
   [dep forced-artifacts]
-  (if-let [forced-ver (get forced-artifacts (:name dep))]
-    (assoc dep :forced-ver forced-ver)
+  (if-let [forced-version (get forced-artifacts (:name dep))]
+    (assoc dep :forced-version forced-version)
     dep))
 
 (defn- assoc-versions
   [dep options]
-  (let [res (if-let [forced-ver (:forced-ver dep)]
-              (assoc dep :_versions [forced-ver])
+  (let [res (if-let [forced-version (:forced-version dep)]
+              (assoc dep :_versions [forced-version])
               (assoc dep :_versions (ver/get-sorted-versions dep options)))]
     (report/run-progress dep options)
     res))
@@ -193,7 +193,7 @@
 (defn distinct-deps
   [deps]
   (->> deps
-       (map #(select-keys % [:type :name :version :repositories :extra :forced-ver]))
+       (map #(select-keys % [:type :name :version :repositories :extra :forced-version]))
        (map #(if (ver/snapshot? (:version %))
                %
                (dissoc % :version)))
@@ -222,7 +222,7 @@
                    (mapv #(mark-forced-version % forced-artifacts)))
         uniq-deps (distinct-deps org-deps)
         _ (report/init-progress uniq-deps options)
-        uniq-deps-with-vers (doall (pmap #(assoc-versions %  options) uniq-deps))
+        uniq-deps-with-vers (doall (pmap #(assoc-versions % options) uniq-deps))
         _ (report/deinit-progress uniq-deps options)
         assoc-latest-version* #(assoc-latest-version % options)
         version-checked-deps (->> org-deps
@@ -234,7 +234,7 @@
                               (keep :parent)
                               (set))]
     (->> version-checked-deps
-         (remove #(and (not (:forced-ver %))
+         (remove #(and (not (:forced-version %))
                        (ver/latest? %)
                        (not (contains? parent-dep-names (:name %))))))))
 

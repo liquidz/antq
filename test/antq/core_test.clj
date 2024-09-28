@@ -197,7 +197,7 @@
       (t/is (= [(test-dep {:name "alice" :version "1.0.0" :latest-version "3.0.0"})]
                (sut/outdated-deps deps {:focus ["alice"]}))))
     (t/testing "focus containing specific version, should force it (0.5.0) even when newer exists (3.0.0)"
-      (t/is (= [(test-dep {:name "alice" :version "1.0.0" :latest-version "0.5.0" :forced-ver "0.5.0"})]
+      (t/is (= [(test-dep {:name "alice" :version "1.0.0" :latest-version "0.5.0" :forced-version "0.5.0"})]
                (sut/outdated-deps deps {:focus ["alice@0.5.0"]}))))))
 
 (t/deftest assoc-changes-url-test
