@@ -210,6 +210,10 @@ NOTE: You must specify `groupId/artifactId` for Java dependencies.
 
 WARNING: `focus` option is prefer than `exclude` option.
 
+If you want to focus the upgrade on specific version of dependency, you can use --focus=ARTIFACT_NAME[@VERSION]
+E.g. `--focus=com.github.liquidz/antq@50.2.0`
+Will set antq dep to version 50.2.0, even if that version doesn't exist
+
 === --skip=PROJECT_TYPE
 Skip to search specified project files.
 Must be one of `boot`, `clojure-cli`, `github-action`, `pom`, `shadow-cljs` and `leiningen`.

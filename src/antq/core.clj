@@ -101,10 +101,28 @@
    [nil "--changes-in-table"]
    [nil "--transitive"]])
 
+(defn- parse-artifact
+  "Retrieve artifact name and version from artifact string"
+  [artifact]
+  (zipmap [:name :version]
+          (str/split (str artifact) #"@" 2)))
+
+(defn forced-artifact-version-map
+  "Forced artifacts are coming from focus param and contain specific version targeted with @"
+  [options]
+  (->> (:focus options)
+       (map parse-artifact)
+       (filter :version)
+       (map (juxt :name :version))
+       (into {})))
+
 (defn skip-artifacts?
   [dep options]
   (let [exclude-artifacts (set (:exclude options []))
-        focus-artifacts (set (:focus options []))]
+        focus-artifacts (->> []
+                             (:focus options)
+                             (map (comp :name parse-artifact))
+                             set)]
     (cond
       ;; `focus` is prefer than `exclude`
       (seq focus-artifacts)
@@ -117,9 +135,9 @@
   [versions dep options]
   (let [dep-name (:name dep)
         skip-vers (->> (:exclude options)
-                       (map #(str/split % #"@" 2))
-                       (filter #(= dep-name (first %)))
-                       (keep second)
+                       (map parse-artifact)
+                       (filter #(= dep-name (:name %)))
+                       (keep :version)
                        (concat (or (:exclude-versions dep) []))
                        (distinct))]
     (remove (fn [target-version]
@@ -130,9 +148,18 @@
   [dep]
   (contains? #{"RELEASE" "master" "main" "latest"} (:version dep)))
 
+(defn mark-forced-version
+  "If dependency is in focused artifacts, sets `:forced-version` information"
+  [dep forced-artifacts]
+  (if-let [forced-version (get forced-artifacts (:name dep))]
+    (assoc dep :forced-version forced-version)
+    dep))
+
 (defn- assoc-versions
   [dep options]
-  (let [res (assoc dep :_versions (ver/get-sorted-versions dep options))]
+  (let [res (if-let [forced-version (:forced-version dep)]
+              (assoc dep :_versions [forced-version])
+              (assoc dep :_versions (ver/get-sorted-versions dep options)))]
     (report/run-progress dep options)
     res))
 
@@ -166,7 +193,7 @@
 (defn distinct-deps
   [deps]
   (->> deps
-       (map #(select-keys % [:type :name :version :repositories :extra]))
+       (map #(select-keys % [:type :name :version :repositories :extra :forced-version]))
        (map #(if (ver/snapshot? (:version %))
                %
                (dissoc % :version)))
@@ -183,13 +210,16 @@
 
 (defn outdated-deps
   [deps options]
-  (let [org-deps (cond->> deps
+  (let [forced-artifacts (forced-artifact-version-map options)
+        org-deps (cond->> deps
                    (:transitive options)
                    (concat (dep.transitive/resolve-transitive-deps deps))
 
                    :always
                    (remove #(or (skip-artifacts? % options)
-                                (using-release-version? %))))
+                                (using-release-version? %)))
+                   (seq forced-artifacts)
+                   (mapv #(mark-forced-version % forced-artifacts)))
         uniq-deps (distinct-deps org-deps)
         _ (report/init-progress uniq-deps options)
         uniq-deps-with-vers (doall (pmap #(assoc-versions % options) uniq-deps))
@@ -204,7 +234,8 @@
                               (keep :parent)
                               (set))]
     (->> version-checked-deps
-         (remove #(and (ver/latest? %)
+         (remove #(and (not (:forced-version %))
+                       (ver/latest? %)
                        (not (contains? parent-dep-names (:name %))))))))
 
 (defn assoc-changes-url
