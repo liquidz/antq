@@ -1,6 +1,11 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+// {{{
+=== Added
+* https://github.com/liquidz/antq/pull/262[#262]: Added forced focus option.
+** See details `--focus` option section in README.
+// }}}
 
 == 2.9.1232 (2024-09-20)
 // {{{
