@@ -11,6 +11,7 @@
    [antq.changelog :as changelog]
    [antq.dep.babashka :as dep.bb]
    [antq.dep.boot :as dep.boot]
+   [antq.dep.circle-ci :as dep.circle-ci]
    [antq.dep.clojure :as dep.clj]
    [antq.dep.clojure.tool :as dep.clj.tool]
    [antq.dep.github-action :as dep.gh-action]
@@ -32,6 +33,7 @@
    [antq.report.table]
    [antq.upgrade :as upgrade]
    [antq.upgrade.boot]
+   [antq.upgrade.circle-ci]
    [antq.upgrade.clojure]
    [antq.upgrade.clojure.tool]
    [antq.upgrade.github-action]
@@ -43,6 +45,7 @@
    [antq.util.maven :as u.maven]
    [antq.util.ver :as u.ver]
    [antq.ver :as ver]
+   [antq.ver.circle-ci-orb]
    [antq.ver.git-sha]
    [antq.ver.git-tag-and-sha]
    [antq.ver.github-tag]
@@ -275,6 +278,7 @@
   (let [skip (set (:skip options))]
     (mapcat #(concat
               (when-not (skip "boot") (dep.boot/load-deps %))
+              (when-not (skip "circle-ci") (dep.circle-ci/load-deps %))
               (when-not (skip "clojure-cli") (dep.clj/load-deps %))
               (when-not (skip "github-action") (dep.gh-action/load-deps %))
               (when-not (skip "pom") (dep.pom/load-deps %))

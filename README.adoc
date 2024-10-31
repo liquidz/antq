@@ -42,6 +42,10 @@ If you have a trouble, please see link:./doc/non-supported-clojure-version.adoc[
 | https://maven.apache.org[Maven]
 |
 
+| .circleci/config.yml
+| https://circleci.com/[CircleCI]
+|
+
 | .github/workflows/*.yml
 | https://github.com/features/actions[GitHub Actions]
 |
