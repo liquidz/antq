@@ -11,15 +11,13 @@
     (->> parsed
          :orbs
          vals
-         (into
-          []
-          (map (fn [orb-s]
-                 (let [[name version] (str/split orb-s #"@")]
-                   (r/map->Dependency {:name name
+         (mapv (fn [orb-s]
+                 (let [[orb-name version] (str/split orb-s #"@" 2)]
+                   (r/map->Dependency {:name orb-name
                                        :version version
                                        :type :circle-ci-orb
                                        :project :circle-ci
-                                       :file file-path}))))))))
+                                       :file file-path})))))))
 
 (defn load-deps
   {:malli/schema [:function

@@ -68,6 +68,7 @@
 
 (def ^:private skippable
   #{"boot"
+    "circle-ci"
     "clojure-cli"
     "github-action"
     "gradle"
