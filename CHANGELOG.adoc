@@ -1,6 +1,10 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+// {{{
+=== Added
+* https://github.com/liquidz/antq/pull/265[#265]: Added CircleCI support.
+// }}}
 
 == 2.10.1241 (2024-09-29)
 // {{{

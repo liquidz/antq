@@ -2,8 +2,8 @@
   (:require
    [antq.dep.circle-ci :as sut]
    [antq.record :as r]
-   [clojure.test :as t]
-   [clojure.java.io :as io]))
+   [clojure.java.io :as io]
+   [clojure.test :as t]))
 
 (defn- circle-ci-orb-dependency
   [m]
@@ -18,4 +18,4 @@
     (t/is (every? #(instance? antq.record.Dependency %) deps))
     (t/is (= #{(circle-ci-orb-dependency {:name "circleci/node" :version "6.3.0"})
                (circle-ci-orb-dependency {:name "circleci/docker" :version "2.8.0"})}
-              (set deps)))))
+             (set deps)))))

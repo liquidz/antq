@@ -1,12 +1,13 @@
 (ns antq.dep.circle-ci
   (:require
-   [clojure.java.io :as io]
-   [clojure.string :as str]
-   [clj-yaml.core :as yaml]
+   [antq.record :as r]
    [antq.util.dep :as u.dep]
-   [antq.record :as r]))
+   [clj-yaml.core :as yaml]
+   [clojure.java.io :as io]
+   [clojure.string :as str]))
 
-(defn extract-deps [file-path content-str]
+(defn extract-deps
+  [file-path content-str]
   (let [parsed (yaml/parse-string content-str)]
     (->> parsed
          :orbs

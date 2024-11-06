@@ -1,7 +1,7 @@
 (ns antq.upgrade.circle-ci
   (:require
-   [clojure.string :as str]
    [antq.upgrade :as upgrade]
+   [clojure.string :as str]
    [rewrite-indented.zip :as ri.zip]))
 
 (defn- update-value
@@ -10,7 +10,8 @@
     (str/replace line #"([^@]+\s*@\s*['\"]?)[^\s'\"]+(['\"]?)"
                  (str "$1" new-value "$2"))))
 
-(defn upgrade-dep [loc version-checked-dep]
+(defn upgrade-dep
+  [loc version-checked-dep]
   (loop [loc loc]
     (if-let [loc (ri.zip/find-next-string loc #(re-seq (re-pattern (str "[^:]+\\s*:\\s*" (:name version-checked-dep) "@")) %))]
       (recur (-> (ri.zip/update loc (update-value (:latest-version version-checked-dep)))
