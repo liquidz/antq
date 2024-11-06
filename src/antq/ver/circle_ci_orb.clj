@@ -1,12 +1,13 @@
 (ns antq.ver.circle-ci-orb
   (:require
-   [clojure.java.io :as io]
-   [clojure.string :as str]
-   [clojure.data.json :as json]
    [antq.log :as log]
-   [antq.ver :as ver]))
+   [antq.ver :as ver]
+   [clojure.data.json :as json]
+   [clojure.java.io :as io]
+   [clojure.string :as str]))
 
-(defn- orb-id [orb-ns orb-name]
+(defn- orb-id
+  [orb-ns orb-name]
   (try
     (-> (io/as-url (str "https://internal.circleci.com/api/v2/orbs?ns=" orb-ns "&name=" orb-name))
         slurp
@@ -18,7 +19,8 @@
       (log/error (str "Failed to fetch orb id from circleci: "
                       (.getMessage ex))))))
 
-(defn- orb-versions [id]
+(defn- orb-versions
+  [id]
   (try
     (-> (io/as-url (str "https://internal.circleci.com/api/v2/orbs/" id))
         slurp

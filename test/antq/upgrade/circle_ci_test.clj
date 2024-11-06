@@ -1,10 +1,10 @@
 (ns antq.upgrade.circle-ci-test
   (:require
+   [antq.dep.circle-ci :as dep.circle-ci]
+   [antq.record :as r]
+   [antq.test-helper :as h]
    [antq.upgrade :as upgrade]
    [antq.upgrade.circle-ci]
-   [antq.record :as r]
-   [antq.dep.circle-ci :as dep.circle-ci]
-   [antq.test-helper :as h]
    [clojure.java.io :as io]
    [clojure.test :as t]))
 
@@ -24,11 +24,11 @@
           temp-content (->> node-dep
                             (upgrade/upgrader))
           to-deps (h/with-temp-file
-                    [temp-file temp-content]
-                    (->> (assoc node-dep
-                                :version "7.0.0"
-                                :file temp-file)
-                         (upgrade/upgrader)
-                         (dep.circle-ci/extract-deps "")))]
+                   [temp-file temp-content]
+                   (->> (assoc node-dep
+                               :version "7.0.0"
+                               :file temp-file)
+                        (upgrade/upgrader)
+                        (dep.circle-ci/extract-deps "")))]
       (t/is (= #{{:name "circleci/node" :version {:- "6.3.0" :+ "7.0.0"}}}
                (h/diff-deps from-deps to-deps))))))
