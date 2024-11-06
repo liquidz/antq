@@ -4,10 +4,10 @@
   [:map [:url 'string?]])
 
 (def ?type
-  [:enum :git-sha :git-tag-and-sha :github-tag :java])
+  [:enum :git-sha :git-tag-and-sha :github-tag :java :circle-ci-orb])
 
 (def ?project
-  [:enum :boot :clojure :clojure-tool :github-action :gradle :leiningen :pom :shadow-cljs])
+  [:enum :boot :clojure :clojure-tool :github-action :gradle :leiningen :pom :shadow-cljs :circle-ci])
 
 (def ?dependency
   [:map
