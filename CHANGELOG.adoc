@@ -1,6 +1,14 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+// {{{
+=== Changed
+* Bumped rewrite-clj to 1.1.49.
+* Bumped clj-yaml to 1.0.29.
+* Bumped data.json to 2.5.1.
+* Bumped tools.deps to 0.21.1460.
+* Bumped core.async to 1.7.701.
+// }}}
 
 == 2.11.1250 (2024-11-06)
 // {{{
