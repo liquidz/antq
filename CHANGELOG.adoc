@@ -1,6 +1,8 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+
+== 2.11.1260 (2024-12-21)
 // {{{
 === Changed
 * Bumped rewrite-clj to 1.1.49.
