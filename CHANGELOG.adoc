@@ -1,6 +1,11 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+// {{{
+=== Changed
+* Bumped deep-diff2 to 2.12.219.
+* Bumped tools.deps to 0.22.1492.
+// }}}
 
 == 2.11.1264 (2025-01-04)
 // {{{
