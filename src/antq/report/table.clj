@@ -55,7 +55,7 @@
                            columns max-lengths))
     (println (->> max-lengths
                   (map #(apply str (repeat % "-")))
-                  (str/join "-+-")
+                  (str/join "-|-")
                   (format "|-%s-|")))
     (doseq [dep deps]
       (println (generate-row dep columns max-lengths)))))
