@@ -1,6 +1,8 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of http://keepachangelog.com/[keepachangelog.com].
 
 == Unreleased (dev)
+
+== 2.11.1276 (2025-03-15)
 // {{{
 === Changed
 * https://github.com/liquidz/antq/pull/272[#272]: Change separator character in table reporter to generate GH markdown table.
