@@ -8,6 +8,8 @@
    [leiningen.core.main]))
 
 (defn antq
+  ;; docstring is presented as help for plugin
+  ;; lein antq --help
   "Leiningen plugin.
 
   Checks project.clj via full Leiningen evaluation. Does not check any other sources (deps.edn, etc).
