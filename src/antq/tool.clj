@@ -30,6 +30,8 @@
          (merge (select-keys options additional-keys)))))
 
 (defn outdated
+  ;; docstring is presented as part of help for tool
+  ;; clojure -A:deps -Tantq help/doc
   "Point out outdated dependencies.
 
   Options:
