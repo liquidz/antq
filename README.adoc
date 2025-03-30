@@ -95,7 +95,7 @@ Or add the following alias to your project `deps.edn` or `$HOME/.clojure/deps.ed
  {:outdated {;; Note that it is `:deps`, not `:extra-deps`
              :deps {com.github.liquidz/antq {:mvn/version "RELEASE"}}
              :main-opts ["-m" "antq.core"]}}
- }
+}
 ----
 Then, run `clojure -M:outdated`.
 (run `clojure -A:outdated` for Clojure CLI Tool 1.10.1.645 or earlier).
