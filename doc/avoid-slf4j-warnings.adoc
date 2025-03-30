@@ -1,6 +1,6 @@
 = Quiet SLF4J logger warnings
 
-It is not antq place to specify a logger, so depending our your project, you may see the following messages when antq is run:
+It is not antq's place to specify a logger, so depending our your project, you may see the following messages when antq is run:
 
 [source,text]
 ----
