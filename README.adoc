@@ -9,6 +9,7 @@ image:https://github.com/liquidz/antq/workflows/lint/badge.svg["GitHub Actions f
 image:https://github.com/liquidz/antq/workflows/dependencies/badge.svg["GitHub Actions for dependencies workflow", link="https://github.com/liquidz/antq/actions?query=workflow%3Adependencies"]
 image:https://codecov.io/gh/liquidz/antq/branch/master/graph/badge.svg["codecov", link="https://codecov.io/gh/liquidz/antq"]
 
+image:https://cljdoc.org/badge/com.github.liquidz/antq["cljdoc", link="https://cljdoc.org/d/com.github.liquidz/antq"]
 image:https://img.shields.io/clojars/v/com.github.liquidz/antq["Clojars Project", link="https://clojars.org/com.github.liquidz/antq"]
 image:https://img.shields.io/badge/docker-automated-blue["GitHub Container Registry", link="https://github.com/users/liquidz/packages/container/package/antq"]
 
