@@ -4,7 +4,7 @@ Antq is a tool to point out your outdated dependencies, but you can also use it 
 
 == antq.api
 
-The link:https://cljdoc.org/d/com.github.liquidz/antq/CURRENT/api/antq.api[`antq.api`] namespace provides is our only supported public API when using antq as library.
+The link:https://cljdoc.org/d/com.github.liquidz/antq/CURRENT/api/antq.api[`antq.api`] namespace is our only supported public API when using antq as library and eposes the following functions:
 
 * `outdated-deps`
 ** Returns a map of outdated dependencies
