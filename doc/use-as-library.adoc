@@ -1,4 +1,4 @@
-= Use antq as a library
+= Using antq as a library
 
 Antq is a tool to point out your outdated dependencies, but you can also use it as a library.
 

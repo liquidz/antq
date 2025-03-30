@@ -1,4 +1,4 @@
-= Avoid SLF4J warnings
+= Quiet SLF4J logger warnings
 
 antq does not load `org.slf4j.impl.StaticLoggerBinder` by default, so you may get following messages depending on the project.
 

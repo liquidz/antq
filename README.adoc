@@ -399,15 +399,15 @@ Otherwise, it may take a long time for the results to be reported.
 
 == Tips
 
-* link:./doc/maven-s3-repos.adoc[Maven S3 reposhere].
-* link:./doc/avoid-slf4j-warnings.adoc[Avoid SLF4J warnings]
+* link:./doc/maven-s3-repos.adoc[Maven S3 repos].
+* link:./doc/avoid-slf4j-warnings.adoc[Quiet SLF4J logger warnings]
 * link:./doc/latest-version-of-a-specific-library.adoc[Latest version of a specific library]
-* link:./doc/non-supported-clojure-version.adoc[Antq with non supported Clojure version]
-* link:./doc/gradle.adoc[Work with Gradle]
-* link:./doc/proxy.adoc[Run behind proxy]
+* link:./doc/non-supported-clojure-version.adoc[Antq on projects that use old versions of Clojure]
+* link:./doc/gradle.adoc[Working with Gradle]
+* link:./doc/proxy.adoc[Running behind a proxy]
 * link:./doc/timeout.adoc[Timeouts]
-* link:./doc/exclusions.adoc[Exclusions]
-* link:./doc/use-as-library.adoc[Use antq as a library]
+* link:./doc/exclusions.adoc[Excluding dependencies]
+* link:./doc/use-as-library.adoc[Using antq as a library]
 
 == License
 

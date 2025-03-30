@@ -1,4 +1,4 @@
-= Latest version of a specific library
+= Find the latest version of a library
 
 If you are using Clojure CLI Tools https://clojure.org/releases/tools#v1.10.1.697[v1.10.1.697] or later,
 You can use `-X` option to find out the latest version of a specific library.
