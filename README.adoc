@@ -177,6 +177,7 @@ See link:./doc/gradle.adoc[our Gradle docs] for details.
 Antq has timeouts for acquiring various information.
 See link:./doc/timeout.adoc[Timeouts] for details.
 
+[[options]]
 == Options
 
 [TIP]
