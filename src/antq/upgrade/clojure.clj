@@ -1,4 +1,4 @@
-(ns antq.upgrade.clojure
+(ns ^:no-doc antq.upgrade.clojure
   (:require
    [antq.constant :as const]
    [antq.upgrade :as upgrade]

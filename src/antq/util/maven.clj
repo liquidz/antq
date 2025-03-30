@@ -1,4 +1,4 @@
-(ns antq.util.maven
+(ns ^:no-doc antq.util.maven
   (:require
    [antq.constant :as const]
    [antq.log :as log]

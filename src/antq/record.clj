@@ -1,4 +1,4 @@
-(ns antq.record)
+(ns ^:no-doc antq.record)
 
 (def ?repository
   [:map [:url 'string?]])

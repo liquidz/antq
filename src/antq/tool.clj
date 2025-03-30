@@ -1,4 +1,4 @@
-(ns antq.tool
+(ns ^:no-doc antq.tool
   (:require
    [antq.core :as core]
    [antq.log :as log]

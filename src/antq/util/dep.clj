@@ -1,4 +1,4 @@
-(ns antq.util.dep
+(ns ^:no-doc antq.util.dep
   (:require
    [antq.util.function :as u.fn]
    [antq.util.maven :as u.mvn]

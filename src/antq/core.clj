@@ -5,7 +5,7 @@
     (.println ^java.io.PrintWriter *err* "antq requires Clojure 1.10.0 or later.")
     (System/exit 1)))
 
-(ns antq.core
+(ns ^:no-doc antq.core
   (:gen-class)
   (:require
    [antq.changelog :as changelog]

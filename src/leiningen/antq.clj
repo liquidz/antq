@@ -1,4 +1,4 @@
-(ns leiningen.antq
+(ns ^:no-doc leiningen.antq
   (:require
    [antq.core]
    [antq.dep.leiningen :as dep.lein]
