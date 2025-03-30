@@ -9,16 +9,12 @@
 (defn outdated-deps
   "Returns outdated dependencies in the form of `antq.record.Dependency`.
 
-  - deps-map (Required)
-    A map of the same form as `:deps` in deps.edn.
-    E.g. '{org.clojure/clojure {:mvn/version \"1.11.1\"}}
-  - options (Optional)
-    A CLI options map including additional API options.
+  - `deps-map` _required_ - A map of the same form as `:deps` in `deps.edn`, e.g.,
+    `{org.clojure/clojure {:mvn/version \"1.11.1\"}}`
 
-    API options:
-    - repositories
-      A map of the same form as `:mvn/repos` in deps.edn.
-      E.g. {\"clojars\" {:url \"https://clojars.org/repo\"}}"
+  - `options` _optional_ - A CLI options map which can also include:
+     - `:repositories` A map of the same form as `:mvn/repos` in `deps.edn`, e.g.,
+        `{\"clojars\" {:url \"https://clojars.org/repo\"}}`"
   ([deps-map]
    (outdated-deps deps-map {}))
   ([deps-map {:as options :keys [repositories file-path] :or {file-path ""}}]
@@ -32,15 +28,13 @@
 
 (defn upgrade-deps!
   "Upgrade version strings in specified files.
-  Returns a map as follows.
-  {true [upgraded-deps] false [non-upgraded deps]}
 
-  - file-dep-pairs (Required)
-    A vector of maps as follows.
-    {:file \"File path to upgrade\"
-     :dependency outdated-dependency-map}
-  - options (Optional)
-    A CLI options map."
+  Returns a map as follows:
+  `{true [upgraded-deps] false [non-upgraded deps]}`
+
+  - `file-dep-pairs` _required_ - A vector of maps, e.g.,
+     `{:file \"File path to upgrade\" :dependency outdated-dependency-map}`
+  - `options` _Optional_ - A CLI options map."
   ([file-dep-pairs]
    (upgrade-deps! file-dep-pairs {}))
   ([file-dep-pairs options]
