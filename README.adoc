@@ -84,7 +84,8 @@ See <<opt-check-clojure-tools>> option.
 Run the following command to quickly try antq:
 [source,sh]
 ----
-clojure -Sdeps '{:deps {com.github.liquidz/antq {:mvn/version "RELEASE"}}}' -M -m antq.core
+clojure -Sdeps '{:deps {com.github.liquidz/antq {:mvn/version "RELEASE"}}}' \
+  -M -m antq.core
 ----
 
 Or add the following alias to your project `deps.edn` or `$HOME/.clojure/deps.edn`.
@@ -400,9 +401,9 @@ Otherwise, it may take a long time for the results to be reported.
 
 == Tips
 
-* link:./doc/maven-s3-repos.adoc[Maven S3 repos].
+* link:./doc/maven-s3-repos.adoc[Maven S3 repos]
 * link:./doc/avoid-slf4j-warnings.adoc[Quiet SLF4J logger warnings]
-* link:./doc/latest-version-of-a-specific-library.adoc[Latest version of a specific library]
+* link:./doc/latest-version-of-a-specific-library.adoc[Find the latest version of a library]
 * link:./doc/non-supported-clojure-version.adoc[Antq on projects that use old versions of Clojure]
 * link:./doc/gradle.adoc[Working with Gradle]
 * link:./doc/proxy.adoc[Running behind a proxy]
