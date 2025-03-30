@@ -51,7 +51,7 @@
   Arguments: 
   - `file-dep-pairs` _required_ - A vector of maps, e.g.,
      `{:file \"File path to upgrade\" :dependency outdated-dependency-map}`
-  - `options` _Optional_ - A [CLI options](/README.adoc#options) map."
+  - `options` _optional_ - A [CLI options](/README.adoc#options) map."
   ([file-dep-pairs]
    (upgrade-deps! file-dep-pairs {}))
   ([file-dep-pairs options]
