@@ -29,7 +29,7 @@
 (def ?dependencies
   [:sequential ?dependency])
 
-;; Also describe in antq.api docstring, carry over any updates there
+;; Also described in antq.api docstring, carry over any updates there
 (defrecord Dependency
   [;; Dependency type keyword
    ;; e.g. :java, :git-sha or :github-tag
