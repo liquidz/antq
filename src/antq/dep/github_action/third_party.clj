@@ -1,4 +1,4 @@
-(ns antq.dep.github-action.third-party
+(ns ^:no-doc antq.dep.github-action.third-party
   (:require
    [antq.constant.github-action :as const.gh-action]
    [antq.record :as r]

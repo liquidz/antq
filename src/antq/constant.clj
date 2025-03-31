@@ -1,4 +1,4 @@
-(ns antq.constant
+(ns ^:no-doc antq.constant
   (:require
    [antq.util.env :as u.env]))
 

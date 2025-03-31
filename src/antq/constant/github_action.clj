@@ -1,4 +1,4 @@
-(ns antq.constant.github-action)
+(ns ^:no-doc antq.constant.github-action)
 
 (def type-key ::type)
 

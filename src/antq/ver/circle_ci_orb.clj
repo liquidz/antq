@@ -1,4 +1,4 @@
-(ns antq.ver.circle-ci-orb
+(ns ^:no-doc antq.ver.circle-ci-orb
   (:require
    [antq.log :as log]
    [antq.ver :as ver]

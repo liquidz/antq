@@ -1,4 +1,4 @@
-(ns antq.upgrade.github-action
+(ns ^:no-doc antq.upgrade.github-action
   (:require
    [antq.constant.github-action :as const.gh-action]
    [antq.dep.github-action :as dep.gh-action]

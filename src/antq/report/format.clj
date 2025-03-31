@@ -1,4 +1,4 @@
-(ns antq.report.format
+(ns ^:no-doc antq.report.format
   (:require
    [antq.report :as report]
    [antq.util.dep :as u.dep]

@@ -1,4 +1,4 @@
-(ns antq.dep.circle-ci
+(ns ^:no-doc antq.dep.circle-ci
   (:require
    [antq.record :as r]
    [antq.util.dep :as u.dep]

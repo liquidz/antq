@@ -1,4 +1,4 @@
-(ns antq.dep.clojure.tool
+(ns ^:no-doc antq.dep.clojure.tool
   (:require
    [antq.record :as r]
    [clojure.edn :as edn]

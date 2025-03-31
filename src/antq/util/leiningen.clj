@@ -1,4 +1,4 @@
-(ns antq.util.leiningen
+(ns ^:no-doc antq.util.leiningen
   (:require
    [antq.log :as log]
    [antq.util.env :as u.env]

@@ -1,4 +1,4 @@
-(ns antq.util.ver
+(ns ^:no-doc antq.util.ver
   (:require
    [antq.util.exception :as u.ex]
    [clojure.string :as str]))

@@ -1,4 +1,4 @@
-(ns antq.dep.clojure
+(ns ^:no-doc antq.dep.clojure
   "Clojure CLI"
   (:require
    [antq.constant :as const]
