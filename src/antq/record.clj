@@ -1,4 +1,4 @@
-(ns antq.record)
+(ns ^:no-doc antq.record)
 
 (def ?repository
   [:map [:url 'string?]])
@@ -29,6 +29,7 @@
 (def ?dependencies
   [:sequential ?dependency])
 
+;; Also described in antq.api docstring, carry over any updates there
 (defrecord Dependency
   [;; Dependency type keyword
    ;; e.g. :java, :git-sha or :github-tag

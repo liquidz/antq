@@ -1,4 +1,4 @@
-(ns antq.upgrade.circle-ci
+(ns ^:no-doc antq.upgrade.circle-ci
   (:require
    [antq.upgrade :as upgrade]
    [clojure.string :as str]

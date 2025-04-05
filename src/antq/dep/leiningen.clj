@@ -1,4 +1,4 @@
-(ns antq.dep.leiningen
+(ns ^:no-doc antq.dep.leiningen
   (:require
    [antq.constant :as const]
    [antq.constant.project-file :as const.project-file]

@@ -1,4 +1,4 @@
-(ns antq.util.file
+(ns ^:no-doc antq.util.file
   (:require
    [antq.constant.project-file :as const.project-file]
    [antq.util.env :as u.env]

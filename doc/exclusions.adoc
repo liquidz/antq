@@ -1,8 +1,6 @@
-= Exclusions
+= Excluding dependencies
 
-When you'd like to exclude specific dependencies, you could `--exclude` option as you know.
-
-Otherwise, the following ways are available.
+When you'd like to exclude specific dependencies, you can use the link:../README.adoc#opt-exclude[--exclude] option, or one of the methods describe below.
 
 == Metadata in your project file
 
